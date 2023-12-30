@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+.header {
+  z-index: 999;
+  position: fixed;
+  padding: 18px 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex; /* Flexbox 레이아웃을 사용합니다. */
+  justify-content: space-between; /* 요소들을 양 끝으로 정렬합니다. */
+  align-items: center; /* 요소들을 수직 중앙 정렬합니다. */
+  text-shadow: 1px 1px 1px #000;
+}
+
+.header .logo img {
+  background-image: url('../img/logo.png');
+  max-height: 30px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.header .logo h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0;
+  font-family: var(--font-primary);
+}
+
+.header .logo h1 span {
+  color: var(--color-primary);
+}
+
+.header ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* 메뉴 항목들을 가로로 나란히 배치합니다. */
+}
+
+.header ul li {
+  margin-right: 20px;
+}
+
+.header ul li:last-child {
+  margin-right: 0;
+}
+
+.header ul li a {
+  font-size: 17px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar {
+  margin-left: auto;
+  margin-right: 60px; /* 오른쪽 여백을 조절 */
+}
+
+
+
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: url("../images/userloginimg.jpg") no-repeat center;
+  background-size: cover;
+}
+
+/* 회원가입 CSS*/
+.join-form {
+  width: 550px;
+  margin-left: auto;
+  background-color: whitesmoke;
+  margin-right: auto;
+  margin-top: 40px;
+  margin-bottom: 180px;
+  border-radius: 5px;
+  padding: 30px;
+}
+
+.join-form h3 {
+  color: black;
+  font-size: 13px;
+}
+
+/* 아이디 텍스트칸 css */
+.userId_text-field {
+  font-size: 14px;
+  width: 300px;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* 아이디 중복 확인 버튼 */
+.userId_button{
+  font-size: 14px;
+  width: 140px;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 22px;
+  background-color: burlywood; /* 배경색 */
+  color: #fff; /* 텍스트 색상 */
+  cursor: pointer; /* 포인터 형태로 변경하여 버튼임을 나타냅니다 */
+}
+
+/* 빨간 글씨 스타일 */
+#id_check_message.red {
+    color: red;
+}
+
+/* 파란 글씨 스타일 */
+#id_check_message.blue {
+    color: blue;
+}
+
+/* 텍스트칸 css */
+.text-field {
+  font-size: 14px;
+  width: 470px;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* 우편 번호 css */
+.text-field-postcode {
+  font-size: 14px;
+  width: 200px;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+
+.button-postcode{
+  font-size: 14px;
+  width: 200px;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: burlywood; /* 배경색 */
+  color: #fff; /* 텍스트 색상 */
+  cursor: pointer; /* 포인터 형태로 변경하여 버튼임을 나타냅니다 */
+}
+
+.button-postcode:hover {
+  background-color: burlywood; /* 마우스 오버 시 배경색 변경 */
+}
+
+.submit-btn {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  background-color: burlywood;
+  color: white;
+  width: 47%;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: none;
+  float: right; /* 오른쪽으로 이동 */
+  clear: both; /* 다음 요소와의 레이아웃 충돌 방지 */
+
+}
+
+.reset-btn {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  background-color: burlywood;
+  color: white;
+  width: 47%;
+  border-radius: 5px;
+  margin-top: 5px;
+  padding: 10px;
+  border: none;
+}

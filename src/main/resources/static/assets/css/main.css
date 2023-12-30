@@ -1,0 +1,1412 @@
+/* 폰트 */
+:root {
+  --font-default: "Noto Sans KR", sans-serif;
+  --font-primary: "Noto Sans KR", sans-serif;
+  --font-secondary: "Work Sans", sans-serif;
+}
+
+/* 색상 */
+:root {
+  --color-default: #364d59;
+  --color-primary: #feb900;
+  --color-secondary: #52565e;
+}
+
+/* 스크롤 동작 부드럽게 만들기 */
+:root {
+  scroll-behavior: smooth;
+}
+
+/*--------------------------------------------------------------
+# 전반적인 스타일 설정
+--------------------------------------------------------------*/
+.company_inner {
+    max-width: 1900px;
+    margin: 0 auto;
+}
+ul, ol {
+    list-style: none;
+    list-style-image: none;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+user agent stylesheet
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+html, body {
+    color: #333;
+    height: 100%;
+    font-size: 15px;
+    -webkit-text-size-adjust: none;
+    font-family: "Play","NotoSansKR","Dotum","NanumSquare","sans-serif";
+    word-break: keep-all;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    line-height: 1.5;
+}
+
+
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -ms-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+}
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+
+
+body { /*body 요소*/
+  font-family: var(--font-default); /*기본 글꼴 설정 : "Noto Sans KR"*/
+  color: var(--color-default);
+  overflow-x: hidden; /*가로 스크롤 숨김*/
+}
+
+a { /*모든 링크 요소*/
+  color: var(--color-primary); /*링크 텍스트의 색상 지정*/
+  text-decoration: none; /*기본 링크 텍스트의 밑줄을 제거*/
+}
+
+a:hover { /*호버 : 마우스 커서가 웹 페이지의 특정 요소 위에 올라갔을 때*/
+  color: #ffc732; /*호버 시 링크 텍스트의 색상을 변경*/
+  text-decoration: none; /*링크 텍스트의 밑줄을 제거*/
+}
+
+/*모든 제목 요소*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-primary); /*자동으로 "Noto Sans KR" 글꼴 설정됨*/
+}
+
+/*--------------------------------------------------------------
+# Sections & Section Header (웹 페이지의 각 섹션과 해당 헤더가 일관된 스타일과 레이아웃을 가지게 됨)
+--------------------------------------------------------------*/
+section {
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.section-bg {
+  background-color: #f5f6f7;
+}
+
+.section-header {
+  text-align: center;
+}
+
+.section-header h2 {
+  font-size: 33px;
+  font-weight: 900;
+  position: relative;
+  color: #364d59;
+}
+
+.section-header h2:before,
+.section-header h2:after {
+  content: "";
+  width: 50px;
+  height: 2px;
+  background: var(--color-primary);
+  display: inline-block;
+}
+
+.section-header h2:before {
+  margin: 0 15px 10px 0;
+}
+
+.section-header h2:after {
+  margin: 0 0 10px 15px;
+}
+
+.section-header p { /*섹션 헤더 내의 단락*/
+  margin: 0 auto 0 auto; /*상단, 하단 여백 0*/
+}
+
+@media (min-width: 1199px) {
+  .section-header p {
+    max-width: 60%;
+  }
+}
+
+/*--------------------------------------------------------------
+# Breadcrumbs (메인 페이지를 제외한 모든 페이지 상단에 적용, 웹 페이지에서 현재 페이지의 위치를 나타내는데 사용됨)
+--------------------------------------------------------------*/
+.breadcrumbs {
+  padding: 140px 0 60px 0;
+  min-height: 30vh;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.breadcrumbs:before {
+  content: "";
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  inset: 0;
+}
+
+.breadcrumbs h2 {
+  font-size: 40px;
+  font-weight: 500;
+  color: #fff;
+  font-family: var(--font-secondary);
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0 0 10px 0;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.breadcrumbs ol a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: 0.3s;
+}
+
+.breadcrumbs ol a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs ol li+li {
+  padding-left: 10px;
+}
+
+.breadcrumbs ol li+li::before {
+  display: inline-block;
+  padding-right: 10px;
+  color: #fff;
+  content: "/";
+}
+
+/*--------------------------------------------------------------
+# Scroll top button : 웹 페이지에서 스크롤이 일정량 이상 내려갈 때 스크롤 탑 버튼이 나타나고, 버튼을 클릭하면 페이지가 맨 위로 스크롤됨
+--------------------------------------------------------------*/
+.scroll-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s;
+  border: 1px solid lightgray;
+}
+
+.scroll-top i::before {
+  content: "↑";
+  font-size: 20px;
+  color: lightgray; /* 텍스트의 색상, 여기서는 회색 */
+  font-family: 'Arial', sans-serif;
+}
+
+.scroll-top:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: #52565e; /* 어두운색 테두리로 변경 */
+}
+
+.scroll-top.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*--------------------------------------------------------------
+# Preloader : 웹 페이지가 로딩 중일 때 사용자에게 로딩 중임을 시각적으로 알려줌
+--------------------------------------------------------------*/
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.6s ease-out;
+}
+
+#preloader:before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #fff;
+  border-color: var(--color-primary) transparent var(--color-primary) transparent;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: animate-preloader 1.5s linear infinite;
+  animation: animate-preloader 1.5s linear infinite;
+}
+
+@-webkit-keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*--------------------------------------------------------------
+# Header (헤더 스타일),  헤더 설정 - main.js (scroll function)
+--------------------------------------------------------------*/
+.header {
+  z-index: 999; /*Header의 층위를 설정하여 다른 요소 위에 레이어함*/
+  position: fixed; /*Header를 페이지 상단에 고정*/
+  padding: 18px 0;
+  top: 0; /*화면의 상단에 정렬*/
+  left: 0;
+  right: 0;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.header .logo img { /*로고 이미지 크기와 여백을 조정*/
+  background-image: url('../img/logo.png');
+  max-height: 30px;
+  margin-right: 6px;
+}
+
+.header .logo h1 { /*로고의 텍스트를 스타일링*/
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0;
+  margin-right: 30%;
+  font-family: var(--font-primary);
+}
+
+.header .logo h1 span { /*로고 텍스트 중 일부를 스타일링 : 색상 지정*/
+  color: var(--color-primary);
+}
+
+.header ul li a { /*헤더 메뉴바의 글씨 크기, 색 지정*/
+  font-size: 17px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/*--------------------------------------------------------------
+# Desktop Navigation(전체화면 상태일 때 메뉴바 모양)
+--------------------------------------------------------------*/
+@media (min-width: 1280px) {
+  .navbar {
+    padding: 0;
+  }
+
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+  }
+
+  .navbar li {
+    position: relative;
+  }
+
+  .navbar>ul>li {
+    white-space: nowrap;
+    padding: 10px 0 10px 28px;
+  }
+
+  .navbar a,
+  .navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3px;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: 0.3s;
+    position: relative;
+  }
+
+  .navbar a i,
+  .navbar a:focus i {
+    font-size: 12px;
+    line-height: 0;
+    margin-left: 5px;
+  }
+
+  .navbar>ul>li>a:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -6px;
+    left: 0;
+    background-color: var(--color-primary);
+    visibility: hidden;
+    width: 0px;
+    transition: all 0.3s ease-in-out 0s;
+  }
+
+  .navbar a:hover:before,
+  .navbar li:hover>a:before,
+  .navbar .active:before {
+    visibility: visible;
+    width: 100%;
+  }
+
+  .navbar a:hover,
+  .navbar .active,
+  .navbar .active:focus,
+  .navbar li:hover>a {
+    color: #fff;
+  }
+
+  .navbar .dropdown ul {
+    display: block;
+    position: absolute;
+    left: 28px;
+    top: calc(100% + 30px);
+    margin: 0;
+    padding: 10px 0;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    background: #fff;
+    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    transition: 0.3s;
+  }
+
+  .navbar .dropdown ul li {
+    min-width: 200px;
+  }
+
+  .navbar .dropdown ul a {
+    padding: 10px 20px;
+    font-size: 15px;
+    text-transform: none;
+    color: var(--color-default);
+    font-weight: 400;
+  }
+
+  .navbar .dropdown ul a i {
+    font-size: 12px;
+  }
+
+  .navbar .dropdown ul a:hover,
+  .navbar .dropdown ul .active:hover,
+  .navbar .dropdown ul li:hover>a {
+    color: var(--color-primary);
+  }
+
+  .navbar .dropdown:hover>ul {
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+  }
+
+  .navbar .dropdown .dropdown ul {
+    top: 0;
+    left: calc(100% - 30px);
+    visibility: hidden;
+  }
+
+  .navbar .dropdown .dropdown:hover>ul {
+    opacity: 1;
+    top: 0;
+    left: 100%;
+    visibility: visible;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1366px) {
+  .navbar .dropdown .dropdown ul {
+    left: -90%;
+  }
+
+  .navbar .dropdown .dropdown:hover>ul {
+    left: -100%;
+  }
+}
+
+@media (min-width: 1280px) {
+
+  .mobile-nav-show,
+  .mobile-nav-hide {
+    display: none;
+  }
+}
+
+/*--------------------------------------------------------------
+# Mobile Navigation : 메뉴바(화면 너비가 줄어들면 햄버거 메뉴 형태로 변경됨)
+--------------------------------------------------------------*/
+@media (max-width: 1279px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    bottom: 0;
+    transition: 0.3s;
+    z-index: 9997;
+  }
+
+  .navbar ul {
+    position: absolute;
+    inset: 0;
+    padding: 50px 0 10px 0;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+    transition: 0.3s;
+    z-index: 9998;
+  }
+
+  .navbar a,
+  .navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    text-transform: uppercase;
+    transition: 0.3s;
+  }
+
+  .navbar a i,
+  .navbar a:focus i {
+    font-size: 12px;
+    line-height: 0;
+    margin-left: 5px;
+  }
+
+  .navbar a:hover,
+  .navbar .active,
+  .navbar .active:focus,
+  .navbar li:hover>a {
+    color: #fff;
+  }
+
+  .navbar .dropdown ul,
+  .navbar .dropdown .dropdown ul {
+    position: static;
+    display: none;
+    padding: 10px 0;
+    margin: 10px 20px;
+    transition: all 0.5s ease-in-out;
+    border: 1px solid #222428;
+  }
+
+  .navbar .dropdown>.dropdown-active,
+  .navbar .dropdown .dropdown>.dropdown-active {
+    display: block;
+  }
+
+  .mobile-nav-show {
+    position: relative;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 0;
+    transition: 0.5s;
+    z-index: 9999;
+    padding-right: 10px;
+  }
+
+  .mobile-nav-hide {
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+    line-height: 0;
+    transition: 0.5s;
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    z-index: 9999;
+  }
+
+  .mobile-nav-active {
+    overflow: hidden;
+  }
+
+  .mobile-nav-active .navbar {
+    right: 0;
+  }
+
+  .mobile-nav-active .navbar:before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9996;
+  }
+}
+
+/*--------------------------------------------------------------
+# Our Projects Section (메인 - 에이콘 협력사)
+--------------------------------------------------------------*/
+.projects .portfolio-flters {
+  padding: 0;
+  margin: 0 auto 20px auto;
+  list-style: none;
+  text-align: center;
+}
+
+.projects .portfolio-flters li:hover,
+.projects .portfolio-flters li.filter-active {
+  color: var(--color-primary);
+}
+
+.projects .portfolio-flters li:first-child {
+  margin-left: 0;
+}
+
+.projects .portfolio-flters li:last-child {
+  margin-right: 0;
+}
+
+@media (max-width: 575px) {
+  .projects .portfolio-flters li {
+    font-size: 14px;
+    margin: 0 5px;
+  }
+}
+
+.projects .portfolio-content {
+  position: relative;
+  overflow: hidden;
+}
+
+.projects .portfolio-content img {
+  max-width: 80%; /* 이미지 최대 너비 조절 */
+  height: auto; /* 이미지 높이 자동으로 조절 */
+  max-height: 200px; /* 이미지 최대 높이 설정 */
+  transition: 0.3s;
+}
+
+.projects .portfolio-content .portfolio-info {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  transition: all ease-in-out 0.3s;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+}
+
+.projects .portfolio-content .portfolio-info h4 {
+  font-size: 14px;
+  padding: 5px 10px;
+  font-weight: 400;
+  color: #fff;
+  display: inline-block;
+  background-color: var(--color-primary);
+}
+
+.projects .portfolio-content .portfolio-info p {
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  display: inline-block;
+  left: 0;
+  right: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.projects .portfolio-content .portfolio-info .details-link {
+  position: absolute;
+  left: calc(50% - 40px);
+  font-size: 26px;
+  top: calc(50% - 14px);
+  color: #fff;
+  transition: 0.3s;
+  line-height: 1.2;
+}
+
+.projects .portfolio-content .portfolio-info .details-link:hover {
+  color: var(--color-primary);
+}
+
+.projects .portfolio-content .portfolio-info .details-link {
+  left: 50%;
+  font-size: 34px;
+  line-height: 0;
+}
+
+.projects .portfolio-content:hover .portfolio-info {
+  opacity: 1;
+}
+
+.projects .portfolio-content:hover img {
+  transform: scale(1.1);
+}
+
+/*--------------------------------------------------------------
+# Alt Services Section (서비스 소개 페이지 - 에이콘테이너가 처음이신가요?)
+--------------------------------------------------------------*/
+.alt-services .img-bg {
+  background-size: cover;
+  background-position: center center;
+  min-height: 400px;
+}
+
+.alt-services h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.alt-services h3:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: var(--color-primary);
+  left: 0;
+  bottom: 0;
+}
+
+.alt-services .icon-box {
+  margin-top: 50px;
+}
+
+.alt-services .icon-box i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  margin-right: 25px;
+  font-size: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+  line-height: 0;
+  box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+.alt-services .icon-box:hover i {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.alt-services .icon-box h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.alt-services .icon-box h4 a {
+  color: #000;
+  transition: 0.3s;
+}
+
+.alt-services .icon-box h4 a:hover {
+  color: var(--color-primary);
+}
+
+.alt-services .icon-box p {
+  line-height: 24px;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+/*--------------------------------------------------------------
+# About Section (서비스 소개 페이지 - Acontainer 서비스 소개)
+--------------------------------------------------------------*/
+.about h2 {
+  font-size: 55px;
+  font-weight: 700;
+  font-family: var(--font-secondary);
+  margin: 30px 0;
+}
+
+@media (min-width: 991px) {
+  .about h2 {
+    max-width: 65%;
+    margin: 0 0 80px 0;
+  }
+}
+
+.about .our-story {
+  padding: 40px;
+  background-color: #f5f6f7;
+}
+
+@media (min-width: 991px) {
+  .about .our-story {
+    padding-right: 35%;
+  }
+}
+
+.about .our-story h4 {
+  text-transform: uppercase;
+  font-size: 18px;
+  color: #838893;
+}
+
+.about .our-story h3 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-secondary);
+}
+
+.about .our-story p:last-child {
+  margin-bottom: 0;
+}
+
+.about ul {
+  list-style: none;
+  padding: 0;
+  font-size: 18px;
+}
+
+.about ul li {
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.about ul i {
+  font-size: 20px;
+  margin-right: 4px;
+  color: var(--color-primary);
+}
+
+.about .about-img {
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+}
+
+@media (min-width: 992px) {
+  .about .about-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+/*--------------------------------------------------------------
+# Stats Counter Section (메인, 서비스소개 페이지 - 사용자, 창고수, 직원수 등의 통계 정보 표시)
+--------------------------------------------------------------*/
+.stats-counter .stats-item {
+  background: #fff;
+  box-shadow: 0px 0 30px rgba(82, 86, 94, 0.05);
+  padding: 30px;
+}
+
+.stats-counter .stats-item i {
+  font-size: 42px;
+  line-height: 0;
+  margin-right: 20px;
+  color: var(--color-primary);
+}
+
+.stats-counter .stats-item span {
+  font-size: 36px;
+  display: block;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+.stats-counter .stats-item p {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: 14px;
+}
+
+/*--------------------------------------------------------------
+# Our Team Section (서비스 소개 페이지 - 서비스 이용 안내)
+--------------------------------------------------------------*/
+
+#team-container {
+  border: 3px solid lightgray; /* 테두리 스타일 및 색상 설정 */
+  border-radius: 20px; /* 모서리 둥글게 */
+  padding: 20px; /* 내용과의 간격을 조절할 수 있는 패딩 설정 */
+}
+
+.team .member {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수직 중앙 정렬로 변경 */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.team .member .member-img {
+  width: 170px; /* 이미지 크기 조정 */
+  height: 170px; /* 이미지 크기 조정 */
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 10px; /* 이미지를 수평 중앙 정렬하고 아래에 여백 추가 */
+  position: relative;
+}
+
+.team .member .member-img img {
+  width: 100%; /* 이미지 크기 100%로 설정 */
+  height: auto; /* 이미지 높이 자동 조정 */
+}
+
+.team .member .member-info {
+  margin-top: 10px; /* 텍스트와 이미지 간격 조정 */
+}
+
+
+.team .member .member-info h4 {
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 18px;
+  color: var(--color-secondary);
+}
+
+.team .member .member-info p {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+/*--------------------------------------------------------------
+# Recent Blog Posts Section (메인페이지 - 창고 사이즈별 가격정보, 설명)
+--------------------------------------------------------------*/
+
+.recent-blog-posts .post-item {
+  box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.06);
+  transition: 0.3s;
+}
+
+.recent-blog-posts .post-item .post-img img {
+  transition: 0.5s;
+}
+
+.recent-blog-posts .post-item .post-date {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-primary);
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding: 6px 12px;
+  font-weight: 500;
+}
+
+.recent-blog-posts .post-item .post-content {
+  padding: 30px;
+}
+
+.recent-blog-posts .post-item .post-title {
+  font-size: 24px;
+  color: var(--color-secondary);
+  font-weight: 700;
+  transition: 0.3s;
+  margin-bottom: 15px;
+}
+
+.recent-blog-posts .post-item .meta i {
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.recent-blog-posts .post-item .meta span {
+  font-size: 15px;
+  color: #838893;
+}
+
+.recent-blog-posts .post-item hr {
+  color: #888;
+  margin: 20px 0;
+}
+
+.recent-blog-posts .post-item .readmore {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  line-height: 1;
+  transition: 0.3s;
+  color: #838893;
+}
+
+.recent-blog-posts .post-item .readmore i {
+  line-height: 0;
+  margin-left: 6px;
+  font-size: 16px;
+}
+
+.recent-blog-posts .post-item:hover .post-title,
+.recent-blog-posts .post-item:hover .readmore {
+  color: var(--color-primary);
+}
+
+.recent-blog-posts .post-item:hover .post-img img {
+  transform: scale(1.1);
+}
+
+/*--------------------------------------------------------------
+# Hero Section (메인페이지 - 웹 페이지 상단에 배너 이미지와 제목, 설명 등을 표시)
+--------------------------------------------------------------*/
+.hero {
+  overflow-x: hidden;
+  padding: 0;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.hero .carousel {
+  width: 100%; /*섹션을 화면 너비에 맞게 확장*/
+  min-height: 100vh; /*섹션의 최소 높이를 화면 높이와 같게함*/
+  padding: 80px 0; /*섹션 내부의 여백을 설정*/
+  margin: 0;
+  position: relative;
+}
+
+.hero .carousel-item {
+  position: absolute; /*배경 이미지를 절대 위치로 배치*/
+  inset: 0;
+  background-size: cover; /*배경 이미지 스타일 설정*/
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  z-index: 1; /*배경 이미지가 다른 콘텐츠 뒤에 나타나도록 함*/
+  transition-duration: 0.4s; /*페이지 지속 시간이 지나면 다음페이지로 전환됨*/
+}
+
+.hero .carousel-item::before { /*배경 이미지 위에 어두운 페이지 추가*/
+  content: "";
+  background-color: rgba(0, 0, 0, 0.2); /*투명도 설정*/
+  position: absolute;
+  inset: 0;
+}
+
+.hero .info { /*Hero 섹션의 정보 요소를 스타일링*/
+  position: absolute;
+  inset: 0;
+  z-index: 2; /*텍스트가 배경 이미지 위에 나타나도록*/
+  margin-top: 5%;
+}
+
+@media (max-width: 768px) {
+  .hero .info {
+    padding: 0 50px;
+  }
+}
+
+.hero .info h2 { /*제목 텍스트*/
+  color: #fff;
+  margin-bottom: 0px;
+  padding-bottom: 10px;
+  font-size: 70px;
+  font-weight: bold;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .hero .info h2 {
+    font-size: 36px;
+  }
+}
+
+.hero .info p { /*부가 설명 텍스트*/
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 23px;
+}
+
+.hero .info .btn-get-started {
+  font-weight: 500;
+  font-size: 18px;
+  display: inline-block;
+  padding: 7px 40px; /*버튼의 모양*/
+  border-radius: 50px;
+  transition: 0.5s;
+  margin: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.hero .info .btn-get-started:hover {
+  background: #000;
+}
+
+.hero .carousel-control-prev { /*배너 이미지의 이전 버튼 스타일을 설정*/
+  justify-content: start; /*정렬 조정*/
+}
+
+@media (min-width: 640px) {
+  .hero .carousel-control-prev {
+    padding-left: 15px;
+  }
+}
+
+.hero .carousel-control-next { /*배너 이미지의 다음 버튼 스타일을 설정*/
+  justify-content: end;
+}
+
+@media (min-width: 640px) {
+  .hero .carousel-control-next {
+    padding-right: 15px;
+  }
+}
+
+.hero .carousel-control-next-icon,
+.hero .carousel-control-prev-icon { /*배너 컨트롤 아이콘의 스타일을 설정*/
+  background: none;
+  font-size: 26px;
+  line-height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero .carousel-control-prev,
+.hero .carousel-control-next {
+  z-index: 3;
+  transition: 0.3s;
+}
+
+.hero .carousel-control-prev:focus,
+.hero .carousel-control-next:focus {
+  opacity: 0.5;
+}
+
+.hero .carousel-control-prev:hover,
+.hero .carousel-control-next:hover {
+  opacity: 0.9;
+}
+
+.hero .search-form button {
+  background-color: rgba(255, 255, 255, .8); /* 버튼 배경색 설정 */
+  border: none;
+  padding: 20px; /* 버튼 내부 여백 추가 */
+  border-radius: 50%; /* 원형 모양으로 설정 */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* 배경색 전환 효과 추가 */
+}
+
+.hero .search-form button:hover {
+  background-color: rgba(255, 255, 255, 1); /* 호버 시 밝은 흰색으로 배경색 변경 */
+}
+
+/*--------------------------------------------------------------
+# 메인페이지 - 검색바 : 지역별 창고검색
+--------------------------------------------------------------*/
+
+.hero .search-container {
+  margin-top: 15%;
+}
+
+.hero .search-form {
+    display:flex; 
+    justify-content:center; 
+    align-items:center;
+}
+
+.hero .search-input {
+   color: #000;
+   font-weight: bold;
+   font-size: medium;
+   flex-grow:1; 
+   margin-right:10px;
+   background-color: rgba(255, 255, 255, .8); /* 불투명한 흰 배경 적용 */
+   border:none; /* 외곽선 제거 */
+   padding-right:40px; /* 패딩 우측 공간 확보 (버튼 영역) */
+   box-sizing:border-box; /* 버튼이 입력 필드와 겹치지 않도록 함 */
+   border-radius: 50px; /* 둥근 모서리 적용 */
+   padding: 20px; /* 내부 여백 추가 */
+}
+
+.hero .search-form input,
+.hero .search-form button {
+  outline: none; /* 포커스 효과 제거 */
+}
+
+.hero .search-form input:focus,
+.hero .search-form button:focus {
+  border-color: var(--color-primary); /* 포커스 시 테두리 색상 설정 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 포커스 시 그림자 효과 추가 */
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.footer {
+  color: #fff;
+  background: url("../img/footer-bg.jpg") top center no-repeat;
+  background-size: cover;
+  font-size: 14px;
+  padding: 80px 0 60px 0; /*footer 내부 여백*/
+  position: relative;
+}
+
+.footer:before { /*배경 이미지 위에 어두운 페이지 추가*/
+  content: "";
+  background: rgba(0, 0, 0, 0.8); /*투명도 설정*/
+  position: absolute;
+  inset: 0;
+}
+
+.footer .footer-content .footer-info { /*footer 내의 정보 섹션 스타일링*/
+  margin-bottom: 30px;
+}
+
+.footer .footer-content .footer-info h3 { /*정보 섹션의 제목 스타일링*/
+  font-size: 28px;
+  margin: 0 0 20px 0;
+  padding: 2px 0 2px 0;
+  line-height: 1;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.footer .footer-content .footer-info h3 span {
+  color: var(--color-primary);
+}
+
+.footer .footer-content .footer-info p { /*정보 섹션의 설명 텍스트를 스타일링*/
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 0;
+  font-family: var(--font-primary);
+  color: #fff;
+}
+
+.footer .footer-content h4 { /*하위 섹션의 제목을 스타일링*/
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.footer .footer-content .footer-links { /*링크 목록 섹션*/
+  margin-bottom: 30px;
+}
+
+.footer .footer-content .footer-links ul { /*링크 목록의 순서 없는 목록을 스타일링*/
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer .footer-content .footer-links ul li { /*각 링크 항목 스타일링*/
+  padding: 8px 0;
+}
+
+.footer .footer-content .footer-links ul li:first-child {
+  padding-top: 0;
+}
+
+.footer .footer-content .footer-links ul a {
+  color: rgba(255, 255, 255, 0.6);
+  transition: 0.3s;
+  display: inline-block;
+  line-height: 1;
+}
+
+.footer .footer-content .footer-links ul a:hover {
+  color: #fff;
+}
+
+.footer .footer-legal .copyright {
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+
+/*--------------------------------------------------------------
+# 창고의뢰, 화물 운송 요청
+--------------------------------------------------------------*/
+
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -ms-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+}
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.company_inner {
+	max-width: 1900px;
+	margin: 0 auto;
+}
+
+.company_inner li {
+	float: left;
+	width: 50%;
+}
+
+.company_inner:hover li {
+	width: 45%;
+}
+
+.company_inner li:hover {
+	width: 55%;
+}
+
+.company_inner li div {
+	height: 264px;
+	background-size: 100%;
+}
+
+.company_inner li div strong {
+	font-size: 40px;
+}
+
+.company_inner li div a {
+	padding-right: 44px;
+	opacity: 0.7;
+	display: inline-block;
+	margin-top: 9px;
+}
+
+.company_inner li .company {
+	background: #132440 url(../img/sub_bg02.png) no-repeat;
+	padding: 55px 247px 55px 10px;
+	transition: all 1s cubic-bezier(0, 0, 0, 1.01) 0s;
+	color: #fff;
+	text-align: right;
+	position: relative;
+}
+
+.company_inner li .company img {
+	width: auto;
+	position: absolute;
+	right: 40px;
+	top: 50%;
+	margin-top: -60px;
+}
+
+.company_inner li .download {
+	/*background: #ff4155 url(../img/sub_bg03.png) no-repeat;*/
+	background: darkorange url(../img/sub_bg03.png) no-repeat;
+	padding: 55px 32px;
+	transition: all 1s cubic-bezier(0, 0, 0, 1.01) 0s;
+	color: #fff;
+	text-align: left;
+	position: relative;
+}
+
+.company_wrap {
+	position: relative;
+	overflow: hidden;
+}
+
+.company_inner {
+	list-style: none;
+	padding: 0;
+}
+
+.company_inner li {
+	float: left;
+	position: relative;
+}
+
+.company {
+	padding: 55px 30px 55px 10px;
+	color: #fff;
+	text-align: right;
+	position: relative;
+	background-image: url('../static/assets/img/sub_bg02.png');
+	background-repeat: no-repeat;
+	background-position: -12.6194px 100%;
+	transition: background-position 1s cubic-bezier(0, 0, 0, 1.01);
+}
+
+.download {
+	padding: 55px 32px;
+	color: #fff;
+	text-align: left;
+	position: relative;
+	background-image: url('../static/assets/img/sub_bg03.png');
+	background-repeat: no-repeat;
+	background-position: 170px 100%;
+	transition: background-position 1s cubic-bezier(0, 0, 0, 1.01);
+}
+
+#mainBottomLeftBanner,
+#mainBottomRightBanner {
+  color: white; /* 흰색으로 설정 */
+  font-size: large;
+}
+
+
+/* 추가한 스타일: 커서를 올렸을 때 전환 효과 */
+.transition-effect {
+    transition: transform 0.3s ease;
+}
+
+.transition-effect:hover {
+    transform: scale(1.05);
+}
