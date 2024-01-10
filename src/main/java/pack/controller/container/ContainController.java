@@ -26,7 +26,7 @@ public class ContainController {
 	List<Map<String, String>> list = new ArrayList<>();
 	Map<String, String> data = null;
 	
-	for(ContainDtoMap c:containDao.getcontainAll()) { // 전체자료 읽음
+	for(ContainDtoMap c:containDao.getcontainAll()) {
 		data = new HashMap<String, String>();
 		data.put("con_no", c.getCont_no());
 		data.put("con_name", c.getCont_name());
@@ -34,7 +34,7 @@ public class ContainController {
 		data.put("we", c.getCont_we());
 		data.put("kyung", c.getCont_kyung());
 		data.put("con_area", c.getCont_size());
-		list.add(data); //작업을 반복한다
+		list.add(data);
 	}
 	System.out.println(list);
 	

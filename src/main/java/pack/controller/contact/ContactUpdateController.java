@@ -16,7 +16,7 @@ public class ContactUpdateController {
 	public String update(ContactBean bean) {
 	boolean b = contactDao.updateContact(bean);
 	if(b)
-		return "redirect:/contactadmin?page=1"; // 수정 후 목록 보기
+		return "redirect:/contactadmin?page=1";
 	else
 		return "error";
 }

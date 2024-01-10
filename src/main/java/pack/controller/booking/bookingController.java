@@ -29,18 +29,12 @@ import pack.model.booking.BookingMapperInter;
 public class bookingController {
 	@Autowired
 	private BookingDao dao;
-	
-	//예약 페이지 연결
+
 	@GetMapping("booking")
 	public String booking() {
 		return "booking/booking";
 	}
-	
 
-
-	
-	// 10/3 민혁 예약에 따른 상태변경 메소드 추가 예정
-	//예약하기
 		@PostMapping("/bookingDo")
 		public String bookingDo(bookingDTO bookingdto, AdminBean bean) {
 			boolean b = dao.bookingInsert(bookingdto);
@@ -52,10 +46,6 @@ public class bookingController {
 				return "/booking/booking";
 			}	
 		}
-
-
-
-	
 
 	@GetMapping("/bookingInfo")
 	public String bookingProcess(HttpSession session, Model model) {
@@ -72,20 +62,16 @@ public class bookingController {
 		session.setAttribute("bookList", bookingdto);
 		
 		model.addAttribute("bList", bookingdto);
-		return "booking/bookingInfo";
-		
-		
+		return "booking/bookingInfo";		
 	}
 	
-
-
 	//예약삭제
 	@GetMapping("bookDelete")
 	public String bookDelete(bookingDTO bookingDto, Model model, HttpSession session){
 		boolean b = dao.bookingDelete(bookingDto);
 		if(b) {
 			return "booking/booking";
-		}else
+		}
 		return "redirect:bookingInfo";
 	}
 

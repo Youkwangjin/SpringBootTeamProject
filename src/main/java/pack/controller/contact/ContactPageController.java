@@ -23,8 +23,8 @@ public class ContactPageController {
 	public ArrayList<ContactDto> getListData(ArrayList<ContactDto> list, int page){
 		ArrayList<ContactDto> result = new ArrayList<ContactDto>();
 		
-		int start = (page - 1) * plist;   // 0, 10, 20, ...
-		int end = Math.min(start + plist, list.size());  // 계산된 end 값이 리스트 크기를 초과하지 않도록 조정
+		int start = (page - 1) * plist; // 0, 10, 20
+		int end = Math.min(start + plist, list.size());
 		
 		for (int i = start; i < end; i++) {
 			result.add(list.get(i));

@@ -19,7 +19,7 @@ public class DeleteController {
 	   System.out.println(cont_no);
       boolean b = dataDao.condelete(cont_no);
       if(b)
-    	 return "redirect:/registered"; // 삭제 후 목록보기 (이떄 forward 방식으로 하면 DB상으론 삭제가 되지만 삭제 후 목록으로 돌아가지 않고 에러발생)
+    	 return "redirect:/registered";
       else
          return "error";
    }
