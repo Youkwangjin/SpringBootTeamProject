@@ -26,7 +26,7 @@ public class DataDao {
    public DataDao() {
       
    }
-   // User 정보 출력하기-------------------------------------------------------------
+   // User 정보 출력하기
    public List<UserDto> getUserAll(){
       List<UserDto> list = dataMapper.selectAll();  // sql문이 실행
       logger.info("Userdatas1 : " + list.size() + "개");
@@ -56,7 +56,7 @@ public class DataDao {
        return dataMapper.usercount();
    }
 
-   // Owner 정보 출력 및 검색하기-------------------------------------------------------------
+   // Owner 정보 출력 및 검색하기
    public List<OwnerDto> getOwnerAll(){
       List<OwnerDto> list2 = dataMapper.selectAll2();  // sql문이 실행
       logger.info("Ownerdatas2 : " + list2.size() + "개");
@@ -86,7 +86,7 @@ public class DataDao {
        return dataMapper.ownerrecords();
    }
   
-   // Container 정보 출력 및 검색하기-------------------------------------------------------------
+   // Container 정보 출력 및 검색하기
    public List<ContainerDto> getConAll(){
       List<ContainerDto> list3 = dataMapper.selectAll3();  // sql문이 실행
       logger.info("datas3 : " + list3.size() + "개");
@@ -121,32 +121,11 @@ public class DataDao {
          return b;
       }
    
-   // 사용한 창고 정보 출력 및 검색하기-------------------------------------------------------------
+   // 사용한 창고 정보 출력 및 검색하기
       public List<ContainerDto> getUserCon(){
          List<ContainerDto> list4 = dataMapper.selectAll4();  // sql문이 실행
          logger.info("datas4 : " + list4.size() + "개");
          return list4;
       }
-      
-     
-      /*
-      public List<ContainerDto> getreviews(){
-         List<ContainerDto> list6 = dataMapper.selectAll6();  // sql문이 실행
-         logger.info("datas6 : " + list6.size() + "개");
-         return list6;
-      }
-      */
-      
-      /*
-      // ajax
-       public void saveReviewAjax(ReviewDto reviewDto) {
-           dataMapper.insertReview(reviewDto);
-       }
-       
-       public List<ReviewDto> getAllReviews() {
-           List<ReviewDto> reviews = dataMapper.selectAllReviews();
-           logger.info("reviews : " + reviews.size() + "개");
-           return reviews;
-       }
-       */
+
 }

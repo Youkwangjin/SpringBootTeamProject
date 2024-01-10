@@ -15,7 +15,7 @@ import pack.model.user.UserDto;
 
 @Mapper
 public interface DataMapperInterface {
-   // User sql문들-------------------------------------------------서호
+   // User sql문들
    @Select("select * from user")
    List<UserDto> selectAll();
 
@@ -32,7 +32,7 @@ public interface DataMapperInterface {
    @Select("SELECT COUNT(*) FROM user")  // 사용자 테이블에 대한 SQL 쿼리
    int usercount();
    
-   // owner sql문들-------------------------------------------------
+   // owner sql문들
    @Select("select * from owner")
    List<OwnerDto> selectAll2();
    
@@ -45,7 +45,7 @@ public interface DataMapperInterface {
    @Delete("delete from owner where business_num=#{business_num}")
    int ownerdeleteData(String business_num);
    
-   // Container sql문들-------------------------------------------------
+   // Container sql문들
    @Select("select * from container")
    List<ContainerDto> selectAll3();
    
@@ -63,7 +63,7 @@ public interface DataMapperInterface {
    int delete(String cont_no);
    
    
-   // 마이페이지에서 자신이 사용한 리뷰/평가 누르면 창고의 번호, 주소, 사진 출력-------------------
+   // 마이페이지에서 자신이 사용한 리뷰/평가 누르면 창고의 번호, 주소, 사진 출력
    @Select("select * from container")
    List<ContainerDto> selectAll4();
 }

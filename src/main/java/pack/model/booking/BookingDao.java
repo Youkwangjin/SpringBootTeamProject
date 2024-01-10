@@ -12,15 +12,10 @@ import pack.model.admin.AdminBean;
 
 @Repository
 public class BookingDao {
+
 	@Autowired
 	private BookingMapperInter bookingMapperInter;
 
-	// 예약자료 읽기
-	//public ArrayList<bookingDTO> bookingAll() {
-		//ArrayList<bookingDTO> blist = (ArrayList<bookingDTO>) bookingMapperInter.bookingList("user_id");
-		//return blist;
-	//}
-	
 	@Transactional
 	public boolean bookingInsert(bookingDTO bookingdto) {
 		boolean b = false;
@@ -35,9 +30,9 @@ public class BookingDao {
 		}
 		return b;
 	}
-	// 10/3 민혁 창고예약에 따른 상태변경 
+
 	
-	@Transactional // 성공하면 커밋 실패하면 롤백
+	@Transactional
 	public boolean contStatusUpdate(AdminBean adminbean) {
 		boolean a = false;
 		System.out.println("상태 업데이트 메서드 시작");
@@ -54,8 +49,7 @@ public class BookingDao {
 		return a;
 	}
 	
-	
-	
+
 	public ArrayList<bookingDTO> bookingListAll(String user_id){
 		ArrayList<bookingDTO> blist = (ArrayList<bookingDTO>)bookingMapperInter.bookingList(user_id);
 		System.out.println("user_id : " + user_id);

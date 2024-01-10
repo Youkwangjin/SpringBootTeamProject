@@ -27,40 +27,22 @@
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 	<link href="../assets/css/main.css" rel="stylesheet">
 	<link rel="stylesheet" href="../css/booking.css">
-	
-	
+
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
-    // URL에서 쿼리 문자열을 가져옵니다.
-    var queryString = window.location.search;
-
-    // URL에서 cont_no 매개변수의 값을 가져옵니다.
-    var urlParams = new URLSearchParams(queryString);
-    var contNo = urlParams.get('con_no');
-
-    // 가져온 값을 input 요소에 설정합니다.
-    document.getElementById('cont_no').value = contNo;
-});
+    		var queryString = window.location.search;
+    		var urlParams = new URLSearchParams(queryString);
+    		var contNo = urlParams.get('con_no');
+    		document.getElementById('cont_no').value = contNo;
+		});
 	</script>
 </head>
-
 <body>
-
-	<!-- ======= Header ======= -->
- 	<div th:replace="~{fragments/header_user :: header}"></div>
-
+<div th:replace="~{fragments/header_user :: header}"></div>
   <main id="container">
-
-	<!--<main id="container">-->
-
-
 		<div class="booking-box">
-			<!--<h2>예약하기</h2>-->
-			
 			<div>
 				<form action="../booking/bookingDo" method="post" class="cf" name="select">
-					<!-- 나중에 type:hidden으로 바꾸기 -->
-					
 					<input type="hidden" name="user_id" id="userId" th:value="${session.userSession.user_id}"/>
 					
 					<div id="date-group">

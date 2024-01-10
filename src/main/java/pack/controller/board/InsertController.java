@@ -24,18 +24,18 @@ public class InsertController {
 	@PostMapping("insert")
 	public String insertProcess(BoardBean bean) {
 		bean.setBdate();
-		// Spring 에서 client ip 가져오는 법
+
 		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		String ip = req.getHeader("X-FORWARDED-FOR");
 		if (ip == null) ip = req.getRemoteAddr();
-		// ------------------------------------------------
-		int newNum = daoImpl.currentNum() + 1;  // 새글 번호
+
+		int newNum = daoImpl.currentNum() + 1;
 		bean.setNum(newNum);
 		bean.setGnum(newNum);
 		
 		boolean b = daoImpl.insert(bean);
 		if(b) {
-			return "redirect:listAdmin?page=1";  // 추가 후 목록 보기
+			return "redirect:listAdmin?page=1";
 		}else {
 			return "redirect:error";
 		}

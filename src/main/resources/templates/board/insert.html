@@ -24,15 +24,12 @@
 
     function checkData() {
 		const desiredAdminId = "aa";
-
 		if (frm.admin_id.value === "") {
 			alert("관리자 ID를 입력하시오");
 			frm.admin_id.focus();
 		} else if (frm.admin_id.value !== desiredAdminId) {
-			// 관리자 아이디와 다를 경우 알림 표시
 			alert("관리자 아이디가 올바르지 않습니다.");
 		} else {
-			// 모든 조건을 통과하면 폼 제출
 			frm.submit();
 		}
 	}  

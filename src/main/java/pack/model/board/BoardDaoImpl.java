@@ -35,17 +35,14 @@ public class BoardDaoImpl {
 	}
 
 	public int currentNum() {
-		// 추가 시 num 자동증가를 위해 현재 레코드 중 가장 큰 번호 얻기
 		return dataInterface.currentNum();
 	}
 
 	public void updateReadcnt(String num) {
-		// 상세보기 전에 조회 수 증가
 		dataInterface.updateReadcnt(num);
 	}
 
-	public BoardDto detail(String num) { // 상세 보기
-		// 글 내용 보기, 글 수정, 댓글 용
+	public BoardDto detail(String num) {
 		BoardDto dto = dataInterface.selectOne(num);
 		return dto;
 	}
