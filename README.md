@@ -1,11 +1,58 @@
-# 주요 기능
+# JAVA 기반 웹 개발 프로젝트 창고 중개 플랫폼 개발
+- 참여자 : 최민혁, 조혁진, 이재민, 한지원, 유광진, 이서호, 김효림 (7명)
+- 총 개발기간 : 2023/09/01 ~ 2023/10/05 4주)
 
-1. 로그인
-  - 사용자, 공급자, 관리자 로그인 구현
-2. 회원가입
-  - 사용자의 데이터를 안전하게 저장하기 위해, 아이디 중복 여부를 확인하는 기능과 비밀번호, 이름, 이메일의 형식을 정규식을 이용하여 검증하는 기능을 구현
-3. 세션유지
-  - 사용자의 정보를 DB에 담아서 세션 유지 페이지는 리다이렉션으로 구현
-4. 회원수정, 삭제
-  - 사용자 세션 값을 모델에 담아 Thymeleaf 뷰 템플릿에서 사용 가능하도록 구현
 
+# 목차
+- [시연 동영상](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+- [프로젝트 개요](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+- [프로젝트 문서](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+- [웹 개발 과정](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+- [미래 개선 방안](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+- [개발환경](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+- [참조 사이트](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+
+# 시연 동영상
+[시연 동영상](https://github.com/Hyorim-Kim/SpringBootTeamProject)
+
+# 프로젝트 개요
+
+**1. 프로젝트명 : Acontainer**
+
+**2. 주제 : 창고 중개 플랫폼 개발**
+
+**3. 배경**
+- 공급과잉으로 인한 수요 불균형 및 창고 공실률 증가로 인한 문제를 해결하는 목적으로 창고 중개 플랫폼을 개발하였습니다.
+
+**4. 목적**
+-  ﻿본 프로젝트는 물류 시스템의 효율성을 향상시키기 위해 창고의 위치 정보를 관리하고 창고 주인이 자신의 창고를 해당 지역에 등록함으로써 창고 공실률을 감소시키는 것을 목적으로 합니다
+
+# 프로젝트 문서
+
+# 웹 개발 과정
+
+# ERD
+![image](https://github.com/Hyorim-Kim/SpringBootTeamProject/assets/139676579/1b75d937-81c6-4864-826d-6f5e7ea41bc2)
+
+
+# 미래 개선 방안
+
+# 개발환경 
+📌 **Front-end**
+
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> 
+
+📌 **Back-end**
+
+<img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img src="https://img.shields.io/badge/java-1572B6?style=for-the-badge&logo=java&logoColor=white"> 
+
+📌 **DataBase**
+
+<img src="https://img.shields.io/badge/mariadb-003545?style=for-the-badge&logo=mariadb&logoColor=white"> <img src="https://img.shields.io/badge/MyBatis-2E5E82?style=for-the-badge&logo=MyBatis&logoColor=white">
+
+📌 **Framework**
+
+<img src="https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+
+# 참조 사이트
