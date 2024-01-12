@@ -25,6 +25,8 @@
 -  ﻿본 프로젝트는 물류 시스템의 효율성을 향상시키기 위해 창고의 위치 정보를 관리하고 창고 주인이 자신의 창고를 해당 지역에 등록함으로써 창고 공실률을 감소시키는 것을 목적으로 합니다
 
 ## ❄️ Project Architecture
+![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/6d405beb-955b-4345-bd57-5d02a613bcb1)
+
 
 ## ✅ 웹 개발 과정
 
