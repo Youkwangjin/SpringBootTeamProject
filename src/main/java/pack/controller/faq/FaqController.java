@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pack.model.faq.FaqDao;
-import pack.model.faq.FaqDto;
+import pack.dao.fqa.FaqDAO;
+import pack.dto.faq.FaqDTO;
 
 @Controller
 public class FaqController {
 
    @Autowired 
-   public FaqDao faqDao;
+   public FaqDAO faqDao;
    
    private int tot;
    private int plist = 10;
    
-   public ArrayList<FaqDto> getListData(ArrayList<FaqDto> list, int page){
-      ArrayList<FaqDto> result = new ArrayList<FaqDto>();
+   public ArrayList<FaqDTO> getListData(ArrayList<FaqDTO> list, int page){
+      ArrayList<FaqDTO> result = new ArrayList<FaqDTO>();
       
       int start = (page - 1) * plist;
       int end = Math.min(start + plist, list.size());
@@ -40,8 +40,8 @@ public class FaqController {
       return pagesu; 
    }
    
-   public int getSearchPageSu(FaqBean bean) {
-      ArrayList<FaqDto> searchtot = (ArrayList<FaqDto>)faqDao.searchFaq(bean);
+   public int getSearchPageSu(FaqDTO faqDTO) {
+      ArrayList<FaqDTO> searchtot = (ArrayList<FaqDTO>)faqDao.searchFaq(faqDTO);
       tot = searchtot.size();
       int pagesu = tot / plist;
       if(tot % plist > 0) pagesu += 1;
@@ -55,18 +55,18 @@ public class FaqController {
                         Model model) {
        int spage = searchpage;
        if (searchpage <= 0) spage = 1;
-       FaqBean bean = new FaqBean();
-       bean.setSearchName(searchName);
-       bean.setSearchValue(searchValue);
+       FaqDTO faqDTO = new FaqDTO();
+       faqDTO.setSearchName(searchName);
+       faqDTO.setSearchValue(searchValue);
 
        
-       ArrayList<FaqDto> slist = (ArrayList<FaqDto>) faqDao.searchFaq(bean);
-       ArrayList<FaqDto> sresult = getListData(slist, spage); 
+       ArrayList<FaqDTO> slist = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
+       ArrayList<FaqDTO> sresult = getListData(slist, spage);
 
        model.addAttribute("searchName", searchName);
        model.addAttribute("searchValue", searchValue);
        model.addAttribute("faq", sresult);
-       model.addAttribute("pagesu", getSearchPageSu(bean));
+       model.addAttribute("pagesu", getSearchPageSu(faqDTO));
        model.addAttribute("page", spage);
        
       return "../templates/faq/faqusersearch";
@@ -79,17 +79,17 @@ public class FaqController {
                             Model model) {
        int spage = searchpage;
        if (searchpage <= 0) spage = 1;
-       FaqBean bean = new FaqBean();
-       bean.setSearchName(searchName);
-       bean.setSearchValue(searchValue);
+       FaqDTO faqDTO = new FaqDTO();
+       faqDTO.setSearchName(searchName);
+       faqDTO.setSearchValue(searchValue);
        
-       ArrayList<FaqDto> slist = (ArrayList<FaqDto>) faqDao.searchFaq(bean);
-       ArrayList<FaqDto> sresult = getListData(slist, spage);
+       ArrayList<FaqDTO> slist = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
+       ArrayList<FaqDTO> sresult = getListData(slist, spage);
        
        model.addAttribute("searchName", searchName);
        model.addAttribute("searchValue", searchValue);
        model.addAttribute("faq", sresult);
-       model.addAttribute("pagesu", getSearchPageSu(bean));
+       model.addAttribute("pagesu", getSearchPageSu(faqDTO));
        model.addAttribute("page", spage);
        
        return "../templates/faq/faqownersearch";
@@ -103,17 +103,17 @@ public class FaqController {
       
       int spage = searchpage;
        if (searchpage <= 0) spage = 1;
-       FaqBean bean = new FaqBean();
-       bean.setSearchName(searchName);
-       bean.setSearchValue(searchValue);
+       FaqDTO faqDTO = new FaqDTO();
+       faqDTO.setSearchName(searchName);
+       faqDTO.setSearchValue(searchValue);
        
-       ArrayList<FaqDto> slist = (ArrayList<FaqDto>) faqDao.searchFaq(bean);
-       ArrayList<FaqDto> sresult = getListData(slist, spage);
+       ArrayList<FaqDTO> slist = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
+       ArrayList<FaqDTO> sresult = getListData(slist, spage);
        
        model.addAttribute("searchName", searchName);
        model.addAttribute("searchValue", searchValue);
        model.addAttribute("faqadmin", sresult);
-       model.addAttribute("pagesu", getSearchPageSu(bean));
+       model.addAttribute("pagesu", getSearchPageSu(faqDTO));
        model.addAttribute("page", spage);
       return "../templates/faq/faqadminsearch";
    }
@@ -123,8 +123,8 @@ public class FaqController {
       int spage = page;
       if (page <= 0) spage = 1;
       
-      ArrayList<FaqDto> list = (ArrayList<FaqDto>)faqDao.listFaq();
-      ArrayList<FaqDto> result = getListData(list, spage);
+      ArrayList<FaqDTO> list = (ArrayList<FaqDTO>)faqDao.listFaq();
+      ArrayList<FaqDTO> result = getListData(list, spage);
       
       model.addAttribute("faq", result);
       model.addAttribute("pagesu", getPageSu());
@@ -138,8 +138,8 @@ public class FaqController {
       int spage = page;
       if (page <= 0) spage = 1;
       
-      ArrayList<FaqDto> list = (ArrayList<FaqDto>)faqDao.listFaq();
-      ArrayList<FaqDto> result = getListData(list, spage);
+      ArrayList<FaqDTO> list = (ArrayList<FaqDTO>)faqDao.listFaq();
+      ArrayList<FaqDTO> result = getListData(list, spage);
       
       model.addAttribute("faq", result);
       model.addAttribute("pagesu", getPageSu());
@@ -153,8 +153,8 @@ public class FaqController {
       int spage = page;
       if (page <= 0) spage = 1;
       
-      ArrayList<FaqDto> list = (ArrayList<FaqDto>)faqDao.listFaq();
-      ArrayList<FaqDto> result = getListData(list, spage);
+      ArrayList<FaqDTO> list = (ArrayList<FaqDTO>)faqDao.listFaq();
+      ArrayList<FaqDTO> result = getListData(list, spage);
       
       model.addAttribute("faq", result);
       model.addAttribute("pagesu", getPageSu());
@@ -168,8 +168,8 @@ public class FaqController {
       int spage = page;
       if (page <= 0) spage = 1;
       
-      ArrayList<FaqDto> list = (ArrayList<FaqDto>)faqDao.listFaq();
-      ArrayList<FaqDto> result = getListData(list, spage);
+      ArrayList<FaqDTO> list = (ArrayList<FaqDTO>)faqDao.listFaq();
+      ArrayList<FaqDTO> result = getListData(list, spage);
       
       model.addAttribute("faqadmin", result);
       model.addAttribute("pagesu", getPageSu());
@@ -184,8 +184,8 @@ public class FaqController {
    }
    
    @PostMapping("faqinsert")
-   public String faqinsertSubmit(FaqBean bean) {
-      boolean b = faqDao.insertFaq(bean);
+   public String faqinsertSubmit(FaqDTO faqDTO) {
+      boolean b = faqDao.insertFaq(faqDTO);
       
       if(b) {
          return "redirect:/faqadmin?page=1";
@@ -195,8 +195,8 @@ public class FaqController {
    }
    
    @PostMapping("faqupdate")
-   public String faqupdate(FaqBean bean) {
-      boolean b = faqDao.updateFaq(bean);
+   public String faqupdate(FaqDTO faqDTO) {
+      boolean b = faqDao.updateFaq(faqDTO);
       
       if(b) {
          return "redirect:/faqadmin?page=1";
@@ -217,7 +217,7 @@ public class FaqController {
    
    @GetMapping("faqdetail")
    public String faqdetail(@RequestParam("faq_no")int faq_no, Model model) {
-      FaqDto detail = faqDao.detailFaq(faq_no);
+      FaqDTO detail = faqDao.detailFaq(faq_no);
       model.addAttribute("detail", detail);
       return "../templates/faq/faqdetail";
    }

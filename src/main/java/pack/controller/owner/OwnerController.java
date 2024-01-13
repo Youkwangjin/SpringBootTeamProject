@@ -2,125 +2,94 @@ package pack.controller.owner;
 
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
-import pack.model.owner.OwnerDao;
-import pack.model.owner.OwnerDto;
-
+import pack.dao.owner.OwnerDAO;
+import pack.dto.owner.OwnerDTO;
+import pack.service.owner.OwnerService;
 
 
 @Controller
+@AllArgsConstructor
 public class OwnerController {
-	
-	@Autowired
-	private OwnerDao ownerDao;
+
+	private final OwnerDAO ownerDao;
+	private final OwnerService ownerService;
 
 	@GetMapping("ownerJoinGo")
 	public String ownerChoice(HttpSession session) {
 	    if (session.getAttribute("ownerSession") != null) {    	
-	        return "redirect:/ownersessionkeep";	   
+	        return "redirect:/ownerSessionKeep";
 	    }
-		return "owner/ownerjoin";
+		return "owner/owner-join";
 	}
 
-	@GetMapping("userlogingo")
-	public String userLoginGo(HttpSession session) {
-	    if (session.getAttribute("userSession") != null) {    	
-	        return "redirect:/usersessionkeep";	   
-	    }
-		return "user-login";
+	@GetMapping("/ownerLoginGo")
+	public String ownerLoginGo(HttpSession session) {
+		if (session.getAttribute("ownerSession") != null) {
+			return "redirect:/ownerSessionKeep";
+		}
+		return "owner/owner-login";
+	}
+
+	@GetMapping("/ownerUpdate")
+	public String ownerUpdatePage (Model model, HttpSession session) {
+		OwnerDTO owner = (OwnerDTO) session.getAttribute("ownerSession");
+		model.addAttribute("ownerSession", owner);
+
+		return "owner/owner-update";
+	}
+
+	@GetMapping("/ownerDelete")
+	public String ownerDeletePage(Model model, HttpSession session) {
+		OwnerDTO owner = (OwnerDTO) session.getAttribute("ownerSession");
+		model.addAttribute("ownerSession", owner);
+		return "owner/owner-delete";
+	}
+
+	@GetMapping("/ownerLogoutGo")
+	public String ownerLogoutProcess(HttpSession session) {
+		session.removeAttribute("ownerSession");
+		return "redirect:/";
+	}
+
+	@GetMapping("/ownerSessionKeep")
+	public String ownerSessionKeep(HttpSession session) {
+		OwnerDTO ownerSession = (OwnerDTO) session.getAttribute("ownerSession");
+		if (ownerSession != null) {
+			return "owner/owner-main";
+		} else {
+			return "/index/index";
+		}
 	}
 
 	@PostMapping("ownerJoinClick")
-	public String ownerloginOK(OwnerDto ownerDto) {
-		boolean b = ownerDao.ownerInsertData(ownerDto);
-		if(b) {
-			return "../templates/owner/ownerlogin";  
-		} else {
-			return "../templates/owner/ownerjoin";  
-		}
-		
+	public String ownerLoginOK(OwnerDTO ownerDto) {
+		return ownerService.registerOwner(ownerDto);
 	}
 
-    @PostMapping("ownerLogSuccess")
-    public String processLoginForm(@RequestParam("business_num") String business_num,
-            					   @RequestParam("owner_pwd") String owner_pwd,
-                                   Model model, HttpSession session){
-
-    	OwnerDto owner = ownerDao.ownerLoginProcess(business_num, owner_pwd);
-
-        if (owner != null) {
-            session.setMaxInactiveInterval(1800);
-        	session.setAttribute("ownerSession", owner);
-        	session.setAttribute("business_num", owner.getBusiness_num());
-        	session.setAttribute("owner_name", owner.getOwner_name());
-            return "owner/ownermain";
-        } else {
-            // 로그인 실패
-            return "owner/ownerlogin"; 
-        }
-    }
-
-    @GetMapping("/ownerupdate")
-    public String ownerUpdatePage (Model model, HttpSession session) {
-    	OwnerDto owner = (OwnerDto) session.getAttribute("ownerSession");
-    	model.addAttribute("ownerSession", owner);
-    	
-    	return "owner/ownerupdate";
-    }
-
-    @PostMapping("ownerInfoUpdate")
-    public String ownerInfoupdate(OwnerDto ownerDto, Model model, HttpSession session) {
-    	boolean b = ownerDao.ownerUpdate(ownerDto);
-		if(b) {
-			OwnerDto owner = (OwnerDto) session.getAttribute("ownerSession");
-			model.addAttribute("ownerSession", owner);
-			return "owner/ownerlogin";  
-		} else {
-			return "owner/ownerupdate";  
-		}
-    }
-
-    @GetMapping("/ownerdelete")
-    public String ownerDeletePage(Model model, HttpSession session) {
-		OwnerDto owner = (OwnerDto) session.getAttribute("ownerSession");
-		model.addAttribute("ownerSession", owner);
-		return "owner/ownerdelete";
-    }
-
-    @PostMapping("/ownerInfoDelete")
-    public String ownerInfoDelete(OwnerDto ownerDto, Model model) {
-        try {
-            boolean b = ownerDao.ownerDelete(ownerDto);
-            if (b) {
-                return "owner/ownerlogin";
-            } else {
-                return "/";
-            }
-        } catch (Exception e) {
-            return "owner/ownererror";
-        }
-    }
-
-
-	@GetMapping("/ownerlogoutgo")
-	public String ownerLogoutProcess(HttpSession session) {
-	    session.removeAttribute("ownerSession");
-	    return "redirect:/";
+	@PostMapping("ownerLogSuccess")
+	public String processLoginForm(@RequestParam("business_num") String business_num,
+								   @RequestParam("owner_pwd") String owner_pwd,
+								   HttpSession session) {
+		return ownerService.processLogin(business_num, owner_pwd, session);
 	}
 
-	@GetMapping("/ownersessionkeep")
-	public String ownerSessionKeep(HttpSession session) {
-	    OwnerDto ownerSession = (OwnerDto) session.getAttribute("ownerSession");
-	    if (ownerSession != null) {
-	        return "owner/ownermain"; 
-	    } else {
-	    	return "../templates/index";
-	    }
-	}      
+
+
+	@PostMapping("ownerInfoUpdate")
+	public String ownerInfoUpdate(OwnerDTO ownerDto, HttpSession session) {
+		return ownerService.updateOwnerInfo(ownerDto, session);
+	}
+
+	@PostMapping("/ownerInfoDelete")
+	public String ownerInfoDelete(OwnerDTO ownerDto) {
+		return ownerService.deleteOwnerInfo(ownerDto);
+	}
+
 }

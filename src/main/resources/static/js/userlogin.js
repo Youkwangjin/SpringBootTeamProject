@@ -1,18 +1,19 @@
-let id = $('#id');
-let pwd = $('#pwd');
+let userId = $('#id');
+let userPwd = $('#pwd');
 let btn = $('#btn');
 
 $(btn).on('click', function(){
-    if($(id).val() === "" ){
-        $(id).next('label').addClass('warning');
+    if($(userId).val() === "" ){
+        $(userId).next('label').addClass('warning');
         setTimeout(function(){
             $('label').removeClass('warning');
         },1500);
     }
-    else if($(pwd).val () === ""){
-        $(pwd).next('label').addClass('warning');
+    else if($(userPwd).val () === ""){
+        $(userPwd).next('label').addClass('warning');
         setTimeout(function(){
             $('label').removeClass('warning');
         },1500);
     }
-});
+})
+

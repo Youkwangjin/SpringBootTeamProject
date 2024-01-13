@@ -5,13 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pack.model.contact.ContactDao;
+import pack.dao.contact.ContactDAO;
 
 @Controller
 public class ContactDeleteController {  // contact에서 질문 삭제
 	
 	@Autowired
-	ContactDao contactDao;
+    ContactDAO contactDao;
 	
 	@GetMapping("contactdelete")
 	public String delete(@RequestParam("contact_no")String contact_no) {

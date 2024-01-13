@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import pack.model.board.BoardDaoImpl;
+import pack.dao.board.BoardDAO;
 
 
 @Controller
 @RequestMapping("/board")
 public class DetailControllerBoard {
 	@Autowired
-	private BoardDaoImpl daoImpl;
+	private BoardDAO daoImpl;
 	
 	@GetMapping("detail")
 	public String detailProcess(

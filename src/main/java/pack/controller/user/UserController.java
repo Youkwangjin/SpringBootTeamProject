@@ -1,6 +1,6 @@
 package pack.controller.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,145 +8,115 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
-import pack.model.user.UserDao;
-import pack.model.user.UserDto;
+import pack.dao.user.UserDAO;
+import pack.dto.user.UserDTO;
+import pack.service.user.UserService;
 
 @Controller
+@AllArgsConstructor
 public class UserController {
-	
 
-	@Autowired
-	private UserDao userDao;
+	private final UserDAO userDao;
+
+	private final UserService userService;
 
 	@GetMapping("/firstLogin")
 	public String LoginGo(HttpSession session) {
 	    if (session.getAttribute("userSession") != null) {    	
-	        return "redirect:/usersessionkeep";	   
+	        return "redirect:/userSessionKeep";
 	    }
-	    return "user/userlogin";
+	    return "user/user-login";
 	}
 
 	@GetMapping("/userJoinGo")
 	public String userJoinGo(HttpSession session) {
 	    if (session.getAttribute("userSession") != null) {    	
-	        return "redirect:/usersessionkeep";	   
+	        return "redirect:/userSessionKeep";
 	    }
-		return "user/userjoin";
+		return "user/user-join";
 	}
 
-	@GetMapping("/ownerlogingo")
-	public String ownerLoginGo(HttpSession session) {
-	    if (session.getAttribute("ownerSession") != null) {    	
-	        return "redirect:/ownersessionkeep";	   
-	    }
-		return "../templates/owner/ownerlogin";
+	@GetMapping("userLoginGo")
+	public String userLoginGo(HttpSession session) {
+		if (session.getAttribute("userSession") != null) {
+			return "redirect:/usersessionkeep";
+		}
+		return "user/user-login";
+	}
+
+	@GetMapping("/userUpdate")
+	public String userUpdatePage(Model model, HttpSession session) {
+		UserDTO user = (UserDTO) session.getAttribute("userSession");
+		model.addAttribute("userSession", user);
+		return "user/user-update";
+	}
+
+	@GetMapping("/userDelete")
+	public String userDeletePage(Model model, HttpSession session) {
+		UserDTO user = (UserDTO) session.getAttribute("userSession");
+		model.addAttribute("userSession", user);
+		return "user/user-delete";
+	}
+
+	@GetMapping("/userSessionKeep")
+	public String userSessionKeep(HttpSession session) {
+		UserDTO userSession = (UserDTO) session.getAttribute("userSession");
+
+		if (userSession != null) {
+			return "user/user-mypage";
+		} else {
+			return "/index/index";
+		}
+	}
+
+	@GetMapping("/userLogoutGo")
+	public String userLogoutProcess(HttpSession session) {
+
+		session.removeAttribute("userSession");
+		return "redirect:/";
 	}
 
 	@GetMapping("/userInfoFind")
 	public String userInfoFinding() {
-		return "useridfind";
+		return "user/user-idfind";
 	}
+
 
 	@PostMapping("userJoinClick")
-	public String userLoginOK(UserDto userDto) {
-		boolean b = userDao.userInsertData(userDto);		
-		if(b) {
-			return "user/userlogin";
-		} else {
-			return "user/userjoin";
-		}	
+	public String userLoginOK(UserDTO userDto) {
+		return userService.registerUser(userDto);
 	}
 
-    @PostMapping("/userLogSuccess")
-    public String processLoginForm(@RequestParam("user_id") String user_id,
-            					   @RequestParam("user_pwd") String user_pwd,
-            					   HttpSession session) {
-
-        UserDto user = userDao.userLoginProcess(user_id, user_pwd);
-        
-        if (user != null) {
-        	session.setAttribute("userSession", user);
-        	session.setAttribute("user_id", user.getUser_id()); 
-            System.out.println("사용자 ID : " + user.getUser_id() + " " + "사용자 pwd : " + user.getUser_pwd());
-        	return "redirect:/usersessionkeep";
-
-        }
-		else {
-			return "user/userlogin";
-		}
-    }
-
-	@GetMapping("/userupdate")
-	public String userUpdatePage(Model model, HttpSession session) {
-		UserDto user = (UserDto) session.getAttribute("userSession");
-		model.addAttribute("userSession", user);
-		return "user/userupdate";
+	@PostMapping("/userLogSuccess")
+	public String processLoginForm(@RequestParam("user_id") String userId,
+								   @RequestParam("user_pwd") String userPwd,
+								   HttpSession session) {
+		return userService.processLogin(userId, userPwd, session);
 	}
+
 
 	@PostMapping("/userInfoUpdate")
-	public String userInfoupdate(UserDto userDto, Model model) {
-		boolean b = userDao.userDataUpdate(userDto);
-		if(b) {
-			return "user/userlogin";
-		} else {
-			return "user/usermypage";  
-		}
+	public String userInfoUpdate(UserDTO userDto) {
+		return userService.userInfoUpdate(userDto);
 	}
 
-	@GetMapping("/userdelete")
-	public String userDeletePage(Model model, HttpSession session) {
-		UserDto user = (UserDto) session.getAttribute("userSession");
-		model.addAttribute("userSession", user);
-		return "user/userdelete";
-	}
 
 	@PostMapping("/userInfoDelete")
-	public String userInfoDelete(UserDto userDto, Model model, HttpSession session) {
-		boolean b = userDao.userDataDelete(userDto);
-		if(b) {
-			session.removeAttribute("userSession");
-			return "user/userlogin";
-		} else {
-			return "user/userdelete";
-		}
-	}
-
-	@GetMapping("/userlogoutgo")
-	public String userLogoutProcess(HttpSession session) {
-
-	    session.removeAttribute("userSession"); 
-	    return "redirect:/";
+	public String userInfoDelete(UserDTO userDto, HttpSession session) {
+		return userService.userInfoDelete(userDto, session);
 	}
 
 	@ResponseBody
 	@PostMapping("/userIdCheck")
 	public int IdCheck(@RequestParam("user_id") String user_id) {
-		int result = userDao.userIdCheck(user_id);
-		return result;
+        return userDao.userIdCheck(user_id);
 	}
 
 	@ResponseBody
 	@PostMapping("/userIdInfoFind")
-	public String userIdFindProcess(@RequestParam("user_name") String user_name, 
-	                                @RequestParam("user_email") String user_email, 
-	                                @RequestParam("user_jumin") String user_jumin) {
-	    UserDto user = userDao.userIdFind(user_name, user_email, user_jumin);
-
-	    if (user != null) {
-	        return user.getUser_id();
-	    } else {
-	        return "not_found";
-	    }
-	}
-
-	@GetMapping("/usersessionkeep")
-	public String userSessionKeep(HttpSession session) {
-	    UserDto userSession = (UserDto) session.getAttribute("userSession");
-
-	    if (userSession != null) {
-	        return "user/usermypage";
-	    } else {
-	        return "../templates/index";
-	    }
+	public String userIdFindProcess(@RequestParam("user_name") String userName,
+									@RequestParam("user_email") String userEmail,
+									@RequestParam("user_jumin") String userJumin) {
+		return userService.findUserId(userName, userEmail, userJumin);
 	}
 }

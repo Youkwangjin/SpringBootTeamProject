@@ -1,4 +1,4 @@
-// ***** 회원 가입일 때 각 필드의 유효성 검사 *****
+
 window.onload = function () {
     let pw1 = document.querySelector('#user_pwd');
     let pw2 = document.querySelector('#user_repwd');

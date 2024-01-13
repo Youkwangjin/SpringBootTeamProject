@@ -6,18 +6,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pack.model.contact.ContactDao;
-import pack.model.contact.ContactDto;
+import pack.dao.contact.ContactDAO;
+import pack.dto.contact.ContactDTO;
 
 @Controller
 public class ContactDetailController {
 
 	@Autowired
-	private ContactDao contactDao;
+	private ContactDAO contactDao;
 	
 	@GetMapping("contactdetail")
 	public String detail(@RequestParam("contact_no")String contact_no, Model model) {
-		ContactDto detail = contactDao.detailContact(contact_no);
+		ContactDTO detail = contactDao.detailContact(contact_no);
 		model.addAttribute("detail", detail);
 		return "../templates/contact/contactdetail";
 	}

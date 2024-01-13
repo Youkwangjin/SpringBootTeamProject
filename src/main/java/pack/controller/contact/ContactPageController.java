@@ -8,20 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pack.model.contact.ContactDao;
-import pack.model.contact.ContactDto;
+import pack.dao.contact.ContactDAO;
+import pack.dto.contact.ContactDTO;
 
 @Controller
 public class ContactPageController {
 
 	@Autowired
-	private ContactDao contactDao;
+	private ContactDAO contactDao;
 	
 	private int tot;
 	private int plist = 10;
 	
-	public ArrayList<ContactDto> getListData(ArrayList<ContactDto> list, int page){
-		ArrayList<ContactDto> result = new ArrayList<ContactDto>();
+	public ArrayList<ContactDTO> getListData(ArrayList<ContactDTO> list, int page){
+		ArrayList<ContactDTO> result = new ArrayList<ContactDTO>();
 		
 		int start = (page - 1) * plist; // 0, 10, 20
 		int end = Math.min(start + plist, list.size());
@@ -45,8 +45,8 @@ public class ContactPageController {
 		int spage = page;
 		if (page <= 0) spage = 1;
 		
-		ArrayList<ContactDto> list = (ArrayList<ContactDto>)contactDao.listContact();
-		ArrayList<ContactDto> result = getListData(list, spage);
+		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
+		ArrayList<ContactDTO> result = getListData(list, spage);
 		
 		model.addAttribute("contactadmin", result);
 		model.addAttribute("pagesu", getPageSu());

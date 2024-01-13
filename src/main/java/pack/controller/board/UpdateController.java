@@ -4,27 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pack.model.board.BoardDaoImpl;
-import pack.model.board.BoardDto;
+import pack.dao.board.BoardDAO;
+import pack.dto.board.BoardDTO;
 
 
 @Controller
 @RequestMapping("/board")
 public class UpdateController {
     @Autowired
-    private BoardDaoImpl daoImpl;
+    private BoardDAO daoImpl;
     
     @GetMapping("update")
     public String edit(@RequestParam("num") String num,
                        @RequestParam("page") String page,
                        Model model) {
         // 수정 대상 자료 읽기
-        BoardDto dto = daoImpl.detail(num);
+        BoardDTO dto = daoImpl.detail(num);
         model.addAttribute("data", dto);
         model.addAttribute("page", page);
         return "board/update";

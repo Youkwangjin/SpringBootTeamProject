@@ -8,13 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import pack.model.contact.ContactDao;
+import pack.dao.contact.ContactDAO;
+import pack.dto.contact.ContactDTO;
 
 @Controller
 public class ContactInsertController {
 
    @Autowired
-   private ContactDao contactDao;
+   private ContactDAO contactDao;
    
    @GetMapping("insertcontactuser")
    public String insertUser() {
@@ -22,15 +23,15 @@ public class ContactInsertController {
    }
    
    @PostMapping("insertcontactuser")
-   public String insertSubmitUser(ContactBean bean, Model model) {
+   public String insertSubmitUser(ContactDTO contactDTO, Model model) {
       
       LocalDateTime currentDateTime = LocalDateTime.now();
       model.addAttribute("contact_date", currentDateTime);
       
-      boolean b = contactDao.insertContact(bean);
+      boolean b = contactDao.insertContact(contactDTO);
          
       if(b) {
-         return "../templates/user/usermypage"; // 추가 후 목록 보기
+         return "user/user-mypage"; // 추가 후 목록 보기
       } else {
          return "error";
       }
@@ -42,15 +43,15 @@ public class ContactInsertController {
    }
    
    @PostMapping("insertcontactowner")
-   public String insertSubmitOwner(ContactBean bean, Model model) {
+   public String insertSubmitOwner(ContactDTO contactDTO, Model model) {
       
       LocalDateTime currentDateTime = LocalDateTime.now();
       model.addAttribute("contact_date", currentDateTime);
       
-      boolean b = contactDao.insertContact(bean);
+      boolean b = contactDao.insertContact(contactDTO);
          
       if(b) {
-         return "../templates/owner/ownermain"; // 추가 후 목록 보기
+         return "owner/owner-main"; // 추가 후 목록 보기
       } else {
          return "error";
       }

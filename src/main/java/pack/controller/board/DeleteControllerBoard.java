@@ -5,13 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pack.model.board.BoardDaoImpl;
+import pack.dao.board.BoardDAO;
 
 @Controller
 @RequestMapping("/board")
 public class DeleteControllerBoard {
 	@Autowired
-	private BoardDaoImpl daoImpl;
+	private BoardDAO daoImpl;
 		
 	@GetMapping("delete")
 	public String del(@RequestParam("num")String num,
