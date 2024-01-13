@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import jakarta.servlet.http.HttpServletRequest;
-import pack.model.board.BoardDaoImpl;
+import pack.dao.board.BoardDAO;
 
 @Controller
 @RequestMapping("/board")
 public class InsertController {
 	@Autowired
-	private BoardDaoImpl daoImpl;
+	private BoardDAO daoImpl;
 	
 	@GetMapping("insert")
 	public String insertform() {

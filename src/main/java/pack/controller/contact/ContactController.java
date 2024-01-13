@@ -9,32 +9,32 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-import pack.model.contact.ContactDao;
-import pack.model.contact.ContactDto;
+import pack.dao.contact.ContactDAO;
+import pack.dto.contact.ContactDTO;
 
 @Controller
 public class ContactController {
 
 	@Autowired
-	private ContactDao contactDao;
+	private ContactDAO contactDao;
 	
 	@RequestMapping("contactadmin")
 	public String adminList(Model model) {
-		ArrayList<ContactDto> list = (ArrayList<ContactDto>)contactDao.listContact();
+		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
 		return "../templates/contact/contactadmin";
 	}
 	
 	@RequestMapping("contactuser")
 	public String mainListUser(Model model) {
-		ArrayList<ContactDto> list = (ArrayList<ContactDto>)contactDao.listContact();
+		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
 		return "../templates/contact/contactuser";
 	}
 	
 	@RequestMapping("contactowner")
 	public String mainListOwner(Model model) {
-		ArrayList<ContactDto> list = (ArrayList<ContactDto>)contactDao.listContact();
+		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
 		return "../templates/contact/contactowner";
 	}

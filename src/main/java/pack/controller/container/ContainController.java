@@ -10,15 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.servlet.http.HttpSession;
-import pack.model.DataDao;
-import pack.model.container.ContainDao;
-import pack.model.container.ContainDtoMap;
+import pack.dao.container.ContainDAO;
+import pack.dto.container.ContainMapDTO;
 // 재민
 @Controller
 public class ContainController {
 	@Autowired
-	private ContainDao containDao;
+	private ContainDAO containDao;
 	
 	@GetMapping("conta")
 	@ResponseBody
@@ -26,7 +24,7 @@ public class ContainController {
 	List<Map<String, String>> list = new ArrayList<>();
 	Map<String, String> data = null;
 	
-	for(ContainDtoMap c:containDao.getcontainAll()) {
+	for(ContainMapDTO c:containDao.getcontainAll()) {
 		data = new HashMap<String, String>();
 		data.put("con_no", c.getCont_no());
 		data.put("con_name", c.getCont_name());

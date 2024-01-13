@@ -14,8 +14,6 @@
 body {
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
-  background: url("../images/ownerloginimg.jpg") no-repeat center;
-  background-size: cover;
 }
 
 .join-form {

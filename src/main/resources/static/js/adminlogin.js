@@ -1,17 +1,17 @@
 // // 아이디와 비밀번호가 공백일 때 적용되는 자바스크립트 (광진)
-let id = $('#id');
-let pwd = $('#pwd');
+let adminId = $('#id');
+let adminPwd = $('#pwd');
 let btn = $('#btn');
 
 $(btn).on('click', function(){
-    if($(id).val() === "" ){
-        $(id).next('label').addClass('warning');
+    if($(adminId).val() === "" ){
+        $(adminId).next('label').addClass('warning');
         setTimeout(function(){
             $('label').removeClass('warning');
         },1500);
     }
-    else if($(pwd).val () === ""){
-        $(pwd).next('label').addClass('warning');
+    else if($(adminPwd).val () === ""){
+        $(adminPwd).next('label').addClass('warning');
         setTimeout(function(){
             $('label').removeClass('warning');
         },1500);

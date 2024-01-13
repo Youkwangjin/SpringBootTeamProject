@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
-import pack.model.booking.bookingDTO;
-import pack.model.container.ContainDao;
-import pack.model.container.ContainerDto;
+import pack.dao.container.ContainDAO;
+import pack.dto.container.ContainerDTO;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,13 +31,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper; // Jackson 라이브러리 추가
+import pack.dto.upload.UploadFileDTO;
 
 @Controller
 @RequestMapping(value = "owner")
 public class ContainerController {
 
 	@Autowired
-	private ContainDao containDao;
+	private ContainDAO containDao;
 
 	@GetMapping("/ownerMain")
 	public String main() {
@@ -58,7 +58,7 @@ public class ContainerController {
 	@GetMapping("/list")
 	public String cont_mgr(Model model, HttpSession session) {
 		String business_num = (String) session.getAttribute("business_num");
-		ArrayList<ContainerDto> clist = (ArrayList<ContainerDto>) containDao.getDataAll(business_num);
+		ArrayList<ContainerDTO> clist = (ArrayList<ContainerDTO>) containDao.getDataAll(business_num);
 		model.addAttribute("datas", clist);
 		return "container/container_list";
 	}
@@ -66,7 +66,7 @@ public class ContainerController {
 	@GetMapping("/reserve")
 	public String cont_reserve(Model model, HttpSession session) {
 		String business_num = (String) session.getAttribute("business_num");
-		ArrayList<ContainerDto> rlist = (ArrayList<ContainerDto>) containDao.getDataReserve(business_num);
+		ArrayList<ContainerDTO> rlist = (ArrayList<ContainerDTO>) containDao.getDataReserve(business_num);
 		model.addAttribute("datas", rlist);
 		return "container/container_reserve";
 	}
@@ -122,13 +122,13 @@ public class ContainerController {
     }
 	
 	@PostMapping("insert")
-	   public String insertSubmit(FormBean bean, UploadFile uploadFile, BindingResult result, HttpSession session) {
+	   public String insertSubmit(ContainerDTO containerDTO, UploadFileDTO uploadFileDTO, BindingResult result, HttpSession session) {
 
 	      String business_num = (String) session.getAttribute("business_num");
 	      InputStream inputStream = null;
 	      OutputStream outputStream = null;
 
-	      MultipartFile file = uploadFile.getFile();
+	      MultipartFile file = uploadFileDTO.getFile();
 	      
 	      String originalFilename = file.getOriginalFilename();
 	      String randomFilename = UUID.randomUUID().toString();;
@@ -171,7 +171,7 @@ public class ContainerController {
 	         while ((read = inputStream.read(bytes)) != -1) {
 	            outputStream.write(bytes, 0, read);
 	         }
-	         bean.setCont_image(randomFilename);
+			  containerDTO.setCont_image(randomFilename);
 	         
 	      } catch (Exception e) {
 	         System.out.println("file submit err : " + e);
@@ -187,13 +187,13 @@ public class ContainerController {
 	         }
 	      }
 
-	      boolean b = containDao.insertContainer(bean);
+	      boolean b = containDao.insertContainer(containerDTO);
 
 
-	      String address = bean.getCont_addr();
+	      String address = containerDTO.getCont_addr();
 	      double[] coordinates = getCoordinatesFromAddress(address);
-	      bean.setCont_we(coordinates[0]);
-	      bean.setCont_kyung(coordinates[1]);
+		containerDTO.setCont_we(coordinates[0]);
+		containerDTO.setCont_kyung(coordinates[1]);
 	      if (b) {
 	         return "redirect:/owner/list";
 	      } else {
@@ -203,7 +203,7 @@ public class ContainerController {
 
 	@GetMapping("/detail")
 	public String conDetail(@RequestParam("cont_no") String cont_no, Model model) {
-		ContainerDto conDto = containDao.conDetail(cont_no);
+		ContainerDTO conDto = containDao.conDetail(cont_no);
 		model.addAttribute("conDto", conDto);
 
 		return "container/container_detail";
@@ -213,14 +213,14 @@ public class ContainerController {
 
 	@GetMapping("/goUpdate")
 	public String cont_update(@RequestParam("cont_no") String cont_no, Model model) {
-		ContainerDto conDto = containDao.conDetail(cont_no);
+		ContainerDTO conDto = containDao.conDetail(cont_no);
 		model.addAttribute("conDto", conDto);
 		return "container/container_update";
 	}
 
 	@PostMapping("update")
-	public String update(FormBean bean) {	
-		boolean b = containDao.update(bean);
+	public String update(ContainerDTO containerDTO) {
+		boolean b = containDao.update(containerDTO);
 		if (b)
 			return "redirect:/owner/list"; // 수정 후 목록보기
 		else

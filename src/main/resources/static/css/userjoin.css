@@ -1,57 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
 .header {
-  z-index: 999;
-  position: fixed;
-  padding: 18px 0;
-  top: 0;
-  left: 0;
-  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  text-shadow: 1px 1px 1px #000;
-}
-
-.header .logo img {
-  background-image: url('../img/logo.png');
-  max-height: 30px;
-  margin-right: 6px;
-  vertical-align: middle;
-}
-
-.header .logo h1 {
-  font-size: 30px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 0;
-  font-family: var(--font-primary);
-}
-
-.header .logo h1 span {
-  color: var(--color-primary);
-}
-
-.header ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-}
-
-.header ul li {
-  margin-right: 20px;
-}
-
-.header ul li:last-child {
-  margin-right: 0;
-}
-
-.header ul li a {
-  font-size: 17px;
-  font-weight: bold;
-  color: #fff;
-  text-decoration: none;
 }
 
 .navbar {
@@ -59,16 +11,11 @@
   margin-right: 60px;
 }
 
-
-
 body {
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
-  background: url("../images/userloginimg.jpg") no-repeat center;
-  background-size: cover;
 }
 
-/* 회원가입 CSS*/
 .join-form {
   width: 550px;
   margin-left: auto;

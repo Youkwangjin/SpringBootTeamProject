@@ -1,6 +1,6 @@
 package pack.controller.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,15 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
-import pack.model.admin.AdminDao;
-import pack.model.admin.AdminDto;
-import pack.model.owner.OwnerDto;
+import pack.dao.admin.AdminDAO;
+import pack.dto.admin.AdminDTO;
 
 @Controller
+@AllArgsConstructor
 public class AdminController {
-	// 광진
-	@Autowired
-	private AdminDao adminDao;
+
+	private final AdminDAO adminDao;
 
 	@GetMapping("adminLoginGo") 
 	public String adminlogingo() {
@@ -28,7 +27,7 @@ public class AdminController {
             					   @RequestParam("admin_pwd") String admin_pwd,
                                    Model model, HttpSession session){
         // 사용자 로그인 처리
-    	AdminDto admin = adminDao.adminloginProcess(admin_id, admin_pwd);
+    	AdminDTO admin = adminDao.adminLoginProcess(admin_id, admin_pwd);
 
         if (admin != null) {
         	session.setAttribute("adminSession", admin);
@@ -49,11 +48,11 @@ public class AdminController {
 
 	@GetMapping("/adminsessionkeep")
 	public String adminSessionKeep(HttpSession session) {
-		AdminDto adminSession = (AdminDto) session.getAttribute("adminSession");
+		AdminDTO adminSession = (AdminDTO) session.getAttribute("adminSession");
 	    if (adminSession != null) {
 	        return "admin/adminloginok"; 
 	    } else {
-	    	return "../templates/index";
+	    	return "/resources/templates/index/index.html";
 	    }
 	}
 }

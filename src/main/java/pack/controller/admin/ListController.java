@@ -7,23 +7,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pack.controller.FormBean;
-import pack.model.DataDao;
-import pack.model.container.ContainerDto;
-import pack.model.owner.OwnerDto;
-import pack.model.user.UserDto;
+import pack.dto.form.FormDTO;
+import pack.dao.data.DataDAO;
+import pack.dto.container.ContainerDTO;
+import pack.dto.owner.OwnerDTO;
+import pack.dto.user.UserDTO;
 
 @Controller
 
 public class ListController {
    @Autowired
-   private DataDao dataDao;
+   private DataDAO dataDao;
    
    private int tot;
    private int plist = 10;
    
-   public ArrayList<UserDto> getuserListData(ArrayList<UserDto> list, int page){
-         ArrayList<UserDto> result = new ArrayList<UserDto>();
+   public ArrayList<UserDTO> getuserListData(ArrayList<UserDTO> list, int page){
+         ArrayList<UserDTO> result = new ArrayList<UserDTO>();
          
          int start = (page - 1) * plist;
          int end = Math.min(start + plist, list.size());
@@ -45,8 +45,8 @@ public class ListController {
       int spage = page;
        if (page <= 0) spage = 1;
        
-      ArrayList<UserDto> slist = (ArrayList<UserDto>)dataDao.getUserAll();
-      ArrayList<UserDto> result = getuserListData(slist, spage);
+      ArrayList<UserDTO> slist = (ArrayList<UserDTO>)dataDao.getUserAll();
+      ArrayList<UserDTO> result = getuserListData(slist, spage);
 
       
       int user_records = dataDao.usercount();
@@ -60,11 +60,11 @@ public class ListController {
    }
    
    @PostMapping("usersearch")  // user에서 검색하기
-   public String usersearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page,FormBean bean, Model model) {  //넘어가니까 Model 사용
+   public String usersearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {  //넘어가니까 Model 사용
       int spage = page;
        if (page <= 0) spage = 1 ;
-      ArrayList<UserDto> userlist = (ArrayList<UserDto>)dataDao.getUserSearch(bean);
-      ArrayList<UserDto> userresult = getuserListData(userlist, spage);
+      ArrayList<UserDTO> userlist = (ArrayList<UserDTO>)dataDao.getUserSearch(bean);
+      ArrayList<UserDTO> userresult = getuserListData(userlist, spage);
       
       model.addAttribute("lists", userresult);
       model.addAttribute("pagesu", getuserPageSu());
@@ -81,8 +81,8 @@ public class ListController {
          return "redirect:error";
    }
 
-   public ArrayList<OwnerDto> getownerListData(ArrayList<OwnerDto> list, int page){
-         ArrayList<OwnerDto> ownresult = new ArrayList<OwnerDto>();
+   public ArrayList<OwnerDTO> getownerListData(ArrayList<OwnerDTO> list, int page){
+         ArrayList<OwnerDTO> ownresult = new ArrayList<OwnerDTO>();
          
          int start = (page - 1) * plist;
          int end = Math.min(start + plist, list.size());
@@ -105,8 +105,8 @@ public class ListController {
       int spage = page;
        if (page <= 0) spage = 1;
       
-      ArrayList<OwnerDto> ownerlist = (ArrayList<OwnerDto>)dataDao.getOwnerAll();
-      ArrayList<OwnerDto> ownerresult = getownerListData(ownerlist, spage);
+      ArrayList<OwnerDTO> ownerlist = (ArrayList<OwnerDTO>)dataDao.getOwnerAll();
+      ArrayList<OwnerDTO> ownerresult = getownerListData(ownerlist, spage);
       
       int owner_records = dataDao.getownerrecords();
       
@@ -118,12 +118,12 @@ public class ListController {
    }
    
    @PostMapping("ownersearch")
-   public String ownersearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page, FormBean bean, Model model) {  //넘어가니까 Model 사용
+   public String ownersearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {  //넘어가니까 Model 사용
       int spage = page;
        if (page <= 0) spage = 1 ;
       
-      ArrayList<OwnerDto> slist2 = (ArrayList<OwnerDto>)dataDao.getOwnerSearch(bean);
-      ArrayList<OwnerDto> result = getownerListData(slist2, spage);
+      ArrayList<OwnerDTO> slist2 = (ArrayList<OwnerDTO>)dataDao.getOwnerSearch(bean);
+      ArrayList<OwnerDTO> result = getownerListData(slist2, spage);
       
       model.addAttribute("lists2", result);
       model.addAttribute("pagesu", getownerPageSu());
@@ -147,8 +147,8 @@ public class ListController {
    }
 
 
-   public ArrayList<ContainerDto> getregisteredListData(ArrayList<ContainerDto> list, int page){
-         ArrayList<ContainerDto> regresult = new ArrayList<ContainerDto>();
+   public ArrayList<ContainerDTO> getregisteredListData(ArrayList<ContainerDTO> list, int page){
+         ArrayList<ContainerDTO> regresult = new ArrayList<ContainerDTO>();
          
          int start = (page - 1) * plist;
          int end = Math.min(start + plist, list.size());
@@ -172,8 +172,8 @@ public class ListController {
       int spage = page;
        if (page <= 0) spage = 1;
        
-      ArrayList<ContainerDto> slist3 = (ArrayList<ContainerDto>)dataDao.getConAll();
-      ArrayList<ContainerDto> result = getregisteredListData(slist3, spage);
+      ArrayList<ContainerDTO> slist3 = (ArrayList<ContainerDTO>)dataDao.getConAll();
+      ArrayList<ContainerDTO> result = getregisteredListData(slist3, spage);
       
       model.addAttribute("lists3", result);
       model.addAttribute("pagesu", getregisteredPageSu());
@@ -182,12 +182,12 @@ public class ListController {
    }
    
    @PostMapping("regsearch")
-   public String regsearch(@RequestParam(name="page", required = false, defaultValue = "1")int page, FormBean bean, Model model) {
+   public String regsearch(@RequestParam(name="page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {
       int spage = page;
       if(page <= 0) spage = 1;
       
-      ArrayList<ContainerDto> slist3 = (ArrayList<ContainerDto>)dataDao.getRegSearch(bean);
-      ArrayList<ContainerDto> result = getregisteredListData(slist3, spage);
+      ArrayList<ContainerDTO> slist3 = (ArrayList<ContainerDTO>)dataDao.getRegSearch(bean);
+      ArrayList<ContainerDTO> result = getregisteredListData(slist3, spage);
       
       model.addAttribute("lists3", result);
       model.addAttribute("pagesu", getregisteredPageSu());
