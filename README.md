@@ -1,3 +1,5 @@
+<img src="https://capsule-render.vercel.app/api?type=waving&height=200&text=Acontainer&fontAlign=50&fontAlignY=40&color=gradient"/>
+
 # 🌈 JAVA 기반 웹 개발 프로젝트 창고 중개 플랫폼 개발
 - 참여자 : 최민혁, 조혁진, 이재민, 한지원, 유광진, 이서호, 김효림 (7명)
 - 총 개발기간 : 2023/09/01 ~ 2023/10/05 4주)
