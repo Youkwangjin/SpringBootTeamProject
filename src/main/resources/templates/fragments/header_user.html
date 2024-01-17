@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-
 <body>
 <div th:if="${session.userSession != null}">
-	<div th:fragment="header_admin">
-		<header> 
-			<div id="header" class="header d-flex align-items-center">
-				<div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-					<a href="/userSessionKeep" class="logo d-flex align-items-center">
-						<h1>Acontainer<span>.</span></h1>
-					</a>
-					<i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-					<i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-					<nav id="navbar" class="navbar">
-						<ul>
-							<li><a href="/userSessionKeep" class="active">Home</a></li>
-							<li><a href="/service">서비스 소개</a></li>
-							<li><a href="/conajax">창고 검색</a></li>
-							<li class="dropdown"><a href="#"><span>마이페이지</span> <i
-										class="bi bi-chevron-down dropdown-indicator"></i></a>
-								<ul>
-									<li><a href="/booking/bookingInfo">결제/예약정보</a></li>
-									<li><a href="/userUpdate">회원수정</a></li>
-									<li><a href="/userDelete">회원탈퇴</a></li>
-									<li><a href="/userLogoutGo">로그아웃</a></li>
-								</ul>
-							</li>
-							  <li class="dropdown"><a href="/board/list?page=1"><span>고객 문의</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-				              <ul>
-				                <li><a href="/board/listUser?page=1">공지사항</a></li>
-				                <li><a href="/contactuser">1:1문의</a></li>
-				                <li><a href="/faquser?page=1">FAQ</a></li>
-				              </ul>
-				            </li>
-						</ul>
-					</nav>
-				</div>
-			</div>
-		</header>
-	</div>
+    <div th:fragment="header_admin">
+        <header>
+            <div id="header" class="header d-flex align-items-center">
+                <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+                    <a href="/userSessionKeep" class="logo d-flex align-items-center">
+                        <h1>Acontainer<span>.</span></h1>
+                    </a>
+                    <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+                    <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+                    <nav id="navbar" class="navbar">
+                        <ul>
+                            <li><a href="/userSessionKeep" class="active">Home</a></li>
+                            <li><a href="/service">서비스 소개</a></li>
+                            <li><a href="/conajax">창고 검색</a></li>
+                            <li class="dropdown"><a href="#"><span>마이페이지</span> <i
+                                    class="bi bi-chevron-down dropdown-indicator"></i></a>
+                                <ul>
+                                    <li><a href="/booking/bookingInfo">결제/예약정보</a></li>
+                                    <li><a href="/userUpdate">회원수정</a></li>
+                                    <li><a href="/userDelete">회원탈퇴</a></li>
+                                    <li><a href="/userLogoutGo">로그아웃</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown"><a href="/board/list?page=1"><span>고객 문의</span> <i
+                                    class="bi bi-chevron-down dropdown-indicator"></i></a>
+                                <ul>
+                                    <li><a href="/board/listUser?page=1">공지사항</a></li>
+                                    <li><a href="/contactuser">1:1문의</a></li>
+                                    <li><a href="/faquser?page=1">FAQ</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+    </div>
 </div>
 </body>
 

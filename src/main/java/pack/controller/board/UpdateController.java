@@ -26,7 +26,7 @@ public class UpdateController {
         BoardDTO dto = daoImpl.detail(num);
         model.addAttribute("data", dto);
         model.addAttribute("page", page);
-        return "board/update";
+        return "board-update";
     }
     
     @PostMapping("update")

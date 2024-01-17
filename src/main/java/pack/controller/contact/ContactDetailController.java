@@ -19,6 +19,6 @@ public class ContactDetailController {
 	public String detail(@RequestParam("contact_no")String contact_no, Model model) {
 		ContactDTO detail = contactDao.detailContact(contact_no);
 		model.addAttribute("detail", detail);
-		return "../templates/contact/contactdetail";
+		return "contact-detail";
 	}
 }

@@ -52,6 +52,6 @@ public class ContactPageController {
 		model.addAttribute("pagesu", getPageSu());
 		model.addAttribute("page", spage);
 		
-		return "../templates/contact/contactadmin";
+		return "contact-admin";
 	}
 }

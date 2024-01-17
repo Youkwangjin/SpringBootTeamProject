@@ -1,0 +1,137 @@
+body {
+	font-family: "Noto Sans KR";
+	margin: 0;
+	padding: 0;
+}
+
+.customer-banner {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	left: 130px;
+	top: 65%;
+	transform: translateY(-50%);
+	background-color: #fff;
+	border: 1px solid #ccc;
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+}
+
+h2 {
+	font-weight: 550;
+	font-size: 25px;
+	margin-bottom: 10px;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	font-size: 15px;
+	padding: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+li:hover,
+li.active {
+	font-weight: bold;
+	color: darkslateblue;
+	background-color: #f2f2f2;
+}
+
+strong {
+	display: block;
+	margin-top: 10px;
+}
+
+.board-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -50px;
+}
+
+.board-container table {
+  width: 70%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.board-container th {
+  padding: 20px;
+  border: none;
+  background-color: transparent;
+}
+
+.board-container td {
+  border: none;
+  padding: 17px;
+  border-bottom: 1px solid lightgray;
+}
+
+.board-container td a {
+  color: #333;
+}
+
+.board-detail {
+  width: 70%;
+  margin: auto;
+  border: none;
+}
+
+.board-detail table {
+  width: 100%;
+  border: none;
+}
+
+.board-detail td {
+  border: none;
+}
+
+.board-detail textarea {
+  width: 98%;
+  border: none;
+}
+
+.board-detail a {
+  border: none;
+}
+
+.info-table {
+  width: 80%;
+  margin: auto;
+  border-collapse: collapse;
+}
+
+.label-cell {
+  width: 15%;
+  text-align: left;
+  font-weight: bold;
+  background-color: #f2f2f2;
+  padding: 10px 10px 10px 20px;
+}
+
+.content-cell {
+  width: 85%;
+  text-align: left;
+  padding: 10px 10px 10px 20px;
+}
+
+.content-cell:last-child {
+  border-bottom: none;
+}
+
+textarea {
+  margin-top: 30px;
+  font-size: large;
+}
+
+a {
+  color: #000;
+  font-size: 16px;
+}

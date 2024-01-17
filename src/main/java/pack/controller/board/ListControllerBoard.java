@@ -69,7 +69,7 @@ public class ListControllerBoard {
 		model.addAttribute("pagesu", getPageSu());
 		model.addAttribute("page", spage);
 		
-		return "board/list";
+		return "board-list";
 	}
 	
 
@@ -90,7 +90,7 @@ public class ListControllerBoard {
 		model.addAttribute("pagesu", getPageSu());
 		model.addAttribute("page", spage);
 		
-		return "board/listAdmin";
+		return "board-list-admin";
 	}
 	
 	@GetMapping("/listUser")
@@ -110,7 +110,7 @@ public class ListControllerBoard {
 		model.addAttribute("pagesu", getPageSu());
 		model.addAttribute("page", spage);
 		
-		return "board/listUser";
+		return "board-list-user";
 	}
 	
 	@GetMapping("/listOwner")
@@ -130,7 +130,7 @@ public class ListControllerBoard {
 		model.addAttribute("pagesu", getPageSu());
 		model.addAttribute("page", spage);
 		
-		return "board/listOwner";
+		return "board-list-owner";
 	}
 
 	@PostMapping("board/search")
@@ -141,6 +141,6 @@ public class ListControllerBoard {
 		model.addAttribute("data", list);
 		model.addAttribute("pagesu", getPageSu());
 		model.addAttribute("page", "1");
-		return "board/list";
+		return "board-list";
 	}
 }

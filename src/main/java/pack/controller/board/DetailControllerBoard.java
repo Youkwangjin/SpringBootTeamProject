@@ -28,7 +28,7 @@ public class DetailControllerBoard {
 		model.addAttribute("data", daoImpl.detail(num));
 		model.addAttribute("page", page);
 		
-		return "board/detail";
+		return "board-detail";
 	}
 	
 	@RequestMapping("/detail")
@@ -37,7 +37,7 @@ public class DetailControllerBoard {
         if (session.getAttribute("admin") != null) {
             return "redirect:board/detailAdmin";
         } else {
-            return "board/detail";
+            return "board-detail";
         }
     }
 	
@@ -52,6 +52,6 @@ public class DetailControllerBoard {
 		model.addAttribute("data", daoImpl.detail(num));
 		model.addAttribute("page", page);
 		
-		return "board/detailAdmin";
+		return "detail-admin";
 	}
 }
