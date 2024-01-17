@@ -78,24 +78,24 @@
 <div th:if="${session.adminSession != null}">
     <div th:replace="~{fragments/header_admin :: header}"></div>
     <h3>** 상세보기 **</h3>
-    <form name="frm" th:object="${containerDto}">
+    <form name="frm" th:object="${containerDTO}">
         <input type="hidden" th:field="*{cont_no}"/>
         <br/>
         <div class="container-box">
-            창고번호 : [[${containerDto.cont_no}]]<br/>
-            주소 : [[${containerDto.cont_addr}]]<br/>
-            위도 : [[${containerDto.cont_we}]]<br/>
-            경도 : [[${containerDto.cont_kyung}]]<br/>
-            면적 : [[${containerDto.cont_size}]]<br/>
-            회사이름 : [[${containerDto.cont_name}]]<br/>
-            소유주 전화번호 : [[${containerDto.owner_phone}]]<br/>
-            창고 사진 : [[${containerDto.cont_image}]]<br/>
-            사업자번호 : [[${containerDto.owner_num}]]<br/>
+            창고번호 : [[${containerDTO.cont_no}]]<br/>
+            주소 : [[${containerDTO.cont_addr}]]<br/>
+            위도 : [[${containerDTO.cont_we}]]<br/>
+            경도 : [[${containerDTO.cont_kyung}]]<br/>
+            면적 : [[${containerDTO.cont_size}]]<br/>
+            회사이름 : [[${containerDTO.cont_name}]]<br/>
+            소유주 전화번호 : [[${containerDTO.owner_phone}]]<br/>
+            창고 사진 : [[${containerDTO.cont_image}]]<br/>
+            사업자번호 : [[${containerDTO.owner_num}]]<br/>
         </div>
         <hr/>
         <div>
             현재 상태 :
-            <span th:switch="${containerDto.cont_status}">
+            <span th:switch="${containerDTO.cont_status}">
                <span th:case='0'>승인대기</span>
                <span th:case='1'>사용가능</span>
                <span th:case='2'>예약중</span>
@@ -107,7 +107,7 @@
         <br/>
         <input type="button" value="목록" id="btnList"/>
 
-        <span th:switch="${containerDto.cont_status}">
+        <span th:switch="${containerDTO.cont_status}">
             <input type="button" value="삭제" id="btnDelete0" th:case="0"/>
             <input type="button" value="삭제" id="btnDelete1" th:case="1"/>
             <input type="hidden" value="삭제" id="btnDelete2" th:case="2"/>
@@ -115,7 +115,7 @@
             <input type="button" value="삭제" id="btnDelete4" th:case="4"/>
          </span>
 
-        <span th:switch="${containerDto.cont_status}">
+        <span th:switch="${containerDTO.cont_status}">
             <input type="button" value="승인" id="btnApprove0" th:case="0"/>
             <input type="hidden" value="승인" id="btnApprove1" th:case="1"/>
             <input type="hidden" value="승인" id="btnApprove2" th:case="2"/>
@@ -123,7 +123,7 @@
             <input type="button" value="승인" id="btnApprove4" th:case="4"/>
          </span>
 
-        <span th:switch="${containerDto.cont_status}">
+        <span th:switch="${containerDTO.cont_status}">
             <input type="button" value="거부" id="btnDeny0" th:case="0"/>
             <input type="button" value="거부" id="btnDeny1" th:case="1"/>
             <input type="hidden" value="거부" id="btnDeny2" th:case="2"/>

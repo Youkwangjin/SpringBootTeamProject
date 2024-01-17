@@ -18,25 +18,25 @@ public class ContactController {
 	@Autowired
 	private ContactDAO contactDao;
 	
-	@RequestMapping("contactadmin")
+	@RequestMapping("contactAdmin")
 	public String adminList(Model model) {
 		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
-		return "contact-admin";
+		return "contact/contact-admin";
 	}
 	
-	@RequestMapping("contactuser")
+	@RequestMapping("/contactUser")
 	public String mainListUser(Model model) {
 		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
-		return "contact-user";
+		return "contact/contact-user";
 	}
 	
-	@RequestMapping("contactowner")
+	@RequestMapping("contactOwner")
 	public String mainListOwner(Model model) {
 		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
-		return "contact-owner";
+		return "contact/contact-owner";
 	}
 
 }

@@ -40,7 +40,7 @@ public class ContactPageController {
 		return pagesu;
 	}
 	
-	@GetMapping("contactadmin")
+	@GetMapping("contactAdmin")
 	public String listProcess(@RequestParam("page")int page, Model model) {
 		int spage = page;
 		if (page <= 0) spage = 1;

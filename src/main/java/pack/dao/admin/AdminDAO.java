@@ -31,9 +31,7 @@ public class AdminDAO {
             if (re > 0)
                 b = true;
         } catch (Exception e) {
-            // 예외 발생 시 처리
             System.out.println("예외 발생: " + e.getMessage());
-            b = false;
         }
         return b;
     }
@@ -46,9 +44,7 @@ public class AdminDAO {
             if (re > 0)
                 b = true;
         } catch (Exception e) {
-            // 예외 발생 시 처리
             System.out.println("예외 발생: " + e.getMessage());
-            b = false;
         }
         return b;
     }

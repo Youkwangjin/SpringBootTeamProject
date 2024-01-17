@@ -31,7 +31,7 @@ public class ContactInsertController {
       boolean b = contactDao.insertContact(contactDTO);
          
       if(b) {
-         return "user/user-mypage"; // 추가 후 목록 보기
+         return "user/user-mypage";
       } else {
          return "error";
       }
