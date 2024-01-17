@@ -37,8 +37,8 @@
                         <th>처리상태</th>
                         <th>상세보기</th>
                     </tr>
-                    <th:block th:if="${contactadmin.size > 0}">
-                        <tr th:each="data:${contactadmin}">
+                    <th:block th:if="${contactAdmin.size > 0}">
+                        <tr th:each="data:${contactAdmin}">
                             <td th:text="${data.contact_name }"></td>
                             <td th:text="${data.contact_email }"></td>
                             <td th:text="${data.contact_title }"></td>
@@ -53,7 +53,7 @@
                 <table style="margin-top: 20px;">
                     <tr style="text-align: center;">
                         <td colspan="5">
-                            <th:block th:each="num : ${#numbers.sequence(1, pagesu)}">
+                            <th:block th:each="num : ${#numbers.sequence(1, pageSu)}">
                                 <th:span th:if="${num == page}">
                                     <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
                                 </th:span>

@@ -62,9 +62,9 @@
                     <h2>고객센터</h2>
                     <ul>
                         <li><a href="/board/listOwner?page=1">공지사항</a></li>
-                        <li><a href="/faqowner?page=1">자주하는 질문</a></li>
+                        <li><a href="/faqOwner?page=1">자주하는 질문</a></li>
                         <li>도움이 필요하신가요?<br/>
-                            <stong><a href="/contactowner">1:1 문의하기</a></stong>
+                            <stong><a href="/contactOwner">1:1 문의하기</a></stong>
                         </li>
                     </ul>
                 </div>
@@ -72,7 +72,7 @@
                 <table border="1" style="text-align: center;">
                     <tr>
                         <td colspan="3">
-                            <form action="/searchfaqowner" method="get" style="text-align: right;">
+                            <form action="/searchFaqOwner" method="get" style="text-align: right;">
                                 검 색 :
                                 <label>
                                     <select name="searchName">
@@ -85,7 +85,7 @@
                                 </label>
                                 <input type="submit" value="검 색">
                                 <label>
-                                    <input type="text" name="searchpage" value="1" style="display: none;">
+                                    <input type="text" name="searchPage" value="1" style="display: none;">
                                 </label>
                             </form>
                         </td>
@@ -115,7 +115,7 @@
                 <table style="margin-top: 20px;">
                     <tr style="text-align: center;">
                         <td colspan="5">
-                            <th:block th:each="num : ${#numbers.sequence(1, pagesu)}">
+                            <th:block th:each="num : ${#numbers.sequence(1, pageSu)}">
                                 <th:span th:if="${num == page}">
                                     <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
                                 </th:span>

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <body>
 <div th:if="${session.adminSession != null}">
     <div th:fragment="header_admin">
         <header>
             <div id="header" class="header d-flex align-items-center">
                 <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-                    <a href="/adminSessionKeep" class="logo d-flex align-items-center">
+                    <a href="/" class="logo d-flex align-items-center">
                         <h1>Acontainer<span>.</span></h1>
                     </a>
                     <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
@@ -15,7 +14,7 @@
                     <nav id="navbar" class="navbar">
                         <ul>
 
-                            <li><a href="/adminSessionKeep" class="active">Home</a></li>
+                            <li><a href="/" class="active">Home</a></li>
                             <li class="dropdown"><a href="#">회원관리
 
                                 <i class="bi bi-chevron-down dropdown-indicator"></i></a>
@@ -32,8 +31,8 @@
                             </li>
                             <li><a href="#">예약/결제관리</a></li>
                             <li><a href="/board/listAdmin?page=1">공지 관리</a></li>
-                            <li><a href="/contactadmin?page=1">문의 관리</a></li>
-                            <li><a href="/faqadmin?page=1">FAQ 관리</a></li>
+                            <li><a href="/contactAdmin?page=1">문의 관리</a></li>
+                            <li><a href="/faqAdmin?page=1">FAQ 관리</a></li>
                             <li><a href="/adminLogout">로그아웃</a></li>
                         </ul>
                     </nav>
