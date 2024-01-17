@@ -22,21 +22,21 @@ public class ContactController {
 	public String adminList(Model model) {
 		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
-		return "../templates/contact/contactadmin";
+		return "contact-admin";
 	}
 	
 	@RequestMapping("contactuser")
 	public String mainListUser(Model model) {
 		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
-		return "../templates/contact/contactuser";
+		return "contact-user";
 	}
 	
 	@RequestMapping("contactowner")
 	public String mainListOwner(Model model) {
 		ArrayList<ContactDTO> list = (ArrayList<ContactDTO>)contactDao.listContact();
 		model.addAttribute("list", list);
-		return "../templates/contact/contactowner";
+		return "contact-owner";
 	}
 
 }

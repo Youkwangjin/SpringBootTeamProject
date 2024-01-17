@@ -18,7 +18,7 @@ public class InsertController {
 	
 	@GetMapping("insert")
 	public String insertform() {
-		return "board/insert";
+		return "board-insert";
 	}
 	
 	@PostMapping("insert")

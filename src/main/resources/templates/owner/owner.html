@@ -1,104 +1,99 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <head>
-	<meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1.0" name="viewport">
-	<title>회원 정보 확인</title>
-	<link rel="stylesheet" href="/css/member.css" /> 
-    
-  <!-- 파비콘 -->
-  <link href="/assets/img/favicon.png" rel="icon">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-  <!-- Vendor CSS Files -->
-  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <!-- Template Main CSS File -->
-  <link href="/assets/css/main.css" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/css/board.css}">
-  <style>
-    table th {
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>회원 정보 확인</title>
+    <link rel="stylesheet" href="/css/member/member.css"/>
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/board/board.css}">
+    <style>
+        table th {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <div th:if="${session.adminSession != null}">
-  <!-- ======= Header ======= -->
-  <div th:replace="~{fragments/header_admin :: header}"></div>
-
-  <main id="main">
-		<!-- ======= Breadcrumbs ======= -->
-    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('../assets/img/breadcrumbs-bg.jpg');">
-      <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-        <h2 style="font-family: 'Noto Sans KR'; font-weight: 700;">Service</h2>
-        <ol>
-          <li><a href="/adminsessionkeep">Home</a></li>
-          <li>서비스소개</li>
-          <li>이용안내</li>
-        </ol>
-      </div>
-    </div><!-- End Breadcrumbs -->
-    <br/>
-		<h2 style="text-align: center;">제공자 회원 정보 확인(<span th:text="${owner_records}"></span>명)</h2><br/><br/>
-		
-		<table>
-			<tr>
-				<th>사업자번호</th>
-				<th>비밀번호</th>
-				<th>이름</th>
-				<th>전화번호</th>
-				<th>이메일</th>
-				<th>삭제</th>
-			</tr>
-			<th:block th:if="${lists2.size > 0}">
-				<tr th:each="data2:${lists2}">
-					<td th:text="${data2.business_num}">num 출력</td>
-					<td>**********</td>
-					<td th:text="${data2.owner_name}"></td>
-					<td th:text="${data2.owner_tel}"></td>
-					<td th:text="${data2.email}"></td>
-					<td>
-						
-						<form action="/ownerdelete" method="post">
-							<input type="hidden" name="business_num" th:value="${data2.business_num}"/>
-							<input type="submit" value="삭제" class="delete-button"
-							onclick="if(!confirm('삭제하시면 복구할 수 없습니다. \n 정말로 삭제하시겠습니까?')){return false;}" />
-						</form>
-					</td>
-				</tr>
-			</th:block>
-		</table><br/><br/>
-		<div style="text-align: center;">
-			<form action="/ownersearch" method="post" >
-			<!--<form action="/ownersearch?page=1" method="post">-->
-			검색 대상:
-			<select name="searchName" style="width: 130px;">
-				<option value="business_num" selected>사업자번호</option>
-			</select>
-			<input type="text" name="searchValue" >
-			<input type="submit" value="검 색" >
-		</form>
-		</div>
-		<table style="margin-top: 20px;">
-			<tr style="text-align: center;">
-				<td colspan="5">
-					<th:block th:each="num : ${#numbers.sequence(1, pagesu)}">
-						<th:span th:if="${num == page}">
-							<b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
-						</th:span>
-						<th:span th:if="${num != page}">
-							<a th:href="@{/owner(page=${num})}" th:text="${num}">num 표시</a>
-						</th:span>
-					</th:block>
-				</td>
-			</tr>
-		</table>
-		<!-- ======= Footer ======= -->
-		<div th:replace="~{fragments/footer :: footer}"></div>
-	</main>
+    <div th:replace="~{fragments/header_admin :: header}"></div>
+    <main id="main">
+        <div class="breadcrumbs d-flex align-items-center"
+             style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+            <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+                <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">Service</h2>
+                <ol>
+                    <li><a href="/AdminSessionKeep">Home</a></li>
+                    <li>서비스소개</li>
+                    <li>이용안내</li>
+                </ol>
+            </div>
+        </div>
+        <br/>
+        <h2 style="text-align: center;">제공자 회원 정보 확인(<span th:text="${owner_records}"></span>명)</h2><br/><br/>
+        <table>
+            <tr>
+                <th>사업자번호</th>
+                <th>비밀번호</th>
+                <th>이름</th>
+                <th>전화번호</th>
+                <th>이메일</th>
+                <th>삭제</th>
+            </tr>
+            <th:block th:if="${lists2.size > 0}">
+                <tr th:each="data2:${lists2}">
+                    <td th:text="${data2.business_num}">num 출력</td>
+                    <td>**********</td>
+                    <td th:text="${data2.owner_name}"></td>
+                    <td th:text="${data2.owner_tel}"></td>
+                    <td th:text="${data2.email}"></td>
+                    <td>
+                        <form action="/ownerdelete" method="post">
+                            <input type="hidden" name="business_num" th:value="${data2.business_num}"/>
+                            <input type="submit" value="삭제" class="delete-button"
+                                   onclick="if(!confirm('삭제하시면 복구할 수 없습니다. \n 정말로 삭제하시겠습니까?')){return false;}"/>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+        <br/><br/>
+        <div style="text-align: center;">
+            <form action="/ownersearch" method="post">
+                검색 대상:
+                <label>
+                    <select name="searchName" style="width: 130px;">
+                        <option value="business_num" selected>사업자번호</option>
+                    </select>
+                </label>
+                <label>
+                    <input type="text" name="searchValue">
+                </label>
+                <input type="submit" value="검 색">
+            </form>
+        </div>
+        <table style="margin-top: 20px;">
+            <tr style="text-align: center;">
+                <td colspan="5">
+                    <th:block th:each="num : ${#numbers.sequence(1, pagesu)}">
+                        <th:span th:if="${num == page}">
+                            <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
+                        </th:span>
+                        <th:span th:if="${num != page}">
+                            <a th:href="@{/owner(page=${num})}" th:text="${num}">num 표시</a>
+                        </th:span>
+                    </th:block>
+                </td>
+            </tr>
+        </table>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </main>
 </div>
 </body>
 </html>

@@ -47,12 +47,12 @@ public class ContainerController {
 
 	@GetMapping("/paid")
 	public String cont_pay() {
-		return "container/container_paid";
+		return "container-paid";
 	}
 
 	@GetMapping("/register")
 	public String cont_regs() {
-		return "container/container_register";
+		return "container-register";
 	}
 
 	@GetMapping("/list")
@@ -60,7 +60,7 @@ public class ContainerController {
 		String business_num = (String) session.getAttribute("business_num");
 		ArrayList<ContainerDTO> clist = (ArrayList<ContainerDTO>) containDao.getDataAll(business_num);
 		model.addAttribute("datas", clist);
-		return "container/container_list";
+		return "container-list";
 	}
 	
 	@GetMapping("/reserve")
@@ -68,7 +68,7 @@ public class ContainerController {
 		String business_num = (String) session.getAttribute("business_num");
 		ArrayList<ContainerDTO> rlist = (ArrayList<ContainerDTO>) containDao.getDataReserve(business_num);
 		model.addAttribute("datas", rlist);
-		return "container/container_reserve";
+		return "containe-reserve";
 	}
 
 
@@ -206,7 +206,7 @@ public class ContainerController {
 		ContainerDTO conDto = containDao.conDetail(cont_no);
 		model.addAttribute("conDto", conDto);
 
-		return "container/container_detail";
+		return "container-detail";
 	}
 	
 	
@@ -215,7 +215,7 @@ public class ContainerController {
 	public String cont_update(@RequestParam("cont_no") String cont_no, Model model) {
 		ContainerDTO conDto = containDao.conDetail(cont_no);
 		model.addAttribute("conDto", conDto);
-		return "container/container_update";
+		return "container-update";
 	}
 
 	@PostMapping("update")

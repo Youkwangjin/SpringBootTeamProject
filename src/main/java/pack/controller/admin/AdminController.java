@@ -18,41 +18,39 @@ public class AdminController {
 	private final AdminDAO adminDao;
 
 	@GetMapping("adminLoginGo") 
-	public String adminlogingo() {
-		return "../templates/admin/adminlogin";
+	public String adminLoginGo() {
+		return "/admin/admin-login";
 	}
 
-    @PostMapping("adminloginok")
+    @PostMapping("adminLoginOk")
     public String processLoginForm(@RequestParam("admin_id") String admin_id,
             					   @RequestParam("admin_pwd") String admin_pwd,
                                    Model model, HttpSession session){
-        // 사용자 로그인 처리
     	AdminDTO admin = adminDao.adminLoginProcess(admin_id, admin_pwd);
 
         if (admin != null) {
         	session.setAttribute("adminSession", admin);
-        	return "admin/adminloginok";
+        	return "admin/admin-loginok";
             
         } else {
-            // 로그인 실패
-            return "admin/adminlogin"; 
+            return "admin/admin-login";
         }
     }
 
-	@GetMapping("/adminlogout")
+	@GetMapping("/adminLogout")
 	public String userLogoutProcess(HttpSession session) {
 	    session.removeAttribute("adminSession");
 	    return "redirect:/";
 	}
 	
 
-	@GetMapping("/adminsessionkeep")
+	@GetMapping("/adminSessionKeep")
 	public String adminSessionKeep(HttpSession session) {
 		AdminDTO adminSession = (AdminDTO) session.getAttribute("adminSession");
 	    if (adminSession != null) {
-	        return "admin/adminloginok"; 
+	        return "admin/admin-loginok";
 	    } else {
-	    	return "/resources/templates/index/index.html";
+	    	return "/index/index";
 	    }
 	}
 }

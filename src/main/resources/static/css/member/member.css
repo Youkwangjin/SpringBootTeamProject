@@ -1,0 +1,53 @@
+table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+select, input[type="text"], input[type="submit"] {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+
+tr {
+    margin-bottom: 10px; 
+}
+
+
+.center-button {
+    text-align: center;
+}
+table {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    border-bottom: 1px solid #000;
+    border-left: none;
+    border-right: none;
+}
+
+table th {
+    border-bottom: 2px solid #000; 
+}
+
+form input.delete-button[type="submit"] {
+    background-color: #FFC0CB;
+    color: #ffffff;
+    padding: 5px 10px; 
+    border: none; 
+    cursor: pointer; 
+}
+
+form input.delete-button[type="submit"]:hover {
+    background-color: #ff5555;
+}

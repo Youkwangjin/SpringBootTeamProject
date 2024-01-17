@@ -12,13 +12,11 @@ public class HomeController {
     public String home(HttpSession session) {
         if (session.getAttribute("userSession") != null) {
             return "redirect:/userSessionKeep";
-        }
-        else if (session.getAttribute("ownerSession") != null) {
+        } else if (session.getAttribute("ownerSession") != null) {
             return "redirect:/ownerSessionKeep";
-        }
-        else if (session.getAttribute("adminSession") != null) {
+        } else if (session.getAttribute("adminSession") != null) {
             return "redirect:/adminSessionKeep";
         }
         return "index/index";
-    }   
+    }
 }

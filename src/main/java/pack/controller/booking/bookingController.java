@@ -56,7 +56,7 @@ public class bookingController {
 		session.setAttribute("bookList", bookingdto);
 		
 		model.addAttribute("bList", bookingdto);
-		return "booking/bookingInfo";		
+		return "booking-Info";
 	}
 	
 	//예약삭제

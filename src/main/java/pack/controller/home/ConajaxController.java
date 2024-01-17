@@ -11,12 +11,11 @@ import pack.dto.user.UserDTO;
 public class ConajaxController {
     @GetMapping("/conajax")
     public String index(HttpSession session) {
-       UserDTO userSession = (UserDTO) session.getAttribute("userSession");
-       if (userSession != null) {
-           return "/index/conajax";
-       }                              
-       else {
-           return "user/user-login";
-       }
+        UserDTO userSession = (UserDTO) session.getAttribute("userSession");
+        if (userSession != null) {
+            return "/index/conajax";
+        } else {
+            return "user/user-login";
+        }
     }
 }
