@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
-import pack.dao.owner.OwnerDAO;
 import pack.dto.owner.OwnerDTO;
 import pack.service.owner.OwnerService;
 
@@ -18,7 +17,6 @@ import pack.service.owner.OwnerService;
 @AllArgsConstructor
 public class OwnerController {
 
-	private final OwnerDAO ownerDao;
 	private final OwnerService ownerService;
 
 	@GetMapping("ownerJoinGo")
@@ -62,7 +60,7 @@ public class OwnerController {
 	public String ownerSessionKeep(HttpSession session) {
 		OwnerDTO ownerSession = (OwnerDTO) session.getAttribute("ownerSession");
 		if (ownerSession != null) {
-			return "owner/owner-main";
+			return "owner/owner-mypage";
 		} else {
 			return "/index/index";
 		}

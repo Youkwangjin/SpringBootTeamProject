@@ -22,7 +22,7 @@ public class ListController {
    private int tot;
    private int plist = 10;
    
-   public ArrayList<UserDTO> getuserListData(ArrayList<UserDTO> list, int page){
+   public ArrayList<UserDTO> getUserListData(ArrayList<UserDTO> list, int page){
          ArrayList<UserDTO> result = new ArrayList<UserDTO>();
          
          int start = (page - 1) * plist;
@@ -41,39 +41,39 @@ public class ListController {
       }
 
    @GetMapping("/user")
-   public String userlist(@RequestParam("page")int page, Model model) {
-      int spage = page;
-       if (page <= 0) spage = 1;
+   public String userList(@RequestParam("page")int page, Model model) {
+      int sPage = page;
+       if (page <= 0) sPage = 1;
        
-      ArrayList<UserDTO> slist = (ArrayList<UserDTO>)dataDao.getUserAll();
-      ArrayList<UserDTO> result = getuserListData(slist, spage);
+      ArrayList<UserDTO> sList = (ArrayList<UserDTO>)dataDao.getUserAll();
+      ArrayList<UserDTO> result = getUserListData(sList, sPage);
 
       
       int user_records = dataDao.usercount();
 
       model.addAttribute("lists", result);
-      model.addAttribute("pagesu", getuserPageSu());
-      model.addAttribute("page", spage);
+      model.addAttribute("pageSu", getuserPageSu());
+      model.addAttribute("page", sPage);
       model.addAttribute("user_records", user_records);
        
       return "../templates/user/user";
    }
    
-   @PostMapping("usersearch")  // user에서 검색하기
-   public String usersearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {  //넘어가니까 Model 사용
-      int spage = page;
-       if (page <= 0) spage = 1 ;
-      ArrayList<UserDTO> userlist = (ArrayList<UserDTO>)dataDao.getUserSearch(bean);
-      ArrayList<UserDTO> userresult = getuserListData(userlist, spage);
+   @PostMapping("userSearch")
+   public String userSearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {  //넘어가니까 Model 사용
+      int sPage = page;
+       if (page <= 0) sPage = 1 ;
+      ArrayList<UserDTO> userList = (ArrayList<UserDTO>)dataDao.getUserSearch(bean);
+      ArrayList<UserDTO> userResult = getUserListData(userList, sPage);
       
-      model.addAttribute("lists", userresult);
-      model.addAttribute("pagesu", getuserPageSu());
-      model.addAttribute("page", spage);
-      return "../templates/user/user";
+      model.addAttribute("lists", userResult);
+      model.addAttribute("pageSu", getuserPageSu());
+      model.addAttribute("page", sPage);
+      return "/user/user";
    }
    
    @PostMapping("userdelete")
-   public String userdel(@RequestParam("user_id")String user_id,
+   public String userDelete(@RequestParam("user_id")String user_id,
          @RequestParam(name = "page", defaultValue = "1") int page) {
       if(dataDao.userdelete(user_id))
          return "redirect:user?page=" + page;
@@ -178,7 +178,7 @@ public class ListController {
       model.addAttribute("lists3", result);
       model.addAttribute("pagesu", getregisteredPageSu());
       model.addAttribute("page", spage);
-      return "../templates/admin/cont_registered";
+      return "admin/cont_registered";
    }
    
    @PostMapping("regsearch")

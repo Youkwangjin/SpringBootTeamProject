@@ -35,7 +35,7 @@ public class ApproveController {
 		boolean b = adminDao.approve(adminDTO);
 		 System.out.println("b" + b); 
 		if (b)
-			return "redirect:/registered"; // 수정 후 목록보기
+			return "redirect:/registered";
 		else
 			return "owner/error";
 	}
@@ -46,7 +46,7 @@ public class ApproveController {
 		boolean b = adminDao.deny(adminDTO);
 		 System.out.println("b" + b); 
 		if (b)
-			return "redirect:/registered"; // 수정 후 목록보기
+			return "redirect:/registered";
 		else
 			return "owner/error";
 	}

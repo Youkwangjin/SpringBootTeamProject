@@ -25,14 +25,12 @@ public class DataDAO {
    }
    // User 정보 출력하기
    public List<UserDTO> getUserAll(){
-      List<UserDTO> list = dataMapper.selectAll();  // sql문이 실행
+      List<UserDTO> list = dataMapper.selectAll();
       logger.info("Userdatas1 : " + list.size() + "개");
       return list;
    }
-   // User에서 원하는 정보 검색하기 
-   public List<UserDTO> getUserSearch(FormDTO formDTO){   // 검색용
-      List<UserDTO> list = (List<UserDTO>)dataMapper.selectSearch(formDTO); // sql문이 실행
-      logger.info("Usersearch datas : " + list.size() + "개");
+   public List<UserDTO> getUserSearch(FormDTO formDTO){
+      List<UserDTO> list = (List<UserDTO>)dataMapper.selectSearch(formDTO);
       return list;
    }
    

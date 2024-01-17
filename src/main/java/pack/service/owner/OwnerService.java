@@ -29,7 +29,7 @@ public class OwnerService {
             session.setAttribute("ownerSession", owner);
             session.setAttribute("business_num", owner.getBusiness_num());
             session.setAttribute("owner_name", owner.getOwner_name());
-            return "owner/owner-main";
+            return "owner/owner-mypage";
         } else {
             return "owner/owner-login";
         }
