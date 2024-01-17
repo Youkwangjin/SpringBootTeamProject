@@ -21,8 +21,8 @@ public class FaqDAO {
 	}
 	
 	public List<FaqDTO> searchFaq(FaqDTO faqDTO){
-		List<FaqDTO> slist = faqMapper.searchFaq(faqDTO);
-		return slist;
+		List<FaqDTO> sList = faqMapper.searchFaq(faqDTO);
+		return sList;
 	}
 	
 	public int totalFaq() {

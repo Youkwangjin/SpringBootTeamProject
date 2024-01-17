@@ -2,7 +2,6 @@ package pack.controller.faq;
 
 import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,18 +13,17 @@ import pack.dao.fqa.FaqDAO;
 import pack.dto.faq.FaqDTO;
 
 @Controller
-
 public class FaqController {
     @Autowired
     public FaqDAO faqDao;
     private int tot;
-    private final int plist = 10;
+    private final int pList = 10;
 
     public ArrayList<FaqDTO> getListData(ArrayList<FaqDTO> list, int page) {
         ArrayList<FaqDTO> result = new ArrayList<FaqDTO>();
 
-        int start = (page - 1) * plist;
-        int end = Math.min(start + plist, list.size());
+        int start = (page - 1) * pList;
+        int end = Math.min(start + pList, list.size());
 
         for (int i = start; i < end; i++) {
             result.add(list.get(i));
@@ -35,17 +33,17 @@ public class FaqController {
 
     public int getPageSu() {
         tot = faqDao.totalFaq();
-        int pagesu = tot / plist;
-        if (tot % plist > 0) pagesu += 1;
-        return pagesu;
+        int pageSu = tot / pList;
+        if (tot % pList > 0) pageSu += 1;
+        return pageSu;
     }
 
     public int getSearchPageSu(FaqDTO faqDTO) {
-        ArrayList<FaqDTO> searchtot = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
-        tot = searchtot.size();
-        int pagesu = tot / plist;
-        if (tot % plist > 0) pagesu += 1;
-        return pagesu;
+        ArrayList<FaqDTO> searchTot = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
+        tot = searchTot.size();
+        int pageSu = tot / pList;
+        if (tot % pList > 0) pageSu += 1;
+        return pageSu;
     }
 
     @GetMapping("/searchFaqUser")
@@ -53,170 +51,167 @@ public class FaqController {
                              @RequestParam(name = "searchName", required = false) String searchName,
                              @RequestParam(name = "searchValue", required = false) String searchValue,
                              Model model) {
-        int spage = searchPage;
-        if (searchPage <= 0) spage = 1;
+        int sPage = searchPage;
+        if (searchPage <= 0) sPage = 1;
         FaqDTO faqDTO = new FaqDTO();
         faqDTO.setSearchName(searchName);
         faqDTO.setSearchValue(searchValue);
 
 
-        ArrayList<FaqDTO> slist = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
-        ArrayList<FaqDTO> sresult = getListData(slist, spage);
+        ArrayList<FaqDTO> sList = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
+        ArrayList<FaqDTO> sResult = getListData(sList, sPage);
 
         model.addAttribute("searchName", searchName);
         model.addAttribute("searchValue", searchValue);
-        model.addAttribute("faq", sresult);
-        model.addAttribute("pagesu", getSearchPageSu(faqDTO));
-        model.addAttribute("page", spage);
+        model.addAttribute("faq", sResult);
+        model.addAttribute("pageSu", getSearchPageSu(faqDTO));
+        model.addAttribute("page", sPage);
 
         return "faq/faq-user-search";
     }
 
-    @GetMapping("/searchfaqowner")
+    @GetMapping("/searchFaqOwner")
     public String searchOwner(@RequestParam(value = "searchPage") int searchPage,
                               @RequestParam(name = "searchName", required = false) String searchName,
                               @RequestParam(name = "searchValue", required = false) String searchValue,
                               Model model) {
-        int spage = searchPage;
-        if (searchPage <= 0) spage = 1;
+        int sPage = searchPage;
+        if (searchPage <= 0) sPage = 1;
         FaqDTO faqDTO = new FaqDTO();
         faqDTO.setSearchName(searchName);
         faqDTO.setSearchValue(searchValue);
 
-        ArrayList<FaqDTO> slist = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
-        ArrayList<FaqDTO> sresult = getListData(slist, spage);
+        ArrayList<FaqDTO> sList = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
+        ArrayList<FaqDTO> sResult = getListData(sList, sPage);
 
         model.addAttribute("searchName", searchName);
         model.addAttribute("searchValue", searchValue);
-        model.addAttribute("faq", sresult);
-        model.addAttribute("pagesu", getSearchPageSu(faqDTO));
-        model.addAttribute("page", spage);
+        model.addAttribute("faq", sResult);
+        model.addAttribute("pageSu", getSearchPageSu(faqDTO));
+        model.addAttribute("page", sPage);
 
         return "faq/faq-owner-search";
     }
 
-    @GetMapping("searchfaqadmin")
-    public String searchadmin(@RequestParam(value = "searchPage", defaultValue = "1") int searchPage,
+    @GetMapping("searchFaqAdmin")
+    public String searchAdmin(@RequestParam(value = "searchPage", defaultValue = "1") int searchPage,
                               @RequestParam(name = "searchName", required = false) String searchName,
                               @RequestParam(name = "searchValue", required = false) String searchValue,
                               Model model) {
-
-        int spage = searchPage;
-        if (searchPage <= 0) spage = 1;
+        int sPage = searchPage;
+        if (searchPage <= 0) sPage = 1;
         FaqDTO faqDTO = new FaqDTO();
         faqDTO.setSearchName(searchName);
         faqDTO.setSearchValue(searchValue);
 
-        ArrayList<FaqDTO> slist = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
-        ArrayList<FaqDTO> sresult = getListData(slist, spage);
+        ArrayList<FaqDTO> sList = (ArrayList<FaqDTO>) faqDao.searchFaq(faqDTO);
+        ArrayList<FaqDTO> sResult = getListData(sList, sPage);
 
         model.addAttribute("searchName", searchName);
         model.addAttribute("searchValue", searchValue);
-        model.addAttribute("faqadmin", sresult);
-        model.addAttribute("pagesu", getSearchPageSu(faqDTO));
-        model.addAttribute("page", spage);
+        model.addAttribute("faqAdmin", sResult);
+        model.addAttribute("pageSu", getSearchPageSu(faqDTO));
+        model.addAttribute("page", sPage);
         return "faq/faq-admin-search";
     }
 
-    @GetMapping("faq")
+    @GetMapping("/faq")
     public String listProcess(@RequestParam("page") int page, Model model) {
-        int spage = page;
-        if (page <= 0) spage = 1;
+        int sPage = page;
+        if (page <= 0) sPage = 1;
 
         ArrayList<FaqDTO> list = (ArrayList<FaqDTO>) faqDao.listFaq();
-        ArrayList<FaqDTO> result = getListData(list, spage);
+        ArrayList<FaqDTO> result = getListData(list, sPage);
 
         model.addAttribute("faq", result);
-        model.addAttribute("pagesu", getPageSu());
-        model.addAttribute("page", spage);
+        model.addAttribute("pageSu", getPageSu());
+        model.addAttribute("page", sPage);
 
         return "/faq/faq";
     }
 
-    @GetMapping("faquser")
+    @GetMapping("/faqUser")
     public String listProcessUser(@RequestParam("page") int page, Model model) {
-        int spage = page;
-        if (page <= 0) spage = 1;
+        int sPage = page;
+        if (page <= 0) sPage = 1;
 
         ArrayList<FaqDTO> list = (ArrayList<FaqDTO>) faqDao.listFaq();
-        ArrayList<FaqDTO> result = getListData(list, spage);
+        ArrayList<FaqDTO> result = getListData(list, sPage);
 
         model.addAttribute("faq", result);
-        model.addAttribute("pagesu", getPageSu());
-        model.addAttribute("page", spage);
+        model.addAttribute("pageSu", getPageSu());
+        model.addAttribute("page", sPage);
 
         return "faq/faq-user";
     }
 
-    @GetMapping("faqowner")
+    @GetMapping("/faqOwner")
     public String listProcessOwner(@RequestParam("page") int page, Model model) {
-        int spage = page;
-        if (page <= 0) spage = 1;
+        int sPage = page;
+        if (page <= 0) sPage = 1;
 
         ArrayList<FaqDTO> list = (ArrayList<FaqDTO>) faqDao.listFaq();
-        ArrayList<FaqDTO> result = getListData(list, spage);
+        ArrayList<FaqDTO> result = getListData(list, sPage);
 
         model.addAttribute("faq", result);
-        model.addAttribute("pagesu", getPageSu());
-        model.addAttribute("page", spage);
+        model.addAttribute("pageSu", getPageSu());
+        model.addAttribute("page", sPage);
 
         return "faq/faq-owner";
     }
 
-    @GetMapping("faqadmin")
-    public String listProcessadmin(@RequestParam("page") int page, Model model) {
-        int spage = page;
-        if (page <= 0) spage = 1;
+    @GetMapping("faqAdmin")
+    public String listProcessAdmin(@RequestParam("page") int page, Model model) {
+        int sPage = page;
+        if (page <= 0) sPage = 1;
 
         ArrayList<FaqDTO> list = (ArrayList<FaqDTO>) faqDao.listFaq();
-        ArrayList<FaqDTO> result = getListData(list, spage);
+        ArrayList<FaqDTO> result = getListData(list, sPage);
 
-        model.addAttribute("faqadmin", result);
-        model.addAttribute("pagesu", getPageSu());
-        model.addAttribute("page", spage);
+        model.addAttribute("faqAdmin", result);
+        model.addAttribute("pageSu", getPageSu());
+        model.addAttribute("page", sPage);
 
         return "faq/faq-admin";
     }
 
-    @GetMapping("faqinsert")
-    public String faqinsert() {
-        return "fqa/faq-insert";
+    @GetMapping("/faqInsert")
+    public String faqInsert() {
+        return "faq/faq-insert";
     }
 
-    @PostMapping("faqinsert")
-    public String faqinsertSubmit(FaqDTO faqDTO) {
+    @PostMapping("/faqInsert")
+    public String faqInsertSubmit(FaqDTO faqDTO) {
         boolean b = faqDao.insertFaq(faqDTO);
-
         if (b) {
-            return "redirect:/faqadmin?page=1";
+            return "redirect:/faqAdmin?page=1";
         } else {
             return "redirect:/";
         }
     }
 
-    @PostMapping("faqupdate")
-    public String faqupdate(FaqDTO faqDTO) {
+    @PostMapping("/faqUpdate")
+    public String faqUpdate(FaqDTO faqDTO) {
         boolean b = faqDao.updateFaq(faqDTO);
-
         if (b) {
-            return "redirect:/faqadmin?page=1";
+            return "redirect:/faqAdmin?page=1";
         } else {
             return "redirect:/";
         }
     }
 
-    @PostMapping("faqdelete")
-    public String faqdelete(@RequestParam("faq_no") String faq_no) {
+    @PostMapping("/faqDelete")
+    public String faqDelete(@RequestParam("faq_no") String faq_no) {
         boolean b = faqDao.deleteFaq(faq_no);
         if (b) {
-            return "redirect:/faqadmin?page=1";
+            return "redirect:/faqAdmin?page=1";
         } else {
             return "redirect:/";
         }
     }
 
-    @GetMapping("faqdetail")
-    public String faqdetail(@RequestParam("faq_no") int faq_no, Model model) {
+    @GetMapping("/faqDetail")
+    public String faqDetail(@RequestParam("faq_no") int faq_no, Model model) {
         FaqDTO detail = faqDao.detailFaq(faq_no);
         model.addAttribute("detail", detail);
         return "faq/faq-detail";

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -29,11 +28,11 @@
         <section>
             <div class="board-container">
                 <h3 style="padding-top: 1cm; padding-bottom: 1cm; text-align: center;">자주 묻는 질문</h3>
-                <div style="text-align: center;"><a href="faqinsert">추가</a></div>
+                <div style="text-align: center;"><a href="/faqInsert">추가</a></div>
                 <table border="1" style="text-align: center;">
                     <tr>
                         <td colspan="4">
-                            <form action="/searchfaqadmin?searchpage=1" method="get" style="text-align: right;">
+                            <form action="/searchFaqAdmin?searchPage=1" method="get" style="text-align: right;">
                                 검 색 :
                                 <label>
                                     <select name="searchName">
@@ -55,14 +54,14 @@
                         <th style="width: 15%;">수정/삭제</th>
                     </tr>
                 </table>
-                <th:block th:if="${faqadmin != null and faqadmin.size() > 0}">
-                    <table border="1" style="text-align: center;" th:each="data : ${faqadmin}" class="faq">
+                <th:block th:if="${faqAdmin != null and faqAdmin.size() > 0}">
+                    <table border="1" style="text-align: center;" th:each="data : ${faqAdmin}" class="faq">
                         <tr>
                             <td th:text="${data.faq_no}" style="width: 10%;"></td>
                             <td th:text="${data.faq_category}" style="width: 15%;"></td>
                             <td th:text="${data.faq_question}" style="width: 60%; text-align: left;"></td>
                             <td style="width: 15%;">
-                                <a th:href="@{faqdetail(faq_no=${data.faq_no})}">수정 / 삭제</a>
+                                <a th:href="@{faqDetail(faq_no=${data.faq_no})}">수정 / 삭제</a>
                             </td>
                         </tr>
                         <tr>
@@ -76,12 +75,12 @@
                 <table style="margin-top: 20px;">
                     <tr style="text-align: center;">
                         <td colspan="5">
-                            <th:block th:each="num : ${#numbers.sequence(1, pagesu)}">
+                            <th:block th:each="num : ${#numbers.sequence(1, pageSu)}">
                                 <th:span th:if="${num == page}">
                                     <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
                                 </th:span>
                                 <th:span th:if="${num != page}">
-                                    <a th:href="@{/faqadmin(page=${num})}" th:text="${num}">num 표시</a>
+                                    <a th:href="@{/faqAdmin(page=${num})}" th:text="${num}">num 표시</a>
                                 </th:span>
                             </th:block>
                         </td>

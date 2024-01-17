@@ -18,20 +18,22 @@
 
             }
 
-            document.querySelector("#btnUp").onclick = function () {
+            document.querySelector("#btnUpdate").onclick = function (event) {
                 if (confirm("정말 수정 할까요?")) {
+                    let updateFrm = document.querySelector("#updateFrm");
                     event.preventDefault();
-                    frm.action = "faqupdate";
-                    frm.method = "post";
-                    frm.submit();
+                    updateFrm.action = "/faqUpdate";
+                    updateFrm.method = "post";
+                    updateFrm.submit();
                 }
             }
-            document.querySelector("#btnDel").onclick = function () {
+            document.querySelector("#btnDelete").onclick = function (event) {
                 if (confirm("정말 삭제 할까요?")) {
+                    let updateFrm = document.querySelector("#updateFrm");
                     event.preventDefault();
-                    frm.action = "faqdelete";
-                    frm.method = "post";
-                    frm.submit();
+                    updateFrm.action = "/faqDelete";
+                    updateFrm.method = "post";
+                    updateFrm.submit();
                 }
             }
         }
@@ -54,7 +56,7 @@
         <section class="sample-page">
             <h2 style="text-align: center;">FAQ 수정 / 삭제</h2><br><br>
             <div>
-                <form name="frm" method="post" th:object="${detail}" style="padding-bottom: 1cm; text-align: center;">
+                <form name="updateFrm" id="updateFrm" method="post" th:object="${detail}" style="padding-bottom: 1cm; text-align: center;">
                     <div>
                         <div>
                             번 호 : [[${detail.faq_no}]]
@@ -85,9 +87,9 @@
                         </div>
                         <br>
                         <div>
-                            <input type="button" value="수정" name="btnUp" id="btnUp"/>
+                            <input type="button" value="수정" name="btnUp" id="btnUpdate"/>
                             <input type="button" value="목록" name="btnList" id="btnList"/><br><br>
-                            <input type="button" value="삭제" name="btnDel" id="btnDel"/>
+                            <input type="button" value="삭제" name="btnDel" id="btnDelete"/>
                         </div>
                     </div>
                 </form>
