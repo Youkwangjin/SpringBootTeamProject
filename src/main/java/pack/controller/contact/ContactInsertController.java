@@ -2,7 +2,7 @@ package pack.controller.contact;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,17 +12,18 @@ import pack.dao.contact.ContactDAO;
 import pack.dto.contact.ContactDTO;
 
 @Controller
+@AllArgsConstructor
 public class ContactInsertController {
 
-   @Autowired
-   private ContactDAO contactDao;
+
+   private final ContactDAO contactDao;
    
-   @GetMapping("insertcontactuser")
+   @GetMapping("/insertContactUser")
    public String insertUser() {
-      return "../templates/contact/insert";
+      return "/contact/contact-user";
    }
    
-   @PostMapping("insertcontactuser")
+   @PostMapping("/insertContactUser")
    public String insertSubmitUser(ContactDTO contactDTO, Model model) {
       
       LocalDateTime currentDateTime = LocalDateTime.now();
@@ -33,16 +34,16 @@ public class ContactInsertController {
       if(b) {
          return "user/user-mypage";
       } else {
-         return "error";
+         return "container/container-error";
       }
    }
    
-   @GetMapping("insertcontactowner")
+   @GetMapping("/insertContactOwner")
    public String insertOwner() {
-      return "../templates/contact/insert";
+      return "/contact/contact-owner";
    }
    
-   @PostMapping("insertcontactowner")
+   @PostMapping("/insertContactOwner")
    public String insertSubmitOwner(ContactDTO contactDTO, Model model) {
       
       LocalDateTime currentDateTime = LocalDateTime.now();
@@ -51,9 +52,9 @@ public class ContactInsertController {
       boolean b = contactDao.insertContact(contactDTO);
          
       if(b) {
-         return "owner/owner-main"; // 추가 후 목록 보기
+         return "/owner/owner-mypage";
       } else {
-         return "error";
+         return "container/container-error";
       }
    }
    

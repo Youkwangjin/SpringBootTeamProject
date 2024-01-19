@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 창고대여</title>
-   <link rel="stylesheet" type="text/css" href="../css/container/container.css">
+    <link rel="stylesheet" type="text/css" href="../css/container/container.css">
     <link href="/assets/img/favicon.png" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,16 +21,15 @@
     <script>
         window.onload = function () {
             document.querySelector("#btnList").onclick = function () {
-                //alert("a");
                 location.href = "/owner/list";
             }
 
             document.querySelector("#btnDelete").onclick = function () {
-                // alert("C");
                 if (confirm("정말 삭제 하시겠습니까?")) {
-                    frm.action = "delete";
-                    frm.method = "get"
-                    frm.submit();
+                    let contFrm = document.querySelector("#contFrm");
+                    contFrm.action = "delete";
+                    contFrm.method = "get"
+                    contFrm.submit();
                 }
             }
         }
@@ -44,7 +43,7 @@
         <div class="text-header">
             <h3 class="align-detail">창고 상세 정보</h3>
         </div>
-        <form name="frm" th:object="${conDto}">
+        <form name="contFrm" id="contFrm" th:object="${conDto}">
             <div class="table-detail">
                 <input type="hidden" th:field="*{cont_no}"/> <br/>
                 <div class="table-row">
@@ -84,7 +83,6 @@
             </div>
         </form>
     </main>
-    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 </body>
 </html>

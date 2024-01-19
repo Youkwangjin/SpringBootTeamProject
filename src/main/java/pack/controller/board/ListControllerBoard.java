@@ -21,17 +21,17 @@ public class ListControllerBoard {
 	private BoardDAO daoImpl;
 	
 	private int tot;
-	private int plist = 15;
-	private int pagesu;
+	private int pList = 15;
+	private int pageSu;
 
 	// 페이지 당 목록 데이터 추출
-	public ArrayList<BoardDTO> getListdata(ArrayList<BoardDTO> list, int page){
+	public ArrayList<BoardDTO> getListData(ArrayList<BoardDTO> list, int page){
 		ArrayList<BoardDTO> result = new ArrayList<BoardDTO>();
 		
-		int start = (page - 1) * plist;   // 목록의 인덱스 계산
+		int start = (page - 1) * pList;   // 목록의 인덱스 계산
 		System.out.println("start:" + start);
 		
-		int size = plist <= list.size() - start?plist : list.size() - start;
+		int size = pList <= list.size() - start?pList : list.size() - start;
 		
 		for (int i = 0; i < size; i++) {
 			result.add(i, list.get(start + i));
@@ -43,104 +43,103 @@ public class ListControllerBoard {
 	// 총 페이지 수 계산
 	public int getPageSu() {
 		tot = daoImpl.totalCnt();
-		pagesu = tot / plist;
-		if(tot % plist > 0) pagesu += 1;
-		return pagesu;
+		pageSu = tot / pList;
+		if(tot % pList > 0) pageSu += 1;
+		return pageSu;
 	}
 	
 	// 게시판 목록 처리
 	@GetMapping("/list")
 	public String listProcess(@RequestParam("page")int page, Model model) {  
 
-
-		int spage = 0;
+		int sPage = 0;
 		try {
-			spage = page;
+			sPage = page;
 		} catch (Exception e) {
-			spage = 1;
+			sPage = 1;
 		}
-		if(page <= 0) spage = 1;
+		if(page <= 0) sPage = 1;
 		
 
 		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
-		ArrayList<BoardDTO> result = getListdata(list, spage);
+		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
-		model.addAttribute("pagesu", getPageSu());
-		model.addAttribute("page", spage);
+		model.addAttribute("pageSu", getPageSu());
+		model.addAttribute("page", sPage);
 		
-		return "board-list";
+		return "board/board-list";
 	}
 	
 
 	@GetMapping("/listAdmin")
 	public String listAdminProcess(@RequestParam("page")int page, Model model) {
-		int spage = 0;
+		int sPage = 0;
 		try {
-			spage = page;
+			sPage = page;
 		} catch (Exception e) {
-			spage = 1;
+			sPage = 1;
 		}
-		if(page <= 0) spage = 1;
+		if(page <= 0) sPage = 1;
 		
 		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
-		ArrayList<BoardDTO> result = getListdata(list, spage);
+		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
-		model.addAttribute("pagesu", getPageSu());
-		model.addAttribute("page", spage);
+		model.addAttribute("pageSu", getPageSu());
+		model.addAttribute("page", sPage);
 		
-		return "board-list-admin";
+		return "board/board-list-admin";
 	}
 	
 	@GetMapping("/listUser")
 	public String listUserProcess(@RequestParam("page")int page, Model model) {
-		int spage = 0;
+		int sPage = 0;
 		try {
-			spage = page;
+			sPage = page;
 		} catch (Exception e) {
-			spage = 1;
+			sPage = 1;
 		}
-		if(page <= 0) spage = 1;
+		if(page <= 0) sPage = 1;
 		
 		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
-		ArrayList<BoardDTO> result = getListdata(list, spage);
+		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
-		model.addAttribute("pagesu", getPageSu());
-		model.addAttribute("page", spage);
+		model.addAttribute("pageSu", getPageSu());
+		model.addAttribute("page", sPage);
 		
-		return "board-list-user";
+		return "board/board-list-user";
 	}
 	
 	@GetMapping("/listOwner")
 	public String listOwnerProcess(@RequestParam("page")int page, Model model) {
-		int spage = 0;
+		int sPage = 0;
 		try {
-			spage = page;
+			sPage = page;
 		} catch (Exception e) {
-			spage = 1;
+			sPage = 1;
 		}
-		if(page <= 0) spage = 1;
+		if(page <= 0) sPage = 1;
 		
 		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
-		ArrayList<BoardDTO> result = getListdata(list, spage);
+		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
-		model.addAttribute("pagesu", getPageSu());
-		model.addAttribute("page", spage);
+		model.addAttribute("pageSu", getPageSu());
+		model.addAttribute("page", sPage);
 		
-		return "board-list-owner";
+		return "board/board-list-owner";
 	}
 
 	@PostMapping("board/search")
-	public String searchProcess(BoardBean bean, Model model) {
-		System.out.println(bean.getSearchName() + " " + bean.getSearchValue());
-		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.search(bean);
+	public String searchProcess(BoardDTO boardDTO, Model model) {
+		System.out.println(boardDTO.getSearchName() + " " + boardDTO.getSearchValue());
+		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.search(boardDTO);
 		
 		model.addAttribute("data", list);
-		model.addAttribute("pagesu", getPageSu());
+		model.addAttribute("pageSu", getPageSu());
 		model.addAttribute("page", "1");
-		return "board-list";
+		return "board/board-list";
 	}
 }

@@ -1,7 +1,5 @@
 @charset "utf-8";
 
-@import "reset.css";
-
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@700&display=swap');
@@ -9,7 +7,7 @@
 body {
     font-family: 'Noto Sans KR', sans-serif;
     display: flex;
-    flex-direction: column; /* 콘텐츠를 세로 중앙 정렬로 변경 */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background: url("../../images/userloginimg.jpg") no-repeat center;

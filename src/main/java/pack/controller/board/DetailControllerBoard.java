@@ -1,5 +1,6 @@
 package pack.controller.board;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,21 +15,22 @@ import pack.dao.board.BoardDAO;
 
 @Controller
 @RequestMapping("/board")
+@AllArgsConstructor
 public class DetailControllerBoard {
-	@Autowired
-	private BoardDAO daoImpl;
+
+	private final BoardDAO boardDAO;
 	
-	@GetMapping("detail")
+	@GetMapping("/detail")
 	public String detailProcess(
 			@RequestParam("num") String num,
 			@RequestParam("page") String page, Model model) {
 		// 조회수 증가 선행
-		daoImpl.updateReadcnt(num);
+		boardDAO.updateReadcnt(num);
 		
-		model.addAttribute("data", daoImpl.detail(num));
+		model.addAttribute("data", boardDAO.detail(num));
 		model.addAttribute("page", page);
 		
-		return "board-detail";
+		return "/board/board-detail";
 	}
 	
 	@RequestMapping("/detail")
@@ -37,21 +39,21 @@ public class DetailControllerBoard {
         if (session.getAttribute("admin") != null) {
             return "redirect:board/detailAdmin";
         } else {
-            return "board-detail";
+            return "/board/board-detail";
         }
     }
 	
 	
-	@GetMapping("detailAdmin")
+	@GetMapping("/detailAdmin")
 	public String detailAdminProcess(
 			@RequestParam("num") String num,
 			@RequestParam("page") String page, Model model) {
 		// 조회수 증가 선행
-		daoImpl.updateReadcnt(num);
+		boardDAO.updateReadcnt(num);
 		
-		model.addAttribute("data", daoImpl.detail(num));
+		model.addAttribute("data", boardDAO.detail(num));
 		model.addAttribute("page", page);
 		
-		return "detail-admin";
+		return "/board/board-detail";
 	}
 }

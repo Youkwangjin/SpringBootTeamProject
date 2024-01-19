@@ -1,11 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Error Page</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="/css/member/member.css"/>
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/board/board.css}">
+
+    <style>
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        body {
+            margin-bottom: 60px;
+        }
+    </style>
 </head>
+
 <body>
-에러 발생<br/>
-<a th:href="@{board_list(page=1)}">글 보기</a>
+<div th:if="${session.ownerSession != null}">
+    <div th:replace="~{fragments/header_owner :: header}"></div>
+    <main id="main">
+        <div class="breadcrumbs d-flex align-items-center"
+             style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+            <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+                <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">Service</h2>
+                <ol>
+                    <li><a href="/">Home</a></li>
+                    <li>서비스소개</li>
+                    <li>이용안내</li>
+                </ol>
+            </div>
+        </div>
+        <div style="background-color: white; color: black; text-align: center; padding: 10px; margin-top: 120px;">
+            <h4>파일 선택은 필수 사항입니다. 또한 확장자는 JPG, JPEG, PNG 만 가능합니다.</h4><br/>
+            <h4>오타 없이 다시 작성해주세요.</h4>
+            <a th:href="@{board_list(page=1)}">글 보기</a>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </main>
+</div>
 </body>
 </html>

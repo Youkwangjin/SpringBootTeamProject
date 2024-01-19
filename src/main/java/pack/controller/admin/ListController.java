@@ -33,11 +33,11 @@ public class ListController {
          return result;
     }
       
-      public int getuserPageSu() {
+      public int getUserPageSu() {
          tot = dataDao.totalUser();
-         int pagesu = tot / plist;
-         if(tot % plist > 0) pagesu += 1;
-         return pagesu;
+         int pageSu = tot / plist;
+         if(tot % plist > 0) pageSu += 1;
+         return pageSu;
       }
 
    @GetMapping("/user")
@@ -49,14 +49,14 @@ public class ListController {
       ArrayList<UserDTO> result = getUserListData(sList, sPage);
 
       
-      int user_records = dataDao.usercount();
+      int user_records = dataDao.userCount();
 
       model.addAttribute("lists", result);
-      model.addAttribute("pageSu", getuserPageSu());
+      model.addAttribute("pageSu", getUserPageSu());
       model.addAttribute("page", sPage);
       model.addAttribute("user_records", user_records);
        
-      return "../templates/user/user";
+      return "/user/user";
    }
    
    @PostMapping("userSearch")
@@ -67,76 +67,76 @@ public class ListController {
       ArrayList<UserDTO> userResult = getUserListData(userList, sPage);
       
       model.addAttribute("lists", userResult);
-      model.addAttribute("pageSu", getuserPageSu());
+      model.addAttribute("pageSu", getUserPageSu());
       model.addAttribute("page", sPage);
       return "/user/user";
    }
    
-   @PostMapping("userdelete")
+   @PostMapping("/userDelete")
    public String userDelete(@RequestParam("user_id")String user_id,
          @RequestParam(name = "page", defaultValue = "1") int page) {
-      if(dataDao.userdelete(user_id))
+      if(dataDao.userDelete(user_id))
          return "redirect:user?page=" + page;
       else
          return "redirect:error";
    }
 
-   public ArrayList<OwnerDTO> getownerListData(ArrayList<OwnerDTO> list, int page){
-         ArrayList<OwnerDTO> ownresult = new ArrayList<OwnerDTO>();
+   public ArrayList<OwnerDTO> getOwnerListData(ArrayList<OwnerDTO> list, int page){
+         ArrayList<OwnerDTO> ownerResult = new ArrayList<OwnerDTO>();
          
          int start = (page - 1) * plist;
          int end = Math.min(start + plist, list.size());
          
          for (int i = start; i < end; i++) {
-            ownresult.add(list.get(i));
+             ownerResult.add(list.get(i));
          }
-         return ownresult;
+         return ownerResult;
       }
       
-      public int getownerPageSu() {
+      public int getOwnerPageSu() {
          tot = dataDao.totalOwner();
-         int pagesu = tot / plist;
-         if(tot % plist > 0) pagesu += 1;
-         return pagesu;
+         int pageSu = tot / plist;
+         if(tot % plist > 0) pageSu += 1;
+         return pageSu;
       }
 
    @GetMapping("/owner")
-   public String ownerlist(@RequestParam("page")int page, Model model) {
-      int spage = page;
-       if (page <= 0) spage = 1;
+   public String ownerList(@RequestParam("page")int page, Model model) {
+      int Spage = page;
+       if (page <= 0) Spage = 1;
       
-      ArrayList<OwnerDTO> ownerlist = (ArrayList<OwnerDTO>)dataDao.getOwnerAll();
-      ArrayList<OwnerDTO> ownerresult = getownerListData(ownerlist, spage);
+      ArrayList<OwnerDTO> ownerList = (ArrayList<OwnerDTO>)dataDao.getOwnerAll();
+      ArrayList<OwnerDTO> ownerResult = getOwnerListData(ownerList, Spage);
       
-      int owner_records = dataDao.getownerrecords();
+      int owner_records = dataDao.getOwnerRecords();
       
-      model.addAttribute("lists2", ownerresult);
-      model.addAttribute("pagesu", getownerPageSu());
-      model.addAttribute("page", spage);
+      model.addAttribute("lists2", ownerResult);
+      model.addAttribute("pageSu", getOwnerPageSu());
+      model.addAttribute("page", Spage);
       model.addAttribute("owner_records",owner_records);
-      return "../templates/owner/owner";
+      return "/owner/owner";
    }
    
-   @PostMapping("ownersearch")
-   public String ownersearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {  //넘어가니까 Model 사용
-      int spage = page;
-       if (page <= 0) spage = 1 ;
+   @PostMapping("/ownerSearch")
+   public String ownerSearch(@RequestParam(name = "page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {  //넘어가니까 Model 사용
+      int Spage = page;
+       if (page <= 0) Spage = 1 ;
       
-      ArrayList<OwnerDTO> slist2 = (ArrayList<OwnerDTO>)dataDao.getOwnerSearch(bean);
-      ArrayList<OwnerDTO> result = getownerListData(slist2, spage);
+      ArrayList<OwnerDTO> sList2 = (ArrayList<OwnerDTO>)dataDao.getOwnerSearch(bean);
+      ArrayList<OwnerDTO> result = getOwnerListData(sList2, Spage);
       
       model.addAttribute("lists2", result);
-      model.addAttribute("pagesu", getownerPageSu());
-      model.addAttribute("page", spage);
+      model.addAttribute("pageSu", getOwnerPageSu());
+      model.addAttribute("page", Spage);
       
       return "../templates/owner/owner";
    }
 
-   @PostMapping("ownerdelete")
-   public String ownerdel(@RequestParam("business_num") String business_num,
+   @PostMapping("/ownerDelete")
+   public String ownerDel(@RequestParam("business_num") String business_num,
            @RequestParam(name = "page", defaultValue = "1") int page) {
        try {
-           if (dataDao.ownerdelete(business_num)) {
+           if (dataDao.ownerDelete(business_num)) {
                return "redirect:owner?page=" + page;
            } else {
                return "redirect:error";
@@ -147,53 +147,53 @@ public class ListController {
    }
 
 
-   public ArrayList<ContainerDTO> getregisteredListData(ArrayList<ContainerDTO> list, int page){
-         ArrayList<ContainerDTO> regresult = new ArrayList<ContainerDTO>();
+   public ArrayList<ContainerDTO> getRegisteredListData(ArrayList<ContainerDTO> list, int page){
+         ArrayList<ContainerDTO> regResult = new ArrayList<ContainerDTO>();
          
          int start = (page - 1) * plist;
          int end = Math.min(start + plist, list.size());
          
          for (int i = start; i < end; i++) {
-            regresult.add(list.get(i));
+             regResult.add(list.get(i));
          }
-         return regresult;
+         return regResult;
       }
       
-      public int getregisteredPageSu() {
+      public int getRegisteredPageSu() {
          tot = dataDao.totalRegistered();
-         int pagesu = tot / plist;
-         if(tot % plist > 0) pagesu += 1;
-         return pagesu;
+         int pageSu = tot / plist;
+         if(tot % plist > 0) pageSu += 1;
+         return pageSu;
       }
    
    
    @GetMapping("/registered")
-   public String registeredlist(@RequestParam(name = "page", required = false, defaultValue = "1") int page,Model model) {
-      int spage = page;
-       if (page <= 0) spage = 1;
+   public String registeredList(@RequestParam(name = "page", required = false, defaultValue = "1") int page,Model model) {
+      int Spage = page;
+       if (page <= 0) Spage = 1;
        
-      ArrayList<ContainerDTO> slist3 = (ArrayList<ContainerDTO>)dataDao.getConAll();
-      ArrayList<ContainerDTO> result = getregisteredListData(slist3, spage);
+      ArrayList<ContainerDTO> sList3 = (ArrayList<ContainerDTO>)dataDao.getConAll();
+      ArrayList<ContainerDTO> result = getRegisteredListData(sList3, Spage);
       
       model.addAttribute("lists3", result);
-      model.addAttribute("pagesu", getregisteredPageSu());
-      model.addAttribute("page", spage);
-      return "admin/cont_registered";
+      model.addAttribute("pageSu", getRegisteredPageSu());
+      model.addAttribute("page", Spage);
+      return "admin/admin-cont-registered";
    }
    
-   @PostMapping("regsearch")
-   public String regsearch(@RequestParam(name="page", required = false, defaultValue = "1")int page, FormDTO bean, Model model) {
-      int spage = page;
-      if(page <= 0) spage = 1;
+   @PostMapping("/regSearch")
+   public String regSearch(@RequestParam(name="page", required = false, defaultValue = "1")int page, FormDTO formDTO, Model model) {
+      int sPage = page;
+      if(page <= 0) sPage = 1;
       
-      ArrayList<ContainerDTO> slist3 = (ArrayList<ContainerDTO>)dataDao.getRegSearch(bean);
-      ArrayList<ContainerDTO> result = getregisteredListData(slist3, spage);
+      ArrayList<ContainerDTO> sList3 = (ArrayList<ContainerDTO>)dataDao.getRegSearch(formDTO);
+      ArrayList<ContainerDTO> result = getRegisteredListData(sList3, sPage);
       
       model.addAttribute("lists3", result);
-      model.addAttribute("pagesu", getregisteredPageSu());
-       model.addAttribute("page", spage);
+      model.addAttribute("pageSu", getRegisteredPageSu());
+       model.addAttribute("page", sPage);
       
-      return "../templates/admin/cont_registered";
+      return "/admin/admin-cont-registered";
    }
 
 }

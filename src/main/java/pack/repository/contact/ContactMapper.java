@@ -18,10 +18,10 @@ public interface ContactMapper {
 	
 	@Select("select count(*) from contact")
 	int totalContact();
-	
-	@Insert("insert into contact values((select max(contact_no)+1 from contact ali),#{contact_name},#{contact_email},#{contact_title},#{contact_message},now(),#{contact_status})")
+
+	@Insert("insert into contact values(coalesce((select max(contact_no)+1 from contact ali), 1),#{contact_name},#{contact_email},#{contact_title},#{contact_message},now(),#{contact_status})")
 	int insertContact(ContactDTO contactDTO);
-	
+
 	@Select("select * from contact where contact_no=#{contact_no} order by contact_date desc")
     ContactDTO detailContact(String contact_no);
 	

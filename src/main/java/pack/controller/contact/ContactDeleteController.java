@@ -1,5 +1,6 @@
 package pack.controller.contact;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pack.dao.contact.ContactDAO;
 
 @Controller
-public class ContactDeleteController {  // contact에서 질문 삭제
+@AllArgsConstructor
+public class ContactDeleteController {
+
+    private final ContactDAO contactDao;
 	
-	@Autowired
-    ContactDAO contactDao;
-	
-	@GetMapping("contactdelete")
+	@GetMapping("/contactDelete")
 	public String delete(@RequestParam("contact_no")String contact_no) {
 		boolean b = contactDao.deleteContact(contact_no);
 	      if(b)
-	    	 return "redirect:/contactadmin?page=1";
+	    	 return "redirect:/contactAdmin?page=1";
 	      else
-	         return "error";
+	         return "/container/container-error";
 	   }
 }

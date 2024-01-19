@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 창고대여</title>
-    <link href="../assets/img/favicon.png" rel="icon">
-    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="/assets/img/favicon.png" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -17,12 +16,12 @@
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/booking.css">
+    <link rel="stylesheet" href="/css/booking/booking.css">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var queryString = window.location.search;
-            var urlParams = new URLSearchParams(queryString);
-            var contNo = urlParams.get('con_no');
+            let queryString = window.location.search;
+            let urlParams = new URLSearchParams(queryString);
+            let contNo = urlParams.get('con_no');
             document.getElementById('cont_no').value = contNo;
         });
     </script>
@@ -32,9 +31,8 @@
 <main id="container">
     <div class="booking-box">
         <div>
-            <form action="../booking/bookingDo" method="post" class="cf" name="select">
+            <form action="/booking/bookingDo" method="post" class="cf" name="select">
                 <input type="hidden" name="user_id" id="userId" th:value="${session.userSession.user_id}"/>
-
                 <div id="date-group">
                     <div id="start-date">
                         <label for="start-day">시작일자</label> <input type="date" name="booking_date_start" id="start-day"
@@ -47,8 +45,9 @@
                 </div>
                 <label for="book-name">예약자
                     <input type="text" name="user_name" id="book-name" th:value="${session.userSession.user_name}"
-                           required="required" readonly="readonly"></label>
-                <label for="cont_no">창고번호</label> <input type="text" name="cont_no" id="cont_no" readonly="readonly"/>
+                           required="required" readonly="readonly">
+                </label>
+                <label for="cont_no">창고번호</label><input type="text" name="cont_no" id="cont_no" readonly="readonly"/>
                 <label for="stringSize">사이즈</label>
                 <select name="cont_size" id="stringSize"
                         onchange="checkPrice()">
@@ -57,10 +56,9 @@
                     <option value="6000">중 (30 x 30 x 60(cm) 이내)</option>
                     <option value="7000">대 (50 x 50 x 80(cm) 이내)</option>
                 </select>
-                <label for="intMoney">이용요금
+                <label for="intMoney">이용요금</label>
                     <input type="text" name="booking_price" id="intMoney"
                            class="totalPay" readonly>
-                </label>
                 <div class="btn-div">
                     <button type="submit" id="next-btn" onclick="insertOpt()" style="color: #3781E3;">예약하기</button>
                 </div>

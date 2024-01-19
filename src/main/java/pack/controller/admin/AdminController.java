@@ -29,20 +29,20 @@ public class AdminController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/adminSessionKeep")
+	public String adminSessionKeep(HttpSession session) {
+		AdminDTO adminSession = (AdminDTO) session.getAttribute("adminSession");
+		if (adminSession != null) {
+			return "admin/admin-loginok";
+		} else {
+			return "/index/index";
+		}
+	}
+
 	@PostMapping("adminLoginOk")
 	public String processLoginForm(@RequestParam("admin_id") String admin_id,
 								   @RequestParam("admin_pwd") String admin_pwd,
 								   HttpSession session){
 		return adminService.processLogin(admin_id, admin_pwd, session);
-	}
-
-	@GetMapping("/adminSessionKeep")
-	public String adminSessionKeep(HttpSession session) {
-		AdminDTO adminSession = (AdminDTO) session.getAttribute("adminSession");
-	    if (adminSession != null) {
-	        return "admin/admin-loginok";
-	    } else {
-	    	return "/index/index";
-	    }
 	}
 }

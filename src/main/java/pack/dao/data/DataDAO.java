@@ -16,7 +16,6 @@ import pack.dto.user.UserDTO;
 
 @Repository
 public class DataDAO {
-   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
    @Autowired
    private DataMapper dataMapper;
@@ -25,89 +24,70 @@ public class DataDAO {
    }
    // User 정보 출력하기
    public List<UserDTO> getUserAll(){
-      List<UserDTO> list = dataMapper.selectAll();
-      logger.info("Userdatas1 : " + list.size() + "개");
-      return list;
+       return dataMapper.selectUser();
    }
    public List<UserDTO> getUserSearch(FormDTO formDTO){
-      List<UserDTO> list = (List<UserDTO>)dataMapper.selectSearch(formDTO);
-      return list;
+       return (List<UserDTO>)dataMapper.selectUserSearch(formDTO);
    }
-   
    public int totalUser() {
 	      return dataMapper.totalUser();
    }
    
-   public boolean userdelete(String user_id) {
+   public boolean userDelete(String user_id) {
 		boolean b = false;
-		int re = dataMapper.userdeleteData(user_id);
+		int re = dataMapper.userDeleteData(user_id);
 		if (re > 0)
 			b = true;
 		return b;
 	}
    
-   public int usercount() {
+   public int userCount() {
        
-       return dataMapper.usercount();
+       return dataMapper.userCount();
    }
 
    // Owner 정보 출력 및 검색하기
    public List<OwnerDTO> getOwnerAll(){
-      List<OwnerDTO> list2 = dataMapper.selectAll2();  // sql문이 실행
-      logger.info("Ownerdatas2 : " + list2.size() + "개");
-      return list2;
+       return dataMapper.selectOwner();
    }
    
-   public List<OwnerDTO> getOwnerSearch(FormDTO formDTO){   // 검색용
-      List<OwnerDTO> list = (List<OwnerDTO>)dataMapper.selectSearch2(formDTO); // sql문이 실행
-      logger.info("Ownersearch datas : " + list.size() + "개");
-      return list;
+   public List<OwnerDTO> getOwnerSearch(FormDTO formDTO){
+       return (List<OwnerDTO>)dataMapper.selectOwnerSearch(formDTO);
    }
    
    public int totalOwner() {
-	      return dataMapper.ownerrecords();
+	      return dataMapper.ownerRecords();
    }
    
-   public boolean ownerdelete(String business_num) {
+   public boolean ownerDelete(String business_num) {
 		boolean b = false;
-		int re = dataMapper.ownerdeleteData(business_num);
+		int re = dataMapper.ownerDeleteData(business_num);
 		if (re > 0)
 			b = true;
 		return b;
 	}
    
-   public int getownerrecords() {
-       
-       return dataMapper.ownerrecords();
+   public int getOwnerRecords() {
+       return dataMapper.ownerRecords();
    }
-  
-   // Container 정보 출력 및 검색하기
+
    public List<ContainerDTO> getConAll(){
-      List<ContainerDTO> list3 = dataMapper.selectAll3();  // sql문이 실행
-      logger.info("datas3 : " + list3.size() + "개");
-      return list3;
+       return dataMapper.selectContainer();
    }
    
    public int totalRegistered() {
 	      return dataMapper.totalContainer();
    }
    
-   public List<ContainerDTO> getRegSearch(FormDTO formDTO){   // 검색용
-	      List<ContainerDTO> list = (List<ContainerDTO>)dataMapper.selectSearch3(formDTO); // sql문이 실행
-	      logger.info("Regsearch datas : " + list.size() + "개");
-	      return list;
+   public List<ContainerDTO> getRegSearch(FormDTO formDTO){
+       return (List<ContainerDTO>)dataMapper.selectContainerSearch(formDTO);
 	   }
-   
-   // Cotainer 세부정보 보기 및 수정 삭제하기
-   public ContainerDTO condetail(String cont_no) {  // 상세보기용
-      
-       ContainerDTO containerDto = dataMapper.selectOne(cont_no);
-       return containerDto;
-   }
 
-   
-   @Transactional  // detail.html에서 삭제버튼 누르면 삭제하도록 하기
-      public boolean condelete(String cont_no) {
+   public ContainerDTO containerDetail(String cont_no) {
+       return dataMapper.selectOne(cont_no);
+   }
+   @Transactional
+      public boolean containerDelete(String cont_no) {
          boolean b = false;
          int re = dataMapper.delete(cont_no);
          if (re > 0)
@@ -115,12 +95,7 @@ public class DataDAO {
          
          return b;
       }
-   
-   // 사용한 창고 정보 출력 및 검색하기
-      public List<ContainerDTO> getUserCon(){
-         List<ContainerDTO> list4 = dataMapper.selectAll4();  // sql문이 실행
-         logger.info("datas4 : " + list4.size() + "개");
-         return list4;
+      public List<ContainerDTO> getUserContainer(){
+          return dataMapper.selectMyContainer();
       }
-
 }

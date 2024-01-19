@@ -1,87 +1,91 @@
 package pack.dao.board;
 
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import pack.controller.board.BoardBean;
 import pack.dto.board.BoardDTO;
 import pack.repository.data.DataMapping;
 
 
 @Repository
+@AllArgsConstructor
 public class BoardDAO {
 
-	@Autowired
-	private DataMapping dataInterface;
+	private final DataMapping dataMapping;
 
 	public List<BoardDTO> listAll() {
-		List<BoardDTO> list = dataInterface.selectList();
+		List<BoardDTO> list = dataMapping.selectList();
+		System.out.println(list);
 		return list;
 	}
 
-	public List<BoardDTO> search(BoardBean bean) {
-		List<BoardDTO> list = dataInterface.searchList(bean);
+	public List<BoardDTO> search(BoardDTO boardDTO) {
+		List<BoardDTO> list = dataMapping.searchList(boardDTO);
+		System.out.println(list);
 		return list;
 	}
 
 	public int totalCnt() {
-		return dataInterface.totalCnt();
+		return dataMapping.totalCnt();
 	}
 
-	public boolean insert(pack.controller.board.BoardBean bean) {
+	public boolean insert(BoardDTO boardDTO) {
 		boolean b = false;
-		int re = dataInterface.insertData(bean);
+		int re = dataMapping.insertData(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;
 	}
 
 	public int currentNum() {
-		return dataInterface.currentNum();
+		return dataMapping.currentNum();
 	}
 
 	public void updateReadcnt(String num) {
-		dataInterface.updateReadcnt(num);
+		dataMapping.updateReadCnt(num);
 	}
 
 	public BoardDTO detail(String num) {
-		BoardDTO dto = dataInterface.selectOne(num);
-		return dto;
+		BoardDTO boardDTO = dataMapping.selectOne(num);
+		System.out.println(boardDTO);
+		return boardDTO;
 	}
 
-	public boolean update(pack.controller.board.BoardBean bean) {
+	public boolean update(BoardDTO boardDTO) {
 		boolean b = false;
-		int re = dataInterface.updateData(bean);
+		int re = dataMapping.updateData(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;
 	}
 
 	public String selectPass(String num) { // 수정시 비밀번호 비교용
-		return dataInterface.selectPass(num);
+		return dataMapping.selectPass(num);
 	}
 
 	public boolean delete(String num) {
 		boolean b = false;
-		int re = dataInterface.deleteData(num);
+		int re = dataMapping.deleteData(num);
 		if (re > 0)
 			b = true;
 		return b;
 	}
 
 	// 댓글
-	public boolean updateOnum(pack.controller.board.BoardBean bean) {
+	public boolean updateOnum(BoardDTO boardDTO) {
 		// 댓글에서 onum 갱신
 		boolean b = false;
-		int re = dataInterface.updateOnum(bean);
+		int re = dataMapping.updateOnum(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;
 	}
 
-	public boolean insertReply(pack.controller.board.BoardBean bean) {
+	public boolean insertReply(BoardDTO boardDTO) {
 		boolean b = false;
-		int re = dataInterface.insertReData(bean);
+		int re = dataMapping.insertReData(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;

@@ -1,30 +1,22 @@
 package pack.controller.container;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
 import pack.dao.container.ContainDAO;
 import pack.dto.container.ContainerDTO;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -35,32 +27,30 @@ import pack.dto.upload.UploadFileDTO;
 
 @Controller
 @RequestMapping(value = "owner")
+@AllArgsConstructor
 public class ContainerController {
 
-	@Autowired
-	private ContainDAO containDao;
 
-	@GetMapping("/ownerMain")
-	public String main() {
-		return "container/ownerMain";
-	}
+	private final ContainDAO containDao;
+
 
 	@GetMapping("/paid")
 	public String cont_pay() {
-		return "container-paid";
+		return "container/container-paid";
 	}
 
 	@GetMapping("/register")
 	public String cont_regs() {
-		return "container-register";
+		return "container/container-register";
 	}
+
 
 	@GetMapping("/list")
 	public String cont_mgr(Model model, HttpSession session) {
 		String business_num = (String) session.getAttribute("business_num");
-		ArrayList<ContainerDTO> clist = (ArrayList<ContainerDTO>) containDao.getDataAll(business_num);
-		model.addAttribute("datas", clist);
-		return "container-list";
+		ArrayList<ContainerDTO> cList = (ArrayList<ContainerDTO>) containDao.getDataAll(business_num);
+		model.addAttribute("datas", cList);
+		return "container/container-list";
 	}
 	
 	@GetMapping("/reserve")
@@ -68,7 +58,7 @@ public class ContainerController {
 		String business_num = (String) session.getAttribute("business_num");
 		ArrayList<ContainerDTO> rlist = (ArrayList<ContainerDTO>) containDao.getDataReserve(business_num);
 		model.addAttribute("datas", rlist);
-		return "containe-reserve";
+		return "container/container-reserve";
 	}
 
 
@@ -120,93 +110,81 @@ public class ContainerController {
         }
         return false;
     }
-	
-	@PostMapping("insert")
-	   public String insertSubmit(ContainerDTO containerDTO, UploadFileDTO uploadFileDTO, BindingResult result, HttpSession session) {
 
-	      String business_num = (String) session.getAttribute("business_num");
-	      InputStream inputStream = null;
-	      OutputStream outputStream = null;
+	@PostMapping("/insert")
+	public String insertSubmit(@ModelAttribute ContainerDTO containerDTO, UploadFileDTO uploadFileDTO, BindingResult result, HttpSession session) {
+		if (result.hasErrors()) {
+			return "container/container-error";
+		}
 
-	      MultipartFile file = uploadFileDTO.getFile();
-	      
-	      String originalFilename = file.getOriginalFilename();
-	      String randomFilename = UUID.randomUUID().toString();;
-	      
-	      if (!isAllowedExtension(originalFilename)) {
-	          return "errorExtension";
-	      }
-	      
-	      String fileExtension = "";
-	      
-	      if (originalFilename != null && originalFilename.contains(".")) {
-	         fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-	      }
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
 
-	      if (originalFilename != null && !originalFilename.isEmpty()) {
+		try {
+			MultipartFile file = uploadFileDTO.getFile();
+			String originalFilename = file.getOriginalFilename();
+			String randomFilename = UUID.randomUUID().toString();
 
-	    	    randomFilename = originalFilename.substring(0, originalFilename.lastIndexOf('.')) + "_" + randomFilename + fileExtension;
-	    	} else {
-	    	    randomFilename += fileExtension;
-	    	}
+			String fileExtension = "";
+			if (originalFilename != null && originalFilename.contains(".")) {
+				fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+			}
 
-	      if (result.hasErrors()) {
-	         return "errorFile";
-	      }
+			if (originalFilename != null && !originalFilename.isEmpty()) {
+				randomFilename = originalFilename.substring(0, originalFilename.lastIndexOf('.')) + "_" + randomFilename + fileExtension;
+			} else {
+				randomFilename += fileExtension;
+			}
 
-	      try {
-	         inputStream = file.getInputStream();
+			String fileSavePath = "C:/work/AcornProject/src/main/resources/static/upload/" + randomFilename;
 
-			// 추후 경로 수정 필요!
-	         String fileSavePath = "C:/Users/kwang/git/Team/src/main/resources/static/upload/" + randomFilename;
+			File directory = new File(fileSavePath).getParentFile();
+			if (!directory.exists()) {
+				directory.mkdirs(); // 상위 디렉터리 생성
+			}
 
-	         File newFile = new File(fileSavePath);
-	         if (!newFile.exists()) {
-	            newFile.createNewFile();
-	         }
+			File newFile = new File(fileSavePath);
+			if (!newFile.exists()) {
+				newFile.createNewFile();
+			}
 
-	         outputStream = new FileOutputStream(newFile);
-	         int read = 0;
-	         byte[] bytes = new byte[1024];
-	         while ((read = inputStream.read(bytes)) != -1) {
-	            outputStream.write(bytes, 0, read);
-	         }
-			  containerDTO.setCont_image(randomFilename);
-	         
-	      } catch (Exception e) {
-	         System.out.println("file submit err : " + e);
-	         return "err";
-	      } finally {
-	         try {
-                 assert inputStream != null;
-                 inputStream.close();
-                 assert outputStream != null;
-                 outputStream.close();
-	         } catch (Exception e2) {
-	            // TODO: handle exception
-	         }
-	      }
+			inputStream = file.getInputStream();
+			outputStream = new FileOutputStream(newFile);
+			int read = 0;
+			byte[] bytes = new byte[1024];
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			containerDTO.setCont_image(randomFilename);
 
-	      boolean b = containDao.insertContainer(containerDTO);
+			boolean isInserted = containDao.insertContainer(containerDTO);
+			if (!isInserted) {
+				throw new Exception("Database insert failed");
+			}
+		} catch (Exception e) {
+			return "container/container-error";
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-
-	      String address = containerDTO.getCont_addr();
-	      double[] coordinates = getCoordinatesFromAddress(address);
-		containerDTO.setCont_we(coordinates[0]);
-		containerDTO.setCont_kyung(coordinates[1]);
-	      if (b) {
-	         return "redirect:/owner/list";
-	      } else {
-	         return "error";
-	      }
-	   }
+		}
+		return "redirect:/owner/list";
+	}
 
 	@GetMapping("/detail")
 	public String conDetail(@RequestParam("cont_no") String cont_no, Model model) {
 		ContainerDTO conDto = containDao.conDetail(cont_no);
 		model.addAttribute("conDto", conDto);
 
-		return "container-detail";
+		return "container/container-detail";
 	}
 	
 	
@@ -215,25 +193,26 @@ public class ContainerController {
 	public String cont_update(@RequestParam("cont_no") String cont_no, Model model) {
 		ContainerDTO conDto = containDao.conDetail(cont_no);
 		model.addAttribute("conDto", conDto);
-		return "container-update";
+		return "container/container-update";
 	}
 
 	@PostMapping("update")
 	public String update(ContainerDTO containerDTO) {
-		boolean b = containDao.update(containerDTO);
+		boolean b = containDao.updateContainer(containerDTO);
 		if (b)
 			return "redirect:/owner/list"; // 수정 후 목록보기
 		else
-			return "error";
+			return "container/container-error";
 	}
 	
 
 	@GetMapping("delete")
 	public String delete(@RequestParam("cont_no") String cont_no) {
-		boolean b = containDao.delete(cont_no);
+		boolean b = containDao.deleteContainer(cont_no);
 		if (b)
 			return "redirect:/owner/list"; // 수정 후 목록보기
 		else
-			return "error";
+			return "container/container-error";
 	}
+
 }

@@ -13,7 +13,6 @@
     <title>Insert title here</title>
     <script>
         window.onload = function () {
-
             let approveButtonIds = ["btnApprove0", "btnApprove1", "btnApprove2", "btnApprove3", "btnApprove4"];
             for (let i = 0; i < approveButtonIds.length; i++) {
                 let approveId = approveButtonIds[i];
@@ -21,14 +20,13 @@
                 if (button) {
                     button.onclick = function () {
                         if (confirm("승인 하시겠습니까?")) {
-                            frm.action = "apprProcess";
+                            frm.action = "/apprProcess";
                             frm.method = "post";
                             frm.submit();
                         }
                     };
                 }
             }
-
             let denyButtonIds = ["btnDeny0", "btnDeny1", "btnDeny2", "btnDeny3", "btnDeny4"];
             for (let i = 0; i < denyButtonIds.length; i++) {
                 let denyId = denyButtonIds[i];
@@ -36,7 +34,7 @@
                 if (button) {
                     button.onclick = function () {
                         if (confirm("거절 하시겠습니까?")) {
-                            frm.action = "denyProcess";
+                            frm.action = "/denyProcess";
                             frm.method = "post";
                             frm.submit();
                         }
@@ -44,10 +42,8 @@
                 }
             }
             document.querySelector("#btnList").onclick = function () {
-                //alert("a");
                 location.href = "/registered";
             }
-
             let deleteButtonIds = ["btnDelete0", "btnDelete1", "btnDelete2", "btnDelete3", "btnDelete4"];
             for (let i = 0; i < deleteButtonIds.length; i++) {
                 let deleteId = deleteButtonIds[i];
@@ -55,7 +51,7 @@
                 if (button) {
                     button.onclick = function () {
                         if (confirm("정말 삭제할까요?")) {
-                            frm.action = "delete";
+                            frm.action = "/delete";
                             frm.method = "get";
                             frm.submit();
                         }
@@ -79,7 +75,7 @@
     <div th:replace="~{fragments/header_admin :: header}"></div>
     <h3>** 상세보기 **</h3>
     <form name="frm" th:object="${containerDTO}">
-        <input type="hidden" th:field="*{cont_no}"/>
+        <input type="hidden" name="frm" th:field="*{cont_no}"/>
         <br/>
         <div class="container-box">
             창고번호 : [[${containerDTO.cont_no}]]<br/>

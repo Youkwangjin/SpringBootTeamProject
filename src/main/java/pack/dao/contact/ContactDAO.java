@@ -2,20 +2,21 @@ package pack.dao.contact;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pack.dto.contact.ContactDTO;
 import pack.repository.contact.ContactMapper;
 
 @Repository
+@AllArgsConstructor
 public class ContactDAO {
 
-	@Autowired
-	private ContactMapper contactMapper;
+	private final ContactMapper contactMapper;
 	
 	public List<ContactDTO> listContact(){
 		List<ContactDTO> list = contactMapper.selectContact();
+		System.out.println(list);
 		return list;
 	}
 	

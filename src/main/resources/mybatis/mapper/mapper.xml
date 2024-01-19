@@ -7,7 +7,7 @@
 		select * from notice_board order by bdate desc
 	</select>
 	
-	<select id="searchList" parameterType="pack.controller.board.BoardBean" resultType="pack.dto.board.BoardDTO">
+	<select id="searchList" parameterType="pack.dto.board.BoardDTO" resultType="pack.dto.board.BoardDTO">
 		select * from notice_board
 		where ${searchName} like concat('%', #{searchValue}, '%')
 		order by gnum desc, onum asc
@@ -17,17 +17,17 @@
 		select * from notice_board where num=#{num}
 	</select>
 	
-	<insert id="insertData" parameterType="pack.controller.board.BoardBean">
+	<insert id="insertData" parameterType="pack.dto.board.BoardDTO">
      	insert into notice_board (num, admin_id, title, cont, bdate, readcnt, gnum)
      	values (#{num}, #{admin_id}, #{title}, #{cont}, #{bdate}, 0, #{gnum})
  	</insert>
 
-	<update id="updateReadcnt" parameterType="string">
+	<update id="updateReadCnt" parameterType="string">
 		update notice_board set readcnt=readcnt + 1 
 		where num=#{num}
 	</update>
 	
-	<update id="updateData" parameterType="pack.controller.board.BoardBean">
+	<update id="updateData" parameterType="pack.dto.board.BoardDTO">
 		update notice_board set title=#{title},cont=#{cont}
 		where num=#{num}
 	</update>
@@ -52,12 +52,13 @@
 	</select>
 	
 	<!-- reply -->
-	<update id="updateOnum" parameterType="pack.controller.board.BoardBean">
+	<update id="updateOnum" parameterType="pack.dto.board.BoardDTO">
 		update notice_board set onum=onum + 1
 		where onum >= #{onum} and gnum=#{gnum}
 	</update>
 	
-	<insert id="insertReData" parameterType="pack.controller.board.BoardBean">
+	<insert id="insertReData" parameterType="pack.dto.board.BoardDTO">
 		insert into notice_board values(#{num},#{title},#{cont},#{bdate},0,#{gnum},#{onum},#{nested})
 	</insert>
+
 </mapper>

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/board")
 public class ErrorController {
-	@GetMapping("error")
-	public String err() {
-		return "board-error";
+	@GetMapping("/error")
+	public String error() {
+		return "board/board-error";
 	}
 }
