@@ -23,15 +23,15 @@ public class ApproveController {
 	
 	@GetMapping("/detail")
 	public String detail(@RequestParam("cont_no")String cont_no, Model model) {
-		ContainerDTO containerDto = dataDao.condetail(cont_no);
-		model.addAttribute("containerDto",containerDto);
-		return "/admin/cont_approve";
+		ContainerDTO containerDto = dataDao.containerDetail(cont_no);
+		model.addAttribute("containerDTO",containerDto);
+		return "/admin/admin-cont-approve";
 	}
 	
 	
 	@PostMapping("/apprProcess")
 	public String approveProcess(AdminDTO adminDTO) {
-		System.out.println("bean" + adminDTO);
+		System.out.println("adminDTO" + adminDTO);
 		boolean b = adminDao.approve(adminDTO);
 		 System.out.println("b" + b); 
 		if (b)
@@ -42,7 +42,7 @@ public class ApproveController {
 	
 	@PostMapping("/denyProcess")
 	public String denyProcess(AdminDTO adminDTO) {
-		System.out.println("bean" + adminDTO);
+		System.out.println("adminDTO" + adminDTO);
 		boolean b = adminDao.deny(adminDTO);
 		 System.out.println("b" + b); 
 		if (b)

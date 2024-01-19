@@ -38,7 +38,7 @@
         </div>
         <section>
             <div class="board-detail">
-                <form action="update" method="post" name="upFrm" th:object="${data}">
+                <form action="/board/update" method="post" name="upFrm" th:object="${data}">
                     <input type="hidden" th:field="*{num}">
                     <input type="hidden" name="page" th:value="${page}">
                     <table border="1" style="width: 80%;  margin: 0 auto;">

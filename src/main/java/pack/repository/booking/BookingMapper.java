@@ -31,7 +31,4 @@ public interface BookingMapper {
 	@Update("update container set cont_status='2' where cont_no=#{cont_no}")
 	int contStatusUpdate(AdminDTO adminDTO);
 
-
-
-
 }

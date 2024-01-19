@@ -53,7 +53,7 @@
                     <td th:text="${data2.owner_tel}"></td>
                     <td th:text="${data2.email}"></td>
                     <td>
-                        <form action="/ownerdelete" method="post">
+                        <form action="/ownerDelete" method="post">
                             <input type="hidden" name="business_num" th:value="${data2.business_num}"/>
                             <input type="submit" value="삭제" class="delete-button"
                                    onclick="if(!confirm('삭제하시면 복구할 수 없습니다. \n 정말로 삭제하시겠습니까?')){return false;}"/>
@@ -64,7 +64,7 @@
         </table>
         <br/><br/>
         <div style="text-align: center;">
-            <form action="/ownersearch" method="post">
+            <form action="/ownerSearch" method="post">
                 검색 대상:
                 <label>
                     <select name="searchName" style="width: 130px;">
@@ -80,7 +80,7 @@
         <table style="margin-top: 20px;">
             <tr style="text-align: center;">
                 <td colspan="5">
-                    <th:block th:each="num : ${#numbers.sequence(1, pagesu)}">
+                    <th:block th:each="num : ${#numbers.sequence(1, pageSu)}">
                         <th:span th:if="${num == page}">
                             <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
                         </th:span>

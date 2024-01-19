@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-
 <head>
     <title>예약 정보 확인</title>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
@@ -16,10 +15,9 @@
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link href="../assets/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/bookingInfo.css">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/booking/booking-info.css">
 </head>
-
 <body>
 <div th:replace="~{fragments/header_user :: header}">
     <div id="booking-info">
@@ -58,11 +56,10 @@
                     </div>
                 </div>
                 <button type="button" id="cancel-btn" onclick="location.href='booking'">취소하기</button>
-                <button type="button" id="main-btn" onClick="location.href='/usersessionkeep'">메인으로
-                    돌아가기
+                <button type="button" id="main-btn" onClick="location.href='/userSessionKeep'">메인으로 돌아가기
                 </button>
             </div>
-            <script src="../js/bookingInfo.js"></script>
+            <script src="/js/booking/booking-info.js"></script>
         </main>
     </div>
 </div>

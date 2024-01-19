@@ -3,7 +3,7 @@ package pack.dao.booking;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +13,10 @@ import pack.repository.booking.BookingMapper;
 
 
 @Repository
+@AllArgsConstructor
 public class BookingDAO {
 
-	@Autowired
-	private BookingMapper bookingMapper;
+	private final BookingMapper bookingMapper;
 
 	@Transactional
 	public boolean bookingInsert(bookingDTO bookingdto) {
@@ -26,7 +26,6 @@ public class BookingDAO {
 			if (re > 0) {
 				b = true;
 			}
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -46,19 +45,17 @@ public class BookingDAO {
 		} catch (Exception e) {
 			// 예외 발생 시 처리
 			System.out.println("예외 발생: " + e.getMessage());
-			a = false;
-		}
+        }
 		return a;
 	}
 	
 
 	public ArrayList<bookingDTO> bookingListAll(String user_id){
-		ArrayList<bookingDTO> blist = (ArrayList<bookingDTO>) bookingMapper.bookingList(user_id);
+		ArrayList<bookingDTO> bList = (ArrayList<bookingDTO>) bookingMapper.bookingList(user_id);
 		System.out.println("user_id : " + user_id);
-		return blist;
+		return bList;
 	}
-	
-    // 예약 삭제 bookingInfo 취소하기
+
 	public boolean bookingDelete(bookingDTO bookingdto) {
 		boolean b = false;
 		int re = bookingMapper.bookingDelete(bookingdto);

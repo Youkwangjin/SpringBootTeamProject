@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="https://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -21,8 +21,8 @@
 
             document.querySelector("#btnUpdate").onclick = function () {
                 if (confirm("정말 수정 할까요?")) {
-                    event.preventDefault(); // submit 이벤트를 취소
-                    frm.action = "contactupdate";
+                    event.preventDefault();
+                    frm.action = "/contactUpdate";
                     frm.method = "post";
                     frm.submit();
                 }
@@ -31,7 +31,7 @@
             document.querySelector("#btnDelete").onclick = function () {
                 if (confirm("정말 삭제 할까요?")) {
                     event.preventDefault();
-                    frm.action = "contactdelete";
+                    frm.action = "/contactDelete";
                     frm.method = "get";
                     frm.submit();
                 }

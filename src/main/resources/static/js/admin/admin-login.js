@@ -1,8 +1,8 @@
-let adminId = $('#id');
-let adminPwd = $('#pwd');
-let btn = $('#btn');
+let adminId = $('#adminId');
+let adminPwd = $('#adminPwd');
+let adminBtn = $('#adminBtn');
 
-$(btn).on('click', function () {
+$(adminBtn).on('click', function () {
     if ($(adminId).val() === "") {
         $(adminId).next('label').addClass('warning');
         setTimeout(function () {

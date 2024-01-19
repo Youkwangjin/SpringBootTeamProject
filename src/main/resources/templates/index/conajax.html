@@ -252,7 +252,7 @@
         });
 
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/conta", true);
+        xhr.open("GET", "/container", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText).datas;
@@ -276,7 +276,7 @@
                         '        </div>' +
                         '        <div class="body">' +
                         '            <div class="img">' +
-                        '                <img src="/static/upload/' + data[i].con_image_url + '" width="73" height="70">' +
+                        '                <img src="/resource/static/upload/' + data[i].con_image_url + '" width="73" height="70" alt="창고이미지">' +
                         '           </div>' +
                         '            <div class="desc">' +
                         '                <div style="display:none" class="ellipsis">창고번호: ' + data[i].con_no + '</div>' +

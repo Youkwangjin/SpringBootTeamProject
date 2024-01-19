@@ -1,6 +1,6 @@
 package pack.controller.board;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,40 +9,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pack.dao.board.BoardDAO;
+
 import pack.dto.board.BoardDTO;
 
 
 @Controller
 @RequestMapping("/board")
+@AllArgsConstructor
 public class UpdateController {
-    @Autowired
-    private BoardDAO daoImpl;
+
+
+    private final BoardDAO daoImpl;
     
-    @GetMapping("update")
+    @GetMapping("/update")
     public String edit(@RequestParam("num") String num,
                        @RequestParam("page") String page,
                        Model model) {
-        // 수정 대상 자료 읽기
         BoardDTO dto = daoImpl.detail(num);
         model.addAttribute("data", dto);
         model.addAttribute("page", page);
-        return "board-update";
+        return "/board/board-update";
     }
     
-    @PostMapping("update")
-    public String editProcess(BoardBean bean, 
-            @RequestParam("page") String page, 
-            Model model) {
-        // 수정을 위한 코드
-        
-        boolean b = daoImpl.update(bean);
+    @PostMapping("/update")
+    public String editProcess(BoardDTO boardDTO,
+                              @RequestParam("page") String page) {
+        boolean b = daoImpl.update(boardDTO);
         if (b) {
-            // 수정 성공 시 상세보기로 이동
-            return "redirect:detailAdmin?num=" + bean.getNum() + "&page=" + page;
+            return "redirect:detailAdmin?num=" + boardDTO.getNum() + "&page=" + page;
             
         } else {
-            // 수정 실패 시
-            return "redirect:error";
+            return "/board/board-error";
         }
     }
 }

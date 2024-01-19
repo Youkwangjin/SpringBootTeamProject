@@ -2,7 +2,7 @@ package pack.controller.contact;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -13,10 +13,10 @@ import pack.dao.contact.ContactDAO;
 import pack.dto.contact.ContactDTO;
 
 @Controller
+@AllArgsConstructor
 public class ContactController {
 
-	@Autowired
-	private ContactDAO contactDao;
+	private final ContactDAO contactDao;
 	
 	@RequestMapping("contactAdmin")
 	public String adminList(Model model) {
@@ -38,5 +38,4 @@ public class ContactController {
 		model.addAttribute("list", list);
 		return "contact/contact-owner";
 	}
-
 }

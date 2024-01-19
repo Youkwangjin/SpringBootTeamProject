@@ -45,7 +45,7 @@
                             <td th:text="${data.contact_date }"></td>
                             <td th:text="${data.contact_status }"></td>
                             <td>
-                                <a th:href="@{/contactdetail(contact_no=${data.contact_no})}">상세보기</a>
+                                <a th:href="@{/contactDetail(contact_no=${data.contact_no})}">상세보기</a>
                             </td>
                         </tr>
                     </th:block>
@@ -58,7 +58,7 @@
                                     <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
                                 </th:span>
                                 <th:span th:if="${num != page}">
-                                    <a th:href="@{/contactadmin(page=${num})}" th:text="${num}">num 표시</a>
+                                    <a th:href="@{/contactAdmin(page=${num})}" th:text="${num}">num 표시</a>
                                 </th:span>
                             </th:block>
                         </td>

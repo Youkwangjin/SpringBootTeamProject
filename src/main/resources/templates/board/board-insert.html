@@ -9,7 +9,9 @@
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
+    <!--
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
+    -->
     <script type="text/javascript">
         window.onload = function () {
             let btnIns = document.getElementById("btnIns");
@@ -18,13 +20,13 @@
 
         function checkData() {
             const desiredAdminId = "aa";
-            if (frm.admin_id.value === "") {
+            if (adminFrm.admin_id.value === "") {
                 alert("관리자 ID를 입력하시오");
-                frm.admin_id.focus();
+                adminFrm.admin_id.focus();
             } else if (frm.admin_id.value !== desiredAdminId) {
                 alert("관리자 아이디가 올바르지 않습니다.");
             } else {
-                frm.submit();
+                adminFrm.submit();
             }
         }
     </script>
@@ -44,7 +46,7 @@
             </div>
         </div>
         <section>
-            <form action="/insert" method="post" name="frm">
+            <form action="/board/insert" method="post" name="adminFrm">
                 <table style="width: 80%; margin: 0 auto;">
                     <tr>
                         <td>관리자 아이디</td>

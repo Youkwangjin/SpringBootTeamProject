@@ -18,29 +18,31 @@ import pack.repository.kakao.KakaoMapper;
 @Repository
 public class ContainDAO {
    @Autowired
-   private KakaoMapper kakaoMapper; // 히카리
+   private KakaoMapper kakaoMapper;
 
    // 전체자료 읽기
-   public List<ContainMapDTO> getcontainAll() {
-      List<ContainMapDTO> slist = kakaoMapper.MapAll();
-      return slist;
+   public List<ContainMapDTO> getContainAll() {
+      List<ContainMapDTO> sList = kakaoMapper.MapAll();
+      System.out.println(sList);
+      return sList;
    }
 
-   private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-   @Value("${C:/Users/cmh17/git/Team/src/main/resources/static/upload}") // 추후 경로 수정 필요!
+   @Value("${C:/work/AcornProject/src/main/resources/static/upload/}")
    private String uploadDirectory;
 
    @Autowired
    private ContainerMapper containerMapper;
 
-   public List<ContainerDTO> getDataAll(String business_num) { // 창고 전체보기
+
+   public List<ContainerDTO> getDataAll(String business_num) {
       List<ContainerDTO> list = containerMapper.selectAll(business_num);
+      System.out.println(list);
       return list;
    }
    
    public List<ContainerDTO> getDataReserve(String business_num) { // 예약된 창고 정보 보기
       List<ContainerDTO> list = containerMapper.selectReserve(business_num);
+      System.out.println(list);
       return list;
    }
 
@@ -51,8 +53,8 @@ public class ContainDAO {
       return conDto;
    }
    
-   public bookingDTO selectbookcont(String cont_no) {
-	   bookingDTO bookDto = containerMapper.selectbookcont(cont_no);
+   public bookingDTO selectBookCont(String cont_no) {
+	   bookingDTO bookDto = containerMapper.selectBookCont(cont_no);
 	   System.out.println(bookDto);
 	   return bookDto;
    }
@@ -68,18 +70,18 @@ public class ContainDAO {
    }
 
    @Transactional // 성공하면 커밋 실패하면 롤백
-   public boolean update(ContainerDTO containerDTO) {
+   public boolean updateContainer(ContainerDTO containerDTO) {
       boolean b = false;
-      int re = containerMapper.update(containerDTO);
+      int re = containerMapper.updateContainer(containerDTO);
       if (re > 0)
          b = true;
       return b;
    }
 
    @Transactional // 성공하면 커밋 실패하면 롤백
-   public boolean delete(String cont_no) {
+   public boolean deleteContainer(String cont_no) {
       boolean b = false;
-      int re = containerMapper.delete(cont_no);
+      int re = containerMapper.deleteContainer(cont_no);
       if (re > 0)
          b = true;
       return b;
