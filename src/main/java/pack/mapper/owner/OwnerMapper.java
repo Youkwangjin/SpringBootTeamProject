@@ -1,4 +1,4 @@
-package pack.repository.owner;
+package pack.mapper.owner;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;

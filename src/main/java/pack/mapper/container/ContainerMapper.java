@@ -1,4 +1,4 @@
-package pack.repository.container;
+package pack.mapper.container;
 
 import java.util.List;
 

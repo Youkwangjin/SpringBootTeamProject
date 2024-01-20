@@ -1,53 +1,28 @@
 package pack.dao.user;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import pack.dto.user.UserDTO;
-import pack.repository.user.UserMapper;
+import pack.mapper.user.UserMapper;
 
 @Repository
 @AllArgsConstructor
 public class UserDAO {
 
 	private final UserMapper userMapper;
-	
-
-    private boolean isEmpty(String value) {
-        return value != null && !value.trim().isEmpty();
-    }
-
-    private boolean joinUserData(UserDTO userDto) {
-        boolean b;
-        b = isEmpty(userDto.getUser_id()) &&
-                isEmpty(userDto.getUser_pwd()) &&
-                isEmpty(userDto.getUser_name()) &&
-                isEmpty(userDto.getUser_tel()) &&
-                isEmpty(userDto.getUser_email()) &&
-                isEmpty(userDto.getUser_addr()) &&
-                userDto.getUser_id().matches("^[a-zA-Z\\d]{4,}$") &&
-                userDto.getUser_tel().matches("^[0-9-]+$") &&
-                userDto.getUser_jumin().matches("^\\d{6}-\\d{7}$") &&
-                userDto.getUser_pwd().equals(userDto.getUser_repwd()) &&
-                userDto.getUser_name().matches("^[가-힣]{2,}$") &&
-                userDto.getUser_pwd().matches("^.{4,}$") &&
-                userDto.getUser_email().matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$");
-        return b;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
     public boolean userInsertData(UserDTO userDto) {
-		boolean b = false;
-		try {
-			if (joinUserData(userDto)) {
-				int re = userMapper.userInsertData(userDto);
-				if (re > 0) {
-					b = true;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return b;
+        try {
+            int re = userMapper.userInsertData(userDto);
+            return re > 0;
+        } catch (Exception e) {
+            logger.error("유저 회원 가입 에러", e);
+            return false;
+        }
     }
 
     public UserDTO userLoginProcess(String user_id, String user_pwd) {
@@ -55,26 +30,50 @@ public class UserDAO {
     }
 
     public boolean userDataUpdate(UserDTO userDto) {
-    	boolean b = false;
-		int re = userMapper.userUpdate(userDto);
-		if(re > 0) b = true;
-		return b;  	
+        try {
+            int re = userMapper.userUpdate(userDto);
+            if (re > 0) {
+                logger.info("사용자 회원수정 성공! user_id: {}", userDto.getUser_id());
+                return true;
+            } else {
+                logger.info("사용자 데이터 없음! user_id: {}", userDto.getUser_id());
+                return false;
+            }
+        } catch (Exception e) {
+            logger.error("사용자 회원수정 중 오류 발생! user_id: {}", userDto.getUser_id(), e);
+            return false;
+        }
     }
 
     public boolean userDataDelete(UserDTO userDto) {
-        boolean b = false;
-        int re = userMapper.userDelete(userDto);
-        if (re > 0) {
-            b = true;
+        try {
+            int re = userMapper.userDelete(userDto);
+            if (re > 0) {
+                logger.info("사용자 회원탈퇴 성공! user_id: {}", userDto.getUser_id());
+                return true;
+            } else {
+                logger.info("사용자 데이터 없음! user_id: {}", userDto.getUser_id());
+                return false;
+            }
+        } catch (Exception e) {
+            logger.error("사용자 회원탈퇴 중 오류 발생! user_id: {}", userDto.getUser_id(), e);
+            return false;
         }
-        return b;
     }
 
     public int userIdCheck(String user_id) {
-        return userMapper.userIdCheck(user_id);
+        try {
+            return userMapper.userIdCheck(user_id);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public UserDTO userIdFind(String user_name, String user_email, String user_jumin) {
-    	return userMapper.userIdFind(user_name, user_email, user_jumin);
+        try {
+            return userMapper.userIdFind(user_name, user_email, user_jumin);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

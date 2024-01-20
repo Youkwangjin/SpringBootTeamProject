@@ -1,4 +1,4 @@
-package pack.repository.contact;
+package pack.mapper.contact;
 
 import java.util.List;
 

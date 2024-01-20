@@ -1,5 +1,5 @@
 
-package pack.repository.booking;
+package pack.mapper.booking;
 
 import java.util.List;
 

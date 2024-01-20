@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pack.dto.admin.AdminDTO;
 import pack.dto.booking.bookingDTO;
-import pack.repository.booking.BookingMapper;
+import pack.mapper.booking.BookingMapper;
 
 
 @Repository

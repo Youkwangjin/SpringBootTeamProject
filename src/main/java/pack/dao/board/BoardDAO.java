@@ -3,10 +3,9 @@ package pack.dao.board;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pack.dto.board.BoardDTO;
-import pack.repository.data.DataMapping;
+import pack.mapper.data.DataMapping;
 
 
 @Repository
