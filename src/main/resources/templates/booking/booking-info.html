@@ -19,49 +19,46 @@
     <link rel="stylesheet" href="/css/booking/booking-info.css">
 </head>
 <body>
-<div th:replace="~{fragments/header_user :: header}">
-    <div id="booking-info">
-        <main id="container">
-            <h1>예약 정보</h1>
-            <div>
-                <input type="hidden" th:value="${session.userSession.user_id}" readonly="readonly">
-            </div>
-            <div class="table-booking">
-                <div th:if="${bList.size > 0}" class="table-body">
-                    <div th:each="b : ${bList}" class="table-row">
-                        <div class="table-row">
-                            <div class="table-cell">예약자</div>
-                            <div class="table-cell" th:text="${b.user_name}"></div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">예약날짜(시작)</div>
-                            <div class="table-cell" th:text="${b.booking_date_start}"></div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">예약날짜(종료)</div>
-                            <div class="table-cell" th:text="${b.booking_date_end}"></div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">회사명</div>
-                            <div class="table-cell" th:text="${b.cont_no}"></div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">사이즈</div>
-                            <div class="table-cell" th:text="${b.cont_size}"></div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">이용요금</div>
-                            <div class="table-cell" th:text="${b.booking_price}"></div>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" id="cancel-btn" onclick="location.href='booking'">취소하기</button>
-                <button type="button" id="main-btn" onClick="location.href='/userSessionKeep'">메인으로 돌아가기
-                </button>
-            </div>
-            <script src="/js/booking/booking-info.js"></script>
-        </main>
-    </div>
+<div th:replace="~{fragments/header_user :: header}"></div>
+<div id="booking-info">
+    <main id="container">
+        <h1>예약 정보</h1>
+        <div th:if="${bList != null and bList.size > 0}" class="table-booking">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>예약자</th>
+                    <th>예약날짜(시작)</th>
+                    <th>예약날짜(종료)</th>
+                    <th>창고번호</th>
+                    <th>사이즈</th>
+                    <th>이용요금</th>
+                    <th>취소여부</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b : ${bList}">
+                    <td th:text="${b.user_name}"></td>
+                    <td th:text="${b.booking_date_start}"></td>
+                    <td th:text="${b.booking_date_end}"></td>
+                    <td th:text="${b.cont_no}"></td>
+                    <td th:text="${b.cont_size}"></td>
+                    <td th:text="${b.booking_price}"></td>
+                    <td>
+                        <button type="button" class="cancel-btn" th:data-id="${b.booking_id}">취소하기</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:unless="${bList != null and bList.size > 0}">
+            <p>예약 정보가 없습니다.</p>
+        </div>
+        <div class="button-group">
+            <button type="button" id="main-btn" onClick="location.href='/userSessionKeep'">메인으로 돌아가기</button>
+        </div>
+    </main>
 </div>
+<script src="/js/booking/booking-info.js"></script>
 </body>
 </html>

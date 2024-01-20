@@ -21,8 +21,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             let queryString = window.location.search;
             let urlParams = new URLSearchParams(queryString);
-            let contNo = urlParams.get('con_no');
-            document.getElementById('cont_no').value = contNo;
+            document.getElementById('cont_no').value = urlParams.get('con_no');
         });
     </script>
 </head>
@@ -56,8 +55,8 @@
                     <option value="6000">중 (30 x 30 x 60(cm) 이내)</option>
                     <option value="7000">대 (50 x 50 x 80(cm) 이내)</option>
                 </select>
-                <label for="intMoney">이용요금</label>
-                    <input type="text" name="booking_price" id="intMoney"
+                <label for="booking_price">이용요금</label>
+                    <input type="text" name="booking_price" id="booking_price"
                            class="totalPay" readonly>
                 <div class="btn-div">
                     <button type="submit" id="next-btn" onclick="insertOpt()" style="color: #3781E3;">예약하기</button>

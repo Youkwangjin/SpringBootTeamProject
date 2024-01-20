@@ -63,8 +63,8 @@
         }
 
         .wrap .info {
-            width: 286px;
-            height: 120px;
+            width: 400px;
+            height: 400px;
             border-radius: 5px;
             border-bottom: 2px solid #ccc;
             border-right: 1px solid #ccc;
@@ -175,38 +175,52 @@
     <div id="map" style="width:100%;height:90vh;margin-top: 100px"></div>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f8bbc7549216335625367284bd469f94&libraries=clusterer,services"></script>
     <script>
-        var mapContainer = document.getElementById('map');
-        var mapOption = {
+        let mapContainer = document.getElementById('map');
+        let mapOption = {
             center: new kakao.maps.LatLng(37.56692, 126.97845),
             level: 3,
             mapTypeId: kakao.maps.MapTypeId.ROADMAP
         };
-
-        var currentOverlay = null;
-
+        let map = new kakao.maps.Map(mapContainer, mapOption);
+        let currentOverlay = null;
         function closeOverlay() {
             if (currentOverlay) {
                 currentOverlay.setMap(null);
+                currentOverlay = null;
             }
         }
-
-        function attachOverlay(marker, content) {
+        function attachOverlay(marker, data) {
             kakao.maps.event.addListener(marker, 'click', function () {
                 closeOverlay();
 
-                var overlay = new kakao.maps.CustomOverlay({
+                let content = '<div class="wrap">' +
+                    '    <div class="info">' +
+                    '        <div class="title">' +
+                    '            창고 정보' +
+                    '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                    '        </div>' +
+                    '        <div class="body">' +
+                    '            <div class="desc">' +
+                    '                <div style="display:none" class="ellipsis">창고번호: ' + data.con_no + '</div>' +
+                    '                <div class="ellipsis">회사명: ' + data.con_name + '</div>' +
+                    '                <div class="ellipsis">주소: ' + data.con_addr + '</div>' +
+                    '                <div class="ellipsis">크기: ' + data.con_area + ' </div>' +
+                    '                <div><a class="link" href="javascript:void(0);" onclick="openPopup(' + data.con_no + ')">창고 예약하기</a></div>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>' +
+                    '</div>';
+
+                currentOverlay = new kakao.maps.CustomOverlay({
                     content: content,
                     map: map,
                     position: marker.getPosition()
                 });
-
-                currentOverlay = overlay;
             });
         }
-
         function searchAddress() {
-            var addressInput = document.getElementById('addressInput');
-            var address = addressInput.value;
+            let addressInput = document.getElementById('addressInput');
+            let address = addressInput.value;
 
             if (address) {
                 var geocoder = new kakao.maps.services.Geocoder();
@@ -223,35 +237,25 @@
             }
         }
 
-        var map = new kakao.maps.Map(mapContainer, mapOption);
-
-
-        var imageSrc = '/assets/img/team/storage.png',
+        let imageSrc = '/assets/img/team/storage.png',
             imageSize = new kakao.maps.Size(40, 45),
             imageOption = {offset: new kakao.maps.Point(27, 69)};
 
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-            markerPosition = new kakao.maps.LatLng(37.54699, 127.09598);
+        let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-        var mapTypeControl = new kakao.maps.MapTypeControl();
-
-
+        let mapTypeControl = new kakao.maps.MapTypeControl();
         map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
-
-        var zoomControl = new kakao.maps.ZoomControl();
-
+        let zoomControl = new kakao.maps.ZoomControl();
         map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 
-
-        var clusterer = new kakao.maps.MarkerClusterer({
+        let clusterer = new kakao.maps.MarkerClusterer({
             map: map,
             averageCenter: true,
             minLevel: 5
         });
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open("GET", "/container", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -261,69 +265,27 @@
 
                 for (var i = 0; i < data.length; i++) {
                     var marker = new kakao.maps.Marker({
-                        position: new kakao.maps.LatLng(data[i].we, data[i].kyung), //좌표,좌표
+                        position: new kakao.maps.LatLng(data[i].we, data[i].kyung),
                         map: map,
                         image: markerImage
                     });
 
                     markers.push(marker);
-
-                    var content = '<div class="wrap">' +
-                        '    <div class="info">' +
-                        '        <div class="title">' +
-                        '            창고 정보' +
-                        '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
-                        '        </div>' +
-                        '        <div class="body">' +
-                        '            <div class="img">' +
-                        '                <img src="/resource/static/upload/' + data[i].con_image_url + '" width="73" height="70" alt="창고이미지">' +
-                        '           </div>' +
-                        '            <div class="desc">' +
-                        '                <div style="display:none" class="ellipsis">창고번호: ' + data[i].con_no + '</div>' +
-                        '                <div class="ellipsis">회사명: ' + data[i].con_name + '</div>' +
-                        '                <div class="ellipsis">주소: ' + data[i].con_addr + '</div>' +
-                        '                <div class="ellipsis">크기: ' + data[i].con_area + ' </div>' +
-                        '            <div><a href="javascript:void(0);" onclick="openPopup(' + data[i].con_no + ')">창고 예약하기</a></div>' +
-                        '            </div>' +
-                        '    </div>' +
-                        '</div>';
-                    attachOverlay(marker, content);
+                    attachOverlay(marker, data[i]);
                 }
+
                 clusterer.addMarkers(markers);
             }
         };
         xhr.send();
-        function closeOverlay() {
-            if (currentOverlay) {
-                currentOverlay.setMap(null);
-            }
-        }
-        var currentOverlay = null;
-        function attachOverlay(marker, content) {
-            kakao.maps.event.addListener(marker, 'click', function () {
-                closeOverlay();
-                var overlay = new kakao.maps.CustomOverlay({
-                    content: content,
-                    map: map,
-                    position: marker.getPosition()
-                });
-                currentOverlay = overlay;
-                var popupButton = overlay.getElement().querySelector('.popup-button');
-                if (popupButton) {
-                    popupButton.addEventListener('click', function () {
-                        openPopup();
-                    });
-                }
-            });
-        }
-        function openPopup(conNo) {
-            var encodedConNo = encodeURIComponent(conNo);
-            var url = 'booking/booking?con_no=' + encodedConNo;
 
+        function openPopup(conNo) {
+            let encodedConNo = encodeURIComponent(conNo);
+            let url = 'booking/booking?con_no=' + encodedConNo;
             window.open(url, '_blank', 'width=1000, height=800');
         }
 
-        var trafficShown = false;
+        let trafficShown = false;
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 
         function toggleTraffic() {
