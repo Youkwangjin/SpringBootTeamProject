@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pack.dto.faq.FaqDTO;
-import pack.repository.fqa.FaqMapper;
+import pack.mapper.fqa.FaqMapper;
 
 
 @Repository

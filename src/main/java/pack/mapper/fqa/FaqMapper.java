@@ -1,4 +1,4 @@
-package pack.repository.fqa;
+package pack.mapper.fqa;
 
 import java.util.List;
 

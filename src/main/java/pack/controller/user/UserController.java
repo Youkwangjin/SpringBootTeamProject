@@ -61,7 +61,6 @@ public class UserController {
 	@GetMapping("/userSessionKeep")
 	public String userSessionKeep(HttpSession session) {
 		UserDTO userSession = (UserDTO) session.getAttribute("userSession");
-
 		if (userSession != null) {
 			return "user/user-mypage";
 		} else {
@@ -71,7 +70,6 @@ public class UserController {
 
 	@GetMapping("/userLogoutGo")
 	public String userLogoutProcess(HttpSession session) {
-
 		session.removeAttribute("userSession");
 		return "redirect:/";
 	}
@@ -82,7 +80,7 @@ public class UserController {
 	}
 
 
-	@PostMapping("userJoinClick")
+	@PostMapping("/userJoinClick")
 	public String userLoginOK(UserDTO userDto) {
 		return userService.registerUser(userDto);
 	}
@@ -108,8 +106,8 @@ public class UserController {
 
 	@ResponseBody
 	@PostMapping("/userIdCheck")
-	public int IdCheck(@RequestParam("user_id") String user_id) {
-        return userDao.userIdCheck(user_id);
+	public int idCheck(@RequestParam("user_id") String userId) {
+		return userService.userIdCheck(userId);
 	}
 
 	@ResponseBody

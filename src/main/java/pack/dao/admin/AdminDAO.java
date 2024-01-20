@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import pack.dto.admin.AdminDTO;
-import pack.repository.admin.ApproveMapper;
-import pack.repository.admin.AdminMapper;
+import pack.mapper.admin.ApproveMapper;
+import pack.mapper.admin.AdminMapper;
 
 
 @Repository

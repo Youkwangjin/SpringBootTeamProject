@@ -1,4 +1,4 @@
-package pack.repository.data;
+package pack.mapper.data;
 
 import java.util.List;
 

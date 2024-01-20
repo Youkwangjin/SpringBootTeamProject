@@ -1,4 +1,4 @@
-package pack.repository.kakao;
+package pack.mapper.kakao;
 
 import java.util.List;
 

@@ -2,8 +2,7 @@ package pack.dao.container;
 
 
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -11,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pack.dto.booking.bookingDTO;
 import pack.dto.container.ContainerDTO;
 import pack.dto.container.ContainMapDTO;
-import pack.repository.container.ContainerMapper;
-import pack.repository.kakao.KakaoMapper;
+import pack.mapper.container.ContainerMapper;
+import pack.mapper.kakao.KakaoMapper;
 
 //재민
 @Repository

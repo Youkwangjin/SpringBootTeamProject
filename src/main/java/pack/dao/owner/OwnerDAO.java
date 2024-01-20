@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import pack.dto.owner.OwnerDTO;
-import pack.repository.owner.OwnerMapper;
+import pack.mapper.owner.OwnerMapper;
 
 
 @Repository

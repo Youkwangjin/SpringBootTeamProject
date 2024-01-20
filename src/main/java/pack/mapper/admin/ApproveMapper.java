@@ -1,4 +1,4 @@
-package pack.repository.admin;
+package pack.mapper.admin;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;

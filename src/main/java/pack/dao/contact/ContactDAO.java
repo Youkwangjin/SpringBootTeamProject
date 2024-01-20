@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pack.dto.contact.ContactDTO;
-import pack.repository.contact.ContactMapper;
+import pack.mapper.contact.ContactMapper;
 
 @Repository
 @AllArgsConstructor

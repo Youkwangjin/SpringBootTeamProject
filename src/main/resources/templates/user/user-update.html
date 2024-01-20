@@ -25,7 +25,7 @@
             <form action="/userInfoUpdate" name="userUpdate" method="POST">
                 <h3>아이디</h3>
                 <label for="user_id">
-                    <input type="text" name="user_id" id="user_id" class="text-field" th:value="${userSession.user_id}">
+                    <input type="text" name="user_id" id="user_id" class="text-field" th:value="${userSession.user_id}" readonly>
                 </label>
                 <div id="messageContainer">
                     <h3>비밀번호</h3>
@@ -88,7 +88,7 @@
                     <h3>주민등록번호</h3>
                     <label for="user_jumin">
                         <input type="tel" name="user_jumin" id="user_jumin" class="text-field"
-                               th:value="${userSession.user_jumin}" placeholder="주민번호">
+                               th:value="${userSession.user_jumin}" placeholder="주민번호" readonly>
                     </label>
                     <div id="user_juminMessage"></div>
                 </div>
