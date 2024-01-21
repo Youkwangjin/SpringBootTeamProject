@@ -17,8 +17,8 @@ public class UserDAO {
 
     public boolean userInsertData(UserDTO userDto) {
         try {
-            int re = userMapper.userInsertData(userDto);
-            return re > 0;
+            int userInsertDataRe = userMapper.userInsertData(userDto);
+            return userInsertDataRe > 0;
         } catch (Exception e) {
             logger.error("유저 회원 가입 에러", e);
             return false;
@@ -31,8 +31,8 @@ public class UserDAO {
 
     public boolean userDataUpdate(UserDTO userDto) {
         try {
-            int re = userMapper.userUpdate(userDto);
-            if (re > 0) {
+            int userDataUpdateRe = userMapper.userUpdate(userDto);
+            if (userDataUpdateRe > 0) {
                 logger.info("사용자 회원수정 성공! user_id: {}", userDto.getUser_id());
                 return true;
             } else {
@@ -47,8 +47,8 @@ public class UserDAO {
 
     public boolean userDataDelete(UserDTO userDto) {
         try {
-            int re = userMapper.userDelete(userDto);
-            if (re > 0) {
+            int userDataDeleteRe = userMapper.userDelete(userDto);
+            if (userDataDeleteRe > 0) {
                 logger.info("사용자 회원탈퇴 성공! user_id: {}", userDto.getUser_id());
                 return true;
             } else {

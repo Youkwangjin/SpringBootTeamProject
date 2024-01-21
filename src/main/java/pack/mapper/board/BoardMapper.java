@@ -1,4 +1,4 @@
-package pack.mapper.data;
+package pack.mapper.board;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import pack.dto.board.BoardDTO;
 
 
 @Mapper
-public interface DataMapping {
+public interface BoardMapper {
 	List<BoardDTO> selectList();
 	List<BoardDTO> searchList(BoardDTO boardDTO);
 	BoardDTO selectOne(String num);

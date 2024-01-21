@@ -1,7 +1,6 @@
 package pack.controller.board;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,14 +10,14 @@ import pack.dao.board.BoardDAO;
 @Controller
 @RequestMapping("/board")
 @AllArgsConstructor
-public class DeleteControllerBoard {
+public class BoardDeleteController {
 
-	private final BoardDAO daoImpl;
+	private final BoardDAO boardDAO;
 		
-	@GetMapping("delete")
+	@GetMapping("/delete")
 	public String del(@RequestParam("num")String num,
 			 		  @RequestParam("page")String page) {
-		if(daoImpl.delete(num))
+		if(boardDAO.delete(num))
 			return "redirect:listAdmin?page=" + page;
 		else
 			return "redirect:error";

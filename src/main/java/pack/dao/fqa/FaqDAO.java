@@ -2,7 +2,7 @@ package pack.dao.fqa;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pack.dto.faq.FaqDTO;
@@ -10,19 +10,17 @@ import pack.mapper.fqa.FaqMapper;
 
 
 @Repository
+@AllArgsConstructor
 public class FaqDAO {
 
-	@Autowired
-	private FaqMapper faqMapper;
+	private final FaqMapper faqMapper;
 	
 	public List<FaqDTO> listFaq(){
-		List<FaqDTO> list = faqMapper.selectFaq();
-		return list;
+        return faqMapper.selectFaq();
 	}
 	
 	public List<FaqDTO> searchFaq(FaqDTO faqDTO){
-		List<FaqDTO> sList = faqMapper.searchFaq(faqDTO);
-		return sList;
+        return faqMapper.searchFaq(faqDTO);
 	}
 	
 	public int totalFaq() {
@@ -32,29 +30,28 @@ public class FaqDAO {
 	@Transactional
 	public boolean insertFaq(FaqDTO faqDTO) {
 		boolean b = false;
-		int re = faqMapper.insertFaq(faqDTO);
-		if(re>0) b = true;
+		int insertFaqRe = faqMapper.insertFaq(faqDTO);
+		if(insertFaqRe > 0) b = true;
 		return b;
 	}
 	
 	@Transactional
 	public boolean updateFaq(FaqDTO faqDTO) {
 		boolean b = false;
-		int re = faqMapper.updateFaq(faqDTO);
-		if(re>0) b = true;
+		int updateFaqRe = faqMapper.updateFaq(faqDTO);
+		if(updateFaqRe > 0) b = true;
 		return b;
 	}
 	
 	@Transactional
 	public boolean deleteFaq(String faq_no) {
 		boolean b = false;
-		int re = faqMapper.deleteFaq(faq_no);
-		if(re>0) b = true;
+		int deleteFaqRe = faqMapper.deleteFaq(faq_no);
+		if(deleteFaqRe > 0) b = true;
 		return b;
 	}
 	
 	public FaqDTO detailFaq(int faq_no) {
-		FaqDTO detail = faqMapper.selectno(faq_no);
-		return detail;
+        return faqMapper.selectNo(faq_no);
 	}
 }

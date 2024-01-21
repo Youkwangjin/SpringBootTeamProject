@@ -16,16 +16,16 @@ import pack.dto.board.BoardDTO;
 @Controller
 @RequestMapping("/board")
 @AllArgsConstructor
-public class UpdateController {
+public class BoardUpdateController {
 
 
-    private final BoardDAO daoImpl;
+    private final BoardDAO boardDAO;
     
     @GetMapping("/update")
     public String edit(@RequestParam("num") String num,
                        @RequestParam("page") String page,
                        Model model) {
-        BoardDTO dto = daoImpl.detail(num);
+        BoardDTO dto = boardDAO.detail(num);
         model.addAttribute("data", dto);
         model.addAttribute("page", page);
         return "/board/board-update";
@@ -34,7 +34,7 @@ public class UpdateController {
     @PostMapping("/update")
     public String editProcess(BoardDTO boardDTO,
                               @RequestParam("page") String page) {
-        boolean b = daoImpl.update(boardDTO);
+        boolean b = boardDAO.update(boardDTO);
         if (b) {
             return "redirect:detailAdmin?num=" + boardDTO.getNum() + "&page=" + page;
             

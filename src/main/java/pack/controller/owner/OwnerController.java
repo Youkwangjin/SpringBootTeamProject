@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pack.dto.owner.OwnerDTO;
 import pack.service.owner.OwnerService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -88,6 +92,15 @@ public class OwnerController {
 	@PostMapping("/ownerInfoDelete")
 	public String ownerInfoDelete(OwnerDTO ownerDto) {
 		return ownerService.deleteOwnerInfo(ownerDto);
+	}
+
+	@PostMapping("/checkBusinessNum")
+	@ResponseBody
+	public Map<String, Object> checkBusinessNum(@RequestParam("business_num") String businessNum) {
+		boolean isDuplicate = ownerService.checkBusinessNum(businessNum);
+		Map<String, Object> response = new HashMap<>();
+		response.put("중복", isDuplicate);
+		return response;
 	}
 
 }

@@ -17,7 +17,7 @@ import pack.dto.container.ContainerDTO;
 public interface ContainerMapper {
 	
 	@Select("select * from container inner join owner on owner.business_num=container.owner_num where business_num = #{business_num}")
-	List<ContainerDTO> selectAll(@Param("business_num") String business_num);
+	List<ContainerDTO> selectAllContainer(@Param("business_num") String business_num);
 
 	@Insert("""
         insert into container(cont_addr, cont_we, cont_kyung, cont_size, cont_image, owner_num, cont_explain, cont_name, owner_phone)
@@ -25,11 +25,11 @@ public interface ContainerMapper {
         """)
 	int insertContainer(ContainerDTO containerDTO);
 
-	@Select("SELECT MAX(cont_no) FROM container")
-	Integer getMaxContNo();
-	
+	@Select("select * from container")
+	List<ContainerDTO> kakaoMapContainer();
+
 	@Select("SELECT * FROM container INNER JOIN owner ON owner.business_num = container.owner_num WHERE cont_no = #{cont_no}")
-	ContainerDTO selectOne(String cont_no);
+	ContainerDTO selectContainer(String cont_no);
 	
 	@Select("SELECT * FROM container inner join booking_board on container.cont_no = booking_board.cont_no inner join user on user.user_id = booking_board.user_id where container.cont_no = #{cont_no}")
 	bookingDTO selectBookCont(String cont_no);

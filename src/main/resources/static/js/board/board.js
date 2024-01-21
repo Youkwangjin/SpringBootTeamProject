@@ -1,6 +1,6 @@
 document.querySelectorAll('.edit-button').forEach((button) => {
     button.addEventListener('click', (event) => {
-        const itemId = event.target.getAttribute('data-id');
+        event.target.getAttribute('data-id');
     });
 });
 
@@ -8,7 +8,7 @@ document.querySelectorAll('.delete-button').forEach((button) => {
     button.addEventListener('click', (event) => {
         const itemId = event.target.getAttribute('data-id');
         if (confirm('정말로 삭제하시겠습니까?')) {
-            fetch(`/delete/${itemId}`, {
+            fetch(`/deleteContainer/${itemId}`, {
                 method: 'DELETE'
             })
                 .then(response => response.json())

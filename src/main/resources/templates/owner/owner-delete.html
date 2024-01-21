@@ -28,7 +28,7 @@
                     <h3>사업자 번호</h3>
                     <label for="business_num">
                         <input type="text" name="business_num" id="business_num" class="text-field"
-                               th:value="${ownerSession.business_num}" placeholder="사업자 번호">
+                               th:value="${ownerSession.business_num}" placeholder="사업자 번호" readonly>
                     </label>
                     <div id="business_numMessage" class="error-message"></div>
 
@@ -48,21 +48,21 @@
                     <h3>이름</h3>
                     <label for="owner_name">
                         <input type="text" name="owner_name" id="owner_name" class="text-field"
-                               th:value="${ownerSession.owner_name}" placeholder="이름">
+                               th:value="${ownerSession.owner_name}" placeholder="이름" readonly>
                     </label>
                     <div id="owner_nameMessage" class="error-message"></div>
 
                     <h3>전화번호</h3>
                     <label for="owner_tel">
                         <input type="tel" name="owner_tel" id="owner_tel" class="text-field"
-                               th:value="${ownerSession.owner_tel}" placeholder="전화번호">
+                               th:value="${ownerSession.owner_tel}" placeholder="전화번호" readonly>
                     </label>
                     <div id="owner_telMessage" class="error-message"></div>
 
                     <h3>이메일</h3>
                     <label for="email">
                         <input type="text" name="email" id="email" class="text-field" maxlength="30"
-                               th:value="${ownerSession.email}" placeholder="이메일">
+                               th:value="${ownerSession.email}" placeholder="이메일" readonly>
                     </label>
                     <div id="emailMessage" class="error-message"></div>
                 </div>

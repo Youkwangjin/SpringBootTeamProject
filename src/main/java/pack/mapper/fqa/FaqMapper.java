@@ -32,5 +32,5 @@ public interface FaqMapper {
 	int deleteFaq(String faq_no);
 	
 	@Select("select * from faq where faq_no=#{faq_no}")
-    FaqDTO selectno(int faq_no);
+    FaqDTO selectNo(int faq_no);
 }

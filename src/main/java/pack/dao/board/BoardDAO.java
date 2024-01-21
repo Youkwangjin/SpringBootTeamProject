@@ -5,68 +5,68 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pack.dto.board.BoardDTO;
-import pack.mapper.data.DataMapping;
+import pack.mapper.board.BoardMapper;
 
 
 @Repository
 @AllArgsConstructor
 public class BoardDAO {
 
-	private final DataMapping dataMapping;
+	private final BoardMapper boardMapper;
 
 	public List<BoardDTO> listAll() {
-		List<BoardDTO> list = dataMapping.selectList();
+		List<BoardDTO> list = boardMapper.selectList();
 		System.out.println(list);
 		return list;
 	}
 
 	public List<BoardDTO> search(BoardDTO boardDTO) {
-		List<BoardDTO> list = dataMapping.searchList(boardDTO);
+		List<BoardDTO> list = boardMapper.searchList(boardDTO);
 		System.out.println(list);
 		return list;
 	}
 
 	public int totalCnt() {
-		return dataMapping.totalCnt();
+		return boardMapper.totalCnt();
 	}
 
 	public boolean insert(BoardDTO boardDTO) {
 		boolean b = false;
-		int re = dataMapping.insertData(boardDTO);
+		int re = boardMapper.insertData(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;
 	}
 
 	public int currentNum() {
-		return dataMapping.currentNum();
+		return boardMapper.currentNum();
 	}
 
 	public void updateReadcnt(String num) {
-		dataMapping.updateReadCnt(num);
+		boardMapper.updateReadCnt(num);
 	}
 
 	public BoardDTO detail(String num) {
-		BoardDTO boardDTO = dataMapping.selectOne(num);
+		BoardDTO boardDTO = boardMapper.selectOne(num);
 		System.out.println(boardDTO);
 		return boardDTO;
 	}
 
 	public boolean update(BoardDTO boardDTO) {
 		boolean b = false;
-		int re = dataMapping.updateData(boardDTO);
+		int re = boardMapper.updateData(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;
 	}
 
 	public String selectPass(String num) { // 수정시 비밀번호 비교용
-		return dataMapping.selectPass(num);
+		return boardMapper.selectPass(num);
 	}
 
 	public boolean delete(String num) {
 		boolean b = false;
-		int re = dataMapping.deleteData(num);
+		int re = boardMapper.deleteData(num);
 		if (re > 0)
 			b = true;
 		return b;
@@ -76,7 +76,7 @@ public class BoardDAO {
 	public boolean updateOnum(BoardDTO boardDTO) {
 		// 댓글에서 onum 갱신
 		boolean b = false;
-		int re = dataMapping.updateOnum(boardDTO);
+		int re = boardMapper.updateOnum(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;
@@ -84,7 +84,7 @@ public class BoardDAO {
 
 	public boolean insertReply(BoardDTO boardDTO) {
 		boolean b = false;
-		int re = dataMapping.insertReData(boardDTO);
+		int re = boardMapper.insertReData(boardDTO);
 		if (re > 0)
 			b = true;
 		return b;

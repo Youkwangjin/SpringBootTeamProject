@@ -19,6 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         #search-container {
             position: absolute;
@@ -149,6 +150,21 @@
             color: #5085BB;
         }
     </style>
+    <script>
+        function openPopup(conNo) {
+            $.ajax({
+                url: '/reserveContainer',
+                type: 'POST',
+                data: {'cont_no': conNo},
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <div th:if="${session.userSession != null}">
@@ -175,126 +191,135 @@
     <div id="map" style="width:100%;height:90vh;margin-top: 100px"></div>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f8bbc7549216335625367284bd469f94&libraries=clusterer,services"></script>
     <script>
-        let mapContainer = document.getElementById('map');
-        let mapOption = {
-            center: new kakao.maps.LatLng(37.56692, 126.97845),
-            level: 3,
-            mapTypeId: kakao.maps.MapTypeId.ROADMAP
-        };
-        let map = new kakao.maps.Map(mapContainer, mapOption);
-        let currentOverlay = null;
-        function closeOverlay() {
-            if (currentOverlay) {
-                currentOverlay.setMap(null);
-                currentOverlay = null;
-            }
-        }
-        function attachOverlay(marker, data) {
-            kakao.maps.event.addListener(marker, 'click', function () {
-                closeOverlay();
+        window.onload = function () {
+            // 지도 생성 및 기본 설정
+            let mapContainer = document.getElementById('map');
+            let mapOption = {
+                center: new kakao.maps.LatLng(37.56692, 126.97845),
+                level: 3,
+                mapTypeId: kakao.maps.MapTypeId.ROADMAP
+            };
+            let map = new kakao.maps.Map(mapContainer, mapOption);
 
-                let content = '<div class="wrap">' +
-                    '    <div class="info">' +
-                    '        <div class="title">' +
-                    '            창고 정보' +
-                    '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
-                    '        </div>' +
-                    '        <div class="body">' +
-                    '            <div class="desc">' +
-                    '                <div style="display:none" class="ellipsis">창고번호: ' + data.con_no + '</div>' +
-                    '                <div class="ellipsis">회사명: ' + data.con_name + '</div>' +
-                    '                <div class="ellipsis">주소: ' + data.con_addr + '</div>' +
-                    '                <div class="ellipsis">크기: ' + data.con_area + ' </div>' +
-                    '                <div><a class="link" href="javascript:void(0);" onclick="openPopup(' + data.con_no + ')">창고 예약하기</a></div>' +
-                    '            </div>' +
-                    '        </div>' +
-                    '    </div>' +
-                    '</div>';
+            let currentOverlay = null;
 
-                currentOverlay = new kakao.maps.CustomOverlay({
-                    content: content,
-                    map: map,
-                    position: marker.getPosition()
-                });
-            });
-        }
-        function searchAddress() {
-            let addressInput = document.getElementById('addressInput');
-            let address = addressInput.value;
-
-            if (address) {
-                var geocoder = new kakao.maps.services.Geocoder();
-
-                geocoder.addressSearch(address, function (result, status) {
-                    if (status === kakao.maps.services.Status.OK && result.length > 0) {
-                        map.setCenter(new kakao.maps.LatLng(result[0].y, result[0].x));
-                    } else {
-                        alert('주소를 찾을 수 없습니다.');
-                    }
-                });
-            } else {
-                alert('주소를 입력하세요.');
-            }
-        }
-
-        let imageSrc = '/assets/img/team/storage.png',
-            imageSize = new kakao.maps.Size(40, 45),
-            imageOption = {offset: new kakao.maps.Point(27, 69)};
-
-        let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-        let mapTypeControl = new kakao.maps.MapTypeControl();
-        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
-        let zoomControl = new kakao.maps.ZoomControl();
-        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
-        let clusterer = new kakao.maps.MarkerClusterer({
-            map: map,
-            averageCenter: true,
-            minLevel: 5
-        });
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/container", true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var data = JSON.parse(xhr.responseText).datas;
-
-                var markers = [];
-
-                for (var i = 0; i < data.length; i++) {
-                    var marker = new kakao.maps.Marker({
-                        position: new kakao.maps.LatLng(data[i].we, data[i].kyung),
-                        map: map,
-                        image: markerImage
-                    });
-
-                    markers.push(marker);
-                    attachOverlay(marker, data[i]);
+            function closeOverlay() {
+                if (currentOverlay) {
+                    currentOverlay.setMap(null);
+                    currentOverlay = null;
                 }
-
-                clusterer.addMarkers(markers);
             }
-        };
-        xhr.send();
 
-        function openPopup(conNo) {
-            let encodedConNo = encodeURIComponent(conNo);
-            let url = 'booking/booking?con_no=' + encodedConNo;
-            window.open(url, '_blank', 'width=1000, height=800');
-        }
+            function attachOverlay(marker, data) {
+                kakao.maps.event.addListener(marker, 'click', function () {
+                    closeOverlay();
 
-        let trafficShown = false;
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+                    let content = '<div class="wrap">' +
+                        '    <div class="info">' +
+                        '        <div class="title">' +
+                        '            창고 정보' +
+                        '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                        '        </div>' +
+                        '        <div class="body">' +
+                        '            <div class="desc">' +
+                        '                <div style="display:none" class="ellipsis">창고번호: ' + data.con_no + '</div>' +
+                        '                <div class="ellipsis">회사명: ' + data.con_name + '</div>' +
+                        '                <div class="ellipsis">주소: ' + data.con_addr + '</div>' +
+                        '                <div class="ellipsis">크기: ' + data.con_area + ' </div>';
 
-        function toggleTraffic() {
-            if (trafficShown) {
-                map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-                trafficShown = false;
-            } else {
-                map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-                trafficShown = true;
+                    // 승인 상태에 따른 예약 링크 또는 경고창 표시
+                    if (parseInt(data.cont_status) === 1) {
+                        content += '<div><a class="link" href="javascript:void(0);" onclick="openPopup(' + data.con_no + ')">창고 예약하기</a></div>';
+                    } else {
+                        content += '<div><a class="link" href="javascript:void(0);" onclick="alert(\'관리자의 승인이 필요한 창고입니다.\')">창고 예약하기</a></div>';
+                        console.log(data.cont_status);
+                    }
+
+                    content += '            </div>' +
+                        '        </div>' +
+                        '    </div>' +
+                        '</div>';
+
+                    // 오버레이 생성 및 지도에 표시
+                    currentOverlay = new kakao.maps.CustomOverlay({
+                        content: content,
+                        map: map,
+                        position: marker.getPosition()
+                    });
+                });
+            }
+
+            function searchAddress() {
+                let addressInput = document.getElementById('addressInput');
+                let address = addressInput.value;
+
+                if (address) {
+                    var geocoder = new kakao.maps.services.Geocoder();
+                    geocoder.addressSearch(address, function (result, status) {
+                        if (status === kakao.maps.services.Status.OK && result.length > 0) {
+                            map.setCenter(new kakao.maps.LatLng(result[0].y, result[0].x));
+                        } else {
+                            alert('주소를 찾을 수 없습니다.');
+                        }
+                    });
+                } else {
+                    alert('주소를 입력하세요.');
+                }
+            }
+
+            let imageSrc = '/assets/img/team/storage.png',
+                imageSize = new kakao.maps.Size(40, 45),
+                imageOption = {offset: new kakao.maps.Point(27, 69)};
+            let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+            let mapTypeControl = new kakao.maps.MapTypeControl();
+            map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+            let zoomControl = new kakao.maps.ZoomControl();
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+            let clusterer = new kakao.maps.MarkerClusterer({
+                map: map,
+                averageCenter: true,
+                minLevel: 5
+            });
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "/owner/container", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText).datas;
+                    var markers = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var marker = new kakao.maps.Marker({
+                            position: new kakao.maps.LatLng(data[i].we, data[i].kyung),
+                            map: map,
+                            image: markerImage
+                        });
+                        markers.push(marker);
+                        attachOverlay(marker, data[i]);
+                    }
+                    clusterer.addMarkers(markers);
+                }
+            };
+            xhr.send();
+
+            function openPopup(conNo) {
+                let encodedConNo = encodeURIComponent(conNo);
+                let url = 'booking/booking?con_no=' + encodedConNo;
+                window.open(url, '_blank', 'width=1000, height=800');
+            }
+
+            let trafficShown = false;
+            map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+
+            function toggleTraffic() {
+                if (trafficShown) {
+                    map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+                    trafficShown = false;
+                } else {
+                    map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+                    trafficShown = true;
+                }
             }
         }
     </script>

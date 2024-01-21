@@ -21,5 +21,4 @@ public class ContainerDTO {
 	private double cont_we;
 	private double cont_kyung;
 	private String cont_area;
-
 }
