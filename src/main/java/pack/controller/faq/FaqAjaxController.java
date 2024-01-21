@@ -1,7 +1,6 @@
 package pack.controller.faq;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +13,7 @@ public class FaqAjaxController {
 
     private final FaqAjaxDTO faqAjaxDTO;
 
-    @GetMapping("detailFaq")
+    @GetMapping("/detailFaq")
     @ResponseBody
     public FaqAjaxDTO getFqa(@RequestParam("detail") String detail) {
         faqAjaxDTO.setDetail(detail);

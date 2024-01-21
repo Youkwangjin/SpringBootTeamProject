@@ -14,14 +14,12 @@ import pack.service.admin.AdminService;
 @AllArgsConstructor
 public class AdminController {
 
-
 	private final AdminService adminService;
 
 	@GetMapping("adminLoginGo")
 	public String adminLoginGo() {
 		return "/admin/admin-login";
 	}
-
 
 	@GetMapping("/adminLogout")
 	public String adminLogoutProcess(HttpSession session) {
@@ -44,5 +42,15 @@ public class AdminController {
 								   @RequestParam("admin_pwd") String admin_pwd,
 								   HttpSession session){
 		return adminService.processLogin(admin_id, admin_pwd, session);
+	}
+
+	@PostMapping("/apprProcess")
+	public String approveProcess(AdminDTO adminDTO) {
+		return adminService.approveProcess(adminDTO);
+	}
+
+	@PostMapping("/denyProcess")
+	public String denyProcess(AdminDTO adminDTO) {
+		return adminService.denyProcess(adminDTO);
 	}
 }

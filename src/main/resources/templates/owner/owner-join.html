@@ -8,13 +8,38 @@
     <title>회원가입 페이지</title>
     <link rel="stylesheet" href="/css/owner/owner-join.css">
     <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#business_num').blur(function () {
+                let businessNum = $(this).val();
+                if (businessNum) {
+                    $.ajax({
+                        url: '/checkBusinessNum',
+                        type: 'POST',
+                        data: {'business_num': businessNum},
+                        success: function (data) {
+                            data = { isDuplicate: true/false }
+                            if (data.isDuplicate) {
+                                $('#business_numMessage').text('이미 가입된 사업자 번호입니다.').css('color', 'red');
+                            } else {
+                                $('#business_numMessage').text('').css('color', '');
+                            }
+                        },
+                        error: function (request, status, error) {
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <header id="header" class="header d-flex align-items-center">
     <nav id="navbar" class="navbar">
         <ul>
             <li><a href="/ownerSessionKeep" class="active">Home</a></li>
-            <li><a href="/userJoinGo">사용자 회원가입</a></li>  <!-- 성공 -->
+            <li><a href="/userJoinGo">사용자 회원가입</a></li>
         </ul>
     </nav>
 </header>

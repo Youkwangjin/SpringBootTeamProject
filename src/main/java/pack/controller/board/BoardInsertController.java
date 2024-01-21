@@ -15,13 +15,13 @@ import pack.dto.board.BoardDTO;
 @Controller
 @RequestMapping("/board")
 @AllArgsConstructor
-public class InsertController {
+public class BoardInsertController {
 
 	private final BoardDAO boardDAO;
 	
 	@GetMapping("/insert")
 	public String insertForm() {
-		return "board/board-insert";
+		return "/board/board-insert-admin";
 	}
 	
 	@PostMapping("/insert")
@@ -30,7 +30,7 @@ public class InsertController {
 
 		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		String ip = req.getHeader("X-FORWARDED-FOR");
-		if (ip == null) ip = req.getRemoteAddr();
+		if (ip == null) req.getRemoteAddr();
 
 		int newNum = boardDAO.currentNum() + 1;
 		boardDTO.setNum(newNum);

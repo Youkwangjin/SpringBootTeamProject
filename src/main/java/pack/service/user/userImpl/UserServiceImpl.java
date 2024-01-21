@@ -1,4 +1,4 @@
-package pack.service.user.lmpl;
+package pack.service.user.userImpl;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
             return "not_found";
         }
     }
-
     @Override
     public int userIdCheck(String userId) {
         return userDao.userIdCheck(userId);

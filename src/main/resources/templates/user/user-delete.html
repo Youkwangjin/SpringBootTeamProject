@@ -24,13 +24,13 @@
             <form action="/userInfoDelete" name="userUpdate" method="POST">
                 <h3>아이디</h3>
                 <label for="user_id">
-                    <input type="text" name="user_id" id="user_id" class="text-field" th:value="${userSession.user_id}">
+                    <input type="text" name="user_id" id="user_id" class="text-field" th:value="${userSession.user_id}" readonly>
                 </label>
                 <div id="messageContainer">
                     <h3>비밀번호</h3>
                     <label for="user_pwd">
                         <input type="text" name="user_pwd" id="user_pwd" class="text-field"
-                               th:value="${userSession.user_pwd}" placeholder="비밀번호">
+                               th:value="${userSession.user_pwd}" placeholder="비밀번호" readonly>
                     </label>
                     <div id="user_pwdMessage"></div>
 
@@ -43,51 +43,32 @@
                     <h3>이름</h3>
                     <label for="user_name">
                         <input type="text" name="user_name" id="user_name" class="text-field"
-                               th:value="${userSession.user_name}" placeholder="이름">
+                               th:value="${userSession.user_name}" placeholder="이름" readonly>
                     </label>
                     <div id="user_nameMessage"></div>
 
                     <h3>전화번호</h3>
                     <label for="user_tel">
                         <input type="tel" name="user_tel" id="user_tel" class="text-field"
-                               th:value="${userSession.user_tel}" placeholder="전화번호">
+                               th:value="${userSession.user_tel}" placeholder="전화번호" readonly>
                     </label>
                     <div id="user_telMessage"></div>
 
                     <h3>이메일</h3>
                     <label for="user_email">
                         <input type="text" name="user_email" id="user_email" class="text-field" maxlength="30"
-                               th:value="${userSession.user_email}" placeholder="이메일">
+                               th:value="${userSession.user_email}" placeholder="이메일" readonly>
                     </label>
                     <div id="user_emailMessage"></div>
-                    <h3>주소</h3>
-                    <label for="user_postcode">
-                        <input type="text" id="user_postcode" class="text-field-postcode" placeholder="우편번호">
-                    </label>
-                    <input type="button" onclick="user_execDaumPostcode()" class="button-postcode" value="우편번호 찾기"><br>
-                    <label for="user_roadAddress">
-                        <input type="text" id="user_roadAddress" class="text-field-postcode" placeholder="도로명주소">
-                    </label>
-                    <label for="user_jibunAddress">
-                        <input type="text" id="user_jibunAddress" class="text-field-postcode" placeholder="지번주소">
-                    </label>
-                    <span id="guide" style="color:#999;display:none"></span>
-                    <label for="user_detailAddress">
-                        <input type="text" id="user_detailAddress" class="text-field-postcode" placeholder="상세주소">
-                    </label>
-                    <label for="user_extraAddress">
-                        <input type="text" id="user_extraAddress" class="text-field-postcode" placeholder="참고항목">
-                    </label>
-                    <br/>
                     <h3>입력한 주소</h3>
                     <label for="user_combinedAddress">
                         <input type="text" name="user_addr" id="user_combinedAddress" class="text-field"
-                               th:value="${userSession.user_addr}">
+                               th:value="${userSession.user_addr}" readonly>
                     </label>
                     <h3>주민등록번호</h3>
                     <label for="user_jumin">
                         <input type="tel" name="user_jumin" id="user_jumin" class="text-field"
-                               th:value="${userSession.user_jumin}" placeholder="주민번호">
+                               th:value="${userSession.user_jumin}" placeholder="주민번호" readonly>
                     </label>
                     <div id="user_juminMessage"></div>
                 </div>

@@ -12,13 +12,14 @@
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
     <script>
         window.onload = function () {
+            let ins = document.querySelector("#faqIns");
+
             document.querySelector("#btnList").onclick = function () {
                 window.history.back();
 
             }
             document.querySelector("#btn").onclick = function () {
                 if (confirm("정말 추가 할까요?")) {
-                    event.preventDefault();
                     ins.action = "/faqInsert";
                     ins.method = "post";
                     ins.submit();

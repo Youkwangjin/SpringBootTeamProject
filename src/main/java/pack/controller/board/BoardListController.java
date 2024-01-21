@@ -16,19 +16,17 @@ import pack.dto.board.BoardDTO;
 @Controller
 @RequestMapping("/board")
 
-public class ListControllerBoard {
+public class BoardListController {
 	@Autowired
-	private BoardDAO daoImpl;
-	
+	private BoardDAO boardDAO;
 	private int tot;
 	private int pList = 15;
 	private int pageSu;
 
-	// 페이지 당 목록 데이터 추출
 	public ArrayList<BoardDTO> getListData(ArrayList<BoardDTO> list, int page){
-		ArrayList<BoardDTO> result = new ArrayList<BoardDTO>();
+		ArrayList<BoardDTO> result = new ArrayList<>();
 		
-		int start = (page - 1) * pList;   // 목록의 인덱스 계산
+		int start = (page - 1) * pList;
 		System.out.println("start:" + start);
 		
 		int size = pList <= list.size() - start?pList : list.size() - start;
@@ -42,7 +40,7 @@ public class ListControllerBoard {
 	
 	// 총 페이지 수 계산
 	public int getPageSu() {
-		tot = daoImpl.totalCnt();
+		tot = boardDAO.totalCnt();
 		pageSu = tot / pList;
 		if(tot % pList > 0) pageSu += 1;
 		return pageSu;
@@ -61,7 +59,7 @@ public class ListControllerBoard {
 		if(page <= 0) sPage = 1;
 		
 
-		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
+		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)boardDAO.listAll();
 		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
@@ -82,7 +80,7 @@ public class ListControllerBoard {
 		}
 		if(page <= 0) sPage = 1;
 		
-		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
+		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)boardDAO.listAll();
 		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
@@ -102,7 +100,7 @@ public class ListControllerBoard {
 		}
 		if(page <= 0) sPage = 1;
 		
-		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
+		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)boardDAO.listAll();
 		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
@@ -122,7 +120,7 @@ public class ListControllerBoard {
 		}
 		if(page <= 0) sPage = 1;
 		
-		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.listAll();
+		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)boardDAO.listAll();
 		ArrayList<BoardDTO> result = getListData(list, sPage);
 		
 		model.addAttribute("data", result);
@@ -132,10 +130,9 @@ public class ListControllerBoard {
 		return "board/board-list-owner";
 	}
 
-	@PostMapping("board/search")
+	@PostMapping("/search")
 	public String searchProcess(BoardDTO boardDTO, Model model) {
-		System.out.println(boardDTO.getSearchName() + " " + boardDTO.getSearchValue());
-		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)daoImpl.search(boardDTO);
+		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>)boardDAO.search(boardDTO);
 		
 		model.addAttribute("data", list);
 		model.addAttribute("pageSu", getPageSu());

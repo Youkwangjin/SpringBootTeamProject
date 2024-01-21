@@ -10,6 +10,59 @@
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/css/admin/admin-cont-approve.css" rel="stylesheet">
+    <script>
+        window.onload = function () {
+            let approveButtonIds = ["btnApprove0", "btnApprove1", "btnApprove2", "btnApprove3", "btnApprove4"];
+            let frm = document.forms['frm'];
+            for (let i = 0; i < approveButtonIds.length; i++) {
+                let approveId = approveButtonIds[i];
+                let button = document.querySelector("#" + approveId);
+                if (button) {
+                    button.onclick = function () {
+                        if (confirm("승인 하시겠습니까?")) {
+                            frm.action = "/apprProcess";
+                            frm.method = "post";
+                            frm.submit();
+                        }
+                    };
+                }
+            }
+
+            let denyButtonIds = ["btnDeny0", "btnDeny1", "btnDeny2", "btnDeny3", "btnDeny4"];
+            for (let i = 0; i < denyButtonIds.length; i++) {
+                let denyId = denyButtonIds[i];
+                let button = document.querySelector("#" + denyId);
+                if (button) {
+                    button.onclick = function () {
+                        if (confirm("거절 하시겠습니까?")) {
+                            frm.action = "/denyProcess";
+                            frm.method = "post";
+                            frm.submit();
+                        }
+                    };
+                }
+            }
+
+            document.querySelector("#btnList").onclick = function () {
+                location.href = "/registered";
+            }
+
+            let deleteButtonIds = ["btnDelete0", "btnDelete1", "btnDelete2", "btnDelete3", "btnDelete4"];
+            for (let i = 0; i < deleteButtonIds.length; i++) {
+                let deleteId = deleteButtonIds[i];
+                let button = document.querySelector("#" + deleteId);
+                if (button) {
+                    button.onclick = function () {
+                        if (confirm("정말 삭제할까요?")) {
+                            frm.action = "/deleteContainer";
+                            frm.method = "get";
+                            frm.submit();
+                        }
+                    };
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 <div th:if="${session.adminSession != null}">
