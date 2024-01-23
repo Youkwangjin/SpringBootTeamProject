@@ -63,7 +63,6 @@ public class bookingController {
 		}
 	}
 
-
 	@ResponseBody
 	@DeleteMapping("/bookDelete")
 	public ResponseEntity<?> bookDelete(@RequestBody bookingDTO bookingDto) {

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import pack.dto.admin.AdminDTO;
 import pack.service.admin.AdminService;
 
+
 @Controller
 @AllArgsConstructor
 public class AdminController {
@@ -53,4 +54,5 @@ public class AdminController {
 	public String denyProcess(AdminDTO adminDTO) {
 		return adminService.denyProcess(adminDTO);
 	}
+
 }

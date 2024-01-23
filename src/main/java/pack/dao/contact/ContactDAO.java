@@ -15,9 +15,7 @@ public class ContactDAO {
 	private final ContactMapper contactMapper;
 	
 	public List<ContactDTO> listContact(){
-		List<ContactDTO> list = contactMapper.selectContact();
-		System.out.println(list);
-		return list;
+        return contactMapper.selectContact();
 	}
 	
 	public int totalContact() {
@@ -26,10 +24,10 @@ public class ContactDAO {
 	
 	@Transactional
 	public boolean insertContact(ContactDTO contactDTO) {
-		boolean b = false;
-		int re = contactMapper.insertContact(contactDTO);
-		if(re>0) b = true;
-		return b;
+		boolean insertContactData = false;
+		int insertContactRe = contactMapper.insertContact(contactDTO);
+		if(insertContactRe > 0) insertContactData = true;
+		return insertContactData;
 	}
 	
 	public ContactDTO detailContact(String contact_no) {
@@ -38,17 +36,17 @@ public class ContactDAO {
 	
 	@Transactional
 	public boolean updateContact(ContactDTO contactDTO) {
-		boolean b = false;
-		int re = contactMapper.updateContact(contactDTO);
-		if(re>0) b = true;
-		return b;
+		boolean updateContactData = false;
+		int updateContactRe = contactMapper.updateContact(contactDTO);
+		if(updateContactRe > 0) updateContactData = true;
+		return updateContactData;
 	}
 	
 	@Transactional
 	public boolean deleteContact(String contact_no) {
-		boolean b = false;
-		int re = contactMapper.deleteContact(contact_no);
-		if(re>0) b = true;
-		return b;
+		boolean deleteContactData = false;
+		int deleteContactRe = contactMapper.deleteContact(contact_no);
+		if(deleteContactRe > 0) deleteContactData = true;
+		return deleteContactData;
 	}
 }
