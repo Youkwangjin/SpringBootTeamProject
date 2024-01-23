@@ -15,15 +15,11 @@ public class BoardDAO {
 	private final BoardMapper boardMapper;
 
 	public List<BoardDTO> listAll() {
-		List<BoardDTO> list = boardMapper.selectList();
-		System.out.println(list);
-		return list;
+        return boardMapper.selectList();
 	}
 
 	public List<BoardDTO> search(BoardDTO boardDTO) {
-		List<BoardDTO> list = boardMapper.searchList(boardDTO);
-		System.out.println(list);
-		return list;
+        return boardMapper.searchList(boardDTO);
 	}
 
 	public int totalCnt() {
@@ -47,9 +43,7 @@ public class BoardDAO {
 	}
 
 	public BoardDTO detail(String num) {
-		BoardDTO boardDTO = boardMapper.selectOne(num);
-		System.out.println(boardDTO);
-		return boardDTO;
+        return boardMapper.selectOne(num);
 	}
 
 	public boolean update(BoardDTO boardDTO) {
@@ -58,10 +52,6 @@ public class BoardDAO {
 		if (re > 0)
 			b = true;
 		return b;
-	}
-
-	public String selectPass(String num) { // 수정시 비밀번호 비교용
-		return boardMapper.selectPass(num);
 	}
 
 	public boolean delete(String num) {

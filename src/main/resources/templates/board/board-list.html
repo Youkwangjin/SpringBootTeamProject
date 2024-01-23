@@ -12,7 +12,18 @@
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
+<div th:if="${session.userSession != null}">
+    <div th:replace="~{fragments/header_user :: header}"></div>
+</div>
+<div th:if="${session.ownerSession != null}">
+    <div th:replace="~{fragments/header_owner :: header}"></div>
+</div>
+<div th:if="${session.adminSession != null}">
+    <div th:replace="~{fragments/header_admin :: header}"></div>
+</div>
+<div th:if="${session.userSession == null && session.ownerSession == null && session.adminSession == null}">
+    <div th:replace="~{fragments/header :: header}"></div>
+</div>
 <main id="main">
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
         <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">

@@ -1,4 +1,4 @@
-package pack.service.user.userImpl;
+package pack.service.user.userimpl;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;

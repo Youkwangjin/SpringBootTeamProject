@@ -12,16 +12,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pack.dto.booking.bookingDTO;
 import pack.dto.admin.AdminDTO;
-import pack.dao.booking.BookingDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pack.service.booking.BookingService;
 
 @Controller
 @RequestMapping("/booking")
 @AllArgsConstructor
 public class bookingController {
 
-	private final BookingDAO dao;
+	private final BookingService bookingService;
 	private static final Logger logger = LoggerFactory.getLogger(bookingController.class);
 
 	@GetMapping("/booking")
@@ -29,28 +29,12 @@ public class bookingController {
 		return "booking/booking";
 	}
 
-	@PostMapping("/bookingDo")
-	public String bookingDo(bookingDTO bookingdto, AdminDTO adminDTO) {
-		try {
-			boolean b = dao.bookingInsert(bookingdto);
-			boolean a = dao.contStatusUpdate(adminDTO);
-			if (b && a) {
-				return "redirect:/booking/bookingInfo";
-			} else {
-				return "/booking/booking";
-			}
-		} catch (Exception e) {
-			logger.error("Error bookingDo", e);
-			return "/booking/booking";
-		}
-	}
-
 	@GetMapping("/bookingInfo")
 	public String bookingProcess(HttpSession session, Model model) {
 		try {
 			String user_id = (String) session.getAttribute("user_id");
 			if (user_id != null) {
-				ArrayList<bookingDTO> bookingDto = dao.bookingList(user_id);
+				ArrayList<bookingDTO> bookingDto = bookingService.bookingList(user_id);
 				model.addAttribute("bList", bookingDto);
 				return "/booking/booking-info";
 			} else {
@@ -63,12 +47,28 @@ public class bookingController {
 		}
 	}
 
+	@PostMapping("/bookingDo")
+	public String bookingDo(bookingDTO bookingdto, AdminDTO adminDTO) {
+		try {
+			boolean bookingInsertData = bookingService.bookingInsert(bookingdto);
+			boolean contStatusData = bookingService.contStatusUpdate(adminDTO);
+			if (bookingInsertData && contStatusData) {
+				return "redirect:/booking/bookingInfo";
+			} else {
+				return "/booking/booking";
+			}
+		} catch (Exception e) {
+			logger.error("Error bookingDo", e);
+			return "/booking/booking";
+		}
+	}
+
 	@ResponseBody
 	@DeleteMapping("/bookDelete")
 	public ResponseEntity<?> bookDelete(@RequestBody bookingDTO bookingDto) {
 		try {
-			boolean b = dao.bookingDelete(bookingDto);
-			if (b) {
+			boolean bookingDeleteData = bookingService.bookingDelete(bookingDto);
+			if (bookingDeleteData) {
 				return ResponseEntity.ok(Collections.singletonMap("message", "예약이 취소되었습니다."));
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "예약을 찾을 수 없습니다."));

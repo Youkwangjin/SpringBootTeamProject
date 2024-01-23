@@ -5,21 +5,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pack.dao.board.BoardDAO;
+import pack.service.board.BoardDeleteService;
 
 @Controller
 @RequestMapping("/board")
 @AllArgsConstructor
 public class BoardDeleteController {
 
-	private final BoardDAO boardDAO;
-		
+	private final BoardDeleteService boardDeleteService;
+
 	@GetMapping("/delete")
-	public String del(@RequestParam("num")String num,
-			 		  @RequestParam("page")String page) {
-		if(boardDAO.delete(num))
+	public String boardDelete(@RequestParam("num")String num,
+							  @RequestParam("page")String page) {
+		if(boardDeleteService.delete(num))
 			return "redirect:listAdmin?page=" + page;
 		else
-			return "redirect:error";
+			return "redirect:/board/error";
 	}
 }
+

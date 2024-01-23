@@ -1,4 +1,4 @@
-package pack.service.owner.ownerImpl;
+package pack.service.owner.ownerimpl;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;

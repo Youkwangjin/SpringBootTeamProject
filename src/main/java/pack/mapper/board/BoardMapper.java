@@ -21,7 +21,6 @@ public interface BoardMapper {
 	int currentNum();
 	int totalCnt();
 	String selectPass(String num);
-	
 	int updateOnum(BoardDTO boardDTO);
 	int insertReData(BoardDTO boardDTO);
 

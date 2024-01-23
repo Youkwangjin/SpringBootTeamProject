@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
-import pack.dao.user.UserDAO;
 import pack.dto.user.UserDTO;
 import pack.service.user.UserService;
 
@@ -16,7 +15,6 @@ import pack.service.user.UserService;
 @AllArgsConstructor
 public class UserController {
 
-	private final UserDAO userDao;
 
 	private final UserService userService;
 
@@ -39,7 +37,7 @@ public class UserController {
 	@GetMapping("userLoginGo")
 	public String userLoginGo(HttpSession session) {
 		if (session.getAttribute("userSession") != null) {
-			return "redirect:/usersessionkeep";
+			return "redirect:/userSessionKeep";
 		}
 		return "user/user-login";
 	}

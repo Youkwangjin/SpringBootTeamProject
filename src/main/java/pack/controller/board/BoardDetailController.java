@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import pack.dao.board.BoardDAO;
+import pack.service.board.BoardDetailService;
 
 
 @Controller
@@ -17,42 +16,36 @@ import pack.dao.board.BoardDAO;
 @AllArgsConstructor
 public class BoardDetailController {
 
-	private final BoardDAO boardDAO;
-	
+	private final BoardDetailService boardDetailService;
+
 	@GetMapping("/detail")
-	public String detailProcess(
+	public String BoardDetailProcess(
+			HttpServletRequest request,
 			@RequestParam("num") String num,
 			@RequestParam("page") String page, Model model) {
-		// 조회수 증가 선행
-		boardDAO.updateReadcnt(num);
-		
-		model.addAttribute("data", boardDAO.detail(num));
-		model.addAttribute("page", page);
-		
-		return "/board/board-detail";
+
+		if (boardDetailService.isAdmin(request.getSession())) {
+			model.addAttribute("data", boardDetailService.detail(num));
+			model.addAttribute("page", page);
+			return "/board/board-detail-admin";
+		} else {
+			boardDetailService.updateReadcnt(num);
+			model.addAttribute("data", boardDetailService.detail(num));
+			model.addAttribute("page", page);
+			return "/board/board-detail";
+		}
 	}
-	
-	@RequestMapping("/detail")
-    public String detail(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        if (session.getAttribute("admin") != null) {
-            return "redirect:board/detailAdmin";
-        } else {
-            return "/board/board-detail";
-        }
-    }
-	
-	
 	@GetMapping("/detailAdmin")
-	public String detailAdminProcess(
+	public String BoardDetailAdminProcess(
 			@RequestParam("num") String num,
 			@RequestParam("page") String page, Model model) {
-		// 조회수 증가 선행
-		boardDAO.updateReadcnt(num);
-		
-		model.addAttribute("data", boardDAO.detail(num));
+		boardDetailService.updateReadcnt(num);
+
+		model.addAttribute("data", boardDetailService.detail(num));
 		model.addAttribute("page", page);
-		
-		return "/board/board-detail";
+
+		return "/board/board-detail-admin";
 	}
+
+
 }
