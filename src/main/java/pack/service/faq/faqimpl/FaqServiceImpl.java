@@ -1,4 +1,4 @@
-package pack.service.faq.faqImpl;
+package pack.service.faq.faqimpl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

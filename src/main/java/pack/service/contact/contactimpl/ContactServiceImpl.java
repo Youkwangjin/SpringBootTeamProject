@@ -1,4 +1,4 @@
-package pack.service.contact.contactImpl;
+package pack.service.contact.contactimpl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

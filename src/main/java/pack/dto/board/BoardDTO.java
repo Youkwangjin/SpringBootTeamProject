@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class BoardDTO {
 	private int num, readcnt, gnum, onum, nested;
-	private String admin_id, title, cont, bdate;
+	private String admin_id, title, cont, bdate, ip;
 	private String searchName, searchValue;
 
 	public void setBdate() {
