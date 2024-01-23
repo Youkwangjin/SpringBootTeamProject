@@ -2,7 +2,6 @@ package pack.controller.container;
 
 import java.util.*;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,14 +36,14 @@ public class ContainerController {
 	}
 
 	@GetMapping("/list")
-	public String cont_mgr(Model model, HttpSession session) {
+	public String containerMgr(Model model, HttpSession session) {
 		String business_num = (String) session.getAttribute("business_num");
 		model.addAttribute("datas", containerService.getContainerAllData(business_num));
 		return "container/container-list";
 	}
 
 	@GetMapping("/reserve")
-	public String cont_reserve(Model model, HttpSession session) {
+	public String containerReserve(Model model, HttpSession session) {
 		String business_num = (String) session.getAttribute("business_num");
 		model.addAttribute("datas", containerService.getDataReserve(business_num));
 		return "container/container-reserve";
@@ -62,14 +61,14 @@ public class ContainerController {
 	}
 
 	@GetMapping("/goUpdate")
-	public String cont_update(@RequestParam("cont_no") String cont_no, Model model) {
+	public String containerUpdate(@RequestParam("cont_no") String cont_no, Model model) {
 		ContainerDTO conDto = containerService.containerDetail(cont_no);
 		model.addAttribute("conDto", conDto);
 		return "container/container-update";
 	}
 
 	@GetMapping("/delete")
-	public String delete(@RequestParam("cont_no") String cont_no) {
+	public String containerDelete(@RequestParam("cont_no") String cont_no) {
 		boolean isSuccess = containerService.deleteContainer(cont_no);
 		if (isSuccess) {
 			return "redirect:/owner/list";
@@ -91,7 +90,7 @@ public class ContainerController {
 		return containerService.insertContainerWithFile(containerDTO, uploadFileDTO, result, uploadDirectory);
 	}
 	@PostMapping("/update")
-	public String update(ContainerDTO containerDTO) {
+	public String containerUpdate(ContainerDTO containerDTO) {
 		boolean isSuccess = containerService.updateContainer(containerDTO);
 		if (isSuccess) {
 			return "redirect:/owner/list";
@@ -104,5 +103,4 @@ public class ContainerController {
 	public ResponseEntity<?> reserveContainer(@RequestParam("cont_no") String cont_no) {
 		return containerService.processReservation(cont_no);
 	}
-
 }

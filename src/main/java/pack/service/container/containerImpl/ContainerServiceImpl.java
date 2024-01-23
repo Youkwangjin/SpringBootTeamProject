@@ -29,12 +29,13 @@ public class ContainerServiceImpl implements ContainerService {
 
         for (ContainerDTO c : containDao.getContainerAll()) {
             data = new HashMap<>();
-            data.put("con_no", c.getCont_no());
-            data.put("con_name", c.getCont_name());
-            data.put("con_addr", c.getCont_addr());
+            data.put("cont_no", c.getCont_no());
+            data.put("cont_name", c.getCont_name());
+            data.put("cont_addr", c.getCont_addr());
             data.put("we", String.valueOf(c.getCont_we()));
             data.put("kyung", String.valueOf(c.getCont_kyung()));
-            data.put("con_area", c.getCont_size());
+            data.put("cont_size", c.getCont_size());
+            data.put("cont_status", c.getCont_status());
             list.add(data);
         }
         System.out.println(list);
@@ -75,15 +76,16 @@ public class ContainerServiceImpl implements ContainerService {
     public ResponseEntity<?> processReservation(String cont_no) {
         ContainerDTO container = this.containerDetail(cont_no);
 
-        if (container != null && container.getCont_status().equals("approved")) {
+        if (container != null && container.getCont_status().equals("1")) {
             // 예약 로직 수행
-            return ResponseEntity.ok("창고 예약이 완료되었습니다.");
+            return ResponseEntity.ok("예약 페이지로 이동 합니다.");
         } else if (container != null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자의 승인이 필요한 창고입니다.");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("해당 창고를 찾을 수 없습니다.");
         }
     }
+
 
 
     @Override
