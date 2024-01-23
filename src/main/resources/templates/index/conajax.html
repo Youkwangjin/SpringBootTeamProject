@@ -153,7 +153,7 @@
     <script>
         function openPopup(conNo) {
             $.ajax({
-                url: '/reserveContainer',
+                url: '/owner/reserveContainer',
                 type: 'POST',
                 data: {'cont_no': conNo},
                 success: function (response) {
@@ -191,8 +191,6 @@
     <div id="map" style="width:100%;height:90vh;margin-top: 100px"></div>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f8bbc7549216335625367284bd469f94&libraries=clusterer,services"></script>
     <script>
-        window.onload = function () {
-            // 지도 생성 및 기본 설정
             let mapContainer = document.getElementById('map');
             let mapOption = {
                 center: new kakao.maps.LatLng(37.56692, 126.97845),
@@ -223,13 +221,17 @@
                         '        <div class="body">' +
                         '            <div class="desc">' +
                         '                <div style="display:none" class="ellipsis">창고번호: ' + data.con_no + '</div>' +
-                        '                <div class="ellipsis">회사명: ' + data.con_name + '</div>' +
-                        '                <div class="ellipsis">주소: ' + data.con_addr + '</div>' +
-                        '                <div class="ellipsis">크기: ' + data.con_area + ' </div>';
+                        '                <div class="ellipsis">회사명: ' + data.cont_name + '</div>' +
+                        '                <div class="ellipsis">주소: ' + data.cont_addr + '</div>' +
+                        '                <div class="ellipsis">크기: ' + data.cont_size + ' </div>';
 
                     // 승인 상태에 따른 예약 링크 또는 경고창 표시
                     if (parseInt(data.cont_status) === 1) {
-                        content += '<div><a class="link" href="javascript:void(0);" onclick="openPopup(' + data.con_no + ')">창고 예약하기</a></div>';
+                        content += '<div><a class="link" href="javascript:void(0);" onclick="openPopup(' + data.cont_no + ')">창고 예약하기</a></div>';
+                    } else if (parseInt(data.cont_status) === 2) {
+                        content += '<div><a class="link" href="javascript:void(0);" onclick="alert(\'이미 예약된 창고입니다. 다른 창고 이용 부탁드립니다.\')">창고 예약하기</a></div>';
+                    } else if (parseInt(data.cont_status) === 4) {
+                        content += '<div><a class="link" href="javascript:void(0);" onclick="alert(\'승인이 거부된 창고입니다.\')">창고 예약하기</a></div>';
                     } else {
                         content += '<div><a class="link" href="javascript:void(0);" onclick="alert(\'관리자의 승인이 필요한 창고입니다.\')">창고 예약하기</a></div>';
                         console.log(data.cont_status);
@@ -247,6 +249,12 @@
                         position: marker.getPosition()
                     });
                 });
+            }
+
+            function openPopup(conNo) {
+                let encodedConNo = encodeURIComponent(conNo);
+                let url = 'booking/booking?con_no=' + encodedConNo;
+                window.open(url, '_blank', 'width=1000, height=800');
             }
 
             function searchAddress() {
@@ -303,11 +311,6 @@
             };
             xhr.send();
 
-            function openPopup(conNo) {
-                let encodedConNo = encodeURIComponent(conNo);
-                let url = 'booking/booking?con_no=' + encodedConNo;
-                window.open(url, '_blank', 'width=1000, height=800');
-            }
 
             let trafficShown = false;
             map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
@@ -321,7 +324,6 @@
                     trafficShown = true;
                 }
             }
-        }
     </script>
 </div>
 </body>
