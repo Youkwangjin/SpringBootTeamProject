@@ -21,10 +21,10 @@ import pack.service.booking.BookingService;
 @Controller
 @RequestMapping("/booking")
 @AllArgsConstructor
-public class bookingController {
+public class BookingController {
 
     private final BookingService bookingService;
-    private static final Logger logger = LoggerFactory.getLogger(bookingController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
 
     @GetMapping("/booking")
     public String booking() {

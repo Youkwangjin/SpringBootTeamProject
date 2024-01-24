@@ -9,7 +9,7 @@ public interface OwnerService {
     String registerOwner(OwnerDTO ownerDto);
     String processLogin(String business_num, String owner_pwd, HttpSession session);
     String updateOwnerInfo(OwnerDTO ownerDto, HttpSession session);
-    String deleteOwnerInfo(OwnerDTO ownerDto);
+    String deleteOwnerInfo(OwnerDTO ownerDto, HttpSession session);
     boolean checkBusinessNum(String businessNum);
 }
 

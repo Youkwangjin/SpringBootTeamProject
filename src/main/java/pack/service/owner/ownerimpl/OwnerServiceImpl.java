@@ -76,18 +76,20 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public String deleteOwnerInfo(OwnerDTO ownerDto) {
+    public String deleteOwnerInfo(OwnerDTO ownerDto, HttpSession session) {
         try {
             boolean isDeleted = ownerDAO.ownerDateDelete(ownerDto);
             if (isDeleted) {
+                session.invalidate();
                 return "owner/owner-login";
             } else {
-                return "redirect:/";
+                return "owner/owner-error";
             }
         } catch (Exception e) {
             return "owner/owner-error";
         }
     }
+
 
     @Override
     public boolean checkBusinessNum(String businessNum) {
