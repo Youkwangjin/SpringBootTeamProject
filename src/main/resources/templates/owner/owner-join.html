@@ -18,8 +18,9 @@
                         url: '/checkBusinessNum',
                         type: 'POST',
                         data: {'business_num': businessNum},
+                        dataType: 'json',
                         success: function (data) {
-                            data = { isDuplicate: true/false }
+                            console.log(data);
                             if (data.isDuplicate) {
                                 $('#business_numMessage').text('이미 가입된 사업자 번호입니다.').css('color', 'red');
                             } else {

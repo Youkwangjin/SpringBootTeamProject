@@ -99,8 +99,7 @@ public class OwnerController {
 	public Map<String, Object> checkBusinessNum(@RequestParam("business_num") String businessNum) {
 		boolean isDuplicate = ownerService.checkBusinessNum(businessNum);
 		Map<String, Object> response = new HashMap<>();
-		response.put("중복", isDuplicate);
+		response.put("isDuplicate", isDuplicate);
 		return response;
 	}
-
 }

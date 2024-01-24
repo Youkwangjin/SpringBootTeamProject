@@ -2,7 +2,6 @@ package pack.service.faq;
 
 import org.springframework.stereotype.Service;
 import pack.dto.faq.FaqDTO;
-
 import java.util.List;
 
 @Service

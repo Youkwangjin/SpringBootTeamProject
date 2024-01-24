@@ -12,7 +12,6 @@ import pack.dto.faq.FaqDTO;
 
 @Mapper
 public interface FaqMapper {
-
 	@Select("select * from faq order by faq_no desc")
 	List<FaqDTO> selectFaq();
 	

@@ -10,12 +10,11 @@ import pack.dto.faq.FaqAjaxDTO;
 @Controller
 @AllArgsConstructor
 public class FaqAjaxController {
-
     private final FaqAjaxDTO faqAjaxDTO;
 
     @GetMapping("/detailFaq")
     @ResponseBody
-    public FaqAjaxDTO getFqa(@RequestParam("detail") String detail) {
+    public FaqAjaxDTO getDataFqa(@RequestParam("detail") String detail) {
         faqAjaxDTO.setDetail(detail);
         return faqAjaxDTO;
     }

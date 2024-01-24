@@ -2,14 +2,18 @@ package pack.service.booking;
 
 import org.springframework.stereotype.Service;
 import pack.dto.admin.AdminDTO;
-import pack.dto.booking.bookingDTO;
+import pack.dto.booking.BookingDTO;
+import pack.response.BookingResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public interface BookingService {
-    boolean bookingInsert(bookingDTO bookingdto);
+    boolean bookingInsert(BookingDTO bookingdto);
     boolean contStatusUpdate(AdminDTO adminDTO);
-    ArrayList<bookingDTO> bookingList(String user_id);
-    boolean bookingDelete(bookingDTO bookingDto);
+    ArrayList<BookingDTO> bookingList(String user_id);
+    BookingResponse bookingDelete(BookingDTO bookingDto);
+    List<BookingDTO> getActiveBookingsForUser(String userId);
 }

@@ -25,7 +25,7 @@ public interface OwnerMapper {
     @Delete("delete from owner WHERE business_num = #{business_num}")
     int ownerDelete(OwnerDTO ownerDto);
 
-    @Select("SELECT COUNT(*) FROM user WHERE business_num = #{business_num}")
+    @Select("SELECT COUNT(*) FROM owner WHERE business_num = #{business_num}")
     int checkBusinessNum(@Param("business_num") String businessNum);
 
 }

@@ -86,7 +86,7 @@ public class ContainerController {
 			return "redirect:/";
 		}
 		containerDTO.setOwner_num(business_num);
-		String uploadDirectory = "C:/work/AcornProject/src/main/resources/static/upload/";
+		String uploadDirectory = "src/main/resources/static/upload/";
 		return containerService.insertContainerWithFile(containerDTO, uploadFileDTO, result, uploadDirectory);
 	}
 	@PostMapping("/update")

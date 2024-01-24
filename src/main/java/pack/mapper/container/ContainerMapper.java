@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import pack.dto.booking.bookingDTO;
+import pack.dto.booking.BookingDTO;
 import pack.dto.container.ContainerDTO;
 
 
@@ -32,7 +32,7 @@ public interface ContainerMapper {
 	ContainerDTO selectContainer(String cont_no);
 	
 	@Select("SELECT * FROM container inner join booking_board on container.cont_no = booking_board.cont_no inner join user on user.user_id = booking_board.user_id where container.cont_no = #{cont_no}")
-	bookingDTO selectBookCont(String cont_no);
+    BookingDTO selectBookCont(String cont_no);
 	
 	@Update("update container inner join owner on owner.business_num=container.owner_num set owner_name=#{owner_name}, cont_addr=#{cont_addr}, cont_we=#{cont_we}, cont_kyung=#{cont_kyung}, cont_size=#{cont_size}, cont_explain=#{cont_explain} where cont_no=#{cont_no}")
 	int updateContainer(ContainerDTO containerDTO);

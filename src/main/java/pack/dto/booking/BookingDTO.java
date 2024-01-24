@@ -6,9 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class bookingDTO implements Serializable {
-
-
+public class BookingDTO implements Serializable {
 	private int booking_id;
 	private String user_id;
 	private String user_name;
@@ -19,4 +17,6 @@ public class bookingDTO implements Serializable {
 	private String cont_no;
 	private String cont_size;
 	private String booking_price;
+	private boolean success;
+	private String message;
 }
