@@ -6,8 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pack.dao.fqa.FaqDAO;
 import pack.dto.faq.FaqDTO;
 import pack.service.faq.FaqService;
-
-
 import java.util.ArrayList;
 import java.util.List;
 

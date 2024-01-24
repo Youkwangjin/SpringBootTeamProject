@@ -3,14 +3,20 @@ package pack.service.user.userimpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pack.dao.user.UserDAO;
+import pack.dto.booking.BookingDTO;
 import pack.dto.user.UserDTO;
+import pack.service.booking.BookingService;
 import pack.service.user.UserService;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDAO userDao;
+    private final BookingService bookingService;
 
     private boolean isEmpty(String value) {
         return value != null && !value.trim().isEmpty();
@@ -69,15 +75,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+    @Transactional
     public String userInfoDelete(UserDTO userDto, HttpSession session) {
-        if (userDao.userDataDelete(userDto)) {
-            session.removeAttribute("userSession");
-            return "user/user-login";
+        String userId = userDto.getUser_id();
+        List<BookingDTO> activeBookings = bookingService.getActiveBookingsForUser(userId);
+        if (!activeBookings.isEmpty()) {
+            return "user/user-delete-denied";
         } else {
-            return "user/user-delete";
+            if (userDao.userDataDelete(userDto)) {
+                session.invalidate();
+                return "user/user-login";
+            } else {
+                return "user/user-delete-denied";
+            }
         }
     }
+
 
     @Override
     public String findUserId(String userName, String userEmail, String userJumin) {

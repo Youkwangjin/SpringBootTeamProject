@@ -17,7 +17,6 @@ public class FaqController {
 
     private final FaqService faqService;
 
-    // FAQ 리스트 표시
     @GetMapping("/faq")
     public String listProcess(@RequestParam("page") int page, Model model) {
         int sPage = page;
@@ -63,7 +62,6 @@ public class FaqController {
         return "faq/faq-owner";
     }
 
-    // FAQ 사용자 검색
     @GetMapping("/searchFaqUser")
     public String searchUser(@RequestParam(value = "searchPage", defaultValue = "1") int searchPage,
                              @RequestParam(name = "searchName", required = false) String searchName,
@@ -88,7 +86,6 @@ public class FaqController {
         return "faq/faq-user-search";
     }
 
-    // FAQ 소유자 검색
     @GetMapping("/searchFaqOwner")
     public String searchOwner(@RequestParam(value = "searchPage") int searchPage,
                               @RequestParam(name = "searchName", required = false) String searchName,
@@ -113,7 +110,6 @@ public class FaqController {
         return "faq/faq-owner-search";
     }
 
-    // FAQ 관리자 검색
     @GetMapping("/searchFaqAdmin")
     public String searchAdmin(@RequestParam(value = "searchPage", defaultValue = "1") int searchPage,
                               @RequestParam(name = "searchName", required = false) String searchName,
@@ -153,13 +149,11 @@ public class FaqController {
         return "faq/faq-admin";
     }
 
-    // FAQ 등록 페이지
     @GetMapping("/faqInsert")
     public String faqInsert() {
         return "faq/faq-insert";
     }
 
-    // FAQ 등록 처리
     @PostMapping("/faqInsert")
     public String faqInsertSubmit(FaqDTO faqDTO) {
         boolean b = faqService.insertFaq(faqDTO);
@@ -170,7 +164,6 @@ public class FaqController {
         }
     }
 
-    // FAQ 업데이트 처리
     @PostMapping("/faqUpdate")
     public String faqUpdate(FaqDTO faqDTO) {
         boolean b = faqService.updateFaq(faqDTO);
@@ -181,7 +174,6 @@ public class FaqController {
         }
     }
 
-    // FAQ 삭제 처리
     @PostMapping("/faqDelete")
     public String faqDelete(@RequestParam("faq_no") String faq_no) {
         boolean b = faqService.deleteFaq(faq_no);
@@ -192,7 +184,6 @@ public class FaqController {
         }
     }
 
-    // FAQ 상세 정보 페이지
     @GetMapping("/faqDetail")
     public String faqDetail(@RequestParam("faq_no") int faq_no, Model model) {
         FaqDTO detail = faqService.detailFaq(faq_no);

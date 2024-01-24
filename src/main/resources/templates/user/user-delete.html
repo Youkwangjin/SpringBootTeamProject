@@ -2,7 +2,6 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <!-- kakao 주소 api -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/user/user-update.js"></script>
     <title>회원탈퇴 페이지</title>
@@ -29,14 +28,14 @@
                 <div id="messageContainer">
                     <h3>비밀번호</h3>
                     <label for="user_pwd">
-                        <input type="text" name="user_pwd" id="user_pwd" class="text-field"
+                        <input type="password" name="user_pwd" id="user_pwd" class="text-field"
                                th:value="${userSession.user_pwd}" placeholder="비밀번호" readonly>
                     </label>
                     <div id="user_pwdMessage"></div>
 
                     <h3>비밀번호 확인</h3>
                     <label for="user_repwd">
-                        <input type="text" name="user_repwd" id="user_repwd" class="text-field" placeholder="비밀번호 확인">
+                        <input type="password" name="user_repwd" id="user_repwd" class="text-field" placeholder="비밀번호 확인">
                     </label>
                     <div id="user_repwdMessage"></div>
 

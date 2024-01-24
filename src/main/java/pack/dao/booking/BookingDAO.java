@@ -2,6 +2,8 @@
 package pack.dao.booking;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import pack.dto.admin.AdminDTO;
-import pack.dto.booking.bookingDTO;
+import pack.dto.booking.BookingDTO;
 import pack.mapper.booking.BookingMapper;
 
 
@@ -22,7 +24,7 @@ public class BookingDAO {
 	private static final Logger logger = LoggerFactory.getLogger(BookingDAO.class);
 
 	@Transactional
-	public boolean bookingInsert(bookingDTO bookingdto) {
+	public boolean bookingInsert(BookingDTO bookingdto) {
 		boolean bookingInsertData = false;
 		try {
 			int bookingInsertRe = bookingMapper.bookingInsert(bookingdto);
@@ -49,13 +51,13 @@ public class BookingDAO {
 		return contStatusData;
 	}
 
-	public ArrayList<bookingDTO> bookingList(String user_id) {
-		ArrayList<bookingDTO> bList = null;
+	public ArrayList<BookingDTO> bookingList(String user_id) {
+		ArrayList<BookingDTO> bList = null;
 		try {
-			bList = (ArrayList<bookingDTO>) bookingMapper.bookingList(user_id);
+			bList = (ArrayList<BookingDTO>) bookingMapper.bookingList(user_id);
 			if(bList != null) {
 				logger.info("예약한 사용자 user_id: {}, list size: {}", user_id, bList.size());
-				for(bookingDTO booking : bList) {
+				for(BookingDTO booking : bList) {
 					logger.info("Booking: {}", booking.toString());
 				}
 			} else {
@@ -67,14 +69,33 @@ public class BookingDAO {
 		return bList;
 	}
 
-	public boolean bookingDelete(bookingDTO bookingdto) {
+	public boolean bookingDelete(int bookingId) {
 		boolean bookingDeleteData = false;
 		try {
-			int bookingDeleteRe = bookingMapper.bookingDelete(bookingdto.getBooking_id());
+			int bookingDeleteRe = bookingMapper.bookingDelete(bookingId);
 			if(bookingDeleteRe > 0 ) bookingDeleteData = true;
 		} catch (Exception e) {
 			logger.error("Error bookingDelete", e);
 		}
 		return bookingDeleteData;
+	}
+
+
+	public BookingDTO getBookingById(int bookingId) {
+		try {
+			return bookingMapper.getBookingById(bookingId);
+		} catch (Exception e) {
+			logger.error("Error 발생 booking ID", e);
+			return null;
+		}
+	}
+
+	public List<BookingDTO> findActiveBookingsByUserId(String userId) {
+		try {
+			return bookingMapper.findActiveBookingsByUserId(userId);
+		} catch (Exception e) {
+			logger.error("창고를 예약한 사용자는 탈퇴 불가! user: {}", userId, e);
+			return Collections.emptyList();
+		}
 	}
 }
