@@ -16,4 +16,5 @@ public interface UserInfoListService {
     int userCount();
     ArrayList<UserDTO> getUserListData(ArrayList<UserDTO> list, int page);
     int getUserPageSu();
+
 }

@@ -51,7 +51,7 @@ public class UserInfoListController {
     public String userDelete(@RequestParam("user_id") String user_id,
                              @RequestParam(value = "page", defaultValue = "1") int page) {
         if (userInfoListService.userDelete(user_id))
-            return "redirect:/user?page=" + page;
+            return "redirect:/userList?page=" + page;
         else
             return "redirect:/error";
     }

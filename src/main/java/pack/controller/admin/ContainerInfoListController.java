@@ -17,44 +17,44 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class ContainerInfoListController {
 
-   private final ContainerInfoListService containerInfoListService;
+    private final ContainerInfoListService containerInfoListService;
 
-   @GetMapping("/detail")
-   public String containerDetail(@RequestParam("cont_no")String cont_no, Model model) {
-      ContainerDTO containerDto = containerInfoListService.containerDetail(cont_no);
-      model.addAttribute("containerDTO",containerDto);
-      return "/admin/admin-cont-approve";
-   }
+    @GetMapping("/detail")
+    public String containerDetail(@RequestParam("cont_no") String cont_no, Model model) {
+        ContainerDTO containerDto = containerInfoListService.containerDetail(cont_no);
+        model.addAttribute("containerDTO", containerDto);
+        return "/admin/admin-cont-approve";
+    }
 
-   @GetMapping("/registered")
-   public String registeredList(@RequestParam(name = "page", required = false, defaultValue = "1") int page,Model model) {
-      int sPage = Math.max(page, 1);
+    @GetMapping("/registered")
+    public String registeredList(@RequestParam(name = "page", required = false, defaultValue = "1") int page, Model model) {
+        int sPage = Math.max(page, 1);
 
-      ArrayList<ContainerDTO> sList3 = (ArrayList<ContainerDTO>) containerInfoListService.getContainerList();
-      ArrayList<ContainerDTO> result = containerInfoListService.getRegisteredListData(sList3, sPage);
+        ArrayList<ContainerDTO> sList3 = (ArrayList<ContainerDTO>) containerInfoListService.getContainerList();
+        ArrayList<ContainerDTO> result = containerInfoListService.getRegisteredListData(sList3, sPage);
 
-      model.addAttribute("lists3", result);
-      model.addAttribute("pageSu", containerInfoListService.getRegisteredPageSu());
-      model.addAttribute("page", sPage);
-      return "admin/admin-cont-registered";
-   }
+        model.addAttribute("lists3", result);
+        model.addAttribute("pageSu", containerInfoListService.getRegisteredPageSu());
+        model.addAttribute("page", sPage);
+        return "admin/admin-cont-registered";
+    }
 
-   @GetMapping("/deleteContainer")
-   public String deleteContainer(@RequestParam("cont_no") String cont_no) {
-      return containerInfoListService.deleteContainer(cont_no);
-   }
+    @GetMapping("/deleteContainer")
+    public String deleteContainer(@RequestParam("cont_no") String cont_no) {
+        return containerInfoListService.deleteContainer(cont_no);
+    }
 
-   @PostMapping("/regSearch")
-   public String regSearch(@RequestParam(name="page", required = false, defaultValue = "1")int page, FormDTO formDTO, Model model) {
-      int sPage = Math.max(page, 1);
+    @PostMapping("/regSearch")
+    public String regSearch(@RequestParam(name = "page", required = false, defaultValue = "1") int page, FormDTO formDTO, Model model) {
+        int sPage = Math.max(page, 1);
 
-      ArrayList<ContainerDTO> sList3 = (ArrayList<ContainerDTO>) containerInfoListService.getRegSearch(formDTO);
-      ArrayList<ContainerDTO> result = containerInfoListService.getRegisteredListData(sList3, sPage);
+        ArrayList<ContainerDTO> sList3 = (ArrayList<ContainerDTO>) containerInfoListService.getRegSearch(formDTO);
+        ArrayList<ContainerDTO> result = containerInfoListService.getRegisteredListData(sList3, sPage);
 
-      model.addAttribute("lists3", result);
-      model.addAttribute("pageSu", containerInfoListService.getRegisteredPageSu());
-      model.addAttribute("page", sPage);
+        model.addAttribute("lists3", result);
+        model.addAttribute("pageSu", containerInfoListService.getRegisteredPageSu());
+        model.addAttribute("page", sPage);
 
-      return "admin/admin-cont-registered";
-   }
+        return "admin/admin-cont-registered";
+    }
 }

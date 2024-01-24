@@ -15,21 +15,21 @@ import pack.service.board.BoardInsertService;
 @AllArgsConstructor
 public class BoardInsertController {
 
-	private final BoardInsertService boardInsertService;
+    private final BoardInsertService boardInsertService;
 
-	@GetMapping("/insert")
-	public String BoardInsertForm() {
-		return "/board/board-insert-admin";
-	}
+    @GetMapping("/insert")
+    public String BoardInsertForm() {
+        return "/board/board-insert-admin";
+    }
 
-	@PostMapping("/insert")
-	public String BoardInsertProcess(BoardDTO boardDTO, HttpServletRequest request) {
-		boolean b = boardInsertService.insert(boardDTO, request);
-		if(b) {
-			return "redirect:listAdmin?page=1";
-		}else {
-			return "redirect:error";
-		}
-	}
+    @PostMapping("/insert")
+    public String BoardInsertProcess(BoardDTO boardDTO, HttpServletRequest request) {
+        boolean b = boardInsertService.insert(boardDTO, request);
+        if (b) {
+            return "redirect:listAdmin?page=1";
+        } else {
+            return "redirect:error";
+        }
+    }
 }
 

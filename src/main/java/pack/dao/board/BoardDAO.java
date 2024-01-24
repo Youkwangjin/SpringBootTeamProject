@@ -12,71 +12,71 @@ import pack.mapper.board.BoardMapper;
 @AllArgsConstructor
 public class BoardDAO {
 
-	private final BoardMapper boardMapper;
+    private final BoardMapper boardMapper;
 
-	public List<BoardDTO> listAll() {
+    public List<BoardDTO> listAll() {
         return boardMapper.selectList();
-	}
+    }
 
-	public List<BoardDTO> search(BoardDTO boardDTO) {
+    public List<BoardDTO> search(BoardDTO boardDTO) {
         return boardMapper.searchList(boardDTO);
-	}
+    }
 
-	public int totalCnt() {
-		return boardMapper.totalCnt();
-	}
+    public int totalCnt() {
+        return boardMapper.totalCnt();
+    }
 
-	public boolean insert(BoardDTO boardDTO) {
-		boolean b = false;
-		int re = boardMapper.insertData(boardDTO);
-		if (re > 0)
-			b = true;
-		return b;
-	}
+    public boolean insert(BoardDTO boardDTO) {
+        boolean b = false;
+        int re = boardMapper.insertData(boardDTO);
+        if (re > 0)
+            b = true;
+        return b;
+    }
 
-	public int currentNum() {
-		return boardMapper.currentNum();
-	}
+    public int currentNum() {
+        return boardMapper.currentNum();
+    }
 
-	public void updateReadcnt(String num) {
-		boardMapper.updateReadCnt(num);
-	}
+    public void updateReadcnt(String num) {
+        boardMapper.updateReadCnt(num);
+    }
 
-	public BoardDTO detail(String num) {
+    public BoardDTO detail(String num) {
         return boardMapper.selectOne(num);
-	}
+    }
 
-	public boolean update(BoardDTO boardDTO) {
-		boolean b = false;
-		int re = boardMapper.updateData(boardDTO);
-		if (re > 0)
-			b = true;
-		return b;
-	}
+    public boolean update(BoardDTO boardDTO) {
+        boolean b = false;
+        int re = boardMapper.updateData(boardDTO);
+        if (re > 0)
+            b = true;
+        return b;
+    }
 
-	public boolean delete(String num) {
-		boolean b = false;
-		int re = boardMapper.deleteData(num);
-		if (re > 0)
-			b = true;
-		return b;
-	}
+    public boolean delete(String num) {
+        boolean b = false;
+        int re = boardMapper.deleteData(num);
+        if (re > 0)
+            b = true;
+        return b;
+    }
 
-	// 댓글
-	public boolean updateOnum(BoardDTO boardDTO) {
-		// 댓글에서 onum 갱신
-		boolean b = false;
-		int re = boardMapper.updateOnum(boardDTO);
-		if (re > 0)
-			b = true;
-		return b;
-	}
+    // 댓글
+    public boolean updateOnum(BoardDTO boardDTO) {
+        // 댓글에서 onum 갱신
+        boolean b = false;
+        int re = boardMapper.updateOnum(boardDTO);
+        if (re > 0)
+            b = true;
+        return b;
+    }
 
-	public boolean insertReply(BoardDTO boardDTO) {
-		boolean b = false;
-		int re = boardMapper.insertReData(boardDTO);
-		if (re > 0)
-			b = true;
-		return b;
-	}
+    public boolean insertReply(BoardDTO boardDTO) {
+        boolean b = false;
+        int re = boardMapper.insertReData(boardDTO);
+        if (re > 0)
+            b = true;
+        return b;
+    }
 }

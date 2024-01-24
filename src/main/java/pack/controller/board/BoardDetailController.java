@@ -16,36 +16,37 @@ import pack.service.board.BoardDetailService;
 @AllArgsConstructor
 public class BoardDetailController {
 
-	private final BoardDetailService boardDetailService;
+    private final BoardDetailService boardDetailService;
 
-	@GetMapping("/detail")
-	public String BoardDetailProcess(
-			HttpServletRequest request,
-			@RequestParam("num") String num,
-			@RequestParam("page") String page, Model model) {
+    @GetMapping("/detail")
+    public String BoardDetailProcess(
+            HttpServletRequest request,
+            @RequestParam("num") String num,
+            @RequestParam("page") String page, Model model) {
 
-		if (boardDetailService.isAdmin(request.getSession())) {
-			model.addAttribute("data", boardDetailService.detail(num));
-			model.addAttribute("page", page);
-			return "/board/board-detail-admin";
-		} else {
-			boardDetailService.updateReadcnt(num);
-			model.addAttribute("data", boardDetailService.detail(num));
-			model.addAttribute("page", page);
-			return "/board/board-detail";
-		}
-	}
-	@GetMapping("/detailAdmin")
-	public String BoardDetailAdminProcess(
-			@RequestParam("num") String num,
-			@RequestParam("page") String page, Model model) {
-		boardDetailService.updateReadcnt(num);
+        if (boardDetailService.isAdmin(request.getSession())) {
+            model.addAttribute("data", boardDetailService.detail(num));
+            model.addAttribute("page", page);
+            return "/board/board-detail-admin";
+        } else {
+            boardDetailService.updateReadcnt(num);
+            model.addAttribute("data", boardDetailService.detail(num));
+            model.addAttribute("page", page);
+            return "/board/board-detail";
+        }
+    }
 
-		model.addAttribute("data", boardDetailService.detail(num));
-		model.addAttribute("page", page);
+    @GetMapping("/detailAdmin")
+    public String BoardDetailAdminProcess(
+            @RequestParam("num") String num,
+            @RequestParam("page") String page, Model model) {
+        boardDetailService.updateReadcnt(num);
 
-		return "/board/board-detail-admin";
-	}
+        model.addAttribute("data", boardDetailService.detail(num));
+        model.addAttribute("page", page);
+
+        return "/board/board-detail-admin";
+    }
 
 
 }

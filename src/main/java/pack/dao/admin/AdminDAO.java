@@ -13,17 +13,18 @@ import pack.mapper.admin.AdminMapper;
 @AllArgsConstructor
 public class AdminDAO {
 
-	private final AdminMapper adminMapper;
+    private final AdminMapper adminMapper;
     private static final Logger logger = LoggerFactory.getLogger(AdminDAO.class);
 
     public AdminDTO adminLoginProcess(String admin_id, String admin_pwd) {
         return adminMapper.adminLoginProcess(admin_id, admin_pwd);
     }
+
     @Transactional
     public boolean containerApprove(AdminDTO adminDTO) {
         try {
             int containerApproveRe = adminMapper.containerApprove(adminDTO);
-            if(containerApproveRe > 0) {
+            if (containerApproveRe > 0) {
                 logger.info("창고 승인 성공! cont_no: {}", adminDTO.getCont_no());
                 return true;
             } else {
@@ -38,7 +39,7 @@ public class AdminDAO {
 
     @Transactional
     public boolean containerDeny(AdminDTO adminDTO) {
-        try{
+        try {
             int containerDenyRe = adminMapper.containerDeny(adminDTO);
             if (containerDenyRe > 0) {
                 logger.info("창고 거절 성공! cont_no: {}", adminDTO.getCont_no());

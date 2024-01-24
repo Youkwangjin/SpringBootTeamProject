@@ -34,4 +34,7 @@ public interface BookingMapper {
 
 	@Select("SELECT * FROM booking_board WHERE user_id = #{user_id} AND booking_date_start > NOW()")
 	List<BookingDTO> findActiveBookingsByUserId(@Param("user_id") String userId);
+
+	@Select("SELECT * FROM booking_board WHERE user_id = #{user_id}")
+	List<BookingDTO> findBookingsByUserId(@Param("user_id") String userId);
 }

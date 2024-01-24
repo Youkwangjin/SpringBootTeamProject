@@ -3,12 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener('click', function () {
             let bookingIdToDelete = this.getAttribute('data-id');
             if (confirm("예약을 취소하시겠습니까?")) {
-                fetch('/booking/bookDelete', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({booking_id: bookingIdToDelete})
+                fetch('/booking/bookDelete/' + bookingIdToDelete, {
+                    method: 'DELETE'
                 })
                     .then(response => {
                         if (!response.ok) {

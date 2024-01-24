@@ -2,20 +2,29 @@ package pack.service.admin.adminImpl;
 
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pack.dao.admin.UserInfoListDAO;
+import pack.dto.booking.BookingDTO;
 import pack.dto.form.FormDTO;
 import pack.dto.user.UserDTO;
+import pack.response.BookingResponse;
 import pack.service.admin.UserInfoListService;
+import pack.service.booking.BookingService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserInfoListServiceImpl implements UserInfoListService {
-
+    private final Logger logger = LoggerFactory.getLogger(UserInfoListServiceImpl.class);
     private final UserInfoListDAO userInfoListDao;
+    private final BookingService bookingService;
     private final int plist = 10;
 
     @Override
@@ -35,8 +44,14 @@ public class UserInfoListServiceImpl implements UserInfoListService {
 
     @Override
     public boolean userDelete(String user_id) {
-        return userInfoListDao.userDelete(user_id);
+        try {
+            bookingService.deleteAllBookingsForUser(user_id);
+            return userInfoListDao.userDelete(user_id);
+        } catch (Exception e) {
+            return false;
+        }
     }
+
 
     @Override
     public int userCount() {

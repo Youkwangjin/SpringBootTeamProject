@@ -10,6 +10,7 @@ import pack.dto.faq.FaqAjaxDTO;
 @Controller
 @AllArgsConstructor
 public class FaqAjaxController {
+
     private final FaqAjaxDTO faqAjaxDTO;
 
     @GetMapping("/detailFaq")
