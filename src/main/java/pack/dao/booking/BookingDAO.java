@@ -98,4 +98,13 @@ public class BookingDAO {
 			return Collections.emptyList();
 		}
 	}
+
+	public List<BookingDTO> findBookingsByUserId(String userId) {
+		try {
+			return bookingMapper.findBookingsByUserId(userId);
+		} catch (Exception e) {
+			logger.error("사용자 ID로 예약을 찾는 중 오류 발생", e);
+			return Collections.emptyList();
+		}
+	}
 }

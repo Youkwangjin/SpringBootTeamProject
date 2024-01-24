@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
-import pack.dao.container.ContainDAO;
+import pack.dao.container.ContainerDAO;
 import pack.dto.container.ContainerDTO;
 import pack.dto.upload.UploadFileDTO;
 import pack.service.container.ContainerService;
@@ -20,14 +20,14 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
-    private final ContainDAO containDao;
+    private final ContainerDAO containerDao;
 
     @Override
     public Map<String, Object> containerProcess() {
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> data;
 
-        for (ContainerDTO c : containDao.getContainerAll()) {
+        for (ContainerDTO c : containerDao.getContainerAll()) {
             data = new HashMap<>();
             data.put("cont_no", c.getCont_no());
             data.put("cont_name", c.getCont_name());
@@ -47,29 +47,29 @@ public class ContainerServiceImpl implements ContainerService {
 
     @Override
     public List<ContainerDTO> getContainerAllData(String business_num) {
-        return containDao.getContainerAllData(business_num);
+        return containerDao.getContainerAllData(business_num);
     }
 
     @Override
     public List<ContainerDTO> getDataReserve(String business_num) {
-        return containDao.getDataReserve(business_num);
+        return containerDao.getDataReserve(business_num);
     }
 
     @Transactional
     @Override
     public boolean updateContainer(ContainerDTO containerDTO) {
-        return containDao.updateContainer(containerDTO);
+        return containerDao.updateContainer(containerDTO);
     }
 
     @Transactional
     @Override
     public boolean deleteContainer(String cont_no) {
-        return containDao.deleteContainer(cont_no);
+        return containerDao.deleteContainer(cont_no);
     }
 
     @Override
     public ContainerDTO containerDetail(String cont_no) {
-        return containDao.containerDetail(cont_no);
+        return containerDao.containerDetail(cont_no);
     }
 
     @Override
@@ -188,7 +188,7 @@ public class ContainerServiceImpl implements ContainerService {
             }
             containerDTO.setCont_image(randomFilename);
 
-            boolean isInserted = containDao.insertContainer(containerDTO);
+            boolean isInserted = containerDao.insertContainer(containerDTO);
             if (!isInserted) {
                 throw new Exception("Database insert 실패!");
             }

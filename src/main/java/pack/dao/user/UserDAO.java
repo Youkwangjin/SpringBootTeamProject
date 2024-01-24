@@ -12,7 +12,7 @@ import pack.mapper.user.UserMapper;
 @AllArgsConstructor
 public class UserDAO {
 
-	private final UserMapper userMapper;
+    private final UserMapper userMapper;
     private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
     public boolean userInsertData(UserDTO userDto) {

@@ -12,28 +12,29 @@ import java.util.List;
 @AllArgsConstructor
 public class OwnerInfoListDAO {
 
-   private final OwnerInfoListMapper ownerInfoListMapper;
-   public List<OwnerDTO> getOwnerAll(){
-       return ownerInfoListMapper.selectOwner();
-   }
-   
-   public List<OwnerDTO> getOwnerSearch(FormDTO formDTO){
-       return ownerInfoListMapper.selectOwnerSearch(formDTO);
-   }
-   
-   public int totalOwner() {
-	      return ownerInfoListMapper.ownerRecords();
-   }
-   
-   public boolean ownerDelete(String business_num) {
-		boolean b = false;
-		int re = ownerInfoListMapper.ownerDeleteData(business_num);
-		if (re > 0)
-			b = true;
-		return b;
-	}
-   
-   public int getOwnerRecords() {
-       return ownerInfoListMapper.ownerRecords();
-   }
+    private final OwnerInfoListMapper ownerInfoListMapper;
+
+    public List<OwnerDTO> getOwnerAll() {
+        return ownerInfoListMapper.selectOwner();
+    }
+
+    public List<OwnerDTO> getOwnerSearch(FormDTO formDTO) {
+        return ownerInfoListMapper.selectOwnerSearch(formDTO);
+    }
+
+    public int totalOwner() {
+        return ownerInfoListMapper.ownerRecords();
+    }
+
+    public boolean ownerDelete(String business_num) {
+        boolean b = false;
+        int re = ownerInfoListMapper.ownerDeleteData(business_num);
+        if (re > 0)
+            b = true;
+        return b;
+    }
+
+    public int getOwnerRecords() {
+        return ownerInfoListMapper.ownerRecords();
+    }
 }

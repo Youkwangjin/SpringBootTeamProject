@@ -14,6 +14,8 @@ public interface BookingService {
     boolean bookingInsert(BookingDTO bookingdto);
     boolean contStatusUpdate(AdminDTO adminDTO);
     ArrayList<BookingDTO> bookingList(String user_id);
-    BookingResponse bookingDelete(BookingDTO bookingDto);
+    BookingResponse bookingDelete(int bookingId);
     List<BookingDTO> getActiveBookingsForUser(String userId);
+    List<BookingDTO> findBookingsByUserId(String userId);
+    void deleteAllBookingsForUser(String userId);
 }

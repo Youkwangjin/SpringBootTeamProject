@@ -12,15 +12,15 @@ import pack.service.board.BoardDeleteService;
 @AllArgsConstructor
 public class BoardDeleteController {
 
-	private final BoardDeleteService boardDeleteService;
+    private final BoardDeleteService boardDeleteService;
 
-	@GetMapping("/delete")
-	public String boardDelete(@RequestParam("num")String num,
-							  @RequestParam("page")String page) {
-		if(boardDeleteService.delete(num))
-			return "redirect:listAdmin?page=" + page;
-		else
-			return "redirect:/board/error";
-	}
+    @GetMapping("/delete")
+    public String boardDelete(@RequestParam("num") String num,
+                              @RequestParam("page") String page) {
+        if (boardDeleteService.delete(num))
+            return "redirect:listAdmin?page=" + page;
+        else
+            return "redirect:/board/error";
+    }
 }
 
