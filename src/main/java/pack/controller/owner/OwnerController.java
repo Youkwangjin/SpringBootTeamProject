@@ -88,8 +88,8 @@ public class OwnerController {
     }
 
     @PostMapping("/ownerInfoDelete")
-    public String ownerInfoDelete(OwnerDTO ownerDto) {
-        return ownerService.deleteOwnerInfo(ownerDto);
+    public String ownerInfoDelete(OwnerDTO ownerDto, HttpSession session) {
+        return ownerService.deleteOwnerInfo(ownerDto, session);
     }
 
     @PostMapping("/checkBusinessNum")

@@ -16,7 +16,7 @@ import pack.dto.booking.BookingDTO;
 
 @Mapper
 public interface BookingMapper {
-	
+
 	@Insert("INSERT INTO booking_board (user_id, user_name, booking_date_start, booking_date_end, cont_no, cont_size, booking_price) VALUES (#{user_id}, #{user_name}, #{booking_date_start}, #{booking_date_end}, #{cont_no}, #{cont_size}, #{booking_price})")
 	int bookingInsert(BookingDTO bookingdto);
 
@@ -25,7 +25,7 @@ public interface BookingMapper {
 
 	@Delete("delete from booking_board where booking_id=#{booking_id}")
 	int bookingDelete(@Param("booking_id") int bookingId);
-	
+
 	@Update("update container set cont_status='2' where cont_no=#{cont_no}")
 	int contStatusUpdate(AdminDTO adminDTO);
 
