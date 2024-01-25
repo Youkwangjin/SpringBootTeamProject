@@ -32,7 +32,7 @@
                         <td colspan="5" style="text-align: left;">
                             <span style="font-weight: 600; font-size: 25px;">공지사항&nbsp;&nbsp;</span>
                             <span>관리하기</span><br/><br/>
-						</td>
+                        </td>
                         <td style="text-align: right; border: none;">
                             [<a th:href="@{/board/insert}">글쓰기</a>]
                         </td>
@@ -54,15 +54,14 @@
                             <td>[[${b.readcnt}]]</td>
                             <td>[[${b.bdate}]]</td>
                         </tr>
-
                         <tr style="text-align: center;">
                             <td colspan="5" style="border: none;">
                                 <th:block th:each="num : ${#numbers.sequence(1, pageSu)}">
                                     <th:span th:if="${num} == ${page}">
-                                        <b th:text=${num}>num 표시(현재 페이지는 링크를 걸지 않음)</b>
+                                        <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
                                     </th:span>
                                     <th:span th:if="${num} != ${page}">
-                                        <a th:href="@{list(page=${num})}" th:text="${num}">num 표시</a>
+                                        <a th:href="@{/board/listAdmin(page=${num})}" th:text="${num}">num 표시</a>
                                     </th:span>
                                 </th:block>
                             </td>

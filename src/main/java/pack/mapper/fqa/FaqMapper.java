@@ -21,7 +21,7 @@ public interface FaqMapper {
     @Select("select count(*) from faq ")
     int totalFaq();
 
-    @Insert("insert into faq values((select max(faq_no)+1 from faq ali),#{faq_category},#{faq_question},#{faq_answer})")
+    @Insert("INSERT INTO faq (faq_category, faq_question, faq_answer) VALUES (#{faq_category}, #{faq_question}, #{faq_answer})")
     int insertFaq(FaqDTO faqDTO);
 
     @Update("update faq set faq_category=#{faq_category},faq_question=#{faq_question},faq_answer=#{faq_answer} where faq_no=#{faq_no}")

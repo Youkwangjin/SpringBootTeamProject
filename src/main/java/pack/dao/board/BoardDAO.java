@@ -1,6 +1,7 @@
 package pack.dao.board;
 
 import java.util.List;
+import java.util.Objects;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,8 @@ public class BoardDAO {
     }
 
     public int currentNum() {
-        return boardMapper.currentNum();
+        Integer currentNum = boardMapper.currentNum();
+        return Objects.requireNonNullElse(currentNum, 0);
     }
 
     public void updateReadcnt(String num) {

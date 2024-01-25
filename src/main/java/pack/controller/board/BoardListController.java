@@ -1,6 +1,7 @@
 package pack.controller.board;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -45,7 +46,14 @@ public class BoardListController {
         if (!boardDetailService.isAdmin(request.getSession())) {
             return "redirect:/adminLoginGo";
         }
-        return listProcess(page, model);
+        List<BoardDTO> totalList = boardListService.listAll();
+        List<BoardDTO> boardList = boardListService.getListData(new ArrayList<>(totalList), page);
+        model.addAttribute("data", boardList);
+        // 전체 페이지 수를 계산
+        int pageSu = boardListService.getPageSu();
+        model.addAttribute("pageSu", pageSu);
+        model.addAttribute("page", page);
+        return "board/board-list-admin";
     }
 
 
