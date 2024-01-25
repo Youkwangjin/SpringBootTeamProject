@@ -51,7 +51,7 @@ public class OwnerInfoListController {
     public String ownerDelete(@RequestParam("business_num") String business_num,
                               @RequestParam(value = "page", defaultValue = "1") int page) {
         if (ownerInfoListService.ownerDelete(business_num))
-            return "redirect:/owner?page=" + page;
+            return "redirect:/ownerList?page=" + page;
         else
             return "redirect:/error";
     }
