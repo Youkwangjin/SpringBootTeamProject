@@ -7,26 +7,28 @@ import pack.dao.admin.AdminDAO;
 import pack.dto.admin.AdminDTO;
 import pack.service.admin.AdminService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final AdminDAO adminDAO;
     @Override
-    public String processLogin(String admin_id, String admin_pwd, HttpSession session) {
-        AdminDTO admin = adminLoginProcess(admin_id, admin_pwd);
+    public Map<String, Object> processLogin(String adminId, String adminPwd, HttpSession session) {
+        Map<String, Object> adminResult = new HashMap<>();
+        AdminDTO admin = adminDAO.adminLoginProcess(adminId, adminPwd);
         if (admin != null) {
             session.setAttribute("adminSession", admin);
-            return "admin/admin-loginok";
+            adminResult.put("status", "성공!");
         } else {
-            return "admin/admin-login";
+            adminResult.put("status", "실패!");
+            adminResult.put("message", "보안 위반 시도가 감지");
         }
+        return adminResult;
     }
 
-    @Override
-    public AdminDTO adminLoginProcess(String admin_id, String admin_pwd) {
-        return adminDAO.adminLoginProcess(admin_id, admin_pwd);
-    }
 
     @Override
     public String approveProcess(AdminDTO adminDTO) {

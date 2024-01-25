@@ -8,11 +8,11 @@ import jakarta.servlet.http.HttpSession;
 import pack.dto.user.UserDTO;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Service
 public interface AdminService {
-    String processLogin(String admin_id, String admin_pwd, HttpSession session);
-    AdminDTO adminLoginProcess(String admin_id, String admin_pwd);
+    Map<String, Object> processLogin(String adminId, String adminPwd, HttpSession session);
     String approveProcess(AdminDTO adminDTO);
     String denyProcess(AdminDTO adminDTO);
 }

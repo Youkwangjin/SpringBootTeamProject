@@ -1,6 +1,8 @@
 package pack.controller.user;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import pack.dto.user.UserDTO;
 import pack.service.user.UserService;
+
+import java.util.Map;
 
 
 @Controller
@@ -35,7 +39,7 @@ public class UserController {
         return "user/user-join";
     }
 
-    @GetMapping("userLoginGo")
+    @GetMapping("/userLoginGo")
     public String userLoginGo(HttpSession session) {
         if (session.getAttribute("userSession") != null) {
             return "redirect:/userSessionKeep";
@@ -85,12 +89,13 @@ public class UserController {
     }
 
     @PostMapping("/userLogSuccess")
-    public String processLoginForm(@RequestParam("user_id") String userId,
-                                   @RequestParam("user_pwd") String userPwd,
-                                   HttpSession session) {
-        return userService.processLogin(userId, userPwd, session);
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> processLoginForm(@RequestParam("user_id") String userId,
+                                                                @RequestParam("user_pwd") String userPwd,
+                                                                HttpSession session) {
+        Map<String, Object> result = userService.processLogin(userId, userPwd, session);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 
     @PostMapping("/userInfoUpdate")
     public String userInfoUpdate(UserDTO userDto) {

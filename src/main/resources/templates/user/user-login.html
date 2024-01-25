@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+    <title>사용자 로그인</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/user/user-login.css">
     <link href="/assets/css/main.css" rel="stylesheet">
@@ -20,17 +20,19 @@
 </header>
 <section class="login-form">
     <h1>사용자 로그인</h1>
-    <form action="userLogSuccess" method="post">
+    <form action="/userLogSuccess" method="post">
         <div class="int-area">
-            <input type="text" name="user_id" id="id" autocomplete="off" required>
-            <label for="id">User Id</label>
+            <input type="text" name="user_id" id="userId" autocomplete="off" required>
+            <label for="userId">User Id</label>
+            <span class="warning-message" id="userIdWarning"></span>
         </div>
         <div class="int-area">
-            <input type="password" name="user_pwd" id="pwd" autocomplete="off" required>
-            <label for="pwd">Password</label>
+            <input type="password" name="user_pwd" id="userPwd" autocomplete="off" required>
+            <label for="userPwd">Password</label>
+            <span class="warning-message" id="userPwdWarning"></span>
         </div>
         <div class="btn-area">
-            <button type="submit" id="btn">LOGIN</button>
+            <button type="button" id="userLoginBtn">LOGIN</button>
         </div>
     </form>
     <div class="caption">
