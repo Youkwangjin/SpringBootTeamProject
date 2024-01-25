@@ -16,8 +16,8 @@ public class AdminDAO {
     private final AdminMapper adminMapper;
     private static final Logger logger = LoggerFactory.getLogger(AdminDAO.class);
 
-    public AdminDTO adminLoginProcess(String admin_id, String admin_pwd) {
-        return adminMapper.adminLoginProcess(admin_id, admin_pwd);
+    public AdminDTO adminLoginProcess(String adminId, String adminPwd) {
+        return adminMapper.adminLoginProcess(adminId, adminPwd);
     }
 
     @Transactional

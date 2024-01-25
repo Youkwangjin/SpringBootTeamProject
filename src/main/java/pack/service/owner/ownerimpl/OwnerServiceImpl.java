@@ -7,6 +7,9 @@ import pack.dao.owner.OwnerDAO;
 import pack.dto.owner.OwnerDTO;
 import pack.service.owner.OwnerService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @AllArgsConstructor
 public class OwnerServiceImpl implements OwnerService {
@@ -48,17 +51,20 @@ public class OwnerServiceImpl implements OwnerService {
         return "owner/owner-join";
     }
     @Override
-    public String processLogin(String business_num, String owner_pwd, HttpSession session) {
-        OwnerDTO owner = ownerDAO.ownerLoginProcess(business_num, owner_pwd);
+    public Map<String, Object> processLogin(String businessNum, String ownerPwd, HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        OwnerDTO owner = ownerDAO.ownerLoginProcess(businessNum, ownerPwd);
         if (owner != null) {
             session.setMaxInactiveInterval(1800);
             session.setAttribute("ownerSession", owner);
             session.setAttribute("business_num", owner.getBusiness_num());
             session.setAttribute("owner_name", owner.getOwner_name());
-            return "owner/owner-mypage";
+            result.put("status", "성공!");
         } else {
-            return "owner/owner-login";
+            result.put("status", "실패!");
+            result.put("message", "사업자번호 또는 비밀번호가 올바르지 않습니다.");
         }
+        return result;
     }
 
     @Override

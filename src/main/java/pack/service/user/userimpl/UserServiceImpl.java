@@ -10,7 +10,9 @@ import pack.dto.user.UserDTO;
 import pack.service.booking.BookingService;
 import pack.service.user.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -55,15 +57,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String processLogin(String userId, String userPwd, HttpSession session) {
+    public Map<String, Object> processLogin(String userId, String userPwd, HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
         UserDTO user = userDao.userLoginProcess(userId, userPwd);
         if (user != null) {
             session.setAttribute("userSession", user);
             session.setAttribute("user_id", user.getUser_id());
-            return "redirect:/userSessionKeep";
+            result.put("status", "성공!");
         } else {
-            return "user/user-login";
+            result.put("status", "실패!");
+            result.put("message", "아이디 또는 비밀번호가 올바르지 않습니다.");
         }
+        return result;
     }
 
     @Override

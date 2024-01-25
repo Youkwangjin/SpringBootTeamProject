@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+    <title>관리자 로그인</title>
     <link rel="stylesheet" href="/css/admin/admin-login.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
 <body>
@@ -20,15 +21,17 @@
     <h1>관리자 로그인</h1>
     <form action="/adminLoginOk" method="post">
         <div class="int-area">
-            <input type="text" name="admin_id" id="id" autocomplete="off" required>
-            <label for="id">관리자 아이디</label>
+            <input type="text" name="admin_id" id="adminId" autocomplete="off" required>
+            <label for="adminId">관리자 아이디</label>
+            <span class="warning-message" id="adminIdWarning"></span>
         </div>
         <div class="int-area">
-                <input type="password" name="admin_pwd" id="pwd" autocomplete="off" required>
-            <label for="pwd">관리자 비밀번호</label>
+                <input type="password" name="admin_pwd" id="adminPwd" autocomplete="off" required>
+            <label for="adminPwd">관리자 비밀번호</label>
+            <span class="warning-message" id="adminPwdWarning"></span>
         </div>
         <div class="btn-area">
-            <button type="submit" id="btn">LOGIN</button>
+            <button type="button" id="adminLoginBtn">LOGIN</button>
         </div>
     </form>
 </section>

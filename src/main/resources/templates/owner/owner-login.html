@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+    <title>공급자 로그인</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/owner/owner-login.css">
     <link href="/assets/css/main.css" rel="stylesheet">
@@ -19,18 +19,20 @@
     </nav>
 </header>
 <section class="login-form">
-    <h1>사업자 로그인</h1>
-    <form action="ownerLogSuccess" method="post">
+    <h1>공급자 로그인</h1>
+    <form action="/ownerLogSuccess" method="post">
         <div class="int-area">
-            <input type="text" name="business_num" id="id" autocomplete="off" required>
-            <label for="id">Business Num</label>
+            <input type="text" name="business_num" id="businessNum" autocomplete="off" required>
+            <label for="businessNum">Business Num</label>
+            <span class="warning-message" id="ownerIdWarning"></span>
         </div>
         <div class="int-area">
-            <input type="password" name="owner_pwd" id="pwd" autocomplete="off" required>
-            <label for="pwd">Password</label>
+            <input type="password" name="owner_pwd" id="ownerPwd" autocomplete="off" required>
+            <label for="ownerPwd">Password</label>
+            <span class="warning-message" id="ownerPwdWarning"></span>
         </div>
         <div class="btn-area">
-            <button type="submit" id="btn">LOGIN</button>
+            <button type="button" id="ownerLoginBtn">LOGIN</button>
         </div>
     </form>
     <div class="caption">

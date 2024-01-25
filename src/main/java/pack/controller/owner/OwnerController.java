@@ -2,6 +2,8 @@ package pack.controller.owner;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,12 +77,13 @@ public class OwnerController {
     }
 
     @PostMapping("ownerLogSuccess")
-    public String processLoginForm(@RequestParam("business_num") String business_num,
-                                   @RequestParam("owner_pwd") String owner_pwd,
-                                   HttpSession session) {
-        return ownerService.processLogin(business_num, owner_pwd, session);
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> processLoginForm(@RequestParam("business_num") String businessNum,
+                                                                @RequestParam("owner_pwd") String ownerPwd,
+                                                                HttpSession session) {
+        Map<String, Object> result = ownerService.processLogin(businessNum, ownerPwd, session);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 
     @PostMapping("ownerInfoUpdate")
     public String ownerInfoUpdate(OwnerDTO ownerDto, HttpSession session) {
