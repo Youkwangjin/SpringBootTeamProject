@@ -74,13 +74,15 @@ public class ContainerController {
         if (isSuccess) {
             return "redirect:/owner/list";
         } else {
-            return "container/container-error";
+            return "container/container-delete-error";
         }
     }
 
     @PostMapping("/insert")
-    public String insertSubmit(@ModelAttribute ContainerDTO containerDTO, @ModelAttribute UploadFileDTO uploadFileDTO,
-                               BindingResult result, HttpSession session) {
+    public String insertSubmit(@ModelAttribute ContainerDTO containerDTO,
+                               @ModelAttribute UploadFileDTO uploadFileDTO,
+                               BindingResult result,
+                               HttpSession session) {
         String business_num = (String) session.getAttribute("business_num");
 
         if (business_num == null) {
@@ -88,7 +90,18 @@ public class ContainerController {
         }
         containerDTO.setOwner_num(business_num);
         String uploadDirectory = "src/main/resources/static/upload/";
-        return containerService.insertContainerWithFile(containerDTO, uploadFileDTO, result, uploadDirectory);
+
+        String redirectUrl;
+        try {
+            redirectUrl = containerService.insertContainerWithFile(containerDTO, uploadFileDTO, result, uploadDirectory);
+            if ("redirect:/owner/list".equals(redirectUrl)) {
+                return redirectUrl;
+            } else {
+                return "redirect:/container/container-delete-error";
+            }
+        } catch (Exception e) {
+            return "redirect:/container/container-delete-error";
+        }
     }
 
     @PostMapping("/update")
@@ -97,7 +110,7 @@ public class ContainerController {
         if (isSuccess) {
             return "redirect:/owner/list";
         } else {
-            return "container/container-error";
+            return "container/container-update-error";
         }
     }
 
