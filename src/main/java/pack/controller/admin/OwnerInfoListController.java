@@ -53,6 +53,6 @@ public class OwnerInfoListController {
         if (ownerInfoListService.ownerDelete(business_num))
             return "redirect:/ownerList?page=" + page;
         else
-            return "redirect:/error";
+            return "redirect:/admin-error-stock";
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import pack.dto.booking.BookingDTO;
 import pack.dto.container.ContainerDTO;
 import pack.mapper.container.ContainerMapper;
 
@@ -55,5 +56,9 @@ public class ContainerDAO {
         if (re > 0)
             b = true;
         return b;
+    }
+
+    public BookingDTO selectBookCont(String cont_no) {
+        return containerMapper.selectBookCont(cont_no);
     }
 }

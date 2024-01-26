@@ -23,16 +23,16 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         function getCoordinatesFromAddress() {
-            var geocoder = new google.maps.Geocoder();
-            var address = document.getElementById('user_combinedAddress').value;
-            var encodedAddress = encodeURIComponent(address);
-            var coordinates = []; // 배열 초기화
+            let geocoder = new google.maps.Geocoder();
+            let address = document.getElementById('user_combinedAddress').value;
+            let encodedAddress = encodeURIComponent(address);
+            let coordinates = []; // 배열 초기화
 
             geocoder.geocode({'address': address}, function (results, status) {
                 console.log('Geocode Status:', status); // status 값 로깅
                 if (status === 'OK') {
-                    var latitude = results[0].geometry.location.lat();
-                    var longitude = results[0].geometry.location.lng();
+                    let latitude = results[0].geometry.location.lat();
+                    let longitude = results[0].geometry.location.lng();
                     document.getElementById('cont_we').value = latitude;
                     document.getElementById('cont_kyung').value = longitude;
                 } else {
@@ -48,16 +48,18 @@
             }
             document.querySelector("#btnUpdate").onclick = function () {
                 if (confirm("정말 수정 하시겠습니까?")) {
-                    frm.action = "update";
-                    frm.method = "post"
-                    frm.submit();
+                    let form = document.forms['frm'];
+                    form.action = "update";
+                    form.method = "post";
+                    form.submit();
                 }
             }
             document.querySelector("#btnDelete").onclick = function () {
                 if (confirm("정말 삭제 하시겠습니까?")) {
-                    frm.action = "delete";
-                    frm.method = "get"
-                    frm.submit();
+                    let form = document.forms['frm'];
+                    form.action = "delete";
+                    form.method = "get";
+                    form.submit();
                 }
             }
         }
@@ -145,7 +147,7 @@
                 <div class="table-row">
                     <div class="table-cell-detail">창고 이미지:</div>
                     <div class="table-cell-detail">
-                        <img th:src="@{/upload/}+${conDto.getCont_image()}" alt="창고 이미지"/>
+                        <img th:src="@{'/upload/' + ${conDto.cont_image}}" alt="창고 이미지"/>
                     </div>
                 </div>
             </div>

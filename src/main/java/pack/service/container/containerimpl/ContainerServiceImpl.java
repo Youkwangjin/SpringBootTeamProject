@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import pack.dao.container.ContainerDAO;
+import pack.dto.booking.BookingDTO;
 import pack.dto.container.ContainerDTO;
 import pack.dto.upload.UploadFileDTO;
 import pack.service.container.ContainerService;
@@ -59,12 +60,20 @@ public class ContainerServiceImpl implements ContainerService {
     @Transactional
     @Override
     public boolean updateContainer(ContainerDTO containerDTO) {
+        BookingDTO currentBooking = containerDao.selectBookCont(containerDTO.getCont_no());
+        if (currentBooking != null) {
+            return false;
+        }
         return containerDao.updateContainer(containerDTO);
     }
 
     @Transactional
     @Override
     public boolean deleteContainer(String cont_no) {
+        BookingDTO currentBooking = containerDao.selectBookCont(cont_no);
+        if (currentBooking != null) {
+            return false;
+        }
         return containerDao.deleteContainer(cont_no);
     }
 
@@ -145,7 +154,7 @@ public class ContainerServiceImpl implements ContainerService {
     @Override
     public String insertContainerWithFile(ContainerDTO containerDTO, UploadFileDTO uploadFileDTO, BindingResult result, String uploadDirectory) {
         if (result.hasErrors()) {
-            return "container/container-error";
+            return "redirect:/container/container-error";
         }
 
         InputStream inputStream = null;
@@ -154,59 +163,56 @@ public class ContainerServiceImpl implements ContainerService {
         try {
             MultipartFile file = uploadFileDTO.getFile();
             String originalFilename = file.getOriginalFilename();
-            String randomFilename = UUID.randomUUID().toString();
 
             String fileExtension = "";
             if (originalFilename != null && originalFilename.contains(".")) {
                 fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
             }
 
-            if (originalFilename != null && !originalFilename.isEmpty()) {
-                randomFilename = originalFilename.substring(0, originalFilename.lastIndexOf('.')) + "_" + randomFilename + fileExtension;
-            } else {
-                randomFilename += fileExtension;
-            }
+            String randomFilename = UUID.randomUUID().toString() + fileExtension;
 
             String fileSavePath = uploadDirectory + randomFilename;
 
-            File directory = new File(fileSavePath).getParentFile();
+            File directory = new File(uploadDirectory);
             if (!directory.exists()) {
-                directory.mkdirs(); // 상위 디렉터리 생성
+                directory.mkdirs();
             }
 
-            File newFile = new File(fileSavePath);
-            if (!newFile.exists()) {
-                newFile.createNewFile();
-            }
-
+            // 파일 입력 스트림과 출력 스트림 설정
             inputStream = file.getInputStream();
-            outputStream = new FileOutputStream(newFile);
-            int read = 0;
+            outputStream = new FileOutputStream(fileSavePath);
+
+            // 파일 쓰기
+            int read;
             byte[] bytes = new byte[1024];
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);
             }
+
             containerDTO.setCont_image(randomFilename);
 
             boolean isInserted = containerDao.insertContainer(containerDTO);
             if (!isInserted) {
-                throw new Exception("Database insert 실패!");
+                return "redirect:/container/container-error";
             }
         } catch (Exception e) {
-            return "container/container-error";
+            e.printStackTrace();
+            return "redirect:/container/container-error";
         } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // 파일 스트림을 안전하게 닫기
+            closeQuietly(inputStream);
+            closeQuietly(outputStream);
         }
         return "redirect:/owner/list";
     }
 
+    private void closeQuietly(Closeable closeable) {
+        try {
+            if (closeable != null) {
+                closeable.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
