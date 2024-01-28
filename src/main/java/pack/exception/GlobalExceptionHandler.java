@@ -12,6 +12,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleValidationExceptions() {
         // 직접 에러 메시지를 전달하지 않고, 사용자 정의 에러 페이지로 리다이렉션
-        return "redirect:/container/container-error";
+        return "redirect:/owner/error";
     }
 }

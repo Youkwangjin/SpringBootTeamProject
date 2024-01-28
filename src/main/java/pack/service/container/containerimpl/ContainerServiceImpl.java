@@ -193,11 +193,11 @@ public class ContainerServiceImpl implements ContainerService {
 
             boolean isInserted = containerDao.insertContainer(containerDTO);
             if (!isInserted) {
-                return "redirect:/container/container-error";
+                return "redirect:/owner/error";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/container/container-error";
+            return "redirect:/owner/error";
         } finally {
             // 파일 스트림을 안전하게 닫기
             closeQuietly(inputStream);
