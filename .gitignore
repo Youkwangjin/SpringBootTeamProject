@@ -20,7 +20,8 @@ bin/
 ### IntelliJ IDEA ###
 build.gradle
 settings.gradle
-src/main/resources/application.properties
+src/main/resources/application.yml
+docker-compose.yml
 .idea
 *.iws
 *.iml
