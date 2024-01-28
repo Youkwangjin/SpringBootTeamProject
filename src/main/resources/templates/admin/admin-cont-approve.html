@@ -124,30 +124,10 @@
         </div>
         <br/>
         <input type="button" value="목록" id="btnList" class="btn btn-primary"/>
-
-        <span th:switch="${containerDTO.cont_status}">
-            <input type="button" value="삭제" id="btnDelete0" th:case="0" class="btn btn-warning"/>
-            <input type="button" value="삭제" id="btnDelete1" th:case="1" class="btn btn-warning"/>
-            <input type="hidden" value="삭제" id="btnDelete2" th:case="2"/>
-            <input type="hidden" value="삭제" id="btnDelete3" th:case="3"/>
-            <input type="button" value="삭제" id="btnDelete4" th:case="4" class="btn btn-warning"/>
-         </span>
-
-        <span th:switch="${containerDTO.cont_status}">
-            <input type="button" value="승인" id="btnApprove0" th:case="0" class="btn btn-primary"/>
-            <input type="hidden" value="승인" id="btnApprove1" th:case="1"/>
-            <input type="hidden" value="승인" id="btnApprove2" th:case="2"/>
-            <input type="hidden" value="승인" id="btnApprove3" th:case="3"/>
-            <input type="button" value="승인" id="btnApprove4" th:case="4" class="btn btn-primary"/>
-         </span>
-
-        <span th:switch="${containerDTO.cont_status}">
-            <input type="button" value="거부" id="btnDeny0" th:case="0" class="btn btn-warning"/>
-            <input type="button" value="거부" id="btnDeny1" th:case="1" class="btn btn-warning"/>
-            <input type="hidden" value="거부" id="btnDeny2" th:case="2"/>
-            <input type="hidden" value="거부" id="btnDeny3" th:case="3"/>
-            <input type="hidden" value="거부" id="btnDeny4" th:case="4"/>
-         </span>
+        <!-- 삭제, 승인, 거부 버튼 항상 표시 -->
+        <input type="button" value="삭제" id="btnDelete0" class="btn btn-warning"/>
+        <input type="button" value="승인" id="btnApprove0" class="btn btn-primary"/>
+        <input type="button" value="거부" id="btnDeny0" class="btn btn-warning"/>
     </form>
 </div>
 </body>
