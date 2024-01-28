@@ -55,9 +55,9 @@ public class BookingDAO {
         ArrayList<BookingDTO> bList = null;
         try {
             bList = (ArrayList<BookingDTO>) bookingMapper.bookingList(user_id);
-            if(bList != null) {
+            if (bList != null) {
                 logger.info("예약한 사용자 user_id: {}, list size: {}", user_id, bList.size());
-                for(BookingDTO booking : bList) {
+                for (BookingDTO booking : bList) {
                     logger.info("Booking: {}", booking.toString());
                 }
             } else {
@@ -73,7 +73,7 @@ public class BookingDAO {
         boolean bookingDeleteData = false;
         try {
             int bookingDeleteRe = bookingMapper.bookingDelete(bookingId);
-            if(bookingDeleteRe > 0 ) bookingDeleteData = true;
+            if (bookingDeleteRe > 0) bookingDeleteData = true;
         } catch (Exception e) {
             logger.error("Error bookingDelete", e);
         }
@@ -106,5 +106,14 @@ public class BookingDAO {
             logger.error("사용자 ID로 예약을 찾는 중 오류 발생", e);
             return Collections.emptyList();
         }
+    }
+
+    public boolean updateBookingStatus(int bookingId, String status) {
+        int result = bookingMapper.updateBookingStatus(bookingId, status);
+        return result > 0;
+    }
+
+    public List<BookingDTO> findExpiredBookings() {
+        return bookingMapper.findExpiredBookings();
     }
 }

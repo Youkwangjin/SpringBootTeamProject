@@ -33,6 +33,7 @@
                     <th>창고번호</th>
                     <th>사이즈</th>
                     <th>이용요금</th>
+                    <th>예약상태</th>
                     <th>취소여부</th>
                 </tr>
                 </thead>
@@ -44,6 +45,7 @@
                     <td th:text="${b.cont_no}"></td>
                     <td th:text="${b.cont_size}"></td>
                     <td th:text="${b.booking_price}"></td>
+                    <td th:text="${b.booking_status}"></td>
                     <td>
                         <button type="button" class="cancel-btn" th:data-id="${b.booking_id}">취소하기</button>
                     </td>
