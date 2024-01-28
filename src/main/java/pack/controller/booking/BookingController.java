@@ -66,10 +66,10 @@ public class BookingController {
     }
 
     @ResponseBody
-    @DeleteMapping("/bookDelete/{bookingId}")
-    public ResponseEntity<?> bookDelete(@PathVariable int bookingId) {
+    @PutMapping("/updateStatus/{bookingId}/{status}")
+    public ResponseEntity<?> updateBookingStatus(@PathVariable int bookingId, @PathVariable String status) {
         try {
-            BookingResponse response = bookingService.bookingDelete(bookingId);
+            BookingResponse response = bookingService.updateBookingStatus(bookingId, status);
             if (response.isSuccess()) {
                 return ResponseEntity.ok(Collections.singletonMap("message", response.getMessage()));
             } else {
@@ -77,7 +77,7 @@ public class BookingController {
                         .body(Collections.singletonMap("error", response.getMessage()));
             }
         } catch (Exception e) {
-            logger.error("Error bookDelete", e);
+            logger.error("창고예약 상태 에러", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "서버 내부 오류가 발생했습니다."));
         }

@@ -30,6 +30,11 @@ public class ContainerController {
         return "container/container-register";
     }
 
+    @GetMapping("/error")
+    public String containerError() {
+        return "container/container-error";
+    }
+
     @GetMapping("/container")
     @ResponseBody
     public Map<String, Object> containerProcess() {
@@ -97,10 +102,10 @@ public class ContainerController {
             if ("redirect:/owner/list".equals(redirectUrl)) {
                 return redirectUrl;
             } else {
-                return "redirect:/container/container-delete-error";
+                return "redirect:/owner/error";
             }
         } catch (Exception e) {
-            return "redirect:/container/container-delete-error";
+            return "redirect:/owner/error";
         }
     }
 

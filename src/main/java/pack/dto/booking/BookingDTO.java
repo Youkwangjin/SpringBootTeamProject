@@ -19,4 +19,5 @@ public class BookingDTO implements Serializable {
     private String booking_price;
     private boolean success;
     private String message;
+    private String booking_status;
 }
