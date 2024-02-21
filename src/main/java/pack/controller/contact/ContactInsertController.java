@@ -19,12 +19,12 @@ public class ContactInsertController {
 
     @GetMapping("/insertContactUser")
     public String insertUser() {
-        return "/contact/contact-user";
+        return "contact/contact-user";
     }
 
     @GetMapping("/insertContactOwner")
     public String insertOwner() {
-        return "/contact/contact-owner";
+        return "contact/contact-owner";
     }
 
     @PostMapping("/insertContactUser")
@@ -51,7 +51,7 @@ public class ContactInsertController {
         boolean insertContactData = contactInsertService.insertContact(contactDTO);
 
         if (insertContactData) {
-            return "/owner/owner-mypage";
+            return "owner/owner-mypage";
         } else {
             return "container/container-error";
         }

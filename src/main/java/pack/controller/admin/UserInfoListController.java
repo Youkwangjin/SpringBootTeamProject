@@ -32,7 +32,7 @@ public class UserInfoListController {
         model.addAttribute("page", sPage);
         model.addAttribute("user_records", user_records);
 
-        return "/user/user";
+        return "user/user";
     }
 
     @PostMapping("/userSearch")
@@ -44,7 +44,7 @@ public class UserInfoListController {
         model.addAttribute("lists", userResult);
         model.addAttribute("pageSu", userInfoListService.getUserPageSu());
         model.addAttribute("page", sPage);
-        return "/user/user";
+        return "user/user";
     }
 
     @PostMapping("/userDelete")

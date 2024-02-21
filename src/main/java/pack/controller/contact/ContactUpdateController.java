@@ -18,7 +18,7 @@ public class ContactUpdateController {
         if (updateContactData)
             return "redirect:/contactAdmin?page=1";
         else
-            return "/container/container-error";
+            return "container/container-error";
     }
 }
 

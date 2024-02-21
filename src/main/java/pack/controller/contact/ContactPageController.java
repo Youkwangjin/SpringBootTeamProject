@@ -30,6 +30,6 @@ public class ContactPageController {
         model.addAttribute("pageSu", contactPageService.getPageSu(PLIST));
         model.addAttribute("page", sPage);
 
-        return "/contact/contact-admin";
+        return "contact/contact-admin";
     }
 }

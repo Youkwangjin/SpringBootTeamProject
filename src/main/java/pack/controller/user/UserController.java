@@ -67,7 +67,7 @@ public class UserController {
         if (userSession != null) {
             return "user/user-mypage";
         } else {
-            return "/index/index";
+            return "index/index";
         }
     }
 

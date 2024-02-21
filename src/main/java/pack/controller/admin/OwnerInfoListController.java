@@ -31,7 +31,7 @@ public class OwnerInfoListController {
         model.addAttribute("pageSu", ownerInfoListService.getOwnerPageSu());
         model.addAttribute("page", sPage);
         model.addAttribute("owner_records", owner_records);
-        return "/owner/owner";
+        return "owner/owner";
     }
 
     @PostMapping("/ownerSearch")
@@ -44,7 +44,7 @@ public class OwnerInfoListController {
         model.addAttribute("pageSu", ownerInfoListService.getOwnerPageSu());
         model.addAttribute("page", sPage);
 
-        return "/owner/owner";
+        return "owner/owner";
     }
 
     @PostMapping("/ownerDelete")

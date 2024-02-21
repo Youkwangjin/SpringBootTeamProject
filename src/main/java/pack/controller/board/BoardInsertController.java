@@ -19,7 +19,7 @@ public class BoardInsertController {
 
     @GetMapping("/insert")
     public String BoardInsertForm() {
-        return "/board/board-insert-admin";
+        return "board/board-insert-admin";
     }
 
     @PostMapping("/insert")

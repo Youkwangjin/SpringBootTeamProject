@@ -1,6 +1,6 @@
 FROM openjdk:17-alpine
 
-EXPOSE ${SPRINGBOOT_PORT}
+EXPOSE 8080
 
 COPY ./build/libs/*.jar app.jar
 

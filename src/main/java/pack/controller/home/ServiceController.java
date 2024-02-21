@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ServiceController {
     @GetMapping("/service")
     public String index() {
-        return "/index/service";
+        return "index/service";
     }
 }
