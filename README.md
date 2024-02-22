@@ -31,6 +31,8 @@
 
 ## ❄️ Project Architecture
 ![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/6a5bf59d-7b0c-43e2-ac1f-4ce2ead4ac3f)
+![스크린샷 2024-02-22 182416](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/52beec2b-3ae2-4f86-a93d-c86a8e98ccc1)
+
 
 ## 🏬 ERD
 ![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/ed649889-4f1c-4cb6-aff4-16a3c5271153)
