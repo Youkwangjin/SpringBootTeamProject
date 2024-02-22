@@ -30,7 +30,7 @@ public class FaqController {
         model.addAttribute("pageSu", faqService.getPageSu());
         model.addAttribute("page", sPage);
 
-        return "/faq/faq";
+        return "faq/faq";
     }
 
     @GetMapping("/faqUser")

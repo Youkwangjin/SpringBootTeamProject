@@ -18,6 +18,6 @@ public class ContactDeleteController {
         if (insertContactData)
             return "redirect:/contactAdmin?page=1";
         else
-            return "/container/container-error";
+            return "container/container-error";
     }
 }

@@ -67,7 +67,7 @@ public class OwnerController {
         if (ownerSession != null) {
             return "owner/owner-mypage";
         } else {
-            return "/index/index";
+            return "index/index";
         }
     }
 

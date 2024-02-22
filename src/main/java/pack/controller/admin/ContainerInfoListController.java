@@ -23,7 +23,7 @@ public class ContainerInfoListController {
     public String containerDetail(@RequestParam("cont_no") String cont_no, Model model) {
         ContainerDTO containerDto = containerInfoListService.containerDetail(cont_no);
         model.addAttribute("containerDTO", containerDto);
-        return "/admin/admin-cont-approve";
+        return "admin/admin-cont-approve";
     }
 
     @GetMapping("/registered")

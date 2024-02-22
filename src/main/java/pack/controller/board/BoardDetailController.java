@@ -27,12 +27,12 @@ public class BoardDetailController {
         if (boardDetailService.isAdmin(request.getSession())) {
             model.addAttribute("data", boardDetailService.detail(num));
             model.addAttribute("page", page);
-            return "/board/board-detail-admin";
+            return "board/board-detail-admin";
         } else {
             boardDetailService.updateReadcnt(num);
             model.addAttribute("data", boardDetailService.detail(num));
             model.addAttribute("page", page);
-            return "/board/board-detail";
+            return "board/board-detail";
         }
     }
 
@@ -45,7 +45,7 @@ public class BoardDetailController {
         model.addAttribute("data", boardDetailService.detail(num));
         model.addAttribute("page", page);
 
-        return "/board/board-detail-admin";
+        return "board/board-detail-admin";
     }
 
 

@@ -39,7 +39,7 @@ public class AdminController {
         if (adminSession != null) {
             return "admin/admin-loginok";
         } else {
-            return "/index/index";
+            return "index/index";
         }
     }
 

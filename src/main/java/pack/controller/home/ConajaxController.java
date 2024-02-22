@@ -13,7 +13,7 @@ public class ConajaxController {
     public String index(HttpSession session) {
         UserDTO userSession = (UserDTO) session.getAttribute("userSession");
         if (userSession != null) {
-            return "/index/conajax";
+            return "index/conajax";
         } else {
             return "user/user-login";
         }

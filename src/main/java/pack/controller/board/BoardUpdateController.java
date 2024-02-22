@@ -24,7 +24,7 @@ public class BoardUpdateController {
         BoardDTO dto = boardUpdateService.detail(num);
         model.addAttribute("data", dto);
         model.addAttribute("page", page);
-        return "/board/board-update";
+        return "board/board-update";
     }
 
     @PostMapping("/update")
@@ -34,7 +34,7 @@ public class BoardUpdateController {
         if (b) {
             return "redirect:detailAdmin?num=" + boardDTO.getNum() + "&page=" + page;
         } else {
-            return "/board/board-error";
+            return "board/board-error";
         }
     }
 }

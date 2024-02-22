@@ -38,7 +38,7 @@ public class BookingController {
             if (user_id != null) {
                 ArrayList<BookingDTO> bookingDto = bookingService.bookingList(user_id);
                 model.addAttribute("bList", bookingDto);
-                return "/booking/booking-info";
+                return "booking/booking-info";
             } else {
                 logger.error("유저 세션 없다!");
                 return "redirect:/";
@@ -57,11 +57,11 @@ public class BookingController {
             if (bookingInsertData && contStatusData) {
                 return "redirect:/booking/bookingInfo";
             } else {
-                return "/booking/booking";
+                return "booking/booking";
             }
         } catch (Exception e) {
             logger.error("Error bookingDo", e);
-            return "/booking/booking";
+            return "booking/booking";
         }
     }
 
