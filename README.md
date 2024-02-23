@@ -30,7 +30,7 @@
 용자가 쉽게 접근하고 사용할 수 있는 인터페이스를 통해 물류 과정의 효율성을 높이고 시간 및 비용을 절감할 수 있도록 합니다.
 
 ## ❄️ Project Architecture
-![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/6a5bf59d-7b0c-43e2-ac1f-4ce2ead4ac3f)
+![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/5a7bf164-6bb4-4c9d-a6d0-e1680bce6ecf)
 ![스크린샷 2024-02-22 182416](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/52beec2b-3ae2-4f86-a93d-c86a8e98ccc1)
 
 
@@ -42,19 +42,19 @@
 📌 **Front-end**
 
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> 
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
 
 📌 **Back-end**
 
-<img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img src="https://img.shields.io/badge/java-1572B6?style=for-the-badge&logo=java&logoColor=white"> 
+<img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img src="https://img.shields.io/badge/MyBatis-2E5E82?style=for-the-badge&logo=MyBatis&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
 
 📌 **DataBase**
 
-<img src="https://img.shields.io/badge/mariadb-003545?style=for-the-badge&logo=mariadb&logoColor=white"> <img src="https://img.shields.io/badge/MyBatis-2E5E82?style=for-the-badge&logo=MyBatis&logoColor=white">
+<img src="https://img.shields.io/badge/mariadb-003545?style=for-the-badge&logo=mariadb&logoColor=white"> <img src="https://img.shields.io/badge/amazonrds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
 
-📌 **Framework**
+📌 **Development Tool** 
 
-<img src="https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+<img src="https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white"> <img src="https://img.shields.io/badge/eclipseide-2C2255?style=for-the-badge&logo=eclipseide&logoColor=white"> 
 
 ## 📙 Backend Library
 
@@ -73,20 +73,22 @@
 #### 1. 효율적인 창고 관리 및 예약 시스템 제공
 - 사용자와 창고 공급자 간의 효율적인 창고 예약 및 관리 시스템을 제공합니다.
 #### 2. 사용자 친화적인 인터페이스 설계
-- 사용자는 창고 예약, 상태 확인, 취소 등의 과정을 손쉽게 진행할 수 있게  사용하기 쉬운 웹 인터페이스를 구축합니다.
+- 사용자는 창고 예약, 상태 확인, 취소 등의 과정을 손쉽게 진행할 수 있게  사용하기 쉬운 웹 인터페이스를 설계했습니다.
 #### 3. 동적 예약 상태 업데이트
 - 예약 취소 기능을 통해 사용자는 예약을 취소할 수 있으며, 이 경우 창고의 예약 상태가 즉시 업데이트됩니다.
 #### 4. 보안 및 데이터 무결성
 - 사용자 입력 및 서버 응답에 대한 유효성 검사를 실시하여 데이터의 정확성과 안전성을 보장합니다.
 #### 5. 카카오 맵 API
 - 카카오 맵 API를 활하여 사용자에게 창고의 위치 정보를 정확하고 직관적으로 제공합니다.
-
-
+#### 6. Docker Container
+- Spring Boot 애플리케이션과 Nginx 웹 서버를 별도의 컨테이너로 분리하여 관리함으로써, 서비스의 확장성과 안정성을 높였습니다.
+  
 ## 😲 미래 개선 방안
 
 #### 1. 카카오 맵 API를 통해 창고 이미지 표시 개선
 #### 2. 데이터베이스 구조 효율성 개선
 #### 3. 클린 코드 원칙 적용 완성
+#### 4. 성능, 부하 테스트 결과로 최적화
 
 ## ✅ 참조 사이트
 
