@@ -1,7 +1,7 @@
 package pack.controller.faq;
 
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import pack.service.faq.FaqService;
 import java.util.List;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FaqController {
 
     private final FaqService faqService;
@@ -33,7 +33,7 @@ public class FaqController {
         return "faq/faq";
     }
 
-    @GetMapping("/faqUser")
+    @GetMapping("/faq/user")
     public String listProcessUser(@RequestParam("page") int page, Model model) {
         int sPage = page;
         if (page <= 0) sPage = 1;
@@ -48,7 +48,7 @@ public class FaqController {
         return "faq/faq-user";
     }
 
-    @GetMapping("/faqOwner")
+    @GetMapping("/faq/owner")
     public String listProcessOwner(@RequestParam("page") int page, Model model) {
         int sPage = page;
         if (page <= 0) sPage = 1;
@@ -63,7 +63,7 @@ public class FaqController {
         return "faq/faq-owner";
     }
 
-    @GetMapping("/searchFaqUser")
+    @GetMapping("/search/faq/user")
     public String searchUser(@RequestParam(value = "searchPage", defaultValue = "1") int searchPage,
                              @RequestParam(name = "searchName", required = false) String searchName,
                              @RequestParam(name = "searchValue", required = false) String searchValue,
@@ -87,7 +87,7 @@ public class FaqController {
         return "faq/faq-user-search";
     }
 
-    @GetMapping("/searchFaqOwner")
+    @GetMapping("/search/faq/owner")
     public String searchOwner(@RequestParam(value = "searchPage") int searchPage,
                               @RequestParam(name = "searchName", required = false) String searchName,
                               @RequestParam(name = "searchValue", required = false) String searchValue,
@@ -111,7 +111,7 @@ public class FaqController {
         return "faq/faq-owner-search";
     }
 
-    @GetMapping("/searchFaqAdmin")
+    @GetMapping("/search/faq/admin")
     public String searchAdmin(@RequestParam(value = "searchPage", defaultValue = "1") int searchPage,
                               @RequestParam(name = "searchName", required = false) String searchName,
                               @RequestParam(name = "searchValue", required = false) String searchValue,
@@ -135,7 +135,7 @@ public class FaqController {
         return "faq/faq-admin-search";
     }
 
-    @GetMapping("/faqAdmin")
+    @GetMapping("/faq/admin")
     public String listProcessAdmin(@RequestParam("page") int page, Model model) {
         int sPage = page;
         if (page <= 0) sPage = 1;
@@ -150,42 +150,42 @@ public class FaqController {
         return "faq/faq-admin";
     }
 
-    @GetMapping("/faqInsert")
+    @GetMapping("/faq/insert")
     public String faqInsert() {
         return "faq/faq-insert";
     }
 
-    @PostMapping("/faqInsert")
+    @PostMapping("/faq/insert")
     public String faqInsertSubmit(FaqDTO faqDTO) {
         boolean b = faqService.insertFaq(faqDTO);
         if (b) {
-            return "redirect:/faqAdmin?page=1";
+            return "redirect:/faq/admin?page=1";
         } else {
             return "redirect:/";
         }
     }
 
-    @PostMapping("/faqUpdate")
+    @PostMapping("/faq/update")
     public String faqUpdate(FaqDTO faqDTO) {
         boolean b = faqService.updateFaq(faqDTO);
         if (b) {
-            return "redirect:/faqAdmin?page=1";
+            return "redirect:/faq/admin?page=1";
         } else {
             return "redirect:/";
         }
     }
 
-    @PostMapping("/faqDelete")
+    @PostMapping("/faq/delete")
     public String faqDelete(@RequestParam("faq_no") String faq_no) {
         boolean b = faqService.deleteFaq(faq_no);
         if (b) {
-            return "redirect:/faqAdmin?page=1";
+            return "redirect:/faq/admin?page=1";
         } else {
             return "redirect:/";
         }
     }
 
-    @GetMapping("/faqDetail")
+    @GetMapping("/faq/detail")
     public String faqDetail(@RequestParam("faq_no") int faq_no, Model model) {
         FaqDTO detail = faqService.detailFaq(faq_no);
         model.addAttribute("detail", detail);
