@@ -2,32 +2,20 @@ package pack.controller.contact;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pack.dto.contact.ContactDTO;
 import pack.service.contact.ContactInsertService;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContactInsertController {
-
 
     private final ContactInsertService contactInsertService;
 
-    @GetMapping("/insertContactUser")
-    public String insertUser() {
-        return "contact/contact-user";
-    }
-
-    @GetMapping("/insertContactOwner")
-    public String insertOwner() {
-        return "contact/contact-owner";
-    }
-
-    @PostMapping("/insertContactUser")
+    @PostMapping("/insert/contact/user")
     public String insertSubmitUser(ContactDTO contactDTO, Model model) {
 
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -42,7 +30,7 @@ public class ContactInsertController {
         }
     }
 
-    @PostMapping("/insertContactOwner")
+    @PostMapping("/insert/contact/owner")
     public String insertSubmitOwner(ContactDTO contactDTO, Model model) {
 
         LocalDateTime currentDateTime = LocalDateTime.now();
