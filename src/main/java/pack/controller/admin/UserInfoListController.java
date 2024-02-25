@@ -2,7 +2,7 @@ package pack.controller.admin;
 
 import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +13,12 @@ import pack.dto.user.UserDTO;
 import pack.service.admin.UserInfoListService;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserInfoListController {
 
     private final UserInfoListService userInfoListService;
 
-    @GetMapping("/userList")
+    @GetMapping("/user/list")
     public String userList(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         int sPage = Math.max(page, 1);
 
@@ -35,7 +35,7 @@ public class UserInfoListController {
         return "user/user";
     }
 
-    @PostMapping("/userSearch")
+    @PostMapping("/user/search")
     public String userSearch(@RequestParam(value = "page", defaultValue = "1") int page, FormDTO bean, Model model) {
         int sPage = Math.max(page, 1);
         ArrayList<UserDTO> userList = (ArrayList<UserDTO>) userInfoListService.getUserSearch(bean);
@@ -47,11 +47,11 @@ public class UserInfoListController {
         return "user/user";
     }
 
-    @PostMapping("/userDelete")
+    @PostMapping("/admin/user/delete")
     public String userDelete(@RequestParam("user_id") String user_id,
                              @RequestParam(value = "page", defaultValue = "1") int page) {
         if (userInfoListService.userDelete(user_id))
-            return "redirect:/userList?page=" + page;
+            return "redirect:/user/list?page=" + page;
         else
             return "redirect:/error";
     }
