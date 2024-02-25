@@ -5,7 +5,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="../js/user/user-join.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>사용자 회원가입 페이지</title>
+    <title>에이콘 컨테이너 : 회원가입</title>
     <link rel="stylesheet" href="/css/user/user-join.css">
     <link href="/assets/css/main.css" rel="stylesheet">
     <script>
@@ -29,7 +29,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/userIdCheck",
+                    url: "/user/id/check",
                     data: {user_id: user_id},
                     success: function (data) {
                         let message;
@@ -57,7 +57,7 @@
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a href="/" class="active">Home</a></li>
-                <li><a href="/ownerJoinGo">사업자 회원가입</a></li>
+                <li><a href="/owner/join">사업자 회원가입</a></li>
             </ul>
         </nav>
     </div>
@@ -65,7 +65,7 @@
 <h3 style="text-align: center;">사용자 회원가입</h3>
 <div class="join-form">
     <div class="content">
-        <form action="/userJoinClick" method="post">
+        <form action="/user/join" method="post">
             <h3>아이디</h3>
             <label for="user_id">
                 <input type="text" name="user_id" id="user_id" class="userId_text-field" placeholder="아이디">
