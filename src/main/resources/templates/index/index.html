@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>에이콘테이너</title>
+    <title>AcornContainer</title>
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet"><!--페이지 스크롤 시 애니메이션 적용됨-->
     <link href="/assets/css/main.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div th:if="${session.userSession != null}">
@@ -29,7 +29,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 text-center">
                     <h2 data-aos="fade-down"><span>ACONTAINER</span>
-                        <a href="/adminLoginGo" style="color: #ffc732; cursor: default;">.</a>
+                        <a href="/admin/login" style="color: #ffc732; cursor: default;">.</a>
                     </h2>
                     <p data-aos="fade">고객맞춤형
                         <span style="color: #ffffff; font-size: 27px;"><strong>물류창고 대여</strong></span> 플랫폼

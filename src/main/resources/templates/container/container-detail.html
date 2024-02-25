@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>에이콘테이너 창고대여</title>
+    <title>에이콘테이너 : 창고대여</title>
     <link rel="stylesheet" type="text/css" href="../css/container/container.css">
     <link href="/assets/img/favicon.png" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
     <script>
         window.onload = function () {
             document.querySelector("#btnList").onclick = function () {
-                location.href = "/owner/list";
+                location.href = "/container/list";
             }
 
             document.querySelector("#btnDelete").onclick = function () {
@@ -76,7 +76,7 @@
             <div class="button-link">
                 <div class="button-container">
                     <input type="button" value="목록" id="btnList"/>
-                    <a th:href="@{/owner/goUpdate(cont_no=${conDto.cont_no})}">수정</a>
+                    <a th:href="@{/container/update(cont_no=${conDto.cont_no})}">수정</a>
                     <input type="button" value="삭제" id="btnDelete"/>
                 </div>
             </div>

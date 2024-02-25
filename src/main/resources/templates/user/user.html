@@ -52,7 +52,7 @@
                     <td th:text="${#strings.substring(data.user_jumin, 0, 8) + '******'}"></td>
 
                     <td>
-                        <form action="/userDelete" method="post">
+                        <form action="/admin/user/delete" method="post">
                             <input type="hidden" name="user_id" th:value="${data.user_id}"/>
                             <input type="submit" value="삭제" class="delete-button"
                                    onclick="if(!confirm('삭제하시면 복구할 수 없습니다. \n 정말로 삭제하시겠습니까?')){return false;}"/>
@@ -62,7 +62,7 @@
             </th:block>
         </table>
         <br/><br/>
-        <form action="/userSearch" method="post" style="text-align: center;">
+        <form action="/user/search" method="post" style="text-align: center;">
             검색 대상:
             <label>
                 <select name="searchName" style="width: 100px;">

@@ -11,11 +11,11 @@ public class HomeController {
     @GetMapping("/")
     public String home(HttpSession session) {
         if (session.getAttribute("userSession") != null) {
-            return "redirect:/userSessionKeep";
+            return "redirect:/user/mypage";
         } else if (session.getAttribute("ownerSession") != null) {
-            return "redirect:/ownerSessionKeep";
+            return "redirect:/owner/mypage";
         } else if (session.getAttribute("adminSession") != null) {
-            return "redirect:/adminSessionKeep";
+            return "redirect:/admin/mypage";
         }
         return "index/index";
     }

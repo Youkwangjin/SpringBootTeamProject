@@ -1,10 +1,8 @@
 let businessNum = $('#businessNum');
 let ownerPwd = $('#ownerPwd');
 let ownerLoginBtn = $('#ownerLoginBtn');
-let isFormValid = true;
 
 $(document).ready(function () {
-    // 폼 submit 이벤트에 대한 처리
     $('form').submit(function (e) {
         e.preventDefault();
 
@@ -18,7 +16,7 @@ $(document).ready(function () {
 
         // AJAX 요청
         $.ajax({
-            url: '/ownerLogSuccess',
+            url: '/owner/login',
             type: 'POST',
             data: {
                 business_num: $(businessNum).val(),
@@ -27,7 +25,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 if (response.status === '성공!') { // 백엔드 로직에서 put(key, value)값 동일하게 하기!
-                    window.location.href = '/ownerSessionKeep';
+                    window.location.href = '/owner/mypage';
                 } else {
                     if (response.message.includes("사업자번호", "비밀번호")) {
                         $('#ownerIdWarning').text(response.message).show();
