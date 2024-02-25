@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/owner/owner-delete.js"></script>
-    <title>회원수정 페이지</title>
+    <title>에이콘 컨테이너 : 회원탈퇴</title>
     <link rel="stylesheet" href="/css/owner/owner-join.css">
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
@@ -14,7 +14,7 @@
         <div>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="/ownerSessionKeep" class="active">Home</a></li>
+                    <li><a href="/owner/mypage" class="active">Home</a></li>
                 </ul>
             </nav>
         </div>
@@ -22,7 +22,7 @@
     <h3 style="text-align: center; line-height: 2;"><span th:text="${ownerSession.owner_name}"></span>님의 회원정보</h3>
     <div class="join-form">
         <div class="content">
-            <form action="/ownerInfoDelete" method="POST">
+            <form action="/owner/delete" method="POST">
                 <div id="messageContainer">
                     <h3>사업자 번호</h3>
                     <label for="business_num">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공급자 로그인</title>
+    <title>에이콘 컨테이너 : 로그인</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/owner/owner-login.css">
     <link href="/assets/css/main.css" rel="stylesheet">
@@ -14,13 +14,13 @@
     <nav id="navbar" class="navbar">
         <ul>
             <li><a href="/" class="active">Home</a></li>
-            <li><a href="userLoginGo">사용자 로그인</a></li>
+            <li><a href="/user/login">사용자 로그인</a></li>
         </ul>
     </nav>
 </header>
 <section class="login-form">
     <h1>공급자 로그인</h1>
-    <form action="/ownerLogSuccess" method="post">
+    <form action="/owner/login" method="post">
         <div class="int-area">
             <input type="text" name="business_num" id="businessNum" autocomplete="off" required>
             <label for="businessNum">Business Num</label>
@@ -36,7 +36,7 @@
         </div>
     </form>
     <div class="caption">
-        <a href="ownerJoinGo">회원가입</a>
+        <a href="/owner/join">회원가입</a>
     </div>
 </section>
 <script src="/js/owner/owner-login.js"></script>
