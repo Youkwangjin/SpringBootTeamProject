@@ -2,7 +2,7 @@ package pack.controller.container;
 
 import java.util.*;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,23 +14,22 @@ import pack.dto.upload.UploadFileDTO;
 import pack.service.container.ContainerService;
 
 @Controller
-@RequestMapping(value = "/owner")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContainerController {
 
     private final ContainerService containerService;
 
-    @GetMapping("/paid")
+    @GetMapping("/container/paid")
     public String cont_pay() {
         return "container/container-paid";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/container/register")
     public String cont_regs() {
         return "container/container-register";
     }
 
-    @GetMapping("/error")
+    @GetMapping("/container/error")
     public String containerError() {
         return "container/container-error";
     }
@@ -41,21 +40,21 @@ public class ContainerController {
         return containerService.containerProcess();
     }
 
-    @GetMapping("/list")
+    @GetMapping("/container/list")
     public String containerMgr(Model model, HttpSession session) {
         String business_num = (String) session.getAttribute("business_num");
         model.addAttribute("datas", containerService.getContainerAllData(business_num));
         return "container/container-list";
     }
 
-    @GetMapping("/reserve")
+    @GetMapping("/container/reserve")
     public String containerReserve(Model model, HttpSession session) {
         String business_num = (String) session.getAttribute("business_num");
         model.addAttribute("datas", containerService.getDataReserve(business_num));
         return "container/container-reserve";
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/container/detail")
     public String containerDetail(@RequestParam("cont_no") String cont_no, HttpSession session, Model model) {
         String business_num = (String) session.getAttribute("business_num");
         if (business_num == null) {
@@ -66,24 +65,24 @@ public class ContainerController {
         return "container/container-detail";
     }
 
-    @GetMapping("/goUpdate")
+    @GetMapping("/container/update")
     public String containerUpdate(@RequestParam("cont_no") String cont_no, Model model) {
         ContainerDTO conDto = containerService.containerDetail(cont_no);
         model.addAttribute("conDto", conDto);
         return "container/container-update";
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/container/delete")
     public String containerDelete(@RequestParam("cont_no") String cont_no) {
         boolean isSuccess = containerService.deleteContainer(cont_no);
         if (isSuccess) {
-            return "redirect:/owner/list";
+            return "redirect:/container/list";
         } else {
             return "container/container-delete-error";
         }
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/container/insert")
     public String insertSubmit(@ModelAttribute ContainerDTO containerDTO,
                                @ModelAttribute UploadFileDTO uploadFileDTO,
                                BindingResult result,
@@ -99,27 +98,27 @@ public class ContainerController {
         String redirectUrl;
         try {
             redirectUrl = containerService.insertContainerWithFile(containerDTO, uploadFileDTO, result, uploadDirectory);
-            if ("redirect:/owner/list".equals(redirectUrl)) {
+            if ("redirect:/container/list".equals(redirectUrl)) {
                 return redirectUrl;
             } else {
-                return "redirect:/owner/error";
+                return "redirect:/container/list";
             }
         } catch (Exception e) {
-            return "redirect:/owner/error";
+            return "redirect:/container/error";
         }
     }
 
-    @PostMapping("/update")
+    @PostMapping("/container/update")
     public String containerUpdate(ContainerDTO containerDTO) {
         boolean isSuccess = containerService.updateContainer(containerDTO);
         if (isSuccess) {
-            return "redirect:/owner/list";
+            return "redirect:/container/list";
         } else {
             return "container/container-update-error";
         }
     }
 
-    @PostMapping("/reserveContainer")
+    @PostMapping("/container/reserve")
     public ResponseEntity<?> reserveContainer(@RequestParam("cont_no") String cont_no) {
         return containerService.processReservation(cont_no);
     }
