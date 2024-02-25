@@ -1,9 +1,12 @@
 package pack.dto.container;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Component
 public class ContainerDTO {
     private int cont_price;

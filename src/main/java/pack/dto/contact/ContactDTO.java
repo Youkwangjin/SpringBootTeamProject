@@ -1,18 +1,18 @@
 package pack.dto.contact;
 
-import java.time.LocalDate;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ContactDTO {
-    private String contact_no, contact_name, contact_email, contact_title, contact_message, contact_date, contact_status;
-
-    public void setContact_date() {
-        LocalDate localDate = LocalDate.now();
-        int year = localDate.getYear();
-        int month = localDate.getMonthValue();
-        int day = localDate.getDayOfMonth();
-        this.contact_date = year + "-" + month + "-" + day;
-    }
+    private String contact_no;
+    private String contact_name;
+    private String contact_email;
+    private String contact_title;
+    private String contact_message;
+    private String contact_date;
+    private String contact_status;
 }

@@ -1,11 +1,14 @@
 package pack.dto.booking;
 
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookingDTO implements Serializable {
     private int booking_id;
     private String user_id;

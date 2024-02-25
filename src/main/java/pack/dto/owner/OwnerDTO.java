@@ -1,8 +1,11 @@
 package pack.dto.owner;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OwnerDTO {
     private String business_num;
     private String owner_pwd;
