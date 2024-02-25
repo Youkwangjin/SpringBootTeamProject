@@ -15,6 +15,7 @@ import java.util.Map;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminDAO adminDAO;
+
     @Override
     public Map<String, Object> processLogin(String adminId, String adminPwd, HttpSession session) {
         Map<String, Object> adminResult = new HashMap<>();
@@ -34,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
     public String approveProcess(AdminDTO adminDTO) {
         boolean approveProcessDate = adminDAO.containerApprove(adminDTO);
         if (approveProcessDate)
-            return "redirect:/registered";
+            return "redirect:/admin/container/registered";
         else
             return "owner/error";
     }
@@ -43,7 +44,7 @@ public class AdminServiceImpl implements AdminService {
     public String denyProcess(AdminDTO adminDTO) {
         boolean denyProcessDate = adminDAO.containerDeny(adminDTO);
         if (denyProcessDate)
-            return "redirect:/registered";
+            return "redirect:/admin/container/registered";
         else
             return "owner/error";
     }

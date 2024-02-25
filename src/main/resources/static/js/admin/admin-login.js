@@ -24,7 +24,7 @@ $(adminLoginBtn).on('click', function () {
     }
 
     $.ajax({
-        url: '/adminLoginOk',
+        url: '/admin/login',
         type: 'POST',
         data: {
             admin_id: $(adminId).val(),
@@ -33,9 +33,10 @@ $(adminLoginBtn).on('click', function () {
         dataType: 'json',
         success: function (response) {
             if (response.status === '성공!') {
-                window.location.href = '/adminSessionKeep';
+                window.location.href = '/admin/mypage';
             } else {
                 alert('비정상적인 접근이 감지되었습니다. 이 활동은 기록되며 필요한 경우 조치가 취해질 수 있습니다.');
+                window.location.href = '/admin/login';
             }
         },
         error: function () {

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/js/owner/owner-join.js"></script>
-    <title>공급자 회원가입 페이지</title>
+    <title>에이콘 컨테이너 : 회원가입</title>
     <link rel="stylesheet" href="/css/owner/owner-join.css">
     <link href="/assets/css/main.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -15,7 +15,7 @@
                 let businessNum = $(this).val();
                 if (businessNum) {
                     $.ajax({
-                        url: '/checkBusinessNum',
+                        url: '/check/businessNum',
                         type: 'POST',
                         data: {'business_num': businessNum},
                         dataType: 'json',
@@ -39,19 +39,20 @@
 <header id="header" class="header d-flex align-items-center">
     <nav id="navbar" class="navbar">
         <ul>
-            <li><a href="/ownerSessionKeep" class="active">Home</a></li>
-            <li><a href="/userJoinGo">사용자 회원가입</a></li>
+            <li><a href="/owner/mypage" class="active">Home</a></li>
+            <li><a href="/user/join">사용자 회원가입</a></li>
         </ul>
     </nav>
 </header>
 <h3 style="text-align: center;">공급자 회원가입</h3>
 <div class="join-form">
     <div class="content">
-        <form action="ownerJoinClick" method="POST">
+        <form action="/owner/join" method="POST">
             <div id="messageContainer">
                 <h3>사업자 번호</h3>
                 <label for="business_num">
-                    <input type="text" name="business_num" id="business_num" class="text-field" placeholder="사업자 번호 ex) 11-11-11111">
+                    <input type="text" name="business_num" id="business_num" class="text-field"
+                           placeholder="사업자 번호 ex) 11-11-11111">
                 </label>
                 <div id="business_numMessage" class="error-message"></div>
 
@@ -75,13 +76,15 @@
 
                 <h3>전화번호</h3>
                 <label for="owner_tel">
-                    <input type="tel" name="owner_tel" id="owner_tel" class="text-field" placeholder="전화번호">
+                    <input type="tel" name="owner_tel" id="owner_tel" class="text-field"
+                           placeholder="전화번호 ex) 010-1111-1111">
                 </label>
                 <div id="owner_telMessage" class="error-message"></div>
 
                 <h3>이메일</h3>
                 <label for="email">
-                    <input type="text" name="email" id="email" class="text-field" placeholder="이메일" maxlength="30">
+                    <input type="text" name="email" id="email" class="text-field"
+                           placeholder="이메일 ex) abc1234@naver.com" maxlength="30">
                 </label>
                 <div id="emailMessage" class="error-message"></div>
             </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>ERROR</title>
+    <title>500 ERROR</title>
     <link rel="stylesheet" href="/css/member/member.css"/>
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
@@ -29,25 +29,30 @@
 </head>
 
 <body>
+<div th:if="${session.userSession != null}">
+    <div th:replace="~{fragments/header_user :: header}"></div>
+</div>
 <div th:if="${session.ownerSession != null}">
     <div th:replace="~{fragments/header_owner :: header}"></div>
-    <main id="main">
-        <div class="breadcrumbs d-flex align-items-center"
-             style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
-            <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-                <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">Service</h2>
-                <ol>
-                    <li><a href="/">Home</a></li>
-                    <li>서비스소개</li>
-                    <li>이용안내</li>
-                </ol>
-            </div>
-        </div>
-        <div style="background-color: white; color: black; text-align: center; padding: 10px; margin-top: 120px;">
-            <h4>파일 선택은 필수 사항입니다. 또한 확장자는 JPG, JPEG, PNG 만 가능합니다.</h4><br/>
-            <h4>오타 없이 다시 작성해주세요.</h4>
-        </div>
-    </main>
 </div>
+<div th:if="${session.userSession == null && session.ownerSession == null}">
+    <div th:replace="~{fragments/header :: header}"></div>
+</div>
+<main id="main">
+    <div class="breadcrumbs d-flex align-items-center"
+         style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+        <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+            <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">Service</h2>
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>서비스소개</li>
+                <li>이용안내</li>
+            </ol>
+        </div>
+    </div>
+    <div style="background-color: white; color: black; text-align: center; padding: 10px; margin-top: 120px;">
+        <h4>서버 내부 오류가 발생했습니다. 이용해 불편을 드려 대단히 죄송합니다.</h4>
+    </div>
+</main>
 </body>
 </html>

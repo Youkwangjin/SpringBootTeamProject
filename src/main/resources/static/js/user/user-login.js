@@ -26,7 +26,7 @@ $(document).ready(function () {
         }
         // AJAX 요청
         $.ajax({
-            url: '/userLogSuccess',
+            url: '/user/login',
             type: 'POST',
             data: {
                 user_id: $(userId).val(),
@@ -35,7 +35,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 if (response.status === '성공!') { // // 백엔드 로직에서 put(key, value)값 동일하게 하기!
-                    window.location.href = '/userSessionKeep';
+                    window.location.href = '/user/mypage';
                 } else {
                     if (response.message.includes("아이디", "비밀번호")) {
                         $('#userIdWarning').text(response.message).show();

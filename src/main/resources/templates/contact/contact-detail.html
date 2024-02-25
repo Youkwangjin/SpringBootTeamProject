@@ -13,16 +13,16 @@
 
     <script>
         window.onload = function () {
+            var frm = document.forms['frm'];
 
             document.querySelector("#btnList").onclick = function () {
                 window.history.back();
-
             }
 
             document.querySelector("#btnUpdate").onclick = function () {
                 if (confirm("정말 수정 할까요?")) {
                     event.preventDefault();
-                    frm.action = "/contactUpdate";
+                    frm.action = "/contact/update";
                     frm.method = "post";
                     frm.submit();
                 }
@@ -31,7 +31,7 @@
             document.querySelector("#btnDelete").onclick = function () {
                 if (confirm("정말 삭제 할까요?")) {
                     event.preventDefault();
-                    frm.action = "/contactDelete";
+                    frm.action = "/contact/delete";
                     frm.method = "get";
                     frm.submit();
                 }
@@ -48,7 +48,7 @@
             <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
                 <h2 style="font-family: 'Noto Sans KR',serif;">공지사항</h2>
                 <ol>
-                    <li><a href="/adminSessionKeep">Home</a></li>
+                    <li><a href="/admin/mypage">Home</a></li>
                     <li>게시판</li>
                 </ol>
             </div>

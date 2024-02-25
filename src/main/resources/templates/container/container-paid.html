@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Insert title here</title>
+    <title>에이콘테이너 : 결제</title>
     <link rel="stylesheet" href="/css/member/member.css"/>
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
@@ -29,8 +29,15 @@
 </head>
 
 <body>
+<div th:if="${session.userSession != null}">
+    <div th:replace="~{fragments/header_user :: header}"></div>
+</div>
 <div th:if="${session.ownerSession != null}">
     <div th:replace="~{fragments/header_owner :: header}"></div>
+</div>
+<div th:if="${session.userSession == null && session.ownerSession == null}">
+    <div th:replace="~{fragments/header :: header}"></div>
+</div>
     <main id="main">
         <div class="breadcrumbs d-flex align-items-center"
              style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
@@ -47,6 +54,5 @@
             <h4>서비스 준비중입니다. 이용에 불편을 드려 죄송합니다.</h4>
         </div>
     </main>
-</div>
 </body>
 </html>

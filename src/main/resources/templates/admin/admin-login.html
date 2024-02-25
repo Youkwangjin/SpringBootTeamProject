@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 로그인</title>
+    <title>에이컨테이너 : 로그인</title>
     <link rel="stylesheet" href="/css/admin/admin-login.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
 <body>
 <header id="header" class="header d-flex align-items-center">
     <nav id="navbar" class="navbar">
         <ul>
-            <li><a href="/adminSessionKeep" class="active">Home</a></li>
+            <li><a href="/" class="active">Home</a></li>
         </ul>
     </nav>
 </header>
 <section class="login-form">
     <h1>관리자 로그인</h1>
-    <form action="/adminLoginOk" method="post">
+    <form action="/admin/login" method="post">
         <div class="int-area">
             <input type="text" name="admin_id" id="adminId" autocomplete="off" required>
             <label for="adminId">관리자 아이디</label>
@@ -31,7 +31,7 @@
             <span class="warning-message" id="adminPwdWarning"></span>
         </div>
         <div class="btn-area">
-            <button type="button" id="adminLoginBtn">LOGIN</button>
+            <button type="submit" id="adminLoginBtn">LOGIN</button>
         </div>
     </form>
 </section>

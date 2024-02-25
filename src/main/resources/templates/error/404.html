@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Error</title>
+    <title>404 ERROR</title>
     <link rel="stylesheet" href="/css/member/member.css"/>
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
+
     <style>
         footer {
             position: absolute;
@@ -26,22 +27,35 @@
         }
     </style>
 </head>
+
 <body>
-<div th:replace="~{fragments/header_owner :: header}"></div>
+<div th:if="${session.userSession != null}">
+    <div th:replace="~{fragments/header_user :: header}"></div>
+</div>
+<div th:if="${session.ownerSession != null}">
+    <div th:replace="~{fragments/header_owner :: header}"></div>
+</div>
+<div th:if="${session.userSession == null && session.ownerSession == null}">
+    <div th:replace="~{fragments/header :: header}"></div>
+</div>
 <main id="main">
     <div class="breadcrumbs d-flex align-items-center"
          style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
         <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
             <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">Service</h2>
             <ol>
-                <li><a href="/owner/mypage">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li>서비스소개</li>
                 <li>이용안내</li>
             </ol>
         </div>
     </div>
-    <div style="background-color: white; color: red; text-align: center; padding: 10px; margin-top: 120px;">
-        <h3>창고를 등록한 공급자는 회원탈퇴를 할 수 없습니다. 관리자한테 문의하세요.</h3>
+    <div style="background-color: white; color: black; text-align: center; padding: 10px; margin-top: 120px;">
+        <h4>죄송합니다. 요청하신 페이지를 찾을 수 없습니다.</h4><br/>
+        <h4>방문하시려는 페이지의 주소가 잘못 입력되었거나,
+            페이지의 주소가 변경 혹은 삭제되어 요청하신 페이지를 찾을 수 없습니다.
+        </h4><br/>
+        <h4>관리자에게 문의 바랍니다.</h4>
     </div>
 </main>
 </body>

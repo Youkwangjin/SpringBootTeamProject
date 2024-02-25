@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/user/user-update.js"></script>
-    <title>회원탈퇴 페이지</title>
+    <title>에이콘테이너 : 회원탈퇴</title>
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/user/user-join.css">
 </head>
@@ -13,14 +13,14 @@
     <header id="header" class="header d-flex align-items-center">
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a href="/userSessionKeep" class="active">Home</a></li>
+                <li><a href="/user/mypage" class="active">Home</a></li>
             </ul>
         </nav>
     </header>
     <h3 style="text-align: center; line-height: 2;"><span th:text="${userSession.user_name}"></span>님의 회원탈퇴</h3>
     <div class="join-form">
         <div class="content">
-            <form action="/userInfoDelete" name="userUpdate" method="POST">
+            <form action="/user/delete" name="userDelete" method="POST">
                 <h3>아이디</h3>
                 <label for="user_id">
                     <input type="text" name="user_id" id="user_id" class="text-field" th:value="${userSession.user_id}" readonly>

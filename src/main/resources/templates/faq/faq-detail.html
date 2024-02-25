@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>FAQ Detail</title>
+    <title>FAQ</title>
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
                 if (confirm("정말 수정 할까요?")) {
                     let updateFrm = document.querySelector("#updateFrm");
                     event.preventDefault();
-                    updateFrm.action = "/faqUpdate";
+                    updateFrm.action = "/faq/update";
                     updateFrm.method = "post";
                     updateFrm.submit();
                 }
@@ -31,7 +31,7 @@
                 if (confirm("정말 삭제 할까요?")) {
                     let updateFrm = document.querySelector("#updateFrm");
                     event.preventDefault();
-                    updateFrm.action = "/faqDelete";
+                    updateFrm.action = "/faq/delete";
                     updateFrm.method = "post";
                     updateFrm.submit();
                 }
@@ -48,7 +48,7 @@
             <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
                 <h2 style="font-family: 'Noto Sans KR',serif;">FAQ</h2>
                 <ol>
-                    <li><a href="/adminSessionKeep">Home</a></li>
+                    <li><a href="/admin/mypage">Home</a></li>
                     <li>게시판</li>
                 </ol>
             </div>

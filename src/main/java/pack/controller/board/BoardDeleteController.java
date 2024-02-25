@@ -1,6 +1,6 @@
 package pack.controller.board;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +9,7 @@ import pack.service.board.BoardDeleteService;
 
 @Controller
 @RequestMapping("/board")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardDeleteController {
 
     private final BoardDeleteService boardDeleteService;
@@ -18,7 +18,7 @@ public class BoardDeleteController {
     public String boardDelete(@RequestParam("num") String num,
                               @RequestParam("page") String page) {
         if (boardDeleteService.delete(num))
-            return "redirect:listAdmin?page=" + page;
+            return "redirect:/board/list/admin?page=" + page;
         else
             return "redirect:/board/error";
     }

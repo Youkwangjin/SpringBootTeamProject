@@ -3,9 +3,12 @@ package pack.dto.form;
 
 import java.sql.Date;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FormDTO {
     private String user_id, user_pwd, user_name, user_tel, user_email, user_addr, user_jumin,
             business_num, owner_pwd, owner_name, owner_tel, email, cont_num,

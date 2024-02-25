@@ -1,6 +1,6 @@
 package pack.controller.board;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,7 @@ import pack.service.board.BoardUpdateService;
 
 @Controller
 @RequestMapping("/board")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardUpdateController {
 
     private final BoardUpdateService boardUpdateService;
@@ -32,7 +32,7 @@ public class BoardUpdateController {
                                      @RequestParam("page") String page) {
         boolean b = boardUpdateService.update(boardDTO);
         if (b) {
-            return "redirect:detailAdmin?num=" + boardDTO.getNum() + "&page=" + page;
+            return "redirect:/board/list/admin?num=" + boardDTO.getNum() + "&page=" + page;
         } else {
             return "board/board-error";
         }

@@ -1,6 +1,6 @@
 package pack.controller.admin;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +13,12 @@ import pack.service.admin.OwnerInfoListService;
 import java.util.ArrayList;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OwnerInfoListController {
 
     private final OwnerInfoListService ownerInfoListService;
 
-    @GetMapping("/ownerList")
+    @GetMapping("/owner/list")
     public String ownerList(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         int sPage = Math.max(page, 1);
 
@@ -34,7 +34,7 @@ public class OwnerInfoListController {
         return "owner/owner";
     }
 
-    @PostMapping("/ownerSearch")
+    @PostMapping("/owner/search")
     public String ownerSearch(@RequestParam(value = "page", defaultValue = "1") int page, FormDTO bean, Model model) {
         int sPage = Math.max(page, 1);
         ArrayList<OwnerDTO> sList2 = (ArrayList<OwnerDTO>) ownerInfoListService.getOwnerSearch(bean);
@@ -47,11 +47,11 @@ public class OwnerInfoListController {
         return "owner/owner";
     }
 
-    @PostMapping("/ownerDelete")
+    @PostMapping("/admin/owner/delete")
     public String ownerDelete(@RequestParam("business_num") String business_num,
                               @RequestParam(value = "page", defaultValue = "1") int page) {
         if (ownerInfoListService.ownerDelete(business_num))
-            return "redirect:/ownerList?page=" + page;
+            return "redirect:/owner/list?page=" + page;
         else
             return "redirect:/admin-error-stock";
     }

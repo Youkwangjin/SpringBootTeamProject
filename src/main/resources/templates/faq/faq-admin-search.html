@@ -21,7 +21,7 @@
             <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
                 <h2 style="font-family: 'Noto Sans KR',serif;">공지사항</h2>
                 <ol>
-                    <li><a href="/adminSessionKeep">Home</a></li>
+                    <li><a href="/admin/mypage">Home</a></li>
                     <li>게시판</li>
                 </ol>
             </div>
@@ -29,11 +29,11 @@
         <section>
             <div class="board-container">
                 <h3 style="padding-top: 1cm; padding-bottom: 1cm; text-align: center;">자주 묻는 질문</h3>
-                <div style="text-align: center;"><a href="/faqInsert">추가</a></div>
+                <div style="text-align: center;"><a href="/faq/insert">추가</a></div>
                 <table border="1" style="text-align: center;">
                     <tr>
                         <td colspan="4">
-                            <form action="/searchFaqAdmin?searchPage=1" method="get" style="text-align: right;">
+                            <form action="/search/faq/admin?searchPage=1" method="get" style="text-align: right;">
                                 검 색 :
                                 <label>
                                     <select name="searchName">

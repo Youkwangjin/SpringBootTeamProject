@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ import pack.service.board.BoardListService;
 
 @Controller
 @RequestMapping("/board")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardListController {
 
     private final BoardListService boardListService;
@@ -40,11 +40,11 @@ public class BoardListController {
         return "board/board-list";
     }
 
-    @GetMapping("/listAdmin")
+    @GetMapping("/list/admin")
     public String listAdminProcess(@RequestParam("page") int page, HttpServletRequest request, Model model) {
         // 관리자 인증 체크
         if (!boardDetailService.isAdmin(request.getSession())) {
-            return "redirect:/adminLoginGo";
+            return "redirect:/admin/login";
         }
         List<BoardDTO> totalList = boardListService.listAll();
         List<BoardDTO> boardList = boardListService.getListData(new ArrayList<>(totalList), page);
@@ -57,12 +57,12 @@ public class BoardListController {
     }
 
 
-    @GetMapping("/listUser")
+    @GetMapping("/list/user")
     public String listUserProcess(@RequestParam("page") int page, Model model) {
         return listProcess(page, model);
     }
 
-    @GetMapping("/listOwner")
+    @GetMapping("/list/owner")
     public String listOwnerProcess(@RequestParam("page") int page, Model model) {
         return listProcess(page, model);
     }

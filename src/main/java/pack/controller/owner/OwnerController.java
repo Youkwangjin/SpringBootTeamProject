@@ -1,7 +1,6 @@
 package pack.controller.owner;
 
-
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,64 +18,71 @@ import java.util.Map;
 
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OwnerController {
 
     private final OwnerService ownerService;
 
-    @GetMapping("ownerJoinGo")
+    @GetMapping("/owner/join")
     public String ownerChoice(HttpSession session) {
         if (session.getAttribute("ownerSession") != null) {
-            return "redirect:/ownerSessionKeep";
+            return "redirect:/owner/mypage";
         }
         return "owner/owner-join";
     }
 
-    @GetMapping("/ownerLoginGo")
+    @GetMapping("/owner/login")
     public String ownerLoginGo(HttpSession session) {
         if (session.getAttribute("ownerSession") != null) {
-            return "redirect:/ownerSessionKeep";
+            return "redirect:/owner/mypage";
         }
         return "owner/owner-login";
     }
 
-    @GetMapping("/ownerUpdate")
+    @GetMapping("/owner/update")
     public String ownerUpdatePage(Model model, HttpSession session) {
         OwnerDTO owner = (OwnerDTO) session.getAttribute("ownerSession");
         model.addAttribute("ownerSession", owner);
-
-        return "owner/owner-update";
+        if (owner != null) {
+            return "owner/owner-update";
+        } else {
+            return "owner/owner-login";
+        }
     }
 
-    @GetMapping("/ownerDelete")
+    @GetMapping("/owner/delete")
     public String ownerDeletePage(Model model, HttpSession session) {
         OwnerDTO owner = (OwnerDTO) session.getAttribute("ownerSession");
         model.addAttribute("ownerSession", owner);
-        return "owner/owner-delete";
+        if (owner != null) {
+            return "owner/owner-delete";
+        } else {
+            return "owner/owner-login";
+        }
     }
 
-    @GetMapping("/ownerLogoutGo")
+    @GetMapping("/owner/logout")
     public String ownerLogoutProcess(HttpSession session) {
         session.removeAttribute("ownerSession");
         return "redirect:/";
     }
 
-    @GetMapping("/ownerSessionKeep")
-    public String ownerSessionKeep(HttpSession session) {
+    @GetMapping("/owner/mypage")
+    public String ownerSession(HttpSession session) {
         OwnerDTO ownerSession = (OwnerDTO) session.getAttribute("ownerSession");
         if (ownerSession != null) {
             return "owner/owner-mypage";
         } else {
-            return "index/index";
+            return "owner/owner-login";
         }
     }
 
-    @PostMapping("ownerJoinClick")
-    public String ownerLoginOK(OwnerDTO ownerDto) {
+    @PostMapping("/owner/join")
+    public String ownerLoginOk(OwnerDTO ownerDto) {
         return ownerService.registerOwner(ownerDto);
     }
 
-    @PostMapping("ownerLogSuccess")
+    @PostMapping("/owner/login")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> processLoginForm(@RequestParam("business_num") String businessNum,
                                                                 @RequestParam("owner_pwd") String ownerPwd,
@@ -85,17 +91,17 @@ public class OwnerController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("ownerInfoUpdate")
+    @PostMapping("/owner/update")
     public String ownerInfoUpdate(OwnerDTO ownerDto, HttpSession session) {
         return ownerService.updateOwnerInfo(ownerDto, session);
     }
 
-    @PostMapping("/ownerInfoDelete")
+    @PostMapping("/owner/delete")
     public String ownerInfoDelete(OwnerDTO ownerDto, HttpSession session) {
         return ownerService.deleteOwnerInfo(ownerDto, session);
     }
 
-    @PostMapping("/checkBusinessNum")
+    @PostMapping("/check/businessNum")
     @ResponseBody
     public Map<String, Object> checkBusinessNum(@RequestParam("business_num") String businessNum) {
         boolean isDuplicate = ownerService.checkBusinessNum(businessNum);

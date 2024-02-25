@@ -2,7 +2,7 @@ package pack.controller.contact;
 
 import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +12,14 @@ import pack.dto.contact.ContactDTO;
 import pack.service.contact.ContactPageService;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContactPageController {
 
     private final ContactPageService contactPageService;
     // 상수로 선언
     private static final int PLIST = 10;
 
-    @GetMapping("contactAdmin")
+    @GetMapping("/contact/admin")
     public String listProcess(@RequestParam("page") int page, Model model) {
         int sPage = page <= 0 ? 1 : page;
 

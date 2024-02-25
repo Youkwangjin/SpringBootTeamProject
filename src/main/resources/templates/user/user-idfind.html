@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+    <title>에이콘테이너 : 아이디 찾기</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/user/user-login.css">
     <link href="/assets/css/main.css" rel="stylesheet">
@@ -21,7 +20,7 @@
                 // Ajax 요청 보내기
                 $.ajax({
                     type: "POST",
-                    url: "/userIdInfoFind",
+                    url: "/user/id/find",
                     data: {
                         user_name: user_name,
                         user_email: user_email,
@@ -44,7 +43,7 @@
 <body>
 <section class="login-form">
     <h1>아이디 찾기</h1>
-    <form action="/userIdInfoFind" method="post">
+    <form action="/user/id/find" method="post">
         <div class="int-area">
             <input type="text" name="user_name" id="user_name" autocomplete="off" required>
             <label for="user_name">이름</label>
@@ -62,7 +61,7 @@
         </div>
     </form>
     <div class="caption">
-        <a href="firstLogin">로그인</a>
+        <a href="/user/login">로그인</a>
     </div>
 </section>
 <script src="/js/user/user-idfind.js"></script>

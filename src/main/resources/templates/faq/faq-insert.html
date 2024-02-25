@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Insert title here</title>
+    <title>FAQ</title>
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +20,7 @@
             }
             document.querySelector("#btn").onclick = function () {
                 if (confirm("정말 추가 할까요?")) {
-                    ins.action = "/faqInsert";
+                    ins.action = "/faq/insert";
                     ins.method = "post";
                     ins.submit();
                 }
@@ -37,7 +37,7 @@
             <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
                 <h2 style="font-family: 'Noto Sans KR',serif;">FAQ</h2>
                 <ol>
-                    <li><a href="/adminSessionKeep">Home</a></li>
+                    <li><a href="/admin/mypage">Home</a></li>
                     <li>게시판</li>
                 </ol>
             </div>
@@ -45,7 +45,7 @@
         <section class="sample-page">
             <h2 style="text-align: center;">FAQ 추가</h2><br><br>
             <div>
-                <form action="/faqInsert" name="faqIns" id="faqIns" method="post" style="padding-bottom: 1cm; text-align: center;">
+                <form action="/faq/insert" name="faqIns" id="faqIns" method="post" style="padding-bottom: 1cm; text-align: center;">
                     <div>
                         <div>
                             카테고리 <br>

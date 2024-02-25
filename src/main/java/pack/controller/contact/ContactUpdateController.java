@@ -1,22 +1,22 @@
 package pack.controller.contact;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import pack.dto.contact.ContactDTO;
 import pack.service.contact.ContactUpdateService;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContactUpdateController {
 
     private final ContactUpdateService contactUpdateService;
 
-    @PostMapping("/contactUpdate")
+    @PostMapping("/contact/update")
     public String contactUpdate(ContactDTO contactDTO) {
         boolean updateContactData = contactUpdateService.updateContact(contactDTO);
         if (updateContactData)
-            return "redirect:/contactAdmin?page=1";
+            return "redirect:/contact/admin?page=1";
         else
             return "container/container-error";
     }

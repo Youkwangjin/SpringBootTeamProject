@@ -63,7 +63,7 @@ public class ContainerInfoListServiceImpl implements ContainerInfoListService {
         Logger logger = LoggerFactory.getLogger(ContainerInfoListServiceImpl.class);
         if (deletionSuccess) {
             logger.info("컨테이너 삭제 성공! " + cont_no);
-            return "redirect:/registered";
+            return "redirect:/admin/container/registered";
         } else {
             logger.error("컨테이너 삭제 실패! ID: " + cont_no);
             return "/container/container-error";

@@ -1,8 +1,11 @@
 package pack.dto.admin;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AdminDTO {
     private String admin_id;
     private String admin_pwd;

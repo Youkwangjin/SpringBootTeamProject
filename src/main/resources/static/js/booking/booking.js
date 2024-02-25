@@ -45,7 +45,7 @@ function insertOpt(event) {
 
     if (confirm("예약하시겠습니까?")) {
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/booking/bookingDo", true);
+        xhr.open("POST", "/booking/reservation", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
