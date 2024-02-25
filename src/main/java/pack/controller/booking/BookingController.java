@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import pack.service.booking.BookingService;
 
 @Controller
 @RequestMapping("/booking")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookingController {
 
     private final BookingService bookingService;
@@ -31,7 +31,7 @@ public class BookingController {
         return "booking/booking";
     }
 
-    @GetMapping("/bookingInfo")
+    @GetMapping("/info")
     public String bookingProcess(HttpSession session, Model model) {
         try {
             String user_id = (String) session.getAttribute("user_id");
@@ -40,7 +40,7 @@ public class BookingController {
                 model.addAttribute("bList", bookingDto);
                 return "booking/booking-info";
             } else {
-                logger.error("유저 세션 없다!");
+                logger.error("세션 값이 없습니다.");
                 return "redirect:/";
             }
         } catch (Exception e) {
@@ -49,18 +49,18 @@ public class BookingController {
         }
     }
 
-    @PostMapping("/bookingDo")
+    @PostMapping("/reservation")
     public String bookingDo(BookingDTO bookingdto, AdminDTO adminDTO) {
         try {
             boolean bookingInsertData = bookingService.bookingInsert(bookingdto);
             boolean contStatusData = bookingService.contStatusUpdate(adminDTO);
             if (bookingInsertData && contStatusData) {
-                return "redirect:/booking/bookingInfo";
+                return "redirect:/booking/info";
             } else {
                 return "booking/booking";
             }
         } catch (Exception e) {
-            logger.error("Error bookingDo", e);
+            logger.error("예약 중에 예외 발생: ", e);
             return "booking/booking";
         }
     }
