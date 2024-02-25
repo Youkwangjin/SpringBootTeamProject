@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>에이콘테이너 창고대여</title>
+    <title>에이콘테이너 : 창고대여</title>
     <link href="/assets/img/favicon.png" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,7 @@
 <main id="container">
     <div class="booking-box">
         <div>
-            <form action="/booking/bookingDo" method="post" class="cf" name="select">
+            <form action="/booking/reservation" method="post" class="cf" name="select">
                 <input type="hidden" name="user_id" id="userId" th:value="${session.userSession.user_id}"/>
                 <div id="date-group">
                     <div id="start-date">
