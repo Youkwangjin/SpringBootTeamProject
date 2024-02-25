@@ -1,6 +1,6 @@
 package pack.controller.admin;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,33 +17,33 @@ import java.util.Map;
 
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AdminController {
 
     private final AdminService adminService;
 
-    @GetMapping("/adminLoginGo")
+    @GetMapping("/admin/login")
     public String adminLoginGo() {
-        return "/admin/admin-login";
+        return "admin/admin-login";
     }
 
-    @GetMapping("/adminLogout")
+    @GetMapping("/admin/logout")
     public String adminLogoutProcess(HttpSession session) {
         session.removeAttribute("adminSession");
         return "redirect:/";
     }
 
-    @GetMapping("/adminSessionKeep")
+    @GetMapping("/admin/mypage")
     public String adminSessionKeep(HttpSession session) {
         AdminDTO adminSession = (AdminDTO) session.getAttribute("adminSession");
         if (adminSession != null) {
-            return "admin/admin-loginok";
+            return "admin/admin-mypage";
         } else {
-            return "index/index";
+            return "admin/admin-login";
         }
     }
 
-    @PostMapping("/adminLoginOk")
+    @PostMapping("/admin/login")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> processLoginForm(@RequestParam("admin_id") String adminId,
                                                                 @RequestParam("admin_pwd") String adminPwd,
@@ -53,12 +53,12 @@ public class AdminController {
 
     }
 
-    @PostMapping("/apprProcess")
+    @PostMapping("/appr/process")
     public String approveProcess(AdminDTO adminDTO) {
         return adminService.approveProcess(adminDTO);
     }
 
-    @PostMapping("/denyProcess")
+    @PostMapping("/deny/process")
     public String denyProcess(AdminDTO adminDTO) {
         return adminService.denyProcess(adminDTO);
     }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>에이콘테이너</title>
+    <title>AcornContainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -20,7 +20,7 @@
                 if (button) {
                     button.onclick = function () {
                         if (confirm("승인 하시겠습니까?")) {
-                            frm.action = "/apprProcess";
+                            frm.action = "/appr/process";
                             frm.method = "post";
                             frm.submit();
                         }
@@ -35,7 +35,7 @@
                 if (button) {
                     button.onclick = function () {
                         if (confirm("거절 하시겠습니까?")) {
-                            frm.action = "/denyProcess";
+                            frm.action = "/deny/process";
                             frm.method = "post";
                             frm.submit();
                         }
@@ -44,7 +44,7 @@
             }
 
             document.querySelector("#btnList").onclick = function () {
-                location.href = "/registered";
+                location.href = "/admin/container/registered";
             }
 
             let deleteButtonIds = ["btnDelete0", "btnDelete1", "btnDelete2", "btnDelete3", "btnDelete4"];
@@ -54,7 +54,7 @@
                 if (button) {
                     button.onclick = function () {
                         if (confirm("정말 삭제할까요?")) {
-                            frm.action = "/deleteContainer";
+                            frm.action = "/delete/container";
                             frm.method = "get";
                             frm.submit();
                         }
