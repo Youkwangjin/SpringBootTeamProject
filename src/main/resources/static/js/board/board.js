@@ -8,7 +8,7 @@ document.querySelectorAll('.delete-button').forEach((button) => {
     button.addEventListener('click', (event) => {
         const itemId = event.target.getAttribute('data-id');
         if (confirm('정말로 삭제하시겠습니까?')) {
-            fetch(`/deleteContainer/${itemId}`, {
+            fetch(`/delete/container/${itemId}`, {
                 method: 'DELETE'
             })
                 .then(response => response.json())

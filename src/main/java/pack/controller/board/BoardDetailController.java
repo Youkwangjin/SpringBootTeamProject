@@ -1,6 +1,6 @@
 package pack.controller.board;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import pack.service.board.BoardDetailService;
 
 @Controller
 @RequestMapping("/board")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardDetailController {
 
     private final BoardDetailService boardDetailService;
@@ -36,7 +36,7 @@ public class BoardDetailController {
         }
     }
 
-    @GetMapping("/detailAdmin")
+    @GetMapping("/detail/admin")
     public String BoardDetailAdminProcess(
             @RequestParam("num") String num,
             @RequestParam("page") String page, Model model) {

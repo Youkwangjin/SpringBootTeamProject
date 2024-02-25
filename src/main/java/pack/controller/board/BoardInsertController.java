@@ -1,7 +1,7 @@
 package pack.controller.board;
 
-import lombok.AllArgsConstructor;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,7 @@ import pack.service.board.BoardInsertService;
 
 @Controller
 @RequestMapping("/board")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardInsertController {
 
     private final BoardInsertService boardInsertService;
@@ -26,9 +26,9 @@ public class BoardInsertController {
     public String BoardInsertProcess(BoardDTO boardDTO, HttpServletRequest request) {
         boolean b = boardInsertService.insert(boardDTO, request);
         if (b) {
-            return "redirect:listAdmin?page=1";
+            return "redirect:/board/list/admin?page=1";
         } else {
-            return "redirect:error";
+            return "redirect:/error";
         }
     }
 }

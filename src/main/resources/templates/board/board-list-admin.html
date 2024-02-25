@@ -20,7 +20,7 @@
             <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
                 <h2 style="font-family: 'Noto Sans KR',serif;">공지사항</h2>
                 <ol>
-                    <li><a href="/adminSessionKeep">Home</a></li>
+                    <li><a href="/admin/mypage">Home</a></li>
                     <li>게시판</li>
                 </ol>
             </div>
@@ -48,7 +48,7 @@
                         <tr th:each="b:${data}">
                             <td>공지</td>
                             <td style="text-align: left;">
-                                <a th:href="@{/board/detailAdmin(num=${b.num},page=${page})}" th:text="${b.title}">[[${tab}]]</a>
+                                <a th:href="@{/board/detail/admin(num=${b.num},page=${page})}" th:text="${b.title}">[[${tab}]]</a>
                             </td>
                             <td>관리자</td>
                             <td>[[${b.readcnt}]]</td>
@@ -61,7 +61,7 @@
                                         <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
                                     </th:span>
                                     <th:span th:if="${num} != ${page}">
-                                        <a th:href="@{/board/listAdmin(page=${num})}" th:text="${num}">num 표시</a>
+                                        <a th:href="@{/board/list/admin(page=${num})}" th:text="${num}">num 표시</a>
                                     </th:span>
                                 </th:block>
                             </td>
