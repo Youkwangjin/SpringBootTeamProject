@@ -34,7 +34,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (response) {
-                if (response.status === '성공!') { // // 백엔드 로직에서 put(key, value)값 동일하게 하기!
+                if (response.status === '성공!') { // 백엔드 로직에서 put(key, value)값 동일하게 하기!
                     window.location.href = '/user/mypage';
                 } else {
                     if (response.message.includes("아이디", "비밀번호")) {
