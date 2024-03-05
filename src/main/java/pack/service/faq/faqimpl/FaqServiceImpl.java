@@ -1,16 +1,17 @@
 package pack.service.faq.faqimpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pack.dao.fqa.FaqDAO;
 import pack.dto.faq.FaqDTO;
 import pack.service.faq.FaqService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FaqServiceImpl implements FaqService {
     private final FaqDAO faqDao;
     private final int pList = 10;

@@ -1,6 +1,6 @@
 package pack.service.booking.bookingimpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.booking.BookingDAO;
 import pack.dto.admin.AdminDTO;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
     private final BookingDAO bookingDao;

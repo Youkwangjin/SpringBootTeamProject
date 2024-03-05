@@ -1,7 +1,7 @@
 package pack.service.owner.ownerimpl;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.owner.OwnerDAO;
 import pack.dto.owner.OwnerDTO;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OwnerServiceImpl implements OwnerService {
 
     private final OwnerDAO ownerDAO;

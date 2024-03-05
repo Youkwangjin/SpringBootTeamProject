@@ -1,7 +1,7 @@
 package pack.service.container.containerimpl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,9 @@ import java.net.URL;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
+
     private final ContainerDAO containerDao;
 
     @Override

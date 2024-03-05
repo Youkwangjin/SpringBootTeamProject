@@ -1,12 +1,12 @@
 package pack.service.contact.contactimpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.contact.ContactDAO;
 import pack.service.contact.ContactDeleteService;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContactDeleteServiceImpl implements ContactDeleteService {
 
     private final ContactDAO contactDao;

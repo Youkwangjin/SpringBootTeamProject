@@ -1,6 +1,6 @@
 package pack.service.contact.contactimpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.contact.ContactDAO;
 import pack.dto.contact.ContactDTO;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContactPageServiceImpl implements ContactPageService {
 
     private final ContactDAO contactDao;

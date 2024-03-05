@@ -1,6 +1,6 @@
 package pack.service.admin.adminImpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.admin.OwnerInfoListDAO;
 import pack.dto.form.FormDTO;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OwnerInfoListServiceImpl implements OwnerInfoListService {
     private final OwnerInfoListDAO ownerInfoListDAO;
     private final int pList = 10;
