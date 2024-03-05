@@ -1,7 +1,7 @@
 package pack.service.admin.adminImpl;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.admin.AdminDAO;
 import pack.dto.admin.AdminDTO;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final AdminDAO adminDAO;

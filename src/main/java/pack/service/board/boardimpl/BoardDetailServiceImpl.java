@@ -1,14 +1,14 @@
 package pack.service.board.boardimpl;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.board.BoardDAO;
 import pack.dto.board.BoardDTO;
 import pack.service.board.BoardDetailService;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardDetailServiceImpl implements BoardDetailService {
 
     private final BoardDAO boardDAO;

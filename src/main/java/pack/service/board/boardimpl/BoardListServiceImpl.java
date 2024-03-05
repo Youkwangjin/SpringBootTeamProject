@@ -1,6 +1,6 @@
 package pack.service.board.boardimpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.board.BoardDAO;
 import pack.dto.board.BoardDTO;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardListServiceImpl implements BoardListService {
 
     private final BoardDAO boardDAO;

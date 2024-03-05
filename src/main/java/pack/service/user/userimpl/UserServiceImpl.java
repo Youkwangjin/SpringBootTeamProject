@@ -1,7 +1,7 @@
 package pack.service.user.userimpl;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pack.dao.user.UserDAO;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDAO userDao;
     private final BookingService bookingService;

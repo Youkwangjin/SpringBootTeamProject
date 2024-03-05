@@ -1,12 +1,12 @@
 package pack.service.contact.contactimpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.contact.ContactDAO;
 import pack.dto.contact.ContactDTO;
 import pack.service.contact.ContactUpdateService;
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContactUpdateServiceImpl implements ContactUpdateService {
 
     private final ContactDAO contactDao;

@@ -1,12 +1,12 @@
 package pack.service.board.boardimpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pack.dao.board.BoardDAO;
 import pack.service.board.BoardDeleteService;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardDeleteServiceImpl implements BoardDeleteService {
 
     private final BoardDAO boardDAO;
