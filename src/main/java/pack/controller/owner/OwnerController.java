@@ -24,7 +24,7 @@ public class OwnerController {
     private final OwnerService ownerService;
 
     @GetMapping("/owner/join")
-    public String ownerChoice(HttpSession session) {
+    public String ownerJoinPage(HttpSession session) {
         if (session.getAttribute("ownerSession") != null) {
             return "redirect:/owner/mypage";
         }
@@ -32,7 +32,7 @@ public class OwnerController {
     }
 
     @GetMapping("/owner/login")
-    public String ownerLoginGo(HttpSession session) {
+    public String ownerLoginPage(HttpSession session) {
         if (session.getAttribute("ownerSession") != null) {
             return "redirect:/owner/mypage";
         }
@@ -62,7 +62,7 @@ public class OwnerController {
     }
 
     @GetMapping("/owner/logout")
-    public String ownerLogoutProcess(HttpSession session) {
+    public String ownerLogout(HttpSession session) {
         session.removeAttribute("ownerSession");
         return "redirect:/";
     }
@@ -78,13 +78,13 @@ public class OwnerController {
     }
 
     @PostMapping("/owner/join")
-    public String ownerLoginOk(OwnerDTO ownerDto) {
+    public String ownerJoin(OwnerDTO ownerDto) {
         return ownerService.registerOwner(ownerDto);
     }
 
     @PostMapping("/owner/login")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> processLoginForm(@RequestParam("business_num") String businessNum,
+    public ResponseEntity<Map<String, Object>> ownerLogin(@RequestParam("business_num") String businessNum,
                                                                 @RequestParam("owner_pwd") String ownerPwd,
                                                                 HttpSession session) {
         Map<String, Object> result = ownerService.processLogin(businessNum, ownerPwd, session);
@@ -92,12 +92,12 @@ public class OwnerController {
     }
 
     @PostMapping("/owner/update")
-    public String ownerInfoUpdate(OwnerDTO ownerDto, HttpSession session) {
+    public String ownerUpdate(OwnerDTO ownerDto, HttpSession session) {
         return ownerService.updateOwnerInfo(ownerDto, session);
     }
 
     @PostMapping("/owner/delete")
-    public String ownerInfoDelete(OwnerDTO ownerDto, HttpSession session) {
+    public String ownerDelete(OwnerDTO ownerDto, HttpSession session) {
         return ownerService.deleteOwnerInfo(ownerDto, session);
     }
 

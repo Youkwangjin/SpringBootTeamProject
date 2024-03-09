@@ -23,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/user/join")
-    public String userJoinGo(HttpSession session) {
+    public String userJoinPage(HttpSession session) {
         if (session.getAttribute("userSession") != null) {
             return "redirect:/user/mypage";
         }
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/user/login")
-    public String userLoginGo(HttpSession session) {
+    public String userLoginPage(HttpSession session) {
         if (session.getAttribute("userSession") != null) {
             return "redirect:/user/mypage";
         }
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping("/user/logout")
-    public String userLogoutProcess(HttpSession session) {
+    public String userLogout(HttpSession session) {
         session.removeAttribute("userSession");
         return "redirect:/";
     }
@@ -83,15 +83,15 @@ public class UserController {
 
 
     @PostMapping("/user/join")
-    public String userLoginOK(UserDTO userDto) {
+    public String userJoin(UserDTO userDto) {
         return userService.registerUser(userDto);
     }
 
     @PostMapping("/user/login")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> processLoginForm(@RequestParam("user_id") String userId,
-                                                                @RequestParam("user_pwd") String userPwd,
-                                                                HttpSession session) {
+    public ResponseEntity<Map<String, Object>> userLogin(@RequestParam("user_id") String userId,
+                                                         @RequestParam("user_pwd") String userPwd,
+                                                         HttpSession session) {
         Map<String, Object> result = userService.processLogin(userId, userPwd, session);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
