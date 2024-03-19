@@ -30,7 +30,7 @@
 사용자가 쉽게 접근하고 사용할 수 있는 인터페이스를 통해 물류 과정의 효율성을 높이고 시간 및 비용을 절감할 수 있도록 합니다.
 
 ## ❄️ Project Architecture
-![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/5a7bf164-6bb4-4c9d-a6d0-e1680bce6ecf)
+![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/f859af67-9555-4527-8389-d826e0cc6862)
 ![스크린샷 2024-02-22 182416](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/52beec2b-3ae2-4f86-a93d-c86a8e98ccc1)
 
 
