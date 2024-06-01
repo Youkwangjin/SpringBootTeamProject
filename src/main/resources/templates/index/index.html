@@ -8,20 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet"><!--페이지 스크롤 시 애니메이션 적용됨-->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div th:if="${session.userSession != null}">
-    <div th:replace="~{fragments/header_user :: header}"></div>
-</div>
-<div th:if="${session.ownerSession != null}">
-    <div th:replace="~{fragments/header_owner :: header}"></div>
-</div>
-<div th:if="${session.userSession == null && session.ownerSession == null}">
-    <div th:replace="~{fragments/header :: header}"></div>
-</div>
+<div th:replace="~{fragments/header :: header}"></div>
 <section id="hero" class="hero">
 
     <div class="info d-flex align-items-center">
