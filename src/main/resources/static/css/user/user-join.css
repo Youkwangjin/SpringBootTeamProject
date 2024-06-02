@@ -18,11 +18,8 @@ body {
 
 .join-form {
   width: 550px;
-  margin-left: auto;
   background-color: whitesmoke;
-  margin-right: auto;
-  margin-top: 40px;
-  margin-bottom: 180px;
+  margin: 40px auto 180px;
   border-radius: 5px;
   padding: 30px;
 }
@@ -30,39 +27,6 @@ body {
 .join-form h3 {
   color: black;
   font-size: 13px;
-}
-
-
-.userId_text-field {
-  font-size: 14px;
-  width: 300px;
-  border: none;
-  border-radius: 5px;
-  padding: 15px 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.userId_button{
-  font-size: 14px;
-  width: 140px;
-  border: none;
-  border-radius: 5px;
-  padding: 15px 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 22px;
-  background-color: burlywood;
-  color: #fff;
-  cursor: pointer;
-}
-
-#id_check_message.red {
-    color: red;
-}
-
-#id_check_message.blue {
-    color: blue;
 }
 
 .text-field {
@@ -84,7 +48,6 @@ body {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-
 
 .button-postcode{
   font-size: 14px;
@@ -118,6 +81,12 @@ body {
   clear: both;
 }
 
+.submit-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
 .reset-btn {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
@@ -128,4 +97,20 @@ body {
   margin-top: 5px;
   padding: 10px;
   border: none;
+}
+
+.result {
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.error {
+  color: red;
+  display: block;
+}
+
+.success {
+  color: blue;
+  display: block;
 }
