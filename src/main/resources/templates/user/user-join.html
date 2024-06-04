@@ -198,25 +198,31 @@
             }
 
             // 회원가입 폼 데이터 전송
-            submitButton.addEventListener('click', function (e) {
+            document.getElementById('userRegister').addEventListener('submit', function (e) {
                 e.preventDefault();
-                const userJoinFormData = new FormData(document.querySelector('form'));
+                if (!submitButton.disabled) {
+                    const userJoinFormData = new FormData(this);
 
-                fetch('/user/register', {
-                    method: 'POST',
-                    body: userJoinFormData
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('네트워크에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
-                        }
-                        return response.json();
+                    fetch('/user/register', {
+                        method: 'POST',
+                        body: userJoinFormData,
+                        credentials: 'include'
                     })
-                    .then(() => {
-                        alert('회원가입이 정상적으로 완료되었습니다.');
-                        window.location.href = '/user/login';
-                    })
-                    .catch(error => console.error('Error:', error));
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                            }
+                            return response.json();
+                        })
+                        .then(() => {
+                            alert('회원가입이 정상적으로 완료되었습니다.');
+                            window.location.href = '/user/login';
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert(error.message);
+                        });
+                }
             });
         });
     </script>
@@ -225,7 +231,9 @@
 <h3 style="text-align: center;">사용자 회원가입</h3>
 <div class="join-form">
     <div class="content">
-        <form action="/user/join" method="post">
+        <form id="userRegister">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+
             <h3>이메일</h3>
             <label for="userEmail">
                 <input type="text" name="userEmail" id="userEmail" class="text-field"
@@ -251,7 +259,6 @@
                 <input type="text" name="userName" id="userName" class="text-field" placeholder="이름">
             </label><br/>
             <span class="name-result"></span>
-
 
             <h3>전화번호</h3>
             <label for="userTel">
@@ -292,7 +299,7 @@
                        placeholder="입력한 주소" readonly>
             </label>
 
-            <input type="button" class="submit-btn" id="btnUserJoin" value="가입하기" disabled>
+            <button type="submit" class="submit-btn" id="btnUserJoin" disabled>가입하기</button>
             <button type="button" class="reset-btn" id="btnReset">돌아가기</button>
         </form>
     </div>
