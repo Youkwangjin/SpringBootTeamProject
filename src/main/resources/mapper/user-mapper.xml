@@ -3,22 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="User">
-    <resultMap id="userResultMap"        type="user">
-        <result property="userId"        column="USER_ID"/>
-        <result property="userEmail"     column="USER_EMAIL"/>
-        <result property="userPassword"  column="USER_PASSWORD"/>
-        <result property="userName"      column="USER_NAME"/>
-        <result property="userTel"      column="USER_TEL"/>
-        <result property="userAddr"      column="USER_ADDR"/>
+    <resultMap id="userResultMap"           type="pack.dto.user.UserDTO">
+        <result property="userId"           column="USER_ID"/>
+        <result property="userEmail"        column="USER_EMAIL"/>
+        <result property="userPassword"     column="USER_PASSWORD"/>
+        <result property="userName"         column="USER_NAME"/>
+        <result property="userTel"          column="USER_TEL"/>
+        <result property="userAddress"      column="USER_ADDRESS"/>
     </resultMap>
     <!-- 회원가입 -->
-    <insert id="save" parameterType="userDTO" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO TB_USER (USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDR)
-        VALUES (#{userEmail}, #{userPassword}, #{userName}, #{userTel}, #{userAddr})
+    <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
+        INSERT INTO TB_USER (USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS)
+        VALUES (#{userEmail}, #{userPassword}, #{userName}, #{userTel}, #{userAddress})
     </insert>
-
-    <!-- 사용자 이메일 조회 -->
-    <select id="find" resultMap="memberResultMap">
-        select * from MEMBER where MEMBER_EMAIL = #{memberEmail}
-    </select>
 </mapper>
