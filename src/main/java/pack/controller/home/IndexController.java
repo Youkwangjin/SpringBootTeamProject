@@ -1,12 +1,14 @@
 package pack.controller.home;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class IndexController {
-    @GetMapping("/index")
-    public String index() {
-        return "/index/index";
+
+    @GetMapping("/")
+    public String indexPage() {
+        return "index/index";
     }
 }
