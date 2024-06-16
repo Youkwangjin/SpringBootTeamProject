@@ -10,10 +10,11 @@
         <result property="userName"         column="USER_NAME"/>
         <result property="userTel"          column="USER_TEL"/>
         <result property="userAddress"      column="USER_ADDRESS"/>
+        <result property="userRole"         column="USER_ROLE"/>
     </resultMap>
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
-        INSERT INTO TB_USER (USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS)
-        VALUES (#{userEmail}, #{userPassword}, #{userName}, #{userTel}, #{userAddress})
+        INSERT INTO TB_USER (USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE)
+        VALUES (#{userEmail}, #{userPassword}, #{userName}, #{userTel}, #{userAddress}, #{userRole})
     </insert>
 </mapper>
