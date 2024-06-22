@@ -4,7 +4,7 @@ package pack.common.enums.code;
 import lombok.Getter;
 
 @Getter
-public enum SuccessCode {
+public enum ApiSuccessCode {
 
     /**
      * ******************************* Success CodeList ***************************************
@@ -32,7 +32,7 @@ public enum SuccessCode {
     // 성공 코드의 '코드 메시지'를 반환
     private final String message;
 
-    SuccessCode(final int status, final String code, final String message) {
+    ApiSuccessCode(final int status, final String code, final String message) {
         this.status = status;
         this.code = code;
         this.message = message;

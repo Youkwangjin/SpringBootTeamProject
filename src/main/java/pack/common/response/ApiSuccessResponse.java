@@ -8,7 +8,7 @@ import lombok.Getter;
  * [공통] API Response 결과의 반환 값을 관리
  */
 @Getter
-public class ApiResponse<T> {
+public class ApiSuccessResponse<T> {
 
     // API 응답 결과 Response
     private final T result;
@@ -20,7 +20,7 @@ public class ApiResponse<T> {
     private final String resultMsg;
 
     @Builder
-    public ApiResponse(final T result, final int resultCode, final String resultMsg) {
+    public ApiSuccessResponse(final T result, final int resultCode, final String resultMsg) {
         this.result = result;
         this.resultCode = resultCode;
         this.resultMsg = resultMsg;
