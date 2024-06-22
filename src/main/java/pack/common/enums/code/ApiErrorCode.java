@@ -3,7 +3,7 @@ package pack.common.enums.code;
 import lombok.Getter;
 
 @Getter
-public enum ErrorCode {
+public enum ApiErrorCode {
 
     /*
       *************************************** Global Error CodeList ***************************************
@@ -38,7 +38,7 @@ public enum ErrorCode {
     // 에러 코드의 '코드 메시지'을 반환
     private final String errorMsg;
 
-    ErrorCode(final int errorStatus, final String errorDivisionCode, final String errorMsg) {
+    ApiErrorCode(final int errorStatus, final String errorDivisionCode, final String errorMsg) {
         this.errorStatus = errorStatus;
         this.errorDivisionCode = errorDivisionCode;
         this.errorMsg = errorMsg;
