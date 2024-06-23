@@ -215,7 +215,7 @@
                         userAddr: userAddr.value,
                         _csrf: document.querySelector('[name="_csrf"]').value
                     };
-                    fetch('/user/register', {
+                    fetch('/auth/user/register', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

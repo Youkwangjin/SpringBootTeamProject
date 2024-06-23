@@ -1,4 +1,4 @@
-package pack.common.response;
+package pack.api.response;
 
 
 import lombok.Builder;

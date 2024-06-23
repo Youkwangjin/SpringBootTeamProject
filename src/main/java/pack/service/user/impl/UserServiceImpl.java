@@ -4,7 +4,7 @@ package pack.service.user.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pack.common.enums.role.UserRole;
+import pack.role.UserRole;
 import pack.dto.user.UserDTO;
 import pack.repository.user.UserRepository;
 import pack.service.user.UserService;
