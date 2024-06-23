@@ -1,4 +1,4 @@
-package pack.common.enums.code;
+package pack.api.common;
 
 import lombok.Getter;
 
