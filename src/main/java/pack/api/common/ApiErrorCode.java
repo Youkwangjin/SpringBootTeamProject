@@ -19,11 +19,14 @@ public enum ApiErrorCode {
     // 잘못된 요청
     BAD_REQUEST_ERROR(400, "BRE", "Bad Request Error"),
 
+    // 권한 없음
+    FORBIDDEN_ERROR(403, "FBE", "Forbidden Exception"),
+
     // 서버로 요청한 리소스가 존재하지 않음
     NOT_FOUND_ERROR(404, "NFE", "Not Found Exception"),
 
-    // 유효성 검사 실패
-    VALIDATION_ERROR(400, "VE", "Validation Error");
+    // 서버 오류
+    INTERNAL_SERVER_ERROR(500, "ISE", "Internal Server Error Exception");
 
     /**
      * ******************************* Error Code Constructor ***************************************
