@@ -2,7 +2,6 @@ package pack.config.exception.user;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,10 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pack.api.response.ApiErrorResponse;
 import pack.api.user.ApiUserErrorCode;
-import pack.controller.user.UserRegisterController;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {UserRegisterController.class})
+@RestControllerAdvice
 public class UserExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,10 +41,10 @@ public class UserExceptionHandler {
         log.info("  ========================  Validation errors  ========================  : {}", errorUserMsg);
 
         ApiErrorResponse response = new ApiErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
+                userErrorCode.getUserErrorStatus(),
                 userErrorCode.getUserErrorDivisionCode(),
                 userErrorCode.getUserErrorMsg()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(userErrorCode.getUserErrorStatus()).body(response);
     }
 }
