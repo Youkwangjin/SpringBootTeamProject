@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>에이콘테이너 : 로그인</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/user/user-login.css">
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
@@ -22,14 +21,12 @@
     <h1>사용자 로그인</h1>
     <form action="/user/login" method="post">
         <div class="int-area">
-            <input type="text" name="user_id" id="userId" autocomplete="off" required>
-            <label for="userId">User Id</label>
-            <span class="warning-message" id="userIdWarning"></span>
+            <input type="text" name="userEmail" id="userEmail" autocomplete="off" required>
+            <label for="userEmail">User Email</label>
         </div>
         <div class="int-area">
-            <input type="password" name="user_pwd" id="userPwd" autocomplete="off" required>
-            <label for="userPwd">Password</label>
-            <span class="warning-message" id="userPwdWarning"></span>
+            <input type="password" name="userPassword" id="userPassword" autocomplete="off" required>
+            <label for="userPassword">Password</label>
         </div>
         <div class="btn-area">
             <button type="submit" id="userLoginBtn">LOGIN</button>
@@ -40,6 +37,5 @@
         <a href="/user/join">회원가입</a>
     </div>
 </section>
-<script src="/js/user/user-login.js"></script>
 </body>
 </html>
