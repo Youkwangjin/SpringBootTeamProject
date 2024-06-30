@@ -62,6 +62,10 @@
                 window.location.href = '/user/login';
             });
 
+            document.getElementById('userEmail').addEventListener('blur', function() {
+                validEmail(this, document.querySelector('.email-result'));
+            });
+
             // 이메일 형식 체크 정규식
             function validEmail(emailInput, resultElement) {
                 const email = emailInput.value.trim();
