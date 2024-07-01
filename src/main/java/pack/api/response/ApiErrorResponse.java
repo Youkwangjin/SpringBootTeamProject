@@ -1,6 +1,7 @@
 package pack.api.response;
 
 
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -14,6 +15,7 @@ public class ApiErrorResponse {
     private final String errorDivisionCode;
     private final String errorMsg;
 
+    @Builder
     public ApiErrorResponse(int errorStatus, String errorDivisionCode, String errorMsg) {
         this.errorStatus = errorStatus;
         this.errorDivisionCode = errorDivisionCode;

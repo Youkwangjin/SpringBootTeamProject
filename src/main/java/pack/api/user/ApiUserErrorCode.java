@@ -4,8 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum ApiUserErrorCode {
+
     // 이메일 관련 오류
     EMAIL_FORMAT_ERROR(400, "EFE", "이메일 형식이 유효하지 않습니다."),
+
+    EMAIL_DUPLICATED(409, "EDU", "이미 사용 중인 이메일입니다."),
 
     // 비밀번호 관련 오류
     PASSWORD_STRENGTH_ERROR(400, "PSE", "비밀번호는 최소 10자 이상이며, 특수 문자를 하나 이상 포함해야 합니다."),
