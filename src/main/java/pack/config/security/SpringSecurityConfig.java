@@ -15,12 +15,10 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                /*
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new LoggingCsrfTokenRepository())
                 )
-                 */
-                .csrf(AbstractHttpConfigurer::disable) // 테스트용
+                // .csrf(AbstractHttpConfigurer::disable) // 테스트용
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         // Static Resource
                         .requestMatchers("/css/**",
@@ -33,6 +31,7 @@ public class SpringSecurityConfig {
                                          "/user/join",
                                          "/auth/user/register",
                                          "/user/login",
+                                         "/emailCheck",
                                          "/owner/join",
                                          "/owner/login").permitAll()
                         .anyRequest().denyAll()

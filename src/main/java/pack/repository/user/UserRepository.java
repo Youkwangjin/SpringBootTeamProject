@@ -11,7 +11,13 @@ public class UserRepository {
 
     private final SqlSessionTemplate sql;
 
+    public boolean isEmailDuplicate(String userEmail) {
+        int emailCount = sql.selectOne("User.emailDuplicates", userEmail);
+        return emailCount > 0;
+    }
+
     public void userRegister(UserDTO userDTO) {
         sql.insert("User.userRegister", userDTO);
     }
+
 }

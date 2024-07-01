@@ -15,7 +15,12 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    
+
+    @Override
+    public boolean isEmailDuplicate(String userEmail) {
+        return !userRepository.isEmailDuplicate(userEmail);
+    }
+
     // 회원가입
     @Override
     public void userRegister(UserDTO userDTO) {

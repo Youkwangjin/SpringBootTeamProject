@@ -6,6 +6,8 @@ import pack.dto.user.UserDTO;
 @Service
 public interface UserService {
 
+    boolean isEmailDuplicate(String userEmail);
+
     void userRegister(UserDTO userDTO);
 
 }
