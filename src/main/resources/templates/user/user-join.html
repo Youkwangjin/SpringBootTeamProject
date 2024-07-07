@@ -22,6 +22,7 @@
             let rePasswordResult = document.querySelector(".rePassword-result");
             let nameResult = document.querySelector(".name-result");
             let telResult = document.querySelector(".tel-result");
+
             let resetButton = document.getElementById('btnReset');
             let submitButton = document.getElementById('btnUserJoin');
 
@@ -62,7 +63,7 @@
                 window.location.href = '/user/login';
             });
 
-            document.getElementById('userEmail').addEventListener('blur', function() {
+            document.getElementById('userEmail').addEventListener('blur', function () {
                 validEmail(this, document.querySelector('.email-result'));
             });
 
@@ -97,31 +98,28 @@
                 })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('네트워크 응답이 정상이 아닙니다.');
+                            // HTTP 상태 코드가 200-299 범위 밖인 경우
+                            throw response;
                         }
                         return response.json();
                     })
                     .then(data => {
-                        if (data.isDuplicate) {
-                            resultElement.textContent = '이미 사용 중인 이메일입니다.';
-                            resultElement.classList.add('error');
-                            resultElement.classList.remove('success');
-                            validStates.userEmail = false;
-                        } else {
+                        if (data.resultCode === 200) {
                             resultElement.textContent = '사용 가능한 이메일입니다.';
                             resultElement.classList.add('success');
                             resultElement.classList.remove('error');
                             validStates.userEmail = true;
+                            checkFormValid();
                         }
-                        checkFormValid();
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        resultElement.textContent = '서버 에러로 중복 체크를 할 수 없습니다.';
-                        resultElement.classList.add('error');
-                        resultElement.classList.remove('success');
-                        validStates.userEmail = false;
-                        checkFormValid();
+                    .catch(errorResponse => {
+                        errorResponse.json().then(errorData => {
+                            resultElement.textContent = errorData.errorMsg;
+                            resultElement.classList.add('error');
+                            resultElement.classList.remove('success');
+                            validStates.userEmail = false;
+                            checkFormValid();
+                        });
                     });
             }
 
@@ -267,7 +265,6 @@
                         checkFormValid();
                     });
             }
-
 
 
             function validTelCheck(tel) {

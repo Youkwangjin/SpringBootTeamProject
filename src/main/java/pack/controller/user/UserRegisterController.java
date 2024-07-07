@@ -4,7 +4,6 @@ package pack.controller.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pack.api.common.ApiSuccessCode;
@@ -23,7 +22,7 @@ public class UserRegisterController {
     private final UserService userService;
 
 
-    @GetMapping("/emailCheck")
+    @GetMapping("/user/emailCheck")
     public ResponseEntity<Object> emailCheck(@RequestParam String userEmail) {
         log.info(" *****************************    emailCheck START    *****************************");
 
@@ -35,7 +34,7 @@ public class UserRegisterController {
                     .errorDivisionCode(ApiUserErrorCode.EMAIL_DUPLICATED.getUserErrorDivisionCode())
                     .errorMsg(ApiUserErrorCode.EMAIL_DUPLICATED.getUserErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiUserErrorCode.EMAIL_FORMAT_ERROR.getUserErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiUserErrorCode.EMAIL_DUPLICATED.getUserErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> emailCheckResponse = ApiSuccessResponse.builder()
                     .resultCode(ApiUserSuccessCode.EMAIL_AVAILABLE.getUserApiStatus())
