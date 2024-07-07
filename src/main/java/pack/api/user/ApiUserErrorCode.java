@@ -19,6 +19,8 @@ public enum ApiUserErrorCode {
     // 전화번호 관련 오류
     TELEPHONE_FORMAT_ERROR(400, "TFE", "전화번호 형식이 유효하지 않습니다."),
 
+    TELEPHONE_DUPLICATED(409, "TPD", "이미 사용 중인 전화번호입니다."),
+
     // 기타 관련 유류
     VALIDATION_ERROR(400, "VE", "기타 형식이 유효하지 않습니다.");
 

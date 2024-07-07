@@ -19,6 +19,13 @@
         WHERE USER_EMAIL = #{userEmail}
     </select>
 
+    <!-- 전화번호 중복 체크 -->
+    <select id="telDuplicates" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_USER
+        WHERE USER_TEL = #{userTel}
+    </select>
+
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
         INSERT INTO TB_USER (USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE)

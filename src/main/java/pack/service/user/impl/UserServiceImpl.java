@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.isEmailDuplicate(userEmail);
     }
 
+    @Override
+    public boolean isTelPhoneDuplicate(String userTel) {
+        return userRepository.isTelDuplicate(userTel);
+    }
+
     // 회원가입
     @Override
     public void userRegister(UserDTO userDTO) {

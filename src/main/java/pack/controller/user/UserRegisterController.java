@@ -44,6 +44,28 @@ public class UserRegisterController {
         }
     }
 
+    @GetMapping("/user/userTelCheck")
+    public ResponseEntity<Object> telPhoneCheck(@RequestParam String userTel) {
+        log.info(" *****************************    telPhoneCheck START    *****************************");
+
+        boolean userTelDuplicate = userService.isTelPhoneDuplicate(userTel);
+
+        if (userTelDuplicate) {
+            ApiErrorResponse errorResponse = ApiErrorResponse.builder()
+                    .errorStatus(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorStatus())
+                    .errorDivisionCode(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorDivisionCode())
+                    .errorMsg(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorMsg())
+                    .build();
+            return ResponseEntity.status(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorStatus()).body(errorResponse);
+        } else {
+            ApiSuccessResponse<Object> telPhoneCheckResponse = ApiSuccessResponse.builder()
+                    .resultCode(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiStatus())
+                    .resultMsg(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiMessage())
+                    .build();
+            return ResponseEntity.status(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiStatus()).body(telPhoneCheckResponse);
+        }
+    }
+
     @PostMapping("/auth/user/register")
     public ResponseEntity<ApiSuccessResponse<Object>> userRegister(@Valid @RequestBody UserDTO userDTO) {
         log.info(" *****************************    Register START    *****************************");

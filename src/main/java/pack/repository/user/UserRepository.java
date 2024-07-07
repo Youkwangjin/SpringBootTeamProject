@@ -16,6 +16,11 @@ public class UserRepository {
         return emailCount > 0;
     }
 
+    public boolean isTelDuplicate(String userTel) {
+        int telCount = sql.selectOne("User.telDuplicates", userTel);
+        return telCount > 0;
+    }
+
     public void userRegister(UserDTO userDTO) {
         sql.insert("User.userRegister", userDTO);
     }
