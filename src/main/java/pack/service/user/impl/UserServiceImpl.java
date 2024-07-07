@@ -18,7 +18,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailDuplicate(String userEmail) {
-        return !userRepository.isEmailDuplicate(userEmail);
+        return userRepository.isEmailDuplicate(userEmail);
+    }
+
+    @Override
+    public boolean isTelPhoneDuplicate(String userTel) {
+        return userRepository.isTelDuplicate(userTel);
     }
 
     // 회원가입

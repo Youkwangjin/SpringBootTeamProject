@@ -10,4 +10,5 @@ public interface UserService {
 
     void userRegister(UserDTO userDTO);
 
+    boolean isTelPhoneDuplicate(String userTel);
 }
