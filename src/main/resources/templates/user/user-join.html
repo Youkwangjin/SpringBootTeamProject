@@ -93,7 +93,7 @@
             // 서버에 이메일 중복 검사 요청
             function checkEmailDuplication(emailInput, resultElement) {
                 const userEmail = emailInput.value.trim();
-                fetch('/user/emailCheck?userEmail=' + encodeURIComponent(userEmail), {
+                fetch('/auth/user/emailCheck?userEmail=' + encodeURIComponent(userEmail), {
                     method: 'GET',
                     credentials: 'include',
                 })
@@ -232,7 +232,7 @@
             // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const userTel = telInput.value.trim();
-                fetch('/user/userTelCheck?userTel=' + encodeURIComponent(userTel), {
+                fetch('/auth/user/userTelCheck?userTel=' + encodeURIComponent(userTel), {
                     method: 'GET',
                     credentials: 'include',
                 })
