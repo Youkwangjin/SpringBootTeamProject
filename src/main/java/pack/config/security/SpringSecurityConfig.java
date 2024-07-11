@@ -31,8 +31,8 @@ public class SpringSecurityConfig {
                                          "/user/join",
                                          "/auth/user/register",
                                          "/user/login",
-                                         "/user/emailCheck",
-                                         "/user/userTelCheck",
+                                         "/auth/user/emailCheck",
+                                         "/auth/user/userTelCheck",
                                          "/owner/join",
                                          "/owner/login").permitAll()
                         .anyRequest().denyAll()

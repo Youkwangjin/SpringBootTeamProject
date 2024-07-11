@@ -22,7 +22,7 @@ public class UserRegisterController {
     private final UserService userService;
 
 
-    @GetMapping("/user/emailCheck")
+    @GetMapping("/auth/user/emailCheck")
     public ResponseEntity<Object> emailCheck(@RequestParam String userEmail) {
         log.info(" *****************************    emailCheck START    *****************************");
 
@@ -44,7 +44,7 @@ public class UserRegisterController {
         }
     }
 
-    @GetMapping("/user/userTelCheck")
+    @GetMapping("/auth/user/userTelCheck")
     public ResponseEntity<Object> telPhoneCheck(@RequestParam String userTel) {
         log.info(" *****************************    telPhoneCheck START    *****************************");
 
