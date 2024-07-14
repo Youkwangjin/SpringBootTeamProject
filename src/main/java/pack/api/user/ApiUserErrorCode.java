@@ -22,7 +22,10 @@ public enum ApiUserErrorCode {
     TELEPHONE_DUPLICATED(409, "TPD", "이미 사용 중인 전화번호입니다."),
 
     // 기타 관련 유류
-    VALIDATION_ERROR(400, "VE", "기타 형식이 유효하지 않습니다.");
+    VALIDATION_ERROR(400, "VE", "기타 형식이 유효하지 않습니다."),
+
+    // 인증 실패 (잘못된 이메일 또는 비밀번호)
+    AUTHENTICATION_FAILED(401, "AFD", "이메일 또는 비밀번호가 올바르지 않습니다.");
 
     private final int userErrorStatus;
 
