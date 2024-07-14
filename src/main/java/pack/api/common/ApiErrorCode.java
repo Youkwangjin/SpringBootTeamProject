@@ -17,16 +17,19 @@ public enum ApiErrorCode {
      */
 
     // 잘못된 요청
-    BAD_REQUEST_ERROR(400, "BRE", "Bad Request Error"),
+    BAD_REQUEST_ERROR(400, "BRE", "잘못된 요청입니다."),
+
+    // 인증 실패
+    UNAUTHORIZED_ERROR(401, "URE", "로그인 이후 이용 가능합니다."),
 
     // 권한 없음
-    FORBIDDEN_ERROR(403, "FBE", "Forbidden Exception"),
+    FORBIDDEN_ERROR(403, "FBE", "접근 권한이 없습니다."),
 
     // 서버로 요청한 리소스가 존재하지 않음
-    NOT_FOUND_ERROR(404, "NFE", "Not Found Exception"),
+    NOT_FOUND_ERROR(404, "NFE", "요청하신 리소스를 찾을 수 없습니다."),
 
     // 서버 오류
-    INTERNAL_SERVER_ERROR(500, "ISE", "Internal Server Error Exception");
+    INTERNAL_SERVER_ERROR(500, "ISE", "서버 내부 오류가 발생하였습니다.");
 
     /**
      * ******************************* Error Code Constructor ***************************************
