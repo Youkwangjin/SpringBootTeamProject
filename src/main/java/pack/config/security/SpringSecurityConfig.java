@@ -30,12 +30,22 @@ public class SpringSecurityConfig {
                                          "/conajax",
                                          "/user/join",
                                          "/auth/user/register",
-                                         "/user/login",
                                          "/auth/user/emailCheck",
                                          "/auth/user/userTelCheck",
-                                         "/owner/join",
-                                         "/owner/login").permitAll()
+                                         "/owner/join").permitAll()
                         .anyRequest().denyAll()
+                )
+                .formLogin(form -> form
+                        .loginPage("/user/login")
+                        .loginProcessingUrl("auth/user/login")
+                        .defaultSuccessUrl("/user/mypage", true)
+                        .failureUrl("/user/login")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/user/logout")
+                        .logoutSuccessUrl("/user/login")
+                        .permitAll()
                 );
         return http.build();
     }

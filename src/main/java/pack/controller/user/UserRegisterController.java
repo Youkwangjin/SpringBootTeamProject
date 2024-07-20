@@ -6,11 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pack.api.common.ApiSuccessCode;
+import pack.api.code.common.ApiSuccessCode;
 import pack.api.response.ApiErrorResponse;
 import pack.api.response.ApiSuccessResponse;
-import pack.api.user.ApiUserErrorCode;
-import pack.api.user.ApiUserSuccessCode;
+import pack.api.code.user.ApiUserErrorCode;
+import pack.api.code.user.ApiUserSuccessCode;
 import pack.dto.user.UserDTO;
 import pack.service.user.UserService;
 

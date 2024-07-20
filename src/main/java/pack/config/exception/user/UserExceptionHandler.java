@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pack.api.response.ApiErrorResponse;
-import pack.api.user.ApiUserErrorCode;
+import pack.api.code.user.ApiUserErrorCode;
 
 @Slf4j
 @RestControllerAdvice

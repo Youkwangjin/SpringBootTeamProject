@@ -1,4 +1,4 @@
-package pack.api.user;
+package pack.api.code.user;
 
 
 import lombok.Getter;

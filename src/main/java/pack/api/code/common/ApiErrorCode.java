@@ -1,4 +1,4 @@
-package pack.api.common;
+package pack.api.code.common;
 
 import lombok.Getter;
 
