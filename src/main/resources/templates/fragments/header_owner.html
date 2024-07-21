@@ -1,57 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <body>
-<div th:if="${session.ownerSession != null}">
-    <div th:fragment="header_owner">
-        <header>
-            <div id="header" class="header d-flex align-items-center">
-                <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-                    <a href="/owner/mypage" class="logo d-flex align-items-center">
-                        <h1>Acontainer<span>.</span></h1>
-                    </a>
-                    <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-                    <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-                    <nav id="navbar" class="navbar">
-                        <ul>
-
-                            <li><a href="/owner/mypage" class="active">Home</a></li>
-                            <li><a href="/service">서비스</a></li>
-                            <li class="dropdown"><a href="#"><span>예약/결제</span> <i
-                                    class="bi bi-chevron-down dropdown-indicator"></i></a>
-                                <ul>
-                                    <li><a href="/container/reserve">예약정보</a></li>
-                                    <li><a href="/container/paid">결제정보</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown"><a href="#"><span>창고 관리</span> <i
-                                    class="bi bi-chevron-down dropdown-indicator"></i></a>
-                                <ul>
-                                    <li><a href="/container/list">창고관리</a></li>
-                                    <li><a href="/container/register">창고등록</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown"><a href="#"><span>마이페이지</span> <i
-                                    class="bi bi-chevron-down dropdown-indicator"></i></a>
-                                <ul>
-                                    <li><a href="/owner/update">회원수정</a></li>
-                                    <li><a href="/owner/delete">회원탈퇴</a></li>
-                                    <li><a href="/owner/logout">로그아웃</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown"><a href="/board/list?page=1"><span>사업자 문의</span> <i
-                                    class="bi bi-chevron-down dropdown-indicator"></i></a>
-                                <ul>
-                                    <li><a href="/board/list/owner?page=1">공지사항</a></li>
-                                    <li><a href="/contact/owner">1:1문의</a></li>
-                                    <li><a href="/faq/owner?page=1">FAQ</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+<div th:fragment="header_owner">
+    <header>
+        <div id="header" class="header d-flex align-items-center">
+            <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+                <a href="/owner/mypage" class="logo d-flex align-items-center">
+                    <h1>Acontainer<span>.</span></h1>
+                </a>
+                <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+                <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li><a href="/owner/mypage" class="active">Home</a></li>
+                        <li><a href="/service">서비스</a></li>
+                        <li class="dropdown"><a href="#"><span>예약/결제</span> <i
+                                class="bi bi-chevron-down dropdown-indicator"></i></a>
+                            <ul>
+                                <li><a href="/container/reserve">예약정보</a></li>
+                                <li><a href="/container/paid">결제정보</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="#"><span>창고 관리</span> <i
+                                class="bi bi-chevron-down dropdown-indicator"></i></a>
+                            <ul>
+                                <li><a href="/container/list">창고관리</a></li>
+                                <li><a href="/container/register">창고등록</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="#"><span>마이페이지</span> <i
+                                class="bi bi-chevron-down dropdown-indicator"></i></a>
+                            <ul>
+                                <li><a href="/owner/update">회원수정</a></li>
+                                <li><a href="/owner/delete">회원탈퇴</a></li>
+                                <li><a href="/owner/logout">로그아웃</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="/board/list?page=1"><span>사업자 문의</span> <i
+                                class="bi bi-chevron-down dropdown-indicator"></i></a>
+                            <ul>
+                                <li><a href="/board/list/owner?page=1">공지사항</a></li>
+                                <li><a href="/contact/owner">1:1문의</a></li>
+                                <li><a href="/faq/owner?page=1">FAQ</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
 </div>
 </body>
 </html>
