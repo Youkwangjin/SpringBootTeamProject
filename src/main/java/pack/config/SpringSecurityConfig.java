@@ -1,15 +1,18 @@
-package pack.config.security;
+package pack.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import pack.security.UserLogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
+
+    private static final String LOGOUT_PROCESS_URL = "/logoutProcess";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,18 +38,19 @@ public class SpringSecurityConfig {
                                          "/owner/join").permitAll()
                         .anyRequest().denyAll()
                 )
-                .formLogin(form -> form
-                        .loginPage("/user/login")
-                        .loginProcessingUrl("auth/user/login")
-                        .defaultSuccessUrl("/user/mypage", true)
-                        .failureUrl("/user/login")
-                        .permitAll()
-                )
                 .logout(logout -> logout
-                        .logoutUrl("/user/logout")
-                        .logoutSuccessUrl("/user/login")
-                        .permitAll()
+                        .logoutUrl(LOGOUT_PROCESS_URL)
+                        .logoutSuccessHandler(userLogoutSuccessHandler())
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                 );
         return http.build();
     }
+
+
+    @Bean
+    public SimpleUrlLogoutSuccessHandler userLogoutSuccessHandler() {
+        return new UserLogoutSuccessHandler();
+    }
+
 }
