@@ -2,7 +2,7 @@ package pack.service.user.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pack.role.UserRole;
 import pack.dto.user.UserDTO;
@@ -13,7 +13,7 @@ import pack.service.user.UserService;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     @Override

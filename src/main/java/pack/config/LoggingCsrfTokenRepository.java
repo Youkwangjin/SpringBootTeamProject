@@ -1,4 +1,4 @@
-package pack.config.security;
+package pack.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
