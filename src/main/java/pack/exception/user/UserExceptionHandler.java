@@ -1,4 +1,4 @@
-package pack.config.exception.user;
+package pack.exception.user;
 
 
 import lombok.extern.slf4j.Slf4j;
