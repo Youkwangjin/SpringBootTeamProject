@@ -7,10 +7,12 @@ import pack.role.UserRole;
 
 import java.time.LocalDate;
 
+
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserDTO {
 
     private String userId;
@@ -36,4 +38,5 @@ public class UserDTO {
     private LocalDate userCreated;
 
     private UserRole userRole;
+
 }
