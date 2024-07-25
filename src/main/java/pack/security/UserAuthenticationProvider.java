@@ -9,12 +9,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pack.service.login.CustomUserDetailsService;
+import pack.service.user.UserService;
 
 @RequiredArgsConstructor
 public class UserAuthenticationProvider implements AuthenticationProvider {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -22,7 +22,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userService.loadUserByUsername(username);
 
         if (userDetails == null) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
