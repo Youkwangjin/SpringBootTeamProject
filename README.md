@@ -35,7 +35,8 @@
 
 
 ## 🏬 ERD
-![image](https://github.com/Youkwangjin/SpringBootTeamProject/assets/117841714/ed649889-4f1c-4cb6-aff4-16a3c5271153)
+![image](https://github.com/user-attachments/assets/8fb9e097-eeaa-4999-b041-69fb84e4d0fa)
+
 
 ## 🛠 개발환경 
 
