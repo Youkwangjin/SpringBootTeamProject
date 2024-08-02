@@ -25,4 +25,7 @@ public class UserRepository {
         sql.insert("User.userRegister", userDTO);
     }
 
+    public UserDTO findByUserEmail(String username) {
+        return sql.selectOne("User.findByUserEmail", username);
+    }
 }

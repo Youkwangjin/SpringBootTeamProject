@@ -21,7 +21,7 @@
 <section class="login-form">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <h1>사용자 로그인</h1>
-    <form id="userLoginForm" action="/user/login" method="post">
+    <form id="userLoginForm" method="post">
         <div class="int-area">
             <input type="text" name="userEmail" id="userEmail" autocomplete="off" placeholder="">
             <label for="userEmail">User Email</label>
@@ -54,7 +54,7 @@
             return;
         }
 
-        fetch('/user/login', {
+        fetch('/api/auth/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,8 +67,8 @@
         }).then(response => response.json())
             .then(data => {
                 console.log(data);
-                if (data.userLoginSuccess) {
-                    window.location.href = '/user/mypage';
+                if (data.resultCode === 200) {
+                    window.location.href = data.redirect;
                 } else {
                     alert("로그인 실패");
                 }

@@ -1,5 +1,6 @@
 package pack.service.user;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pack.dto.user.UserDTO;
 
@@ -11,4 +12,5 @@ public interface UserService {
     void userRegister(UserDTO userDTO);
 
     boolean isTelPhoneDuplicate(String userTel);
+
 }
