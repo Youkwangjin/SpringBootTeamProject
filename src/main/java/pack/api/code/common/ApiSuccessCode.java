@@ -13,6 +13,9 @@ public enum ApiSuccessCode {
     // 회원 가입 성공 코드 (HTTP Response: 201 Created)
     REGISTER_INSERT_SUCCESS(201, "RIS", "회원가입이 정상적으로 완료되었습니다."),
 
+    // 로그인 성공 코드 (HTTP Response: 200 OK)
+    LOGIN_SUCCESS(200, "LIS", "로그인이 정상적으로 완료되었습니다."),
+
     // 수정 성공 코드 (HTTP Response: 204 OK)
     INFO_UPDATE_SUCCESS(204, "IUS", "회원정보가 성공적으로 수정되었습니다. 다시 로그인 해주세요."),
 

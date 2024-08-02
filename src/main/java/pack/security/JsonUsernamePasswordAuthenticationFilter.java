@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 import pack.dto.user.UserDTO;
 
@@ -21,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 
 public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/user/login"; // URL 수정
+    private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/user/login";
     private static final String HTTP_METHOD_POST = "POST";
     private static final String CONTENT_TYPE = "application/json";
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =

@@ -2,14 +2,11 @@ package pack.service.user.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pack.role.UserRole;
 import pack.dto.user.UserDTO;
 import pack.repository.user.UserRepository;
-import pack.security.CustomUserDetails;
 import pack.service.user.UserService;
 
 @Service
@@ -25,7 +22,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.isEmailDuplicate(userEmail);
     }
     
-    // 전화번호 중복 검증
+    //  전화번호 중복 검증
     @Override
     public boolean isTelPhoneDuplicate(String userTel) {
         return userRepository.isTelDuplicate(userTel);
@@ -47,13 +44,4 @@ public class UserServiceImpl implements UserService {
         userRepository.userRegister(newUser);
     }
 
-    // 로그인
-    @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        UserDTO user = userRepository.findByUserEmail(userEmail);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with email: " + userEmail);
-        }
-        return new CustomUserDetails(user);
-    }
 }
