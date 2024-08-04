@@ -35,7 +35,6 @@
             };
 
             function checkFormValid() {
-                console.log(validStates);
                 const allValid = Object.values(validStates).every(Boolean);
                 submitButton.disabled = !allValid;
             }
@@ -270,7 +269,6 @@
 
             const csrfTokenElement = document.querySelector('input[name="_csrf"]');
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
-            console.log(csrfToken);
 
             // 회원가입 폼 데이터 전송
             document.getElementById('userRegister').addEventListener('submit', function (e) {
@@ -293,13 +291,20 @@
                         credentials: 'include',
                         body: JSON.stringify(userData)
                     })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(errorData => {
+                                    throw new Error(errorData.errorMsg);
+                                });
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             if (data.resultCode === 201) {
                                 alert(data.resultMsg);
                                 window.location.href = '/user/login';
                             } else {
-                                throw new Error('잠시 후 다시 시도해 주세요.');
+                                throw new Error(data.errorMsg);
                             }
                         })
                         .catch(error => {

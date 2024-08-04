@@ -30,7 +30,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         ApiSuccessCode apiSuccessCode = ApiSuccessCode.LOGIN_SUCCESS;
         ApiSuccessResponse<String> apiSuccessResponse = ApiSuccessResponse.<String>builder()
-                .result("/user/mypage")
                 .resultCode(apiSuccessCode.getStatus())
                 .resultMsg(apiSuccessCode.getMessage())
                 .build();

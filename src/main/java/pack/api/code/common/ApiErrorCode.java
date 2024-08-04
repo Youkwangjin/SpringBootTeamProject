@@ -29,7 +29,7 @@ public enum ApiErrorCode {
     NOT_FOUND_ERROR(404, "NFE", "요청하신 리소스를 찾을 수 없습니다."),
 
     // 서버 오류
-    INTERNAL_SERVER_ERROR(500, "ISE", "서버 내부 오류가 발생하였습니다.");
+    INTERNAL_SERVER_ERROR(500, "ISE", "서버 내부 오류가 발생하였습니다. 관리자에게 문의하세요.");
 
     /**
      * ******************************* Error Code Constructor ***************************************
