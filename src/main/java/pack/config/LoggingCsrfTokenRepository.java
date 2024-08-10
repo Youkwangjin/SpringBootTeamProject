@@ -24,7 +24,7 @@ public class LoggingCsrfTokenRepository implements CsrfTokenRepository {
     @Override
     public void saveToken(CsrfToken token, HttpServletRequest request, HttpServletResponse response) {
         delegate.saveToken(token, request, response);
-        logger.debug("Saved CSRF Token: {}", token.getToken());
+        logger.debug(" ******************** Saved CSRF Token ******************** : {}", token.getToken());
     }
 
     @Override
