@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -12,7 +12,9 @@
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="~{fragments/header_user :: header}"></div>
+<div sec:authorize="hasRole('USER_ROLE')">
+    <div th:replace="~{fragments/header_user :: header}"></div>
+</div>
 <section id="hero" class="hero">
     <div class="info d-flex align-items-center">
         <div class="container">
