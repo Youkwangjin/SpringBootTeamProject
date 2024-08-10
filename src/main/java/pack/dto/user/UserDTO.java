@@ -15,7 +15,9 @@ import java.time.LocalDate;
 @Builder
 public class UserDTO {
 
-    private String userId;
+    private int userId;
+
+    private String userUUId;
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")

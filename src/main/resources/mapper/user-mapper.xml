@@ -5,6 +5,7 @@
 <mapper namespace="User">
     <resultMap id="userResultMap"           type="pack.dto.user.UserDTO">
         <result property="userId"           column="USER_ID"/>
+        <result property="userUUId"         column="USER_UUID"/>
         <result property="userEmail"        column="USER_EMAIL"/>
         <result property="userPassword"     column="USER_PASSWORD"/>
         <result property="userName"         column="USER_NAME"/>
@@ -28,8 +29,8 @@
 
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
-        INSERT INTO TB_USER (USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE)
-        VALUES (#{userEmail}, #{userPassword}, #{userName}, #{userTel}, #{userAddress}, #{userRole})
+        INSERT INTO TB_USER (USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE)
+        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userName}, #{userTel}, #{userAddress}, #{userRole})
     </insert>
 
     <!-- 아이디 검증 -->
@@ -38,6 +39,4 @@
         FROM TB_USER
         WHERE USER_EMAIL = #{userEmail}
     </select>
-
-
 </mapper>

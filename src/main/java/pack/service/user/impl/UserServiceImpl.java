@@ -9,6 +9,8 @@ import pack.dto.user.UserDTO;
 import pack.repository.user.UserRepository;
 import pack.service.user.UserService;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
     public void userRegister(UserDTO userDTO) {
         String encodedPassword = passwordEncoder.encode(userDTO.getUserPassword());
         UserDTO newUser = UserDTO.builder()
+                .userUUId(UUID.randomUUID().toString())
                 .userEmail(userDTO.getUserEmail())
                 .userPassword(encodedPassword)
                 .userName(userDTO.getUserName())
