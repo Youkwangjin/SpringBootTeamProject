@@ -92,7 +92,7 @@
             // 서버에 이메일 중복 검사 요청
             function checkEmailDuplication(emailInput, resultElement) {
                 const userEmail = emailInput.value.trim();
-                fetch('/auth/user/emailCheck?userEmail=' + encodeURIComponent(userEmail), {
+                fetch('/api/auth/user/emailCheck?userEmail=' + encodeURIComponent(userEmail), {
                     method: 'GET',
                     credentials: 'include',
                 })
@@ -231,7 +231,7 @@
             // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const userTel = telInput.value.trim();
-                fetch('/auth/user/userTelCheck?userTel=' + encodeURIComponent(userTel), {
+                fetch('/api/auth/user/userTelCheck?userTel=' + encodeURIComponent(userTel), {
                     method: 'GET',
                     credentials: 'include',
                 })
@@ -282,7 +282,7 @@
                         userAddr: userAddr.value,
                         _csrf: document.querySelector('[name="_csrf"]').value
                     };
-                    fetch('/auth/user/register', {
+                    fetch('/api/auth/user/register', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
