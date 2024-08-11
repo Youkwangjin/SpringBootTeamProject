@@ -35,7 +35,7 @@
 
     <!-- 아이디 검증 -->
     <select id="findByUserEmail" parameterType="String" resultMap="userResultMap">
-        SELECT USER_ID, USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE
+        SELECT *
         FROM TB_USER
         WHERE USER_EMAIL = #{userEmail}
     </select>

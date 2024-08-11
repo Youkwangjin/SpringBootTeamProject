@@ -6,8 +6,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 import pack.api.code.common.ApiSuccessCode;
 import pack.api.response.ApiSuccessResponse;
@@ -17,16 +22,30 @@ import java.io.IOException;
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(LoginSuccessHandler.class);
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        // 세션 ID 재생성
-        HttpSession sessionCookie = request.getSession(false);
-        if (sessionCookie != null) {
-            sessionCookie.invalidate();
+        log.info(" ================================> SecurityContext after setting Authentication: {}", SecurityContextHolder.getContext().getAuthentication());
+
+        HttpSession oldSession = request.getSession(false);
+
+        if (oldSession != null) {
+            oldSession.invalidate();
         }
 
-        sessionCookie = request.getSession(true);
+        HttpSession newSession = request.getSession(true);
+
+        // 새로운 SecurityContext 생성 및 인증 정보 설정
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+
+        // 새로운 세션에 SecurityContext 저장
+        newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+        log.info(" ==================== SecurityContext with auth: ==================== {}", context.getAuthentication());
 
         ApiSuccessCode apiSuccessCode = ApiSuccessCode.LOGIN_SUCCESS;
         ApiSuccessResponse<String> apiSuccessResponse = ApiSuccessResponse.<String>builder()
