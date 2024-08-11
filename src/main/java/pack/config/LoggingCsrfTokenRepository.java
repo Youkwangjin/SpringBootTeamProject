@@ -8,7 +8,9 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DeferredCsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LoggingCsrfTokenRepository implements CsrfTokenRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggingCsrfTokenRepository.class);

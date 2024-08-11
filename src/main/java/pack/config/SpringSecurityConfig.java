@@ -9,6 +9,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,6 +40,7 @@ public class SpringSecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new LoggingCsrfTokenRepository())
                 )
+
                 //.csrf(AbstractHttpConfigurer::disable) // 테스트용
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         // Static Resource
@@ -47,18 +49,27 @@ public class SpringSecurityConfig {
                                          "/assets/**",
                                          "/js/**",
                                          "/assets/img/favicon.png").permitAll()
+                        // Public Pages
                         .requestMatchers("/",
                                          "/conajax",
                                          "/user/join",
                                          "/user/login",
-                                         "/user/mypage",
-                                         "/auth/user/register",
-                                         "/auth/user/emailCheck",
-                                         "/auth/user/userTelCheck",
-                                         "/api/auth/user/login",
                                          "/owner/join").permitAll()
-                        .anyRequest().denyAll()
-                )
+                        // Public API
+                        .requestMatchers("/api/auth/user/register",
+                                         "/api/auth/user/emailCheck",
+                                         "/api/auth/user/userTelCheck",
+                                         "/api/auth/user/login").permitAll()
+
+                        // Protected Common Pages
+                        .requestMatchers("/mypage").hasAuthority("ROLE_USER")
+                        //.requestMatchers("/mypage").permitAll()
+                        .anyRequest().authenticated())
+
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .sessionFixation(fixation -> fixation.changeSessionId()))
+
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

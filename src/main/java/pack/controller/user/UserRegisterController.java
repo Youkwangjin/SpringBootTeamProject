@@ -22,7 +22,7 @@ public class UserRegisterController {
     private final UserService userService;
 
 
-    @GetMapping("/auth/user/emailCheck")
+    @GetMapping("/api/auth/user/emailCheck")
     public ResponseEntity<Object> emailCheck(@RequestParam String userEmail) {
         log.info(" *****************************    emailCheck START    *****************************");
 
@@ -44,7 +44,7 @@ public class UserRegisterController {
         }
     }
 
-    @GetMapping("/auth/user/userTelCheck")
+    @GetMapping("/api/auth/user/userTelCheck")
     public ResponseEntity<Object> telPhoneCheck(@RequestParam String userTel) {
         log.info(" *****************************    telPhoneCheck START    *****************************");
 
@@ -66,7 +66,7 @@ public class UserRegisterController {
         }
     }
 
-    @PostMapping("/auth/user/register")
+    @PostMapping("/api/auth/user/register")
     public ResponseEntity<ApiSuccessResponse<Object>> userRegister(@Valid @RequestBody UserDTO userDTO) {
         log.info(" *****************************    Register START    *****************************");
 
