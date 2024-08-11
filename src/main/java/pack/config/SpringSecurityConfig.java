@@ -39,6 +39,7 @@ public class SpringSecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new LoggingCsrfTokenRepository())
                 )
+
                 //.csrf(AbstractHttpConfigurer::disable) // 테스트용
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         // Static Resource
@@ -47,16 +48,20 @@ public class SpringSecurityConfig {
                                          "/assets/**",
                                          "/js/**",
                                          "/assets/img/favicon.png").permitAll()
+                        // Public Pages
                         .requestMatchers("/",
                                          "/conajax",
                                          "/user/join",
                                          "/user/login",
-                                         "/user/mypage",
-                                         "/auth/user/register",
-                                         "/auth/user/emailCheck",
-                                         "/auth/user/userTelCheck",
-                                         "/api/auth/user/login",
                                          "/owner/join").permitAll()
+                        // Public API
+                        .requestMatchers("/api/auth/user/register",
+                                         "/api/auth/user/emailCheck",
+                                         "/api/auth/user/userTelCheck",
+                                         "/api/auth/user/login").permitAll()
+
+                        // Protected Common Pages
+                        .requestMatchers("/mypage").hasAuthority("USER")
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
