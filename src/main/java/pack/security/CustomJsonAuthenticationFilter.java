@@ -18,7 +18,7 @@ import pack.dto.user.UserDTO;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/user/login";
     private static final String HTTP_METHOD_POST = "POST";
@@ -28,9 +28,9 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
     private final ObjectMapper objectMapper;
 
-    public JsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper,
-                                                    AuthenticationSuccessHandler authenticationSuccessHandler,
-                                                    AuthenticationFailureHandler authenticationFailureHandler) {
+    public CustomJsonAuthenticationFilter(ObjectMapper objectMapper,
+                                          AuthenticationSuccessHandler authenticationSuccessHandler,
+                                          AuthenticationFailureHandler authenticationFailureHandler) {
 
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
 

@@ -13,9 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pack.security.JsonUsernamePasswordAuthenticationFilter;
-import pack.security.LoginFailureHandler;
-import pack.security.LoginSuccessHandler;
+import pack.security.CustomJsonAuthenticationFilter;
+import pack.security.CustomLoginFailureHandler;
+import pack.security.CustomLoginSuccessHandler;
 
 
 @Configuration
@@ -27,8 +27,8 @@ public class SpringSecurityConfig {
     private final ObjectMapper objectMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserDetailsService userService;
-    private final LoginSuccessHandler loginSuccessHandler;
-    private final LoginFailureHandler loginFailureHandler;
+    private final CustomLoginSuccessHandler customLoginSuccessHandler;
+    private final CustomLoginFailureHandler customLoginFailureHandler;
 
 
 
@@ -69,10 +69,10 @@ public class SpringSecurityConfig {
 
 
     @Bean
-    public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
-        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler);
-        jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
-        return jsonUsernamePasswordAuthenticationFilter;
+    public CustomJsonAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
+        CustomJsonAuthenticationFilter customJsonAuthenticationFilter = new CustomJsonAuthenticationFilter(objectMapper, customLoginSuccessHandler, customLoginFailureHandler);
+        customJsonAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        return customJsonAuthenticationFilter;
     }
 
     @Bean

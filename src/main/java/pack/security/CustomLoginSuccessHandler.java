@@ -18,7 +18,7 @@ import pack.api.response.ApiSuccessResponse;
 import java.io.IOException;
 
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
