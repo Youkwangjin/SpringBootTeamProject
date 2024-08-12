@@ -6,8 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,14 +18,10 @@ import pack.api.response.ApiSuccessResponse;
 import java.io.IOException;
 
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(LoginSuccessHandler.class);
+public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-        log.info(" ================================> SecurityContext after setting Authentication: {}", SecurityContextHolder.getContext().getAuthentication());
 
         HttpSession oldSession = request.getSession(false);
 
@@ -44,8 +38,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 새로운 세션에 SecurityContext 저장
         newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
-
-        log.info(" ==================== SecurityContext with auth: ==================== {}", context.getAuthentication());
 
         ApiSuccessCode apiSuccessCode = ApiSuccessCode.LOGIN_SUCCESS;
         ApiSuccessResponse<String> apiSuccessResponse = ApiSuccessResponse.<String>builder()
