@@ -11,9 +11,9 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoggingCsrfTokenRepository implements CsrfTokenRepository {
+public class CustomCsrfTokenRepository implements CsrfTokenRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggingCsrfTokenRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomCsrfTokenRepository.class);
     private final CsrfTokenRepository delegate = new HttpSessionCsrfTokenRepository();
 
     @Override

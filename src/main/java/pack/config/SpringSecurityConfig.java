@@ -38,7 +38,7 @@ public class SpringSecurityConfig {
 
         http
                 .csrf(csrf -> csrf
-                        .csrfTokenRepository(new LoggingCsrfTokenRepository())
+                        .csrfTokenRepository(new CustomCsrfTokenRepository())
                 )
 
                 //.csrf(AbstractHttpConfigurer::disable) // 테스트용
