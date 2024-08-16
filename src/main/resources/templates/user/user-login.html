@@ -67,7 +67,7 @@
         }).then(response => response.json())
             .then(data => {
                 if (data.resultCode === 200) {
-                    window.location.href = '/mypage';
+                    window.location.href = '/user/mypage';
                 } else {
                     alert(data.errorMsg);
                 }
