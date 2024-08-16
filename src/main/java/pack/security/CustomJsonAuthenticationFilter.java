@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
-import pack.dto.user.UserDTO;
+import pack.model.user.User;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -47,7 +47,7 @@ public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProces
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
-        UserDTO user = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), UserDTO.class);
+        User user = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), User.class);
 
         String username = user.getUserEmail();
         String password = user.getUserPassword();
