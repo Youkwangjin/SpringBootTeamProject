@@ -13,7 +13,7 @@
             let userEmail = document.getElementById('userEmail');
             let userPassword = document.getElementById('userPassword');
             let userRePassword = document.getElementById('userRePassword');
-            let userName = document.getElementById('userName');
+            let userDisplayName = document.getElementById('userDisplayName');
             let userTel = document.getElementById('userTel');
             let userAddr = document.getElementById('userAddress');
 
@@ -30,7 +30,7 @@
                 userEmail: false,
                 userPassword: false,
                 userRePassword: false,
-                userName: false,
+                userDisplayName: false,
                 userTel: false
             };
 
@@ -51,7 +51,7 @@
                 validRePassword(e.target, userPassword.value, rePasswordResult);
             });
 
-            userName.addEventListener("input", (e) => {
+            userDisplayName.addEventListener("input", (e) => {
                 validName(e.target, nameResult);
             });
 
@@ -185,18 +185,18 @@
                     resultElement.classList.remove('success');
                     resultElement.classList.add('error');
                     nameInput.focus();
-                    validStates.userName = false;
+                    validStates.userDisplayName = false;
                 } else if (!validNameCheck(name)) {
                     resultElement.textContent = '이름을 올바르게 입력해주세요.';
                     resultElement.classList.remove('success');
                     resultElement.classList.add('error');
                     nameInput.focus();
-                    validStates.userName = false;
+                    validStates.userDisplayName = false;
                 } else {
                     resultElement.textContent = '사용 가능한 이름입니다.';
                     resultElement.classList.remove('error');
                     resultElement.classList.add('success');
-                    validStates.userName = true;
+                    validStates.userDisplayName = true;
                 }
                 checkFormValid();
             }
@@ -277,7 +277,7 @@
                     const userData = {
                         userEmail: userEmail.value,
                         userPassword: userPassword.value,
-                        userName: userName.value,
+                        userDisplayName: userDisplayName.value,
                         userTel: userTel.value,
                         userAddr: userAddr.value,
                         _csrf: document.querySelector('[name="_csrf"]').value
@@ -343,8 +343,8 @@
             <span class="rePassword-result"></span>
 
             <h3>이름</h3>
-            <label for="userName">
-                <input type="text" name="userName" id="userName" class="text-field" placeholder="이름">
+            <label for="userDisplayName">
+                <input type="text" name="userDisplayName" id="userDisplayName" class="text-field" placeholder="이름">
             </label><br/>
             <span class="name-result"></span>
 
