@@ -1,16 +1,18 @@
 package pack.service.user;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import pack.dto.user.UserDTO;
+import pack.model.user.User;
 
 @Service
 public interface UserService {
 
     boolean isEmailDuplicate(String userEmail);
 
-    void userRegister(UserDTO userDTO);
+    void userRegister(User user);
 
     boolean isTelPhoneDuplicate(String userTel);
 
+    User getAllUserData(String userUUId);
+
+    User getUserData();
 }

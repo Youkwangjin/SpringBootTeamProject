@@ -2,12 +2,16 @@ package pack.service.user.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pack.role.UserRole;
-import pack.dto.user.UserDTO;
+import pack.model.user.User;
 import pack.repository.user.UserRepository;
 import pack.service.user.UserService;
+import pack.utils.SecurityUtil;
 
 import java.util.UUID;
 
@@ -32,19 +36,40 @@ public class UserServiceImpl implements UserService {
 
     // 회원가입
     @Override
-    public void userRegister(UserDTO userDTO) {
-        String encodedPassword = passwordEncoder.encode(userDTO.getUserPassword());
-        UserDTO newUser = UserDTO.builder()
+    public void userRegister(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getUserPassword());
+        User newUser = User.builder()
                 .userUUId(UUID.randomUUID().toString())
-                .userEmail(userDTO.getUserEmail())
+                .userEmail(user.getUserEmail())
                 .userPassword(encodedPassword)
-                .userName(userDTO.getUserName())
-                .userAddress(userDTO.getUserAddress())
-                .userTel(userDTO.getUserTel())
+                .userDisplayName(user.getUserDisplayName())
+                .userAddress(user.getUserAddress())
+                .userTel(user.getUserTel())
                 .userRole(UserRole.USER)
                 .build();
 
         userRepository.userRegister(newUser);
     }
 
+    @Override
+    public User getUserData() throws AuthenticationException {
+        String userUUId = SecurityUtil.getAuthenticatedUUId();
+
+        if (!StringUtils.isNotBlank(userUUId)) {
+            throw new UsernameNotFoundException("User is not authenticated");
+        }
+
+        User userData = userRepository.selectAllUserData(userUUId);
+
+        if (userData == null) {
+            throw new UsernameNotFoundException("User data not found");
+        }
+
+        return userData;
+    }
+
+    @Override
+    public User getAllUserData(String userUUId) {
+        return userRepository.selectAllUserData(userUUId);
+    }
 }

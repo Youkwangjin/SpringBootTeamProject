@@ -2,6 +2,7 @@ package pack.security;
 
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class CustomUserLogoutSuccessHandler implements LogoutSuccessHandler {
+public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
+
+    private static final String MAIN_URL = "/";
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -22,6 +25,19 @@ public class CustomUserLogoutSuccessHandler implements LogoutSuccessHandler {
             session.invalidate();
         }
 
-        response.sendRedirect("/user/login");
+        // JSESSIONID 쿠키 삭제
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("JSESSIONID")) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+        }
+
+        response.sendRedirect(MAIN_URL);
     }
 }

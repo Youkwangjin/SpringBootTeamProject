@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import pack.security.CustomJsonAuthenticationFilter;
 import pack.security.CustomLoginFailureHandler;
 import pack.security.CustomLoginSuccessHandler;
+import pack.security.CustomLogoutSuccessHandler;
 
 
 @Configuration
@@ -29,6 +30,7 @@ public class SpringSecurityConfig {
     private final UserDetailsService userService;
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
     private final CustomLoginFailureHandler customLoginFailureHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
 
 
@@ -55,14 +57,20 @@ public class SpringSecurityConfig {
                                          "/user/login",
                                          "/owner/join").permitAll()
                         // Public API
-                        .requestMatchers("/api/auth/user/register",
+                        .requestMatchers("/api/user/logout",
+                                         "/api/auth/user/register",
                                          "/api/auth/user/emailCheck",
                                          "/api/auth/user/userTelCheck",
                                          "/api/auth/user/login").permitAll()
 
                         // Protected Common Pages
-                        .requestMatchers("/mypage").hasAuthority("ROLE_USER")
+                        .requestMatchers("/user/mypage").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated())
+
+                .logout(logout -> logout
+                        .logoutUrl("/api/user/logout")
+                        .logoutSuccessHandler(customLogoutSuccessHandler))
+
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

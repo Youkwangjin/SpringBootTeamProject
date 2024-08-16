@@ -3,6 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="pack.dto.user.UserDTO" alias="user" />
+        <typeAlias type="pack.model.user.User" alias="user" />
     </typeAliases>
 </configuration>
