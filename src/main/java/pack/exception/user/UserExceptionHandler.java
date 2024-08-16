@@ -32,7 +32,7 @@ public class UserExceptionHandler {
             userErrorCode = switch (fieldError.getField()) {
                 case "userEmail" -> ApiUserErrorCode.EMAIL_FORMAT_ERROR;
                 case "userPassword" -> ApiUserErrorCode.PASSWORD_STRENGTH_ERROR;
-                case "userName" -> ApiUserErrorCode.NAME_FORMAT_ERROR;
+                case "userDisplayName" -> ApiUserErrorCode.NAME_FORMAT_ERROR;
                 case "userTel" -> ApiUserErrorCode.TELEPHONE_FORMAT_ERROR;
                 default -> userErrorCode;
             };
