@@ -3,12 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="User">
-    <resultMap id="userResultMap"           type="pack.dto.user.UserDTO">
+    <resultMap id="userResultMap"           type="pack.model.user.User" autoMapping="true">
         <result property="userId"           column="USER_ID"/>
         <result property="userUUId"         column="USER_UUID"/>
         <result property="userEmail"        column="USER_EMAIL"/>
         <result property="userPassword"     column="USER_PASSWORD"/>
-        <result property="userName"         column="USER_NAME"/>
+        <result property="userDisplayName"  column="USER_NAME"/>
         <result property="userTel"          column="USER_TEL"/>
         <result property="userAddress"      column="USER_ADDRESS"/>
         <result property="userRole"         column="USER_ROLE"/>
@@ -30,7 +30,7 @@
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
         INSERT INTO TB_USER (USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE)
-        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userName}, #{userTel}, #{userAddress}, #{userRole})
+        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userDisplayName}, #{userTel}, #{userAddress}, #{userRole})
     </insert>
 
     <!-- 아이디 검증 -->
@@ -38,5 +38,12 @@
         SELECT *
         FROM TB_USER
         WHERE USER_EMAIL = #{userEmail}
+    </select>
+
+    <!-- 회원조회 -->
+    <select id="selectAllUserData" parameterType="String" resultMap="userResultMap">
+        SELECT *
+        FROM TB_USER
+        WHERE USER_UUID = #{userUUId}
     </select>
 </mapper>

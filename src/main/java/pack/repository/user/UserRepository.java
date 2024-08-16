@@ -3,7 +3,7 @@ package pack.repository.user;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-import pack.dto.user.UserDTO;
+import pack.model.user.User;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,11 +21,15 @@ public class UserRepository {
         return telCount > 0;
     }
 
-    public void userRegister(UserDTO userDTO) {
-        sql.insert("User.userRegister", userDTO);
+    public void userRegister(User user) {
+        sql.insert("User.userRegister", user);
     }
 
-    public UserDTO findByUserEmail(String username) {
+    public User findByUserEmail(String username) {
         return sql.selectOne("User.findByUserEmail", username);
+    }
+
+    public User selectAllUserData(String userUUId) {
+        return sql.selectOne("User.selectAllUserData", userUUId);
     }
 }
