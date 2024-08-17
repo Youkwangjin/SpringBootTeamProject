@@ -11,7 +11,7 @@ import pack.api.response.ApiErrorResponse;
 import pack.api.response.ApiSuccessResponse;
 import pack.api.code.user.ApiUserErrorCode;
 import pack.api.code.user.ApiUserSuccessCode;
-import pack.dto.user.UserDTO;
+import pack.model.user.User;
 import pack.service.user.UserService;
 
 @Slf4j
@@ -67,10 +67,10 @@ public class UserRegisterController {
     }
 
     @PostMapping("/api/auth/user/register")
-    public ResponseEntity<ApiSuccessResponse<Object>> userRegister(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiSuccessResponse<Object>> userRegister(@Valid @RequestBody User user) {
         log.info(" *****************************    Register START    *****************************");
 
-        userService.userRegister(userDTO);
+        userService.userRegister(user);
 
         ApiSuccessResponse<Object> registerResponse = ApiSuccessResponse.builder()
                 .resultCode(ApiSuccessCode.REGISTER_INSERT_SUCCESS.getStatus())
