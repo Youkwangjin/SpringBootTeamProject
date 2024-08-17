@@ -6,17 +6,245 @@
     <title>에이콘테이너 : 회원수정</title>
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/user/user-join.css">
+    <script src="/js/user/daum-postcode.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let userEmail = document.getElementById('userEmail');
+            let userPassword = document.getElementById('userPassword');
+            let userRePassword = document.getElementById('userRePassword');
+            let userDisplayName = document.getElementById('userDisplayName');
+            let userTel = document.getElementById('userTel');
+            let userAddr = document.getElementById('userAddress');
+
+            let passwordResult = document.querySelector(".password-result");
+            let rePasswordResult = document.querySelector(".rePassword-result");
+            let nameResult = document.querySelector(".name-result");
+            let telResult = document.querySelector(".tel-result");
+
+            let resetButton = document.getElementById('btnReset');
+            let submitButton = document.getElementById('btnUserJoin');
+
+            let validStates = {
+                userPassword: false,
+                userRePassword: false,
+                userDisplayName: false,
+                userTel: false
+            };
+
+            function checkFormValid() {
+                const allValid = Object.values(validStates).every(Boolean);
+                submitButton.disabled = !allValid;
+            }
+
+            userPassword.addEventListener("input", (e) => {
+                validPassword(e.target, passwordResult);
+            });
+
+            userRePassword.addEventListener("change", (e) => {
+                validRePassword(e.target, userPassword.value, rePasswordResult);
+            });
+
+            userDisplayName.addEventListener("input", (e) => {
+                validName(e.target, nameResult);
+            });
+
+            userTel.addEventListener("input", (e) => {
+                validTel(e.target, telResult);
+            });
+
+            resetButton.addEventListener('click', function () {
+                window.location.href = '/user/login';
+            });
+
+            // 비밀번호 형식 체크 정규식
+            function validPassword(passwordInput, resultElement) {
+                const password = passwordInput.value.trim();
+                if (password.length === 0) {
+                    resultElement.textContent = '비밀번호를 입력해주세요.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    passwordInput.focus();
+                    validStates.userPassword = false;
+                } else if (!validPasswordCheck(password)) {
+                    resultElement.textContent = '비밀번호는 10자 이상이며, 특수문자를 포함해야 합니다.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    passwordInput.focus();
+                    validStates.userPassword = false;
+                } else {
+                    resultElement.textContent = '사용 가능한 비밀번호입니다.';
+                    resultElement.classList.remove('error');
+                    resultElement.classList.add('success');
+                    validStates.userPassword = true;
+                }
+                checkFormValid();
+            }
+
+            function validPasswordCheck(password) {
+                let passwordPattern = /^(?=.*[!@#$%^&*()_+{}":;'<>?,./]).{10,}$/;
+                return passwordPattern.test(password);
+            }
+
+            // 비밀번호 재확인
+            function validRePassword(rePasswordInput, originalPassword, resultElement) {
+                if (rePasswordInput.value !== originalPassword) {
+                    resultElement.textContent = '비밀번호가 일치하지 않습니다.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    rePasswordInput.focus();
+                    validStates.userRePassword = false;
+                } else if (rePasswordInput.value === '') {
+                    resultElement.textContent = '';
+                    resultElement.classList.remove('success', 'error');
+                } else {
+                    resultElement.textContent = '비밀번호가 일치합니다.';
+                    resultElement.classList.remove('error');
+                    resultElement.classList.add('success');
+                    validStates.userRePassword = true;
+                }
+                checkFormValid();
+            }
+
+            // 이름 형식 정규식 체크
+            function validName(nameInput, resultElement) {
+                const name = nameInput.value.trim();
+                if (name.length === 0) {
+                    resultElement.textContent = '이름을 입력해주세요.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    nameInput.focus();
+                    validStates.userDisplayName = false;
+                } else if (!validNameCheck(name)) {
+                    resultElement.textContent = '이름을 올바르게 입력해주세요.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    nameInput.focus();
+                    validStates.userDisplayName = false;
+                } else {
+                    resultElement.textContent = '사용 가능한 이름입니다.';
+                    resultElement.classList.remove('error');
+                    resultElement.classList.add('success');
+                    validStates.userDisplayName = true;
+                }
+                checkFormValid();
+            }
+
+            function validNameCheck(name) {
+                let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
+                return namePattern.test(name);
+            }
+
+            // 전화번호 형식 정규식 체크
+            function validTel(telInput, resultElement) {
+                const tel = telInput.value.trim();
+                if (tel.length === 0) {
+                    resultElement.textContent = '전화번호를 입력해주세요.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    telInput.focus();
+                    validStates.userTel = false;
+                } else if (!validTelCheck(tel)) {
+                    resultElement.textContent = '번호를 올바르게 입력해주세요.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    telInput.focus();
+                    validStates.userTel = false;
+                } else {
+                    // 전화번호 형식이 유효한 경우, 서버에 중복 검사 요청
+                    checkTelDuplication(telInput, resultElement);
+                }
+                checkFormValid();
+            }
+
+            // 서버에 전화번호 중복 검사 요청
+            function checkTelDuplication(telInput, resultElement) {
+                const userTel = telInput.value.trim();
+                fetch('/api/auth/user/userTelCheck?userTel=' + encodeURIComponent(userTel), {
+                    method: 'GET',
+                    credentials: 'include',
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            // HTTP 상태 코드가 200-299 범위 밖인 경우
+                            throw response;
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.resultCode === 200) {
+                            resultElement.textContent = '전화번호가 유효합니다.';
+                            resultElement.classList.add('success');
+                            resultElement.classList.remove('error');
+                            validStates.userTel = true;
+                            checkFormValid();
+                        }
+                    })
+                    .catch(errorResponse => {
+                        errorResponse.json().then(errorData => {
+                            resultElement.textContent = errorData.errorMsg;
+                            resultElement.classList.add('error');
+                            resultElement.classList.remove('success');
+                            validStates.userEmail = false;
+                            checkFormValid();
+                        });
+                    });
+            }
+
+            function validTelCheck(tel) {
+                let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
+                return telPattern.test(tel);
+            }
+
+            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+            // 회원가입 폼 데이터 전송
+            document.getElementById('userRegister').addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (!submitButton.disabled) {
+                    const userData = {
+                        userEmail: userEmail.value,
+                        userPassword: userPassword.value,
+                        userDisplayName: userDisplayName.value,
+                        userTel: userTel.value,
+                        userAddr: userAddr.value,
+                        _csrf: document.querySelector('[name="_csrf"]').value
+                    };
+                    fetch('/api/user/update/{userUUId}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(userData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(errorData => {
+                                    throw new Error(errorData.errorMsg);
+                                });
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.resultCode === 201) {
+                                alert(data.resultMsg);
+                                window.location.href = '/user/login';
+                            } else {
+                                throw new Error(data.errorMsg);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert(error.message);
+                        });
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-<header id="header" class="header d-flex align-items-center">
-    <div>
-        <nav id="navbar" class="navbar">
-            <ul>
-                <li><a href="/user/mypage" class="active">Home</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
 <h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userDisplayName}"></span>님의 회원수정</h3>
 <div class="join-form">
     <div class="content">
