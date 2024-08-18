@@ -32,4 +32,8 @@ public class UserRepository {
     public User selectAllUserData(String userUUId) {
         return sql.selectOne("User.selectAllUserData", userUUId);
     }
+
+    public void userUpdate(User updateUser) {
+        sql.update("User.userUpdate", updateUser);
+    }
 }
