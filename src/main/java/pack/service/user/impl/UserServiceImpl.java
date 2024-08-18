@@ -3,6 +3,7 @@ package pack.service.user.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void userRegister(User user) {
         String encodedPassword = passwordEncoder.encode(user.getUserPassword());
+
         User newUser = User.builder()
                 .userUUId(UUID.randomUUID().toString())
                 .userEmail(user.getUserEmail())
@@ -68,8 +70,37 @@ public class UserServiceImpl implements UserService {
         return userData;
     }
 
+    // 회원 수정
     @Override
-    public User getAllUserData(String userUUId) {
-        return userRepository.selectAllUserData(userUUId);
+    public void userDataUpdate(User user) {
+        String authenticatedUUId  = SecurityUtil.getAuthenticatedUUId();
+
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
+            throw new AccessDeniedException("Unauthorized to update user data");
+        }
+
+        User existingUser = userRepository.selectAllUserData(authenticatedUUId);
+        if (existingUser == null) {
+            throw new UsernameNotFoundException("User not found with UUID: " + authenticatedUUId);
+        }
+
+        if (!StringUtils.isNotBlank(user.getUserPassword())) {
+            throw new IllegalArgumentException("Invalid current password");
+        }
+
+        if (StringUtils.isNotBlank(user.getUserPassword()) && !passwordEncoder.matches(user.getUserPassword(), existingUser.getUserPassword())) {
+            throw new IllegalArgumentException("Invalid current password");
+        }
+
+        User updateUser = User.builder()
+                .userUUId(user.getUserUUId())
+                .userDisplayName(user.getUserDisplayName())
+                .userAddress(user.getUserAddress())
+                .userTel(user.getUserTel())
+                .userRole(UserRole.USER)
+                .build();
+
+        // 최종 반환
+        userRepository.userUpdate(updateUser);
     }
 }

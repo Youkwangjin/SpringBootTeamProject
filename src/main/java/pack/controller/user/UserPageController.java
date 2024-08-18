@@ -31,9 +31,9 @@ public class UserPageController {
         return "common/mypage";
     }
 
-    @GetMapping("/user/update/{userUUId}")
-    public String userUpdatePage(@PathVariable String userUUId, Model model) {
-        User userData = userService.getAllUserData(userUUId);
+    @GetMapping("/user/update/profile")
+    public String userUpdatePage(Model model) {
+        User userData = userService.getUserData();
         model.addAttribute("userData", userData);
         return "user/user-update";
     }

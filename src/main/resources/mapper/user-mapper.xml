@@ -46,4 +46,14 @@
         FROM TB_USER
         WHERE USER_UUID = #{userUUId}
     </select>
+
+    <!-- 회원수정 -->
+    <update id="userUpdate" parameterType="user">
+        UPDATE TB_USER
+        SET
+            USER_NAME = #{userDisplayName},
+            USER_TEL = #{userTel},
+            USER_ADDRESS = #{userAddress}
+        WHERE USER_UUID = #{userUUId}
+    </update>
 </mapper>
