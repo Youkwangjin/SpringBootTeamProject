@@ -64,7 +64,8 @@ public class SpringSecurityConfig {
                                          "/api/auth/user/login").permitAll()
 
                         // Protected Common Pages
-                        .requestMatchers("/user/mypage").hasAuthority("ROLE_USER")
+                        .requestMatchers("/user/mypage",
+                                         "/user/update/profile").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated())
 
                 .logout(logout -> logout

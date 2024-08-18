@@ -12,7 +12,7 @@ public interface UserService {
 
     boolean isTelPhoneDuplicate(String userTel);
 
-    User getAllUserData(String userUUId);
-
     User getUserData();
+
+    void userDataUpdate(User user);
 }

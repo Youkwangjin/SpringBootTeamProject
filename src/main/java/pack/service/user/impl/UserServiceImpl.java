@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void userRegister(User user) {
         String encodedPassword = passwordEncoder.encode(user.getUserPassword());
+
         User newUser = User.builder()
                 .userUUId(UUID.randomUUID().toString())
                 .userEmail(user.getUserEmail())
@@ -68,8 +69,15 @@ public class UserServiceImpl implements UserService {
         return userData;
     }
 
+    // 회원 수정
     @Override
-    public User getAllUserData(String userUUId) {
-        return userRepository.selectAllUserData(userUUId);
+    public void userDataUpdate(User user) {
+        String userUUId = SecurityUtil.getAuthenticatedUUId();
+
+        if (!StringUtils.isNotBlank(userUUId)) {
+            throw new UsernameNotFoundException("User is not authenticated");
+        }
+
+
     }
 }
