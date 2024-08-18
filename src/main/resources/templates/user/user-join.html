@@ -125,7 +125,7 @@
 
             function validEmailCheck(email) {
                 let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                return emailPattern.test(email);
+                return emailPattern.test(email.trim());
             }
 
             // 비밀번호 형식 체크 정규식
@@ -154,7 +154,7 @@
 
             function validPasswordCheck(password) {
                 let passwordPattern = /^(?=.*[!@#$%^&*()_+{}":;'<>?,./]).{10,}$/;
-                return passwordPattern.test(password);
+                return passwordPattern.test(password.trim());
             }
 
             // 비밀번호 재확인
@@ -203,7 +203,7 @@
 
             function validNameCheck(name) {
                 let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
-                return namePattern.test(name);
+                return namePattern.test(name.trim());
             }
 
             // 전화번호 형식 정규식 체크
@@ -264,7 +264,7 @@
 
             function validTelCheck(tel) {
                 let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
-                return telPattern.test(tel);
+                return telPattern.test(tel.trim());
             }
 
             const csrfTokenElement = document.querySelector('input[name="_csrf"]');
@@ -308,7 +308,6 @@
                             }
                         })
                         .catch(error => {
-                            console.error('Error:', error);
                             alert(error.message);
                         });
                 }
@@ -384,7 +383,7 @@
             <h3>입력한 주소</h3>
             <label for="userAddress">
                 <input type="text" name="userAddress" id="userAddress" class="text-field"
-                       placeholder="입력한 주소" readonly>
+                       placeholder="입력한 주소">
             </label>
 
             <button type="submit" class="submit-btn" id="btnUserJoin" disabled>가입하기</button>
