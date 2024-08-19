@@ -15,7 +15,6 @@
             let userTel = document.getElementById('userTel');
             let userAddr = document.getElementById('userAddress');
 
-            let passwordResult = document.querySelector(".password-result");
             let nameResult = document.querySelector(".name-result");
             let telResult = document.querySelector(".tel-result");
 
@@ -23,7 +22,6 @@
             let submitButton = document.getElementById('userUpdateBtn');
 
             let validStates = {
-                userPassword: false,
                 userDisplayName: false,
                 userTel: false
             };
@@ -32,10 +30,6 @@
                 const allValid = Object.values(validStates).every(Boolean);
                 submitButton.disabled = !allValid;
             }
-
-            userPassword.addEventListener("input", (e) => {
-                validPassword(e.target, passwordResult);
-            });
 
             userDisplayName.addEventListener("input", (e) => {
                 validName(e.target, nameResult);
@@ -48,35 +42,6 @@
             resetButton.addEventListener('click', function () {
                 window.location.href = '/user/mypage';
             });
-
-            // 비밀번호 형식 체크 정규식
-            function validPassword(passwordInput, resultElement) {
-                const password = passwordInput.value.trim();
-                if (password.length === 0) {
-                    resultElement.textContent = '비밀번호를 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
-                    passwordInput.focus();
-                    validStates.userPassword = false;
-                } else if (!validPasswordCheck(password)) {
-                    resultElement.textContent = '비밀번호는 10자 이상이며, 특수문자를 포함해야 합니다.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
-                    passwordInput.focus();
-                    validStates.userPassword = false;
-                } else {
-                    resultElement.textContent = '사용 가능한 비밀번호입니다.';
-                    resultElement.classList.remove('error');
-                    resultElement.classList.add('success');
-                    validStates.userPassword = true;
-                }
-                checkFormValid();
-            }
-
-            function validPasswordCheck(password) {
-                let passwordPattern = /^(?=.*[!@#$%^&*()_+{}":;'<>?,./]).{10,}$/;
-                return passwordPattern.test(password);
-            }
 
             // 이름 형식 정규식 체크
             function validName(nameInput, resultElement) {
@@ -104,7 +69,7 @@
 
             function validNameCheck(name) {
                 let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
-                return namePattern.test(name);
+                return namePattern.test(name.trim());
             }
 
             // 전화번호 형식 정규식 체크
@@ -165,7 +130,7 @@
 
             function validTelCheck(tel) {
                 let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
-                return telPattern.test(tel);
+                return telPattern.test(tel.trim());
             }
 
             const csrfTokenElement = document.querySelector('input[name="_csrf"]');
@@ -175,7 +140,9 @@
             document.getElementById('userUpdate').addEventListener('submit', function (e) {
                 e.preventDefault();
                 if (!submitButton.disabled) {
+                    const userUUId = document.getElementById('userUUId').value;
                     const userData = {
+                        userUUId: userUUId,
                         userEmail: userEmail.value,
                         userPassword: userPassword.value,
                         userDisplayName: userDisplayName.value,
@@ -183,7 +150,7 @@
                         userAddr: userAddr.value,
                         _csrf: document.querySelector('[name="_csrf"]').value
                     };
-                    fetch('/api/user/update/{userUUId}', {
+                    fetch(`/api/user/update/${userUUId}`, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
@@ -201,9 +168,9 @@
                             return response.json();
                         })
                         .then(data => {
-                            if (data.resultCode === 201) {
+                            if (data.resultCode === 204) {
                                 alert(data.resultMsg);
-                                window.location.href = '/user/login';
+                                window.location.href = '/user/logout';
                             } else {
                                 throw new Error(data.errorMsg);
                             }
@@ -221,9 +188,9 @@
 <h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userDisplayName}"></span>님의 회원수정</h3>
 <div class="join-form">
     <div class="content">
-        <form id="userUpdate" method="POST">
-
+        <form id="userUpdate">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="hidden" name="userUUId" id="userUUId" class="text-field" th:value="${userData.userUUId}">
 
             <h3>이메일</h3>
             <label for="userEmail">
@@ -232,17 +199,17 @@
             <span class="email-result"></span>
 
             <h3>비밀번호</h3>
-            <label for="user_pwd">
-                <input type="password" name="user_pwd" id="user_pwd" class="text-field" placeholder="비밀번호">
+            <label for="userPassword">
+                <input type="password" name="userPassword" id="userPassword" class="text-field" placeholder="비밀번호">
             </label><br/>
             <span class="password-result"></span>
 
             <h3>이름</h3>
-            <label for="user_name">
-                <input type="text" name="user_name" id="user_name" class="text-field"
+            <label for="userDisplayName">
+                <input type="text" name="userDisplayName" id="userDisplayName" class="text-field"
                        th:value="${userData.userDisplayName}" placeholder="이름">
             </label><br/>
-            <span class="rePassword-result"></span>
+            <span class="name-result"></span>
 
             <h3>전화번호</h3>
             <label for="userTel">
@@ -277,8 +244,8 @@
 
             <br/>
             <h3>입력한 주소</h3>
-            <label for="user_combinedAddress">
-                <input type="text" name="user_addr" id="user_combinedAddress" class="text-field"
+            <label for="userAddress">
+                <input type="text" name="userAddress" id="userAddress" class="text-field"
                        th:value="${userData.userAddress}">
             </label>
 
