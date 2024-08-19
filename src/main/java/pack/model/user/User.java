@@ -44,6 +44,8 @@ public class User implements UserDetails {
 
     private LocalDate userCreated;
 
+    private LocalDate userUpdated;
+
     private UserRole userRole;
 
     @Override
