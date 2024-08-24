@@ -22,9 +22,11 @@
             let submitButton = document.getElementById('userUpdateBtn');
 
             let validStates = {
-                userDisplayName: false,
-                userTel: false
+                userDisplayName: true,
+                userTel: true
             };
+
+            const initialName = userDisplayName.value;
 
             function checkFormValid() {
                 const allValid = Object.values(validStates).every(Boolean);
@@ -58,6 +60,11 @@
                     resultElement.classList.add('error');
                     nameInput.focus();
                     validStates.userDisplayName = false;
+                } else if (name === initialName) {
+                    resultElement.textContent = '현재 기존 회원님 이름입니다.';
+                    resultElement.classList.remove('error');
+                    resultElement.classList.add('success');
+                    validStates.userDisplayName = true;
                 } else {
                     resultElement.textContent = '사용 가능한 이름입니다.';
                     resultElement.classList.remove('error');
@@ -110,7 +117,7 @@
                     })
                     .then(data => {
                         if (data.resultCode === 200) {
-                            resultElement.textContent = '전화번호가 유효합니다.';
+                            resultElement.textContent = data.resultMsg;
                             resultElement.classList.add('success');
                             resultElement.classList.remove('error');
                             validStates.userTel = true;

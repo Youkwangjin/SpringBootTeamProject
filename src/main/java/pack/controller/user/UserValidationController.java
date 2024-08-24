@@ -66,6 +66,4 @@ public class UserValidationController {
             return ResponseEntity.status(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiStatus()).body(telPhoneCheckResponse);
         }
     }
-
-
 }
