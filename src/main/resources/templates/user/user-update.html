@@ -168,15 +168,14 @@
                             return response.json();
                         })
                         .then(data => {
-                            if (data.resultCode === 204) {
+                            if (data.resultCode === 200) {
                                 alert(data.resultMsg);
-                                window.location.href = '/user/logout';
+                                window.location.href = '/user/mypage';
                             } else {
                                 throw new Error(data.errorMsg);
                             }
                         })
                         .catch(error => {
-                            console.error('Error:', error);
                             alert(error.message);
                         });
                 }
