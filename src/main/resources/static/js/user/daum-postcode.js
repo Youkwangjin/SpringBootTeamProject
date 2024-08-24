@@ -48,7 +48,7 @@ function user_execDaumPostcode() {
             var detailAddress = document.getElementById("user_detailAddress").value;
 
             var combinedAddress = roadAddr + ' ' + data.jibunAddress + ' ' + detailAddress;
-            document.getElementById("user_combinedAddress").value = combinedAddress;
+            document.getElementById("userAddress").value = combinedAddress;
         }
     }).open();
 
@@ -72,7 +72,7 @@ function user_execDaumPostcode() {
             combinedAddress += detailAddress;
         }
 
-        document.getElementById("user_combinedAddress").value = combinedAddress.trim();
+        document.getElementById("userAddress").value = combinedAddress.trim();
     });
 }
 

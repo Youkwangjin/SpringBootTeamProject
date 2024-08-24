@@ -17,7 +17,7 @@ public enum ApiSuccessCode {
     LOGIN_SUCCESS(200, "LIS", "로그인이 정상적으로 완료되었습니다."),
 
     // 수정 성공 코드 (HTTP Response: 204 OK)
-    INFO_UPDATE_SUCCESS(204, "IUS", "회원정보가 성공적으로 수정되었습니다. 다시 로그인 해주세요."),
+    INFO_UPDATE_SUCCESS(200, "IUS", "회원정보가 성공적으로 수정되었습니다"),
 
     // 삭제 성공 코드 (HTTP Response: 200 OK)
     INFO_DELETE_SUCCESS(200, "IDS", "그동안 이용해 주셔서 감사합니다.");

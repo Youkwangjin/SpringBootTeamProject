@@ -32,6 +32,10 @@ public class UserServiceImpl implements UserService {
     //  전화번호 중복 검증
     @Override
     public boolean isTelPhoneDuplicate(String userTel) {
+        String currentUserTelData = SecurityUtil.getAuthenticatedTelNumber();
+        if (currentUserTelData != null && StringUtils.equals(currentUserTelData, userTel)) {
+            return false;
+        }
         return userRepository.isTelDuplicate(userTel);
     }
 

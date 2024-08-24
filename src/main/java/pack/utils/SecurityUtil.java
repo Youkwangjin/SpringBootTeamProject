@@ -22,6 +22,15 @@ public class SecurityUtil {
         return null;
     }
 
+    public static String getAuthenticatedTelNumber() {
+        User userTelData = getPrincipal();
+
+        if (userTelData != null) {
+            return userTelData.getUserTel();
+        }
+        return null;
+    }
+
     private static User getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
