@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pack.role.UserRole;
 import pack.model.user.User;
 import pack.repository.user.UserRepository;
@@ -76,6 +77,7 @@ public class UserServiceImpl implements UserService {
 
     // 회원 수정
     @Override
+    @Transactional
     public void userDataUpdate(User user) {
         String authenticatedUUId  = SecurityUtil.getAuthenticatedUUId();
 
@@ -86,10 +88,6 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.selectAllUserData(authenticatedUUId);
         if (existingUser == null) {
             throw new UsernameNotFoundException("User not found with UUID: " + authenticatedUUId);
-        }
-
-        if (!StringUtils.isNotBlank(user.getUserPassword())) {
-            throw new IllegalArgumentException("Invalid current password");
         }
 
         if (StringUtils.isNotBlank(user.getUserPassword()) && !passwordEncoder.matches(user.getUserPassword(), existingUser.getUserPassword())) {
