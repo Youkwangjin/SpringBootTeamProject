@@ -9,8 +9,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pack.api.code.common.ApiErrorCode;
 import pack.api.response.ApiErrorResponse;
-import pack.api.code.user.ApiUserErrorCode;
 
 
 @RestControllerAdvice
@@ -25,7 +25,7 @@ public class UserExceptionHandler {
 
         StringBuilder errorUserMsg = new StringBuilder();
 
-        ApiUserErrorCode userErrorCode = ApiUserErrorCode.VALIDATION_ERROR;
+        ApiErrorCode userErrorCode = ApiErrorCode.VALIDATION_ERROR;
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             if (!errorUserMsg.isEmpty()) {
@@ -34,10 +34,10 @@ public class UserExceptionHandler {
             errorUserMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             userErrorCode = switch (fieldError.getField()) {
-                case "userEmail" -> ApiUserErrorCode.EMAIL_FORMAT_ERROR;
-                case "userPassword" -> ApiUserErrorCode.PASSWORD_STRENGTH_ERROR;
-                case "userDisplayName" -> ApiUserErrorCode.NAME_FORMAT_ERROR;
-                case "userTel" -> ApiUserErrorCode.TELEPHONE_FORMAT_ERROR;
+                case "userEmail" -> ApiErrorCode.EMAIL_FORMAT_ERROR;
+                case "userPassword" -> ApiErrorCode.PASSWORD_STRENGTH_ERROR;
+                case "userDisplayName" -> ApiErrorCode.NAME_FORMAT_ERROR;
+                case "userTel" -> ApiErrorCode.TELEPHONE_FORMAT_ERROR;
                 default -> userErrorCode;
             };
         }
@@ -45,10 +45,10 @@ public class UserExceptionHandler {
         log.info("  ========================  Validation errors  ========================  : {}", errorUserMsg);
 
         ApiErrorResponse response = new ApiErrorResponse(
-                userErrorCode.getUserErrorStatus(),
-                userErrorCode.getUserErrorDivisionCode(),
-                userErrorCode.getUserErrorMsg()
+                userErrorCode.getErrorStatus(),
+                userErrorCode.getErrorDivisionCode(),
+                userErrorCode.getErrorMsg()
         );
-        return ResponseEntity.status(userErrorCode.getUserErrorStatus()).body(response);
+        return ResponseEntity.status(userErrorCode.getErrorStatus()).body(response);
     }
 }

@@ -36,4 +36,8 @@ public class UserRepository {
     public void userUpdate(User updateUser) {
         sql.update("User.userUpdate", updateUser);
     }
+
+    public void userDelete(User user) {
+        sql.delete("User.userDelete", user);
+    }
 }

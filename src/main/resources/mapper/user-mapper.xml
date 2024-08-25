@@ -56,4 +56,11 @@
             USER_ADDRESS = #{userAddress}
         WHERE USER_UUID = #{userUUId}
     </update>
+
+    <!-- 회원탈퇴 -->
+    <delete id="userDelete" parameterType="user">
+        DELETE
+        FROM TB_USER
+        WHERE USER_UUID = #{userUUId}
+    </delete>
 </mapper>

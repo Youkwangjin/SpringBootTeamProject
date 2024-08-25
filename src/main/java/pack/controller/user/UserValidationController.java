@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pack.api.code.user.ApiUserErrorCode;
+import pack.api.code.common.ApiErrorCode;
 import pack.api.code.user.ApiUserSuccessCode;
 import pack.api.response.ApiErrorResponse;
 import pack.api.response.ApiSuccessResponse;
@@ -31,11 +31,11 @@ public class UserValidationController {
 
         if (emailDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiUserErrorCode.EMAIL_DUPLICATED.getUserErrorStatus())
-                    .errorDivisionCode(ApiUserErrorCode.EMAIL_DUPLICATED.getUserErrorDivisionCode())
-                    .errorMsg(ApiUserErrorCode.EMAIL_DUPLICATED.getUserErrorMsg())
+                    .errorStatus(ApiErrorCode.EMAIL_DUPLICATED.getErrorStatus())
+                    .errorDivisionCode(ApiErrorCode.EMAIL_DUPLICATED.getErrorDivisionCode())
+                    .errorMsg(ApiErrorCode.EMAIL_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiUserErrorCode.EMAIL_DUPLICATED.getUserErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> emailCheckResponse = ApiSuccessResponse.builder()
                     .resultCode(ApiUserSuccessCode.EMAIL_AVAILABLE.getUserApiStatus())
@@ -53,11 +53,11 @@ public class UserValidationController {
 
         if (userTelDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorStatus())
-                    .errorDivisionCode(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorDivisionCode())
-                    .errorMsg(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorMsg())
+                    .errorStatus(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorStatus())
+                    .errorDivisionCode(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorDivisionCode())
+                    .errorMsg(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiUserErrorCode.TELEPHONE_DUPLICATED.getUserErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> telPhoneCheckResponse = ApiSuccessResponse.builder()
                     .resultCode(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiStatus())
