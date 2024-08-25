@@ -15,4 +15,6 @@ public interface UserService {
     User getUserData();
 
     void userDataUpdate(User user);
+
+    void userDataDelete(User user);
 }

@@ -5,6 +5,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <title>에이콘테이너 : 회원수정</title>
     <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/css/user/user-join.css">
     <script src="/js/user/daum-postcode.js"></script>
     <script>
@@ -146,8 +147,17 @@
             // 회원수정 폼 데이터 전송
             document.getElementById('userUpdate').addEventListener('submit', function (e) {
                 e.preventDefault();
+
                 if (!submitButton.disabled) {
                     const userUUId = document.getElementById('userUUId').value;
+                    const passwordValue = userPassword.value.trim();
+
+                    if (passwordValue === '') {
+                        alert('비밀번호를 입력해주세요.');
+                        document.getElementById('userPassword').focus();
+                        return;
+                    }
+
                     const userData = {
                         userUUId: userUUId,
                         userEmail: userEmail.value,
@@ -191,7 +201,7 @@
     </script>
 </head>
 <body>
-<h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userDisplayName}"></span>님의 회원수정</h3>
+<h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userDisplayName}"></span>님의 회원정보</h3>
 <div class="join-form">
     <div class="content">
         <form id="userUpdate">
