@@ -37,4 +37,11 @@ public class UserPageController {
         model.addAttribute("userData", userData);
         return "user/user-update";
     }
+
+    @GetMapping("/user/delete/profile")
+    public String userDeletePage(Model model) {
+        User userData = userService.getUserData();
+        model.addAttribute("userData", userData);
+        return "user/user-delete";
+    }
 }

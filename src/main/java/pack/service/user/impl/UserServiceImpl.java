@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
 
     // 회원가입
     @Override
+    @Transactional
     public void userRegister(User user) {
         String encodedPassword = passwordEncoder.encode(user.getUserPassword());
 
@@ -104,5 +105,29 @@ public class UserServiceImpl implements UserService {
 
         // 최종 반환
         userRepository.userUpdate(updateUser);
+    }
+
+    // 회원탈퇴
+    @Override
+    @Transactional
+    public void userDataDelete(User user) {
+
+        String authenticatedUUId  = SecurityUtil.getAuthenticatedUUId();
+
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
+            throw new AccessDeniedException("Unauthorized to delete user data");
+        }
+
+        User existingUser = userRepository.selectAllUserData(authenticatedUUId);
+        if (existingUser == null) {
+            throw new UsernameNotFoundException("User not found : " + authenticatedUUId);
+        }
+
+        if (StringUtils.isNotBlank(user.getUserPassword()) && !passwordEncoder.matches(user.getUserPassword(), existingUser.getUserPassword())) {
+            throw new IllegalArgumentException("Invalid current password");
+        }
+
+        userRepository.userDelete(user);
+
     }
 }
