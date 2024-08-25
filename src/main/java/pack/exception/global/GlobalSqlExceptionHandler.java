@@ -14,7 +14,7 @@ import java.sql.SQLSyntaxErrorException;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalSqlExceptionHandler {
 
     // SQLSyntaxErrorException
     @ExceptionHandler(SQLSyntaxErrorException.class)
@@ -49,4 +49,6 @@ public class GlobalExceptionHandler {
                 .status(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
                 .body(response);
     }
+
+
 }
