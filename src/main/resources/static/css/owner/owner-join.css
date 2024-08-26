@@ -19,10 +19,7 @@ body {
 .join-form {
   width: 550px;
   background-color: whitesmoke;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 40px;
-  margin-bottom: 180px;
+  margin: 40px auto 180px;
   border-radius: 5px;
   padding: 30px;
 }
@@ -35,6 +32,16 @@ body {
 .text-field {
   font-size: 14px;
   width: 470px;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.text-field-postcode {
+  font-size: 14px;
+  width: 200px;
   border: none;
   border-radius: 5px;
   padding: 15px 10px;
@@ -85,4 +92,20 @@ body {
   margin-top: 5px;
   padding: 10px;
   border: none;
+}
+
+.result {
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.error {
+  color: red;
+  display: block;
+}
+
+.success {
+  color: blue;
+  display: block;
 }
