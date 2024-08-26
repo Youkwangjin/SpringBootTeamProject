@@ -1,4 +1,4 @@
-package pack.config;
+package pack.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,8 +25,12 @@ public class CustomCsrfTokenRepository implements CsrfTokenRepository {
 
     @Override
     public void saveToken(CsrfToken token, HttpServletRequest request, HttpServletResponse response) {
-        delegate.saveToken(token, request, response);
-        logger.debug(" ******************** Saved CSRF Token ******************** : {}", token.getToken());
+        if (token != null) {
+            delegate.saveToken(token, request, response);
+            logger.debug(" ******************** Saved CSRF Token ******************** : {}", token.getToken());
+        } else {
+            logger.debug("Attempted to save a null CSRF token");
+        }
     }
 
     @Override

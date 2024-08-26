@@ -13,10 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pack.security.CustomJsonAuthenticationFilter;
-import pack.security.CustomLoginFailureHandler;
-import pack.security.CustomLoginSuccessHandler;
-import pack.security.CustomLogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import pack.security.*;
 
 
 @Configuration
@@ -40,6 +38,7 @@ public class SpringSecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new CustomCsrfTokenRepository())
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/api/logout", "POST"))
                 )
 
                 //.csrf(AbstractHttpConfigurer::disable) // 테스트용
@@ -55,7 +54,8 @@ public class SpringSecurityConfig {
                                          "/conajax",
                                          "/user/join",
                                          "/user/login",
-                                         "/owner/join").permitAll()
+                                         "/owner/join",
+                                         "/owner/login").permitAll()
                         // Public API
                         .requestMatchers("/api/logout",
                                          "/api/auth/user/register",
@@ -74,7 +74,7 @@ public class SpringSecurityConfig {
                         .anyRequest().authenticated())
 
                 .logout(logout -> logout
-                        .logoutUrl("/api/user/logout")
+                        .logoutUrl("/api/logout")
                         .logoutSuccessHandler(customLogoutSuccessHandler))
 
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
