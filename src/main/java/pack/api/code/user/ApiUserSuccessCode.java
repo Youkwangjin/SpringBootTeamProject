@@ -9,9 +9,6 @@ public enum ApiUserSuccessCode {
     /**
      * ******************************* Success CodeList ***************************************
      */
-    EMAIL_AVAILABLE(200, "EAV", "사용 가능한 이메일입니다."),
-
-    TELEPHONE_AVAILABLE(200, "TPA", "사용 가능한 전화번호 입니다."),
 
     WAREHOUSE_RESERVATION_CREATED(201, "WRC", "창고 예약이 성공적으로 완료되었습니다."),
 

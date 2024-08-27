@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Owner">
+    <resultMap id="ownerResultMap"             type="pack.model.owner.Owner" autoMapping="true">
+        <result property="ownerId"             column="OWNER_ID"/>
+        <result property="ownerEmail"          column="OWNER_EMAIL"/>
+        <result property="ownerBusinessNum"    column="BUSINESS_NUMBER"/>
+        <result property="ownerPassword"       column="OWNER_PASSWORD"/>
+        <result property="ownerName"           column="OWNER_NAME"/>
+        <result property="ownerTel"            column="OWNER_TEL"/>
+        <result property="ownerCompanyName"    column="OWNER_COMPANY_NAME"/>
+        <result property="ownerAddress"        column="OWNER_ADDRESS"/>
+        <result property="ownerRole"           column="OWNER_ROLE"/>
+    </resultMap>
+
+    <!-- 이메일 중복 체크 -->
+    <select id="emailDuplicates" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_OWNER
+        WHERE OWNER_EMAIL = #{ownerEmail}
+    </select>
+
+    <!-- 사업자 번호 중복 체크 -->
+    <select id="businessNumDuplicates" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_OWNER
+        WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
+    </select>
+
+    <!-- 전화번호 중복 체크 -->
+    <select id="telDuplicates" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_OWNER
+        WHERE OWNER_TEL = #{ownerTel}
+    </select>
+</mapper>

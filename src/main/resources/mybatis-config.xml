@@ -4,5 +4,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="pack.model.user.User" alias="user" />
+        <typeAlias type="pack.model.owner.Owner" alias="owner" />
     </typeAliases>
 </configuration>
