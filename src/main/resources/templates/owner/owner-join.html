@@ -160,7 +160,7 @@
 
             function checkBusinessNumDuplication (businessNumInput, resultElement) {
                 const ownerBusinessNum = businessNumInput.value.trim();
-                fetch('/api/auth/owner/businessNum?ownerBusinessNum=' + encodeURIComponent(ownerBusinessNum), {
+                fetch('/api/auth/owner/businessNumCheck?ownerBusinessNum=' + encodeURIComponent(ownerBusinessNum), {
                     method: 'GET',
                     credentials: 'include',
                 })
@@ -299,7 +299,7 @@
             // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const ownerTel = telInput.value.trim();
-                fetch('/api/auth/owner/userTelCheck?ownerTel=' + encodeURIComponent(ownerTel), {
+                fetch('/api/auth/owner/ownerTelCheck?ownerTel=' + encodeURIComponent(ownerTel), {
                     method: 'GET',
                     credentials: 'include',
                 })
@@ -429,6 +429,12 @@
                        placeholder="-를 제외한 숫자만 입력 바랍니다.">
             </label><br/>
             <span class="tel-result"></span>
+
+            <h3>회사명</h3>
+            <label for="ownerCompanyName">
+                <input type="tel" name="ownerCompanyName" id="ownerCompanyName" class="text-field"
+                       placeholder="회사명을 입력해주세요.">
+            </label><br/>
 
             <h3>주소</h3>
             <label for="user_postcode">

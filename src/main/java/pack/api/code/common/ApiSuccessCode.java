@@ -9,6 +9,12 @@ public enum ApiSuccessCode {
     /**
      * ******************************* Global Success CodeList ***************************************
      */
+    
+    // 이메일 
+    EMAIL_AVAILABLE(200, "EAV", "사용 가능한 이메일입니다."),
+    
+    // 전화번호
+    TELEPHONE_AVAILABLE(200, "TPA", "사용 가능한 전화번호 입니다."),
 
     // 회원 가입 성공 코드 (HTTP Response: 201 Created)
     REGISTER_INSERT_SUCCESS(201, "RIS", "회원가입이 정상적으로 완료되었습니다."),

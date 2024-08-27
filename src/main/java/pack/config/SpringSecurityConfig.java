@@ -56,18 +56,25 @@ public class SpringSecurityConfig {
                                          "/user/login",
                                          "/owner/join",
                                          "/owner/login").permitAll()
-                        // Public API
+                        // Public User API
                         .requestMatchers("/api/logout",
                                          "/api/auth/user/register",
                                          "/api/auth/user/emailCheck",
                                          "/api/auth/user/userTelCheck",
                                          "/api/auth/user/login").permitAll()
 
+                        // Public Owner API
+                        .requestMatchers("/api/auth/owner/register",
+                                         "/api/auth/owner/emailCheck",
+                                         "/api/auth/owner/businessNumCheck",
+                                         "/api/auth/owner/ownerTelCheck",
+                                         "/api/auth/owner/login").permitAll()
+
                         // Protected Common Pages
                         .requestMatchers("/user/mypage",
                                          "/user/update/profile").hasAuthority("ROLE_USER")
 
-                        // Protected API
+                        // Protected User API
                         .requestMatchers("/api/user/update/{userUUId}",
                                          "/api/user/delete/{userUUId}").hasAuthority("ROLE_USER")
 
