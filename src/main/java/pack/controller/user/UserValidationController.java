@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pack.api.code.common.ApiErrorCode;
-import pack.api.code.user.ApiUserSuccessCode;
+import pack.api.code.common.ApiSuccessCode;
 import pack.api.response.ApiErrorResponse;
 import pack.api.response.ApiSuccessResponse;
 import pack.service.user.UserService;
@@ -38,10 +38,10 @@ public class UserValidationController {
             return ResponseEntity.status(ApiErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> emailCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiUserSuccessCode.EMAIL_AVAILABLE.getUserApiStatus())
-                    .resultMsg(ApiUserSuccessCode.EMAIL_AVAILABLE.getUserApiMessage())
+                    .resultCode(ApiSuccessCode.EMAIL_AVAILABLE.getStatus())
+                    .resultMsg(ApiSuccessCode.EMAIL_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiUserSuccessCode.EMAIL_AVAILABLE.getUserApiStatus()).body(emailCheckResponse);
+            return ResponseEntity.status(ApiSuccessCode.EMAIL_AVAILABLE.getStatus()).body(emailCheckResponse);
         }
     }
 
@@ -60,10 +60,10 @@ public class UserValidationController {
             return ResponseEntity.status(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> telPhoneCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiStatus())
-                    .resultMsg(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiMessage())
+                    .resultCode(ApiSuccessCode.TELEPHONE_AVAILABLE.getStatus())
+                    .resultMsg(ApiSuccessCode.TELEPHONE_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiUserSuccessCode.TELEPHONE_AVAILABLE.getUserApiStatus()).body(telPhoneCheckResponse);
+            return ResponseEntity.status(ApiSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
         }
     }
 }
