@@ -35,4 +35,10 @@
         FROM TB_OWNER
         WHERE OWNER_TEL = #{ownerTel}
     </select>
+
+    <!-- 회원가입 -->
+    <insert id="ownerRegister" parameterType="owner" useGeneratedKeys="true" keyProperty="ownerId" >
+        INSERT INTO TB_OWNER (OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NAME, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
+        VALUES (#{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerName}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddress}, #{ownerRole})
+    </insert>
 </mapper>

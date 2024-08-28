@@ -12,13 +12,14 @@
     <script src="/js/user/daum-postcode.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-           let ownerEmail = document.getElementById('ownerEmail');
-           let ownerBusinessNum = document.getElementById('ownerBusinessNum');
-           let ownerPassword = document.getElementById('ownerPassword');
-           let ownerRePassword = document.getElementById('ownerRePassword');
-           let ownerName = document.getElementById('ownerName');
-           let ownerTel = document.getElementById('ownerTel');
-           let ownerAddr = document.getElementById('ownerAddr');
+            let ownerEmail = document.getElementById('ownerEmail');
+            let ownerBusinessNum = document.getElementById('ownerBusinessNum');
+            let ownerPassword = document.getElementById('ownerPassword');
+            let ownerRePassword = document.getElementById('ownerRePassword');
+            let ownerName = document.getElementById('ownerName');
+            let ownerTel = document.getElementById('ownerTel');
+            let ownerCompanyName = document.getElementById('ownerCompanyName');
+            let ownerAddr = document.getElementById('userAddress');
 
             let emailResult = document.querySelector(".email-result");
             let businessNumResult = document.querySelector(".businessNum-result");
@@ -158,7 +159,7 @@
                 checkFormValid();
             }
 
-            function checkBusinessNumDuplication (businessNumInput, resultElement) {
+            function checkBusinessNumDuplication(businessNumInput, resultElement) {
                 const ownerBusinessNum = businessNumInput.value.trim();
                 fetch('/api/auth/owner/businessNumCheck?ownerBusinessNum=' + encodeURIComponent(ownerBusinessNum), {
                     method: 'GET',
@@ -344,9 +345,11 @@
                 if (!submitButton.disabled) {
                     const ownerData = {
                         ownerEmail: ownerEmail.value,
+                        ownerBusinessNum: ownerBusinessNum.value,
                         ownerPassword: ownerPassword.value,
                         ownerName: ownerName.value,
                         ownerTel: ownerTel.value,
+                        ownerCompanyName: ownerCompanyName.value,
                         ownerAddr: ownerAddr.value,
                         _csrf: document.querySelector('[name="_csrf"]').value
                     };

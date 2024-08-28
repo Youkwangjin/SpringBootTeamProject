@@ -24,6 +24,12 @@ public enum ApiErrorCode {
 
     // 이메일 관련 오류
     EMAIL_FORMAT_ERROR(400, "EFE", "이메일 형식이 유효하지 않습니다."),
+    
+    // 사업자 번호 관련 오류
+    BUSINESS_NUMBER_ERROR(400, "BNE", "사업자 번호 형식이 유효하지 않습니다."),
+
+    // 회사 이름 관련 이름
+    COMPANY_NAME_ERROR(400, "CNE", "회사명 형식이 유효하지 않습니다."),
 
     // 이름 관련 오류
     NAME_FORMAT_ERROR(400, "NFE", "이름 형식이 유효하지 않습니다."),

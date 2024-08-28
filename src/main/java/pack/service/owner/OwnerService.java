@@ -1,6 +1,7 @@
 package pack.service.owner;
 
 import org.springframework.stereotype.Service;
+import pack.model.owner.Owner;
 
 @Service
 public interface OwnerService {
@@ -11,4 +12,5 @@ public interface OwnerService {
 
     boolean isTelPhoneDuplicate(String ownerTel);
 
+    void ownerRegister(Owner owner);
 }
