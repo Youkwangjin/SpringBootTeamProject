@@ -66,6 +66,12 @@ body {
   background-color: #0056b3;
 }
 
+.submit-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
 .submit-btn {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
