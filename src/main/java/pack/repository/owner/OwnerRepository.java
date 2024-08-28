@@ -4,6 +4,7 @@ package pack.repository.owner;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import pack.model.owner.Owner;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,5 +25,9 @@ public class OwnerRepository {
     public boolean isTelDuplicate(String ownerTel) {
         int telCount = sql.selectOne("Owner.telDuplicates", ownerTel);
         return telCount > 0;
+    }
+
+    public void ownerRegister(Owner owner) {
+        sql.insert("Owner.ownerRegister", owner);
     }
 }
