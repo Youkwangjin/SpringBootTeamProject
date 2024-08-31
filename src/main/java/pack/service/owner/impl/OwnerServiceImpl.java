@@ -9,7 +9,7 @@ import pack.model.owner.Owner;
 import pack.repository.owner.OwnerRepository;
 import pack.role.OwnerRole;
 import pack.service.owner.OwnerService;
-import pack.utils.SecurityUtil;
+import pack.utils.UserSecurityUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public boolean isTelPhoneDuplicate(String ownerTel) {
-        String currentUserTelData = SecurityUtil.getAuthenticatedTelNumber();
+        String currentUserTelData = UserSecurityUtil.getAuthenticatedTelNumber();
         if (currentUserTelData != null && StringUtils.equals(currentUserTelData, ownerTel)) {
             return false;
         }
@@ -45,7 +45,7 @@ public class OwnerServiceImpl implements OwnerService {
         Owner newOwner = Owner.builder()
                 .ownerEmail(owner.getOwnerEmail())
                 .ownerBusinessNum(owner.getOwnerBusinessNum())
-                .ownerPassword(owner.getOwnerPassword())
+                .ownerPassword(encodedPassword)
                 .ownerName(owner.getOwnerName())
                 .ownerCompanyName(owner.getOwnerCompanyName())
                 .ownerAddress(owner.getOwnerAddress())
@@ -55,5 +55,10 @@ public class OwnerServiceImpl implements OwnerService {
 
         ownerRepository.ownerRegister(newOwner);
 
+    }
+
+    @Override
+    public Owner getOwnerData() {
+        return null;
     }
 }
