@@ -5,8 +5,6 @@ import lombok.Getter;
 @Getter
 public enum ApiOwnerErrorCode {
 
-    BUSINESS_NUMBER_CONFLICT(409, "BNC", "이미 사용 중인 사업자 번호입니다."),
-
     OWNER_AUTHENTICATION_FAILED(401, "OFD", "사업자 번호 또는 비밀번호가 올바르지 않습니다.");
 
     private final int ownerErrorStatus;

@@ -9,7 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pack.api.code.common.ApiErrorCode;
+import pack.api.code.common.ApiValidationErrorCode;
 import pack.api.response.ApiErrorResponse;
 import pack.controller.owner.OwnerRegisterController;
 
@@ -26,7 +26,7 @@ public class OwnerExceptionHandler {
 
         StringBuilder errorOwnerMsg = new StringBuilder();
 
-        ApiErrorCode ownerErrorCode = ApiErrorCode.VALIDATION_ERROR;
+        ApiValidationErrorCode ownerErrorCode = ApiValidationErrorCode.VALIDATION_ERROR;
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             if (!errorOwnerMsg.isEmpty()) {
@@ -35,12 +35,12 @@ public class OwnerExceptionHandler {
             errorOwnerMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             ownerErrorCode = switch (fieldError.getField()) {
-                case "ownerEmail" -> ApiErrorCode.EMAIL_FORMAT_ERROR;
-                case "ownerBusinessNum" -> ApiErrorCode.BUSINESS_NUMBER_ERROR;
-                case "ownerPassword" -> ApiErrorCode.PASSWORD_STRENGTH_ERROR;
-                case "ownerName" -> ApiErrorCode.NAME_FORMAT_ERROR;
-                case "ownerTel" -> ApiErrorCode.TELEPHONE_FORMAT_ERROR;
-                case "ownerCompanyName" -> ApiErrorCode.COMPANY_NAME_ERROR;
+                case "ownerEmail" -> ApiValidationErrorCode.EMAIL_FORMAT_ERROR;
+                case "ownerBusinessNum" -> ApiValidationErrorCode.BUSINESS_NUMBER_ERROR;
+                case "ownerPassword" -> ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR;
+                case "ownerName" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;
+                case "ownerTel" -> ApiValidationErrorCode.TELEPHONE_FORMAT_ERROR;
+                case "ownerCompanyName" -> ApiValidationErrorCode.COMPANY_NAME_ERROR;
                 default -> ownerErrorCode;
             };
         }

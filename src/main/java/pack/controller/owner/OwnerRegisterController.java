@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pack.api.code.common.ApiSuccessCode;
+import pack.api.code.common.ApiHttpSuccessCode;
 import pack.api.response.ApiSuccessResponse;
 import pack.model.owner.Owner;
 import pack.service.owner.OwnerService;
@@ -29,9 +29,9 @@ public class OwnerRegisterController {
         ownerService.ownerRegister(owner);
 
         ApiSuccessResponse<Object> registerResponse = ApiSuccessResponse.builder()
-                .resultCode(ApiSuccessCode.REGISTER_INSERT_SUCCESS.getStatus())
-                .resultMsg(ApiSuccessCode.REGISTER_INSERT_SUCCESS.getMessage())
+                .resultCode(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getStatus())
+                .resultMsg(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getMessage())
                 .build();
-        return ResponseEntity.status(ApiSuccessCode.REGISTER_INSERT_SUCCESS.getStatus()).body(registerResponse);
+        return ResponseEntity.status(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getStatus()).body(registerResponse);
     }
 }

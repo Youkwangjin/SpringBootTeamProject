@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pack.api.code.common.ApiErrorCode;
-import pack.api.code.common.ApiSuccessCode;
+import pack.api.code.common.ApiValidationErrorCode;
+import pack.api.code.common.ApiValidationSuccessCode;
 import pack.api.response.ApiErrorResponse;
 import pack.api.response.ApiSuccessResponse;
 import pack.service.user.UserService;
@@ -31,17 +31,17 @@ public class UserValidationController {
 
         if (emailDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiErrorCode.EMAIL_DUPLICATED.getErrorStatus())
-                    .errorDivisionCode(ApiErrorCode.EMAIL_DUPLICATED.getErrorDivisionCode())
-                    .errorMsg(ApiErrorCode.EMAIL_DUPLICATED.getErrorMsg())
+                    .errorStatus(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus())
+                    .errorDivisionCode(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorDivisionCode())
+                    .errorMsg(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> emailCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiSuccessCode.EMAIL_AVAILABLE.getStatus())
-                    .resultMsg(ApiSuccessCode.EMAIL_AVAILABLE.getMessage())
+                    .resultCode(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus())
+                    .resultMsg(ApiValidationSuccessCode.EMAIL_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiSuccessCode.EMAIL_AVAILABLE.getStatus()).body(emailCheckResponse);
+            return ResponseEntity.status(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus()).body(emailCheckResponse);
         }
     }
 
@@ -53,17 +53,17 @@ public class UserValidationController {
 
         if (userTelDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorStatus())
-                    .errorDivisionCode(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorDivisionCode())
-                    .errorMsg(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorMsg())
+                    .errorStatus(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus())
+                    .errorDivisionCode(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorDivisionCode())
+                    .errorMsg(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> telPhoneCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiSuccessCode.TELEPHONE_AVAILABLE.getStatus())
-                    .resultMsg(ApiSuccessCode.TELEPHONE_AVAILABLE.getMessage())
+                    .resultCode(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus())
+                    .resultMsg(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
+            return ResponseEntity.status(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
         }
     }
 }

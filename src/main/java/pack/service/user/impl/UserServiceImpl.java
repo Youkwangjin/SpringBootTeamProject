@@ -13,7 +13,7 @@ import pack.role.UserRole;
 import pack.model.user.User;
 import pack.repository.user.UserRepository;
 import pack.service.user.UserService;
-import pack.utils.SecurityUtil;
+import pack.utils.UserSecurityUtil;
 
 import java.util.UUID;
 
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     //  전화번호 중복 검증
     @Override
     public boolean isTelPhoneDuplicate(String userTel) {
-        String currentUserTelData = SecurityUtil.getAuthenticatedTelNumber();
+        String currentUserTelData = UserSecurityUtil.getAuthenticatedTelNumber();
         if (currentUserTelData != null && StringUtils.equals(currentUserTelData, userTel)) {
             return false;
         }
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserData() throws AuthenticationException {
-        String userUUId = SecurityUtil.getAuthenticatedUUId();
+        String userUUId = UserSecurityUtil.getAuthenticatedUUId();
 
         if (!StringUtils.isNotBlank(userUUId)) {
             throw new UsernameNotFoundException("User is not authenticated");
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userDataUpdate(User user) {
-        String authenticatedUUId  = SecurityUtil.getAuthenticatedUUId();
+        String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
 
         if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to update user data");
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void userDataDelete(User user) {
 
-        String authenticatedUUId  = SecurityUtil.getAuthenticatedUUId();
+        String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
 
         if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to delete user data");

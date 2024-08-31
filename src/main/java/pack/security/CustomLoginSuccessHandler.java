@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
-import pack.api.code.common.ApiSuccessCode;
+import pack.api.code.common.ApiHttpSuccessCode;
 import pack.api.response.ApiSuccessResponse;
 
 import java.io.IOException;
@@ -39,13 +39,13 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         // 새로운 세션에 SecurityContext 저장
         newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
-        ApiSuccessCode apiSuccessCode = ApiSuccessCode.LOGIN_SUCCESS;
+        ApiHttpSuccessCode apiHttpSuccessCode = ApiHttpSuccessCode.LOGIN_SUCCESS;
         ApiSuccessResponse<String> apiSuccessResponse = ApiSuccessResponse.<String>builder()
-                .resultCode(apiSuccessCode.getStatus())
-                .resultMsg(apiSuccessCode.getMessage())
+                .resultCode(apiHttpSuccessCode.getStatus())
+                .resultMsg(apiHttpSuccessCode.getMessage())
                 .build();
 
-        response.setStatus(apiSuccessCode.getStatus());
+        response.setStatus(apiHttpSuccessCode.getStatus());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(convertObjectToJson(apiSuccessResponse));

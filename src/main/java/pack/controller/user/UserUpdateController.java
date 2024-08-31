@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pack.api.code.common.ApiSuccessCode;
+import pack.api.code.common.ApiHttpSuccessCode;
 import pack.api.response.ApiSuccessResponse;
 import pack.model.user.User;
 import pack.service.user.UserService;
@@ -29,10 +29,10 @@ public class UserUpdateController {
         userService.userDataUpdate(user);
 
         ApiSuccessResponse<Object> updateResponse = ApiSuccessResponse.builder()
-                .resultCode(ApiSuccessCode.INFO_UPDATE_SUCCESS.getStatus())
-                .resultMsg(ApiSuccessCode.INFO_UPDATE_SUCCESS.getMessage())
+                .resultCode(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus())
+                .resultMsg(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getMessage())
                 .build();
-        return ResponseEntity.status(ApiSuccessCode.INFO_UPDATE_SUCCESS.getStatus()).body(updateResponse);
+        return ResponseEntity.status(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus()).body(updateResponse);
 
     }
 
