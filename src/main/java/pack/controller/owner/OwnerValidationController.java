@@ -7,10 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pack.api.code.common.ApiErrorCode;
-import pack.api.code.common.ApiSuccessCode;
-import pack.api.code.owner.ApiOwnerErrorCode;
-import pack.api.code.owner.ApiOwnerSuccessCode;
+import pack.api.code.common.ApiValidationErrorCode;
+import pack.api.code.common.ApiValidationSuccessCode;
 import pack.api.response.ApiErrorResponse;
 import pack.api.response.ApiSuccessResponse;
 import pack.service.owner.OwnerService;
@@ -31,17 +29,17 @@ public class OwnerValidationController {
 
         if (ownerEmailDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiErrorCode.EMAIL_DUPLICATED.getErrorStatus())
-                    .errorDivisionCode(ApiErrorCode.EMAIL_DUPLICATED.getErrorDivisionCode())
-                    .errorMsg(ApiErrorCode.EMAIL_DUPLICATED.getErrorMsg())
+                    .errorStatus(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus())
+                    .errorDivisionCode(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorDivisionCode())
+                    .errorMsg(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> emailCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiSuccessCode.EMAIL_AVAILABLE.getStatus())
-                    .resultMsg(ApiSuccessCode.EMAIL_AVAILABLE.getMessage())
+                    .resultCode(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus())
+                    .resultMsg(ApiValidationSuccessCode.EMAIL_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiSuccessCode.EMAIL_AVAILABLE.getStatus()).body(emailCheckResponse);
+            return ResponseEntity.status(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus()).body(emailCheckResponse);
         }
 
     }
@@ -54,17 +52,17 @@ public class OwnerValidationController {
 
         if (ownerBusinessNumDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiOwnerErrorCode.OWNER_AUTHENTICATION_FAILED.getOwnerErrorStatus())
-                    .errorDivisionCode(ApiOwnerErrorCode.OWNER_AUTHENTICATION_FAILED.getOwnerErrorDivisionCode())
-                    .errorMsg(ApiOwnerErrorCode.OWNER_AUTHENTICATION_FAILED.getOwnerErrorMsg())
+                    .errorStatus(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorStatus())
+                    .errorDivisionCode(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorDivisionCode())
+                    .errorMsg(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiOwnerErrorCode.OWNER_AUTHENTICATION_FAILED.getOwnerErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> businessNumCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiOwnerSuccessCode.BUSINESS_NUMBER_AVAILABLE.getOwnerApiStatus())
-                    .resultMsg(ApiOwnerSuccessCode.BUSINESS_NUMBER_AVAILABLE.getOwnerApiMessage())
+                    .resultCode(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getStatus())
+                    .resultMsg(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiOwnerSuccessCode.BUSINESS_NUMBER_AVAILABLE.getOwnerApiStatus()).body(businessNumCheckResponse);
+            return ResponseEntity.status(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getStatus()).body(businessNumCheckResponse);
         }
     }
 
@@ -78,17 +76,17 @@ public class OwnerValidationController {
 
         if (ownerTelDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorStatus())
-                    .errorDivisionCode(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorDivisionCode())
-                    .errorMsg(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorMsg())
+                    .errorStatus(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus())
+                    .errorDivisionCode(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorDivisionCode())
+                    .errorMsg(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> telPhoneCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiSuccessCode.TELEPHONE_AVAILABLE.getStatus())
-                    .resultMsg(ApiSuccessCode.TELEPHONE_AVAILABLE.getMessage())
+                    .resultCode(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus())
+                    .resultMsg(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
+            return ResponseEntity.status(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
         }
     }
 }

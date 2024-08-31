@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pack.api.code.common.ApiSuccessCode;
+import pack.api.code.common.ApiHttpSuccessCode;
 import pack.api.response.ApiSuccessResponse;
 import pack.model.user.User;
 import pack.service.user.UserService;
@@ -27,9 +27,9 @@ public class UserRegisterController {
         userService.userRegister(user);
 
         ApiSuccessResponse<Object> registerResponse = ApiSuccessResponse.builder()
-                .resultCode(ApiSuccessCode.REGISTER_INSERT_SUCCESS.getStatus())
-                .resultMsg(ApiSuccessCode.REGISTER_INSERT_SUCCESS.getMessage())
+                .resultCode(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getStatus())
+                .resultMsg(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getMessage())
                 .build();
-        return ResponseEntity.status(ApiSuccessCode.REGISTER_INSERT_SUCCESS.getStatus()).body(registerResponse);
+        return ResponseEntity.status(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getStatus()).body(registerResponse);
     }
 }

@@ -9,11 +9,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pack.api.code.common.ApiErrorCode;
+import pack.api.code.common.ApiValidationErrorCode;
 import pack.api.response.ApiErrorResponse;
+import pack.controller.user.UserRegisterController;
 
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackageClasses  = UserRegisterController.class)
 public class UserExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(UserExceptionHandler.class);
@@ -25,7 +26,7 @@ public class UserExceptionHandler {
 
         StringBuilder errorUserMsg = new StringBuilder();
 
-        ApiErrorCode userErrorCode = ApiErrorCode.VALIDATION_ERROR;
+        ApiValidationErrorCode userErrorCode = ApiValidationErrorCode.VALIDATION_ERROR;
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             if (!errorUserMsg.isEmpty()) {
@@ -34,10 +35,10 @@ public class UserExceptionHandler {
             errorUserMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             userErrorCode = switch (fieldError.getField()) {
-                case "userEmail" -> ApiErrorCode.EMAIL_FORMAT_ERROR;
-                case "userPassword" -> ApiErrorCode.PASSWORD_STRENGTH_ERROR;
-                case "userDisplayName" -> ApiErrorCode.NAME_FORMAT_ERROR;
-                case "userTel" -> ApiErrorCode.TELEPHONE_FORMAT_ERROR;
+                case "userEmail" -> ApiValidationErrorCode.EMAIL_FORMAT_ERROR;
+                case "userPassword" -> ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR;
+                case "userDisplayName" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;
+                case "userTel" -> ApiValidationErrorCode.TELEPHONE_FORMAT_ERROR;
                 default -> userErrorCode;
             };
         }
