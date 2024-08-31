@@ -9,9 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import pack.model.user.User;
 
 
-public class SecurityUtil {
+public class UserSecurityUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(SecurityUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(UserSecurityUtil.class);
 
     public static String getAuthenticatedUUId() {
         User userUUIdData = getPrincipal();
