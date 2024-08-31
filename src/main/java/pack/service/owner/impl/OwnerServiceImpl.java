@@ -11,6 +11,8 @@ import pack.role.OwnerRole;
 import pack.service.owner.OwnerService;
 import pack.utils.UserSecurityUtil;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class OwnerServiceImpl implements OwnerService {
@@ -43,6 +45,7 @@ public class OwnerServiceImpl implements OwnerService {
         String encodedPassword = passwordEncoder.encode(owner.getOwnerPassword());
 
         Owner newOwner = Owner.builder()
+                .ownerUUId(UUID.randomUUID().toString())
                 .ownerEmail(owner.getOwnerEmail())
                 .ownerBusinessNum(owner.getOwnerBusinessNum())
                 .ownerPassword(encodedPassword)
