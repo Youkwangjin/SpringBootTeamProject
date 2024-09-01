@@ -19,6 +19,9 @@ public enum ApiHttpErrorCode {
     // 잘못된 요청
     BAD_REQUEST_ERROR(400, "BRE", "잘못된 요청입니다."),
 
+    // 로그인 실패
+    AUTHENTICATION_ERROR(401, "ACE", "로그인 후 이용 가능합니다."),
+
     // 권한 없음
     FORBIDDEN_ERROR(403, "FBE", "접근 권한이 없습니다."),
 
