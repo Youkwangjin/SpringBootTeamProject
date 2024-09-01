@@ -68,7 +68,7 @@ public class SpringSecurityConfig {
                                          "/assets/img/favicon.png").permitAll()
                         // Public Pages
                         .requestMatchers("/",
-                                         "/conajax",
+                                         "/containerMaps",
                                          "/user/join",
                                          "/user/login",
                                          "/owner/join",
