@@ -18,7 +18,7 @@ import pack.model.user.User;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class CustomUserJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/user/login";
     private static final String HTTP_METHOD_POST = "POST";
@@ -28,9 +28,9 @@ public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProces
 
     private final ObjectMapper objectMapper;
 
-    public CustomJsonAuthenticationFilter(ObjectMapper objectMapper,
-                                          AuthenticationSuccessHandler authenticationSuccessHandler,
-                                          AuthenticationFailureHandler authenticationFailureHandler) {
+    public CustomUserJsonAuthenticationFilter(ObjectMapper objectMapper,
+                                              AuthenticationSuccessHandler authenticationSuccessHandler,
+                                              AuthenticationFailureHandler authenticationFailureHandler) {
 
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
 

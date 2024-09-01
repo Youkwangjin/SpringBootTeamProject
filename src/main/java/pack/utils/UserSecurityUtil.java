@@ -14,7 +14,7 @@ public class UserSecurityUtil {
     private static final Logger log = LoggerFactory.getLogger(UserSecurityUtil.class);
 
     public static String getAuthenticatedUUId() {
-        User userUUIdData = getPrincipal();
+        User userUUIdData = getUserPrincipal();
 
         if (userUUIdData != null) {
             return userUUIdData.getUserUUId();
@@ -23,7 +23,7 @@ public class UserSecurityUtil {
     }
 
     public static String getAuthenticatedTelNumber() {
-        User userTelData = getPrincipal();
+        User userTelData = getUserPrincipal();
 
         if (userTelData != null) {
             return userTelData.getUserTel();
@@ -31,7 +31,7 @@ public class UserSecurityUtil {
         return null;
     }
 
-    private static User getPrincipal() {
+    private static User getUserPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
