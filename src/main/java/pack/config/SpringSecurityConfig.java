@@ -1,9 +1,10 @@
 package pack.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -19,16 +20,32 @@ import pack.security.*;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SpringSecurityConfig {
 
 
     private final ObjectMapper objectMapper;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final UserDetailsService userService;
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
     private final CustomLoginFailureHandler customLoginFailureHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final UserDetailsService userService;
+    private final UserDetailsService ownerService;
+
+    public SpringSecurityConfig(ObjectMapper objectMapper,
+                                BCryptPasswordEncoder passwordEncoder,
+                                CustomLoginSuccessHandler customLoginSuccessHandler,
+                                CustomLoginFailureHandler customLoginFailureHandler,
+                                CustomLogoutSuccessHandler customLogoutSuccessHandler,
+                                @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
+                                @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
+        this.objectMapper = objectMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.customLoginSuccessHandler = customLoginSuccessHandler;
+        this.customLoginFailureHandler = customLoginFailureHandler;
+        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
+        this.userService = userService;
+        this.ownerService = ownerService;
+    }
 
 
 
@@ -84,25 +101,41 @@ public class SpringSecurityConfig {
                         .logoutUrl("/api/logout")
                         .logoutSuccessHandler(customLogoutSuccessHandler))
 
-                .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(userJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(ownerJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-
     @Bean
-    public CustomJsonAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
-        CustomJsonAuthenticationFilter customJsonAuthenticationFilter = new CustomJsonAuthenticationFilter(objectMapper, customLoginSuccessHandler, customLoginFailureHandler);
-        customJsonAuthenticationFilter.setAuthenticationManager(authenticationManager());
-        return customJsonAuthenticationFilter;
+    public CustomUserJsonAuthenticationFilter userJsonUsernamePasswordAuthenticationFilter() {
+        CustomUserJsonAuthenticationFilter customUserJsonAuthenticationFilter = new CustomUserJsonAuthenticationFilter(objectMapper, customLoginSuccessHandler, customLoginFailureHandler);
+        customUserJsonAuthenticationFilter.setAuthenticationManager(userAuthenticationManager());
+        return customUserJsonAuthenticationFilter;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() {
+    public CustomOwnerJsonAuthenticationFilter ownerJsonUsernamePasswordAuthenticationFilter() {
+        CustomOwnerJsonAuthenticationFilter customOwnerJsonAuthenticationFilter = new CustomOwnerJsonAuthenticationFilter(objectMapper, customLoginSuccessHandler, customLoginFailureHandler);
+        customOwnerJsonAuthenticationFilter.setAuthenticationManager(ownerAuthenticationManager());
+        return customOwnerJsonAuthenticationFilter;
+    }
+
+    @Bean
+    @Primary
+    public AuthenticationManager userAuthenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userService);
 
+        return new ProviderManager(provider);
+    }
+
+    @Bean
+    public AuthenticationManager ownerAuthenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(ownerService);
+        provider.setPasswordEncoder(passwordEncoder);
         return new ProviderManager(provider);
     }
 }

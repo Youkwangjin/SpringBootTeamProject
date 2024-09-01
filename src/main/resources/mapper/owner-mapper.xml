@@ -42,4 +42,18 @@
         INSERT INTO TB_OWNER (OWNER_UUID, OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NAME, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
         VALUES (#{ownerUUId}, #{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerName}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddress}, #{ownerRole})
     </insert>
+
+    <!-- 아이디 검증 -->
+    <select id="findByOwnerBusinessNum" parameterType="String" resultMap="ownerResultMap">
+        SELECT *
+        FROM TB_OWNER
+        WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
+    </select>
+
+    <!-- 회원조회 -->
+    <select id="selectAllOwnerData" parameterType="String" resultMap="ownerResultMap">
+        SELECT *
+        FROM TB_OWNER
+        WHERE OWNER_UUID = #{ownerUUId}
+    </select>
 </mapper>

@@ -2,6 +2,8 @@ package pack.service.owner.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,7 @@ import pack.model.owner.Owner;
 import pack.repository.owner.OwnerRepository;
 import pack.role.OwnerRole;
 import pack.service.owner.OwnerService;
+import pack.utils.OwnerSecurityUtil;
 import pack.utils.UserSecurityUtil;
 
 import java.util.UUID;
@@ -61,7 +64,19 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public Owner getOwnerData() {
-        return null;
+    public Owner getOwnerData() throws AuthenticationException {
+        String ownerUUId = OwnerSecurityUtil.getAuthenticatedUUId();
+
+        if (!StringUtils.isNotBlank(ownerUUId)) {
+            throw new UsernameNotFoundException("Owner is not authenticated");
+        }
+
+        Owner ownerData = ownerRepository.selectAllOwnerData(ownerUUId);
+
+        if (ownerData == null) {
+            throw new UsernameNotFoundException("User data not found");
+        }
+
+        return ownerData;
     }
 }
