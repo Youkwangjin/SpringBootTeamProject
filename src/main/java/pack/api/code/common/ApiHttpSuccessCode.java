@@ -4,17 +4,11 @@ package pack.api.code.common;
 import lombok.Getter;
 
 @Getter
-public enum ApiSuccessCode {
+public enum ApiHttpSuccessCode {
 
     /**
      * ******************************* Global Success CodeList ***************************************
      */
-    
-    // 이메일 
-    EMAIL_AVAILABLE(200, "EAV", "사용 가능한 이메일입니다."),
-    
-    // 전화번호
-    TELEPHONE_AVAILABLE(200, "TPA", "사용 가능한 전화번호 입니다."),
 
     // 회원 가입 성공 코드 (HTTP Response: 201 Created)
     REGISTER_INSERT_SUCCESS(201, "RIS", "회원가입이 정상적으로 완료되었습니다."),
@@ -38,7 +32,7 @@ public enum ApiSuccessCode {
     // 성공 코드의 '코드 메시지'를 반환
     private final String message;
 
-    ApiSuccessCode(final int status, final String code, final String message) {
+    ApiHttpSuccessCode(final int status, final String code, final String message) {
         this.status = status;
         this.code = code;
         this.message = message;

@@ -9,12 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import pack.model.user.User;
 
 
-public class SecurityUtil {
+public class UserSecurityUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(SecurityUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(UserSecurityUtil.class);
 
     public static String getAuthenticatedUUId() {
-        User userUUIdData = getPrincipal();
+        User userUUIdData = getUserPrincipal();
 
         if (userUUIdData != null) {
             return userUUIdData.getUserUUId();
@@ -23,7 +23,7 @@ public class SecurityUtil {
     }
 
     public static String getAuthenticatedTelNumber() {
-        User userTelData = getPrincipal();
+        User userTelData = getUserPrincipal();
 
         if (userTelData != null) {
             return userTelData.getUserTel();
@@ -31,7 +31,7 @@ public class SecurityUtil {
         return null;
     }
 
-    private static User getPrincipal() {
+    private static User getUserPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {

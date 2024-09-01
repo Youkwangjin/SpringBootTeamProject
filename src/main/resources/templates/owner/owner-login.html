@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>에이콘 컨테이너 : 로그인</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/css/owner/owner-login.css">
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
@@ -22,20 +23,59 @@
     <h1>공급자 로그인</h1>
     <form id="ownerLoginForm">
         <div class="int-area">
-            <label for="ownerEmail">Owner Email</label>
-            <input type="text" name="ownerEmail" id="ownerEmail" autocomplete="off" placeholder="">
+            <input type="text" name="ownerBusinessNum" id="ownerBusinessNum" autocomplete="off" placeholder="">
+            <label for="ownerBusinessNum">BusinessNum</label>
         </div>
         <div class="int-area">
+            <input type="password" name="ownerPassword" id="ownerPassword" autocomplete="off" placeholder="">
             <label for="ownerPassword">Password</label>
-            <input type="password" name="ownerPassword" id="ownerPassword" autocomplete="off" required>
         </div>
         <div class="btn-area">
             <button type="submit" id="ownerLoginBtn">LOGIN</button>
         </div>
     </form>
     <div class="caption">
+        <a href="/owner/info/find">이메일/비밀번호 찾기</a>
         <a href="/owner/join">회원가입</a>
     </div>
 </section>
+<script>
+    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+    document.getElementById('ownerLoginForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const ownerBusinessNum = document.getElementById('ownerBusinessNum').value.trim();
+        const ownerPassword = document.getElementById('ownerPassword').value.trim();
+
+        if (!ownerBusinessNum || !ownerPassword) {
+            alert("사업자 번호와 비밀번호를 모두 입력해주세요.");
+            return;
+        }
+
+        fetch('/api/auth/owner/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify ({
+                ownerBusinessNum: ownerBusinessNum,
+                ownerPassword: ownerPassword
+            })
+        }).then(response => response.json())
+            .then(data => {
+                if (data.resultCode === 200) {
+                    window.location.href = '/owner/mypage';
+                } else {
+                    alert(data.errorMsg);
+                }
+            })
+            .catch(error => {
+                alert(error.errorMsg);
+            })
+    })
+</script>
 </body>
 </html>

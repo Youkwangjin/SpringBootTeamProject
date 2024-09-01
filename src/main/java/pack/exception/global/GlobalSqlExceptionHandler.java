@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pack.api.code.common.ApiErrorCode;
+import pack.api.code.common.ApiHttpErrorCode;
 import pack.api.response.ApiErrorResponse;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -23,13 +23,13 @@ public class GlobalSqlExceptionHandler {
         log.error(" =========================== SQLSyntaxErrorException: {} =========================== ", ex.getMessage(), ex);
 
         ApiErrorResponse response = ApiErrorResponse.builder()
-                .errorStatus(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
-                .errorDivisionCode(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorDivisionCode())
-                .errorMsg(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorMsg())
+                .errorStatus(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
+                .errorDivisionCode(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorDivisionCode())
+                .errorMsg(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorMsg())
                 .build();
 
         return ResponseEntity
-                .status(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
+                .status(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
                 .body(response);
     }
 
@@ -40,13 +40,13 @@ public class GlobalSqlExceptionHandler {
         log.error(" =========================== SQLIntegrityConstraintViolationException: {} =========================== ", ex.getMessage(), ex);
 
         ApiErrorResponse response = ApiErrorResponse.builder()
-                .errorStatus(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
-                .errorDivisionCode(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorDivisionCode())
-                .errorMsg(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorMsg())
+                .errorStatus(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
+                .errorDivisionCode(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorDivisionCode())
+                .errorMsg(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorMsg())
                 .build();
 
         return ResponseEntity
-                .status(ApiErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
+                .status(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorStatus())
                 .body(response);
     }
 
