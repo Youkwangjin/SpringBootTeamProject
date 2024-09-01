@@ -27,7 +27,7 @@ public class UserPageController {
     @GetMapping("/user/mypage")
     public String mypage(Model model) {
         User userData = userService.getUserData();
-        model.addAttribute("userUUId", userData.getUserUUId());
+        model.addAttribute("userName", userData.getUserDisplayName());
         return "common/mypage";
     }
 
