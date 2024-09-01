@@ -13,14 +13,14 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
-import pack.model.user.User;
+import pack.model.owner.Owner;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/user/login";
+    private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/owner/login";
     private static final String HTTP_METHOD_POST = "POST";
     private static final String CONTENT_TYPE = "application/json";
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
@@ -28,9 +28,9 @@ public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProces
 
     private final ObjectMapper objectMapper;
 
-    public CustomJsonAuthenticationFilter(ObjectMapper objectMapper,
-                                          AuthenticationSuccessHandler authenticationSuccessHandler,
-                                          AuthenticationFailureHandler authenticationFailureHandler) {
+    public CustomOwnerJsonAuthenticationFilter(ObjectMapper objectMapper,
+                                              AuthenticationSuccessHandler authenticationSuccessHandler,
+                                              AuthenticationFailureHandler authenticationFailureHandler) {
 
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
 
@@ -47,10 +47,10 @@ public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProces
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
-        User user = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), User.class);
+        Owner owner = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), Owner.class);
 
-        String username = user.getUserEmail();
-        String password = user.getUserPassword();
+        String username = owner.getOwnerBusinessNum();
+        String password = owner.getOwnerPassword();
 
         if (username == null || password == null) {
             throw new AuthenticationServiceException("Missing required fields");
@@ -64,4 +64,5 @@ public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProces
     protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
+
 }

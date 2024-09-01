@@ -1,46 +1,37 @@
 package pack.utils;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import pack.model.user.User;
+import pack.model.owner.Owner;
 
+public class OwnerSecurityUtil {
 
-public class UserSecurityUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(UserSecurityUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(OwnerSecurityUtil.class);
 
     public static String getAuthenticatedUUId() {
-        User userUUIdData = getUserPrincipal();
+        Owner ownerUUId = getOwnerPrincipal();
 
-        if (userUUIdData != null) {
-            return userUUIdData.getUserUUId();
+        if (ownerUUId != null) {
+            return ownerUUId.getOwnerUUId();
         }
+
         return null;
     }
 
-    public static String getAuthenticatedTelNumber() {
-        User userTelData = getUserPrincipal();
-
-        if (userTelData != null) {
-            return userTelData.getUserTel();
-        }
-        return null;
-    }
-
-    private static User getUserPrincipal() {
+    private static Owner getOwnerPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
             try {
-                return (User) authentication.getPrincipal();
+                return (Owner) authentication.getPrincipal();
             } catch (Exception e) {
-                log.error(" =============== UserData Not Found : {} =============== ", e.getMessage());
+                log.error(" =============== OwnerData Not Found : {} =============== ", e.getMessage());
             }
         }
         return null;
     }
+
 }

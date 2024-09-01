@@ -30,4 +30,12 @@ public class OwnerRepository {
     public void ownerRegister(Owner owner) {
         sql.insert("Owner.ownerRegister", owner);
     }
+
+    public Owner findByOwnerBusinessNum(String ownerBusinessNum) {
+        return  sql.selectOne("Owner.findByOwnerBusinessNum", ownerBusinessNum);
+    }
+
+    public Owner selectAllOwnerData(String ownerUUId) {
+        return sql.selectOne("Owner.selectAllOwnerData", ownerUUId);
+    }
 }

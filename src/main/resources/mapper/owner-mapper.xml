@@ -5,6 +5,7 @@
 <mapper namespace="Owner">
     <resultMap id="ownerResultMap"             type="pack.model.owner.Owner" autoMapping="true">
         <result property="ownerId"             column="OWNER_ID"/>
+        <result property="ownerUUId"           column="OWNER_UUID"/>
         <result property="ownerEmail"          column="OWNER_EMAIL"/>
         <result property="ownerBusinessNum"    column="BUSINESS_NUMBER"/>
         <result property="ownerPassword"       column="OWNER_PASSWORD"/>
@@ -38,7 +39,21 @@
 
     <!-- 회원가입 -->
     <insert id="ownerRegister" parameterType="owner" useGeneratedKeys="true" keyProperty="ownerId" >
-        INSERT INTO TB_OWNER (OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NAME, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
-        VALUES (#{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerName}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddress}, #{ownerRole})
+        INSERT INTO TB_OWNER (OWNER_UUID, OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NAME, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
+        VALUES (#{ownerUUId}, #{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerName}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddress}, #{ownerRole})
     </insert>
+
+    <!-- 아이디 검증 -->
+    <select id="findByOwnerBusinessNum" parameterType="String" resultMap="ownerResultMap">
+        SELECT *
+        FROM TB_OWNER
+        WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
+    </select>
+
+    <!-- 회원조회 -->
+    <select id="selectAllOwnerData" parameterType="String" resultMap="ownerResultMap">
+        SELECT *
+        FROM TB_OWNER
+        WHERE OWNER_UUID = #{ownerUUId}
+    </select>
 </mapper>
