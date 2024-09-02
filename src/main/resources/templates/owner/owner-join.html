@@ -27,6 +27,7 @@
             let rePasswordResult = document.querySelector(".rePassword-result");
             let nameResult = document.querySelector(".name-result");
             let telResult = document.querySelector(".tel-result");
+            let companyNameResult = document.querySelector(".companyName-result");
 
             let resetButton = document.getElementById('btnReset');
             let submitButton = document.getElementById('btnOwnerJoin');
@@ -37,7 +38,8 @@
                 ownerPassword: false,
                 ownerRePassword: false,
                 ownerName: false,
-                ownerTel: false
+                ownerTel: false,
+                ownerCompanyName: false
             };
 
             function checkFormValid() {
@@ -67,6 +69,10 @@
 
             ownerTel.addEventListener("input", (e) => {
                 validTel(e.target, telResult);
+            });
+
+            ownerCompanyName.addEventListener("input", (e) => {
+                validCompanyName(e.target, companyNameResult);
             });
 
             resetButton.addEventListener('click', function () {
@@ -115,7 +121,7 @@
                     })
                     .then(data => {
                         if (data.resultCode === 200) {
-                            resultElement.textContent = '사용 가능한 이메일입니다.';
+                            resultElement.textContent = data.resultMsg;
                             resultElement.classList.add('success');
                             resultElement.classList.remove('error');
                             validStates.ownerEmail = true;
@@ -336,6 +342,63 @@
                 return telPattern.test(tel.trim());
             }
 
+            function validCompanyName(companyNameInput, resultElement) {
+                const companyName = companyNameInput.value.trim();
+                if (companyName.length === 0) {
+                    resultElement.textContent = '회사명을 입력해주세요.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    companyNameInput.focus();
+                    validStates.ownerCompanyName = false;
+                } else if (!validCompanyNameCheck(companyName)) {
+                    resultElement.textContent = '회사명을 올바르게 입력해주세요.';
+                    resultElement.classList.remove('success');
+                    resultElement.classList.add('error');
+                    companyNameInput.focus();
+                    validStates.ownerCompanyName = false;
+                } else {
+                    checkCompanyNameDuplication(companyNameInput, resultElement);
+                }
+                checkFormValid();
+            }
+
+            function checkCompanyNameDuplication(companyNameInput, resultElement) {
+                const ownerCompanyName = companyNameInput.value.trim();
+                fetch('/api/auth/owner/companyNameCheck?ownerCompanyName=' + encodeURIComponent(ownerCompanyName), {
+                    method: 'GET',
+                    credentials: 'include',
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw response;
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.resultCode === 200) {
+                            resultElement.textContent = '사용 가능한 회사명 입니다.';
+                            resultElement.classList.add('success');
+                            resultElement.classList.remove('error');
+                            validStates.ownerCompanyName = true;
+                            checkFormValid();
+                        }
+                    })
+                    .catch(errorResponse => {
+                        errorResponse.json().then(errorData => {
+                            resultElement.textContent = errorData.errorMsg;
+                            resultElement.classList.add('error');
+                            resultElement.classList.remove('success');
+                            validStates.ownerCompanyName = false;
+                            checkFormValid();
+                        });
+                    });
+            }
+
+            function validCompanyNameCheck(companyName) {
+                let companyNamePattern = /^[0-9\p{L}&\-'.\s]{2,50}$/u;
+                return companyNamePattern.test(companyName.trim());
+            }
+
             const csrfTokenElement = document.querySelector('input[name="_csrf"]');
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
@@ -438,6 +501,7 @@
                 <input type="tel" name="ownerCompanyName" id="ownerCompanyName" class="text-field"
                        placeholder="회사명을 입력해주세요.">
             </label><br/>
+            <span class="companyName-result"></span>
 
             <h3>주소</h3>
             <label for="user_postcode">

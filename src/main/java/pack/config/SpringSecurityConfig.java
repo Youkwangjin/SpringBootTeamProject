@@ -85,6 +85,7 @@ public class SpringSecurityConfig {
                                          "/api/auth/owner/emailCheck",
                                          "/api/auth/owner/businessNumCheck",
                                          "/api/auth/owner/ownerTelCheck",
+                                         "/api/auth/owner/companyNameCheck",
                                          "/api/auth/owner/login").permitAll()
 
                         // Protected Common Pages
