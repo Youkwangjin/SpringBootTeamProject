@@ -43,6 +43,11 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
+    public boolean isCompanyNameDuplicate(String ownerCompanyName) {
+        return ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
+    }
+
+    @Override
     @Transactional
     public void ownerRegister(Owner owner) {
         String encodedPassword = passwordEncoder.encode(owner.getOwnerPassword());

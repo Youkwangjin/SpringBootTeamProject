@@ -43,6 +43,8 @@ public class Owner implements UserDetails {
     @Pattern(regexp = "^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$")
     private String ownerTel;
 
+    @NotBlank
+    @Pattern(regexp = "^[0-9\\p{L}&\\-'.\\s]{2,50}$")
     private String ownerCompanyName;
 
     private String ownerAddress;

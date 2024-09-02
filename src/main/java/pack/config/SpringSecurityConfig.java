@@ -68,7 +68,7 @@ public class SpringSecurityConfig {
                                          "/assets/img/favicon.png").permitAll()
                         // Public Pages
                         .requestMatchers("/",
-                                         "/conajax",
+                                         "/containerMaps",
                                          "/user/join",
                                          "/user/login",
                                          "/owner/join",
@@ -85,6 +85,7 @@ public class SpringSecurityConfig {
                                          "/api/auth/owner/emailCheck",
                                          "/api/auth/owner/businessNumCheck",
                                          "/api/auth/owner/ownerTelCheck",
+                                         "/api/auth/owner/companyNameCheck",
                                          "/api/auth/owner/login").permitAll()
 
                         // Protected Common Pages

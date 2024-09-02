@@ -12,6 +12,8 @@ public interface OwnerService {
 
     boolean isTelPhoneDuplicate(String ownerTel);
 
+    boolean isCompanyNameDuplicate(String ownerCompanyName);
+
     void ownerRegister(Owner owner);
 
     Owner getOwnerData();
