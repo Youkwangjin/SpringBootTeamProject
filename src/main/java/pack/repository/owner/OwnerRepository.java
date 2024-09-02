@@ -27,6 +27,11 @@ public class OwnerRepository {
         return telCount > 0;
     }
 
+    public boolean isCompanyNameDuplicate(String ownerCompanyName) {
+        int companyNameCount = sql.selectOne("Owner.companyNameDuplicates", ownerCompanyName);
+        return companyNameCount > 0;
+    }
+
     public void ownerRegister(Owner owner) {
         sql.insert("Owner.ownerRegister", owner);
     }
@@ -38,4 +43,5 @@ public class OwnerRepository {
     public Owner selectAllOwnerData(String ownerUUId) {
         return sql.selectOne("Owner.selectAllOwnerData", ownerUUId);
     }
+
 }

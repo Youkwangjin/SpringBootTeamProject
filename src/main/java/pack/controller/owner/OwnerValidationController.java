@@ -66,8 +66,6 @@ public class OwnerValidationController {
         }
     }
 
-
-
     @GetMapping("/api/auth/owner/ownerTelCheck")
     public ResponseEntity<Object> telPhoneCheck(@RequestParam String ownerTel) {
         log.info(" *****************************    telPhoneCheck START    ***************************** ");
@@ -87,6 +85,28 @@ public class OwnerValidationController {
                     .resultMsg(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getMessage())
                     .build();
             return ResponseEntity.status(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
+        }
+    }
+
+    @GetMapping("/api/auth/owner/companyNameCheck")
+    public ResponseEntity<Object> companyNameCheck(@RequestParam String ownerCompanyName) {
+        log.info(" *****************************    companyNameCheck START    ***************************** ");
+
+        boolean ownerCompanyNameDuplicate = ownerService.isCompanyNameDuplicate(ownerCompanyName);
+
+        if (ownerCompanyNameDuplicate) {
+            ApiErrorResponse errorResponse = ApiErrorResponse.builder()
+                    .errorStatus(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorStatus())
+                    .errorDivisionCode(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorDivisionCode())
+                    .errorMsg(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorMsg())
+                    .build();
+            return ResponseEntity.status(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorStatus()).body(errorResponse);
+        } else {
+            ApiSuccessResponse<Object> companyNameResponse = ApiSuccessResponse.builder()
+                    .resultCode(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getStatus())
+                    .resultMsg(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getMessage())
+                    .build();
+            return ResponseEntity.status(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getStatus()).body(companyNameResponse);
         }
     }
 }

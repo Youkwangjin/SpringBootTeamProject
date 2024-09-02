@@ -11,4 +11,9 @@ public class IndexController {
     public String indexPage() {
         return "index/index";
     }
+
+    @GetMapping("/containerMaps")
+    public String containerMapsPage() {
+        return "index/conajax";
+    }
 }

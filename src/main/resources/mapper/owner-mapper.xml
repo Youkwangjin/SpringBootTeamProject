@@ -37,6 +37,13 @@
         WHERE OWNER_TEL = #{ownerTel}
     </select>
 
+    <!-- 회사명 중복 체크 -->
+    <select id="companyNameDuplicates" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_OWNER
+        WHERE OWNER_COMPANY_NAME = #{ownerCompanyName}
+    </select>
+
     <!-- 회원가입 -->
     <insert id="ownerRegister" parameterType="owner" useGeneratedKeys="true" keyProperty="ownerId" >
         INSERT INTO TB_OWNER (OWNER_UUID, OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NAME, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
