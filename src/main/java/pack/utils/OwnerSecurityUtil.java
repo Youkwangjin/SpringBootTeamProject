@@ -21,6 +21,36 @@ public class OwnerSecurityUtil {
         return null;
     }
 
+    public static String getAuthenticatedEmail() {
+        Owner ownerEmail = getOwnerPrincipal();
+
+        if (ownerEmail != null) {
+            return ownerEmail.getOwnerEmail();
+        }
+
+        return null;
+    }
+
+    public static String getAuthenticatedTelNumber() {
+        Owner ownerTel = getOwnerPrincipal();
+
+        if (ownerTel != null) {
+            return ownerTel.getOwnerTel();
+        }
+
+        return null;
+    }
+
+    public static String getAuthenticatedCompanyName() {
+        Owner ownerCompanyName = getOwnerPrincipal();
+
+        if (ownerCompanyName != null) {
+            return ownerCompanyName.getOwnerCompanyName();
+        }
+
+        return null;
+    }
+
     private static Owner getOwnerPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
