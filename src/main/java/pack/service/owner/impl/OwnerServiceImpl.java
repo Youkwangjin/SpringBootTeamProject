@@ -12,7 +12,6 @@ import pack.repository.owner.OwnerRepository;
 import pack.role.OwnerRole;
 import pack.service.owner.OwnerService;
 import pack.utils.OwnerSecurityUtil;
-import pack.utils.UserSecurityUtil;
 
 import java.util.UUID;
 
@@ -23,30 +22,46 @@ public class OwnerServiceImpl implements OwnerService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final OwnerRepository ownerRepository;
 
+    // 이메일 중복 검증
     @Override
     public boolean isOwnerEmailDuplicate(String ownerEmail) {
+        String currentOwnerEmailData = OwnerSecurityUtil.getAuthenticatedEmail();
+        if (currentOwnerEmailData != null && StringUtils.equals(currentOwnerEmailData, ownerEmail)) {
+            return false;
+        }
+
         return ownerRepository.isEmailDuplicate(ownerEmail);
     }
-
+    
+    // 사업자 번호 중복 검증
     @Override
     public boolean isBusinessNumDuplicate(String ownerBusinessNum) {
         return ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
     }
-
+    
+    // 전화번호 중복 검증
     @Override
     public boolean isTelPhoneDuplicate(String ownerTel) {
-        String currentUserTelData = UserSecurityUtil.getAuthenticatedTelNumber();
-        if (currentUserTelData != null && StringUtils.equals(currentUserTelData, ownerTel)) {
+        String currentOwnerTelData = OwnerSecurityUtil.getAuthenticatedTelNumber();
+        if (currentOwnerTelData != null && StringUtils.equals(currentOwnerTelData, ownerTel)) {
             return false;
         }
+
         return ownerRepository.isTelDuplicate(ownerTel);
     }
-
+    
+    // 회사명 중복 검증
     @Override
     public boolean isCompanyNameDuplicate(String ownerCompanyName) {
+        String currentOwnerCompanyNameData = OwnerSecurityUtil.getAuthenticatedCompanyName();
+        if (currentOwnerCompanyNameData != null && StringUtils.equals(currentOwnerCompanyNameData, ownerCompanyName)) {
+            return false;
+        }
+
         return ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
     }
-
+    
+    // 공급자 회원가입
     @Override
     @Transactional
     public void ownerRegister(Owner owner) {
@@ -67,7 +82,8 @@ public class OwnerServiceImpl implements OwnerService {
         ownerRepository.ownerRegister(newOwner);
 
     }
-
+    
+    // 공급자 정보 불러오기
     @Override
     public Owner getOwnerData() throws AuthenticationException {
         String ownerUUId = OwnerSecurityUtil.getAuthenticatedUUId();
