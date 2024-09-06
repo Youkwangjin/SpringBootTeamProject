@@ -17,4 +17,6 @@ public interface OwnerService {
     void ownerRegister(Owner owner);
 
     Owner getOwnerData();
+
+    void ownerDataUpdate(Owner owner);
 }

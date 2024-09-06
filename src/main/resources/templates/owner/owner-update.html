@@ -317,7 +317,7 @@
                         ownerAddr: ownerAddr.value,
                         _csrf: document.querySelector('[name="_csrf"]').value
                     };
-                    fetch(`/api/user/update/${ownerUUId}`, {
+                    fetch(`/api/owner/update/${ownerUUId}`, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
