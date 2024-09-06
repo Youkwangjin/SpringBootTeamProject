@@ -63,4 +63,16 @@
         FROM TB_OWNER
         WHERE OWNER_UUID = #{ownerUUId}
     </select>
+
+    <!-- 회원수정 -->
+    <update id="ownerUpdate" parameterType="owner">
+        UPDATE TB_OWNER
+        SET
+            OWNER_EMAIL = #{ownerEmail},
+            OWNER_NAME = #{ownerName},
+            OWNER_TEL = #{ownerTel},
+            OWNER_COMPANY_NAME = #{ownerCompanyName},
+            OWNER_ADDRESS = #{ownerAddress}
+        WHERE OWNER_UUID = #{ownerUUId}
+    </update>
 </mapper>

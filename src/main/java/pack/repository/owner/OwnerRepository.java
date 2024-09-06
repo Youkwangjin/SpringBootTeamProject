@@ -44,4 +44,7 @@ public class OwnerRepository {
         return sql.selectOne("Owner.selectAllOwnerData", ownerUUId);
     }
 
+    public void ownerUpdate(Owner updateOwner) {
+        sql.update("Owner.ownerUpdate", updateOwner);
+    }
 }
