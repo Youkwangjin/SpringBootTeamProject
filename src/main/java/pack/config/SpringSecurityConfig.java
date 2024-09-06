@@ -88,13 +88,22 @@ public class SpringSecurityConfig {
                                          "/api/auth/owner/companyNameCheck",
                                          "/api/auth/owner/login").permitAll()
 
-                        // Protected Common Pages
+                        // Protected User Common Pages
                         .requestMatchers("/user/mypage",
-                                         "/user/update/profile").hasAuthority("ROLE_USER")
+                                         "/user/update/profile",
+                                         "/user/delete/profile").hasAuthority("ROLE_USER")
+
+                        // Protected User Common Pages
+                        .requestMatchers("/owner/mypage",
+                                         "/owner/update/profile").hasAuthority("ROLE_OWNER")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userUUId}",
                                          "/api/user/delete/{userUUId}").hasAuthority("ROLE_USER")
+
+                        // Protected Owner API
+                        .requestMatchers("/api/owner/update/{ownerUUId}",
+                                         "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
 
                         .anyRequest().authenticated())
 

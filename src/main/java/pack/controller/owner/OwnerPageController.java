@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import pack.model.owner.Owner;
-import pack.model.user.User;
 import pack.service.owner.OwnerService;
 
 @Controller
@@ -27,7 +26,14 @@ public class OwnerPageController {
     @GetMapping("/owner/mypage")
     public String mypage(Model model) {
         Owner ownerData = ownerService.getOwnerData();
-        model.addAttribute("userName", ownerData.getOwnerName());
+        model.addAttribute("ownerName", ownerData.getOwnerName());
         return "common/mypage";
+    }
+
+    @GetMapping("/owner/update/profile")
+    public String userUpdatePage(Model model) {
+        Owner ownerData = ownerService.getOwnerData();
+        model.addAttribute("ownerData", ownerData);
+        return "owner/owner-update";
     }
 }

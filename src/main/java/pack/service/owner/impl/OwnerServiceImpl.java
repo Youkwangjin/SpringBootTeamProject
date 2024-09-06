@@ -2,6 +2,7 @@ package pack.service.owner.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -99,5 +100,37 @@ public class OwnerServiceImpl implements OwnerService {
         }
 
         return ownerData;
+    }
+
+    // 공급자 회원수정
+    @Override
+    @Transactional
+    public void ownerDataUpdate(Owner owner) throws AuthenticationException {
+        String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
+
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, owner.getOwnerUUId())) {
+            throw new AccessDeniedException("Unauthorized to update owner data");
+        }
+
+        Owner existingOwner = ownerRepository.selectAllOwnerData(authenticatedUUId);
+        if (existingOwner == null) {
+            throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
+        }
+
+        if (StringUtils.isNotBlank(owner.getOwnerPassword()) && !passwordEncoder.matches(owner.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+            throw new IllegalArgumentException("Invalid current password");
+        }
+
+        Owner updateOwner = Owner.builder()
+                .ownerUUId(owner.getOwnerUUId())
+                .ownerEmail(owner.getOwnerEmail())
+                .ownerName(owner.getOwnerName())
+                .ownerTel(owner.getOwnerTel())
+                .ownerCompanyName(owner.getOwnerCompanyName())
+                .ownerAddress(owner.getOwnerAddress())
+                .build();
+
+        ownerRepository.ownerUpdate(updateOwner);
+
     }
 }
