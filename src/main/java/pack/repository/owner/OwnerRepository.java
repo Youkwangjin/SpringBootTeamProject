@@ -47,4 +47,8 @@ public class OwnerRepository {
     public void ownerUpdate(Owner updateOwner) {
         sql.update("Owner.ownerUpdate", updateOwner);
     }
+
+    public void ownerDelete(Owner owner) {
+        sql.delete("Owner.ownerDelete", owner);
+    }
 }
