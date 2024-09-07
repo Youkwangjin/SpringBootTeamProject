@@ -95,7 +95,8 @@ public class SpringSecurityConfig {
 
                         // Protected User Common Pages
                         .requestMatchers("/owner/mypage",
-                                         "/owner/update/profile").hasAuthority("ROLE_OWNER")
+                                         "/owner/update/profile",
+                                         "/owner/delete/profile").hasAuthority("ROLE_OWNER")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userUUId}",

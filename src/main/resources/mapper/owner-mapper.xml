@@ -75,4 +75,11 @@
             OWNER_ADDRESS = #{ownerAddress}
         WHERE OWNER_UUID = #{ownerUUId}
     </update>
+
+    <!-- 회원탈퇴-->
+    <delete id="ownerDelete" parameterType="owner">
+        DELETE
+        FROM TB_OWNER
+        WHERE OWNER_UUID = #{ownerUUId}
+    </delete>
 </mapper>

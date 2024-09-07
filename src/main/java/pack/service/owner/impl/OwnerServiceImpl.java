@@ -133,4 +133,26 @@ public class OwnerServiceImpl implements OwnerService {
         ownerRepository.ownerUpdate(updateOwner);
 
     }
+
+    // 회원탈퇴
+    @Override
+    @Transactional
+    public void ownerDataDelete(Owner owner) {
+        String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
+
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, owner.getOwnerUUId())) {
+            throw new AccessDeniedException("Unauthorized to update owner data");
+        }
+
+        Owner existingOwner = ownerRepository.selectAllOwnerData(authenticatedUUId);
+        if (existingOwner == null) {
+            throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
+        }
+
+        if (StringUtils.isNotBlank(owner.getOwnerPassword()) && !passwordEncoder.matches(owner.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+            throw new IllegalArgumentException("Invalid current password");
+        }
+
+        ownerRepository.ownerDelete(owner);
+    }
 }
