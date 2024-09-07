@@ -36,4 +36,11 @@ public class OwnerPageController {
         model.addAttribute("ownerData", ownerData);
         return "owner/owner-update";
     }
+
+    @GetMapping("/owner/delete/profile")
+    public String userDeletePage(Model model) {
+        Owner ownerData = ownerService.getOwnerData();
+        model.addAttribute("ownerData", ownerData);
+        return "owner/owner-delete";
+    }
 }
