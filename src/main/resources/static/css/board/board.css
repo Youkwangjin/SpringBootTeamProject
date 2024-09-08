@@ -135,3 +135,40 @@ a {
   color: #000;
   font-size: 16px;
 }
+
+body {
+    font-family: "Noto Sans KR", serif;
+    margin: 0;
+    padding: 0;
+}
+
+.search-bar {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-bar select,
+.search-bar input[type="text"],
+.search-bar input[type="submit"] {
+    padding: 8px 10px;
+    margin-right: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.search-bar input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-bar input[type="submit"]:hover {
+    background-color: #0056b3;
+}

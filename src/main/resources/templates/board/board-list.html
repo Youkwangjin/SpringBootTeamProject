@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -12,73 +12,32 @@
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
 </head>
 <body>
-<div th:if="${session.userSession != null}">
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_USER')">
     <div th:replace="~{fragments/header_user :: header}"></div>
 </div>
-<div th:if="${session.ownerSession != null}">
+<div sec:authorize="hasAnyRole('ROLE_OWNER')">
     <div th:replace="~{fragments/header_owner :: header}"></div>
-</div>
-<div th:if="${session.adminSession != null}">
-    <div th:replace="~{fragments/header_admin :: header}"></div>
-</div>
-<div th:if="${session.userSession == null && session.ownerSession == null && session.adminSession == null}">
-    <div th:replace="~{fragments/header :: header}"></div>
 </div>
 <main id="main">
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
-        <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-            <h2 style="font-family: 'Noto Sans KR',serif;">공지사항</h2>
-            <ol>
-                <li><a href="/">Home</a></li>
-                <li>게시판</li>
-            </ol>
-        </div>
     </div>
     <section>
         <div class="board-container">
             <table style="border-collapse: collapse; border: none;">
                 <tr>
-                    <td colspan="5" style="text-align: left;">
-                        <span style="font-weight: 600; font-size: 25px;">공지사항&nbsp;&nbsp;</span>
+                    <td colspan="5" style="text-align: left; border-bottom: none; padding-bottom: 0;">
+                        <span style="font-weight: 600; font-size: 25px;">자유게시판&nbsp;&nbsp;</span>
                         <span>에이콘테이너의 새로운 소식들을 한곳에서 확인하세요</span><br/><br/>
                     </td>
                 </tr>
-                <tr style="border-bottom: 1px solid #000; border-top: 2px solid #000;">
-                    <th>번호</th>
-                    <th style="width: 60%;">제 목</th>
-                    <th>작성자</th>
-                    <th>조회수</th>
-                    <th>작성일</th>
-                </tr>
-                <th:block th:if="${not #strings.isEmpty(data)}">
-                    <tr th:each="b:${data}">
-                        <td>공지</td>
-                        <td style="text-align: left;">
-                            <a th:href="@{/board/detail(num=${b.num},page=${page})}" th:text="${b.title}">[[${tab}]]</a>
-                        </td>
-                        <td>관리자</td>
-                        <td>[[${b.readcnt}]]</td>
-                        <td>[[${b.bdate}]]</td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td colspan="5" style="border: none;">
-                            <th:block th:each="num : ${#numbers.sequence(1, pageSu)}">
-                                <th:span th:if="${num} == ${page}">
-                                    <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
-                                </th:span>
-                                <th:span th:if="${num} != ${page}">
-                                    <a th:href="@{list(page=${num})}" th:text="${num}">num 표시</a>
-                                </th:span>
-                            </th:block>
-                        </td>
-                    </tr>
-                </th:block>
 
-                <tr style="text-align: center;">
-                    <td colspan="5" style="border: none;">
-                        <br/>
-                        <form action="/board/search" method="post">
-                            검색 대상 :
+                <tr>
+                    <td colspan="5" style="border: none; padding-top: 20px;">
+                        <form action="/board/search" method="post" style="margin-bottom: 0;">
+                            검색 대상:
                             <label>
                                 <select name="searchName" selected="selected">
                                     <option value='title'>글제목</option>
@@ -91,22 +50,26 @@
                         </form>
                     </td>
                 </tr>
+
+                <tr style="border-bottom: 1px solid #000; padding-top: 20px; border-top: 1px solid #000;">
+                    <th>번호</th>
+                    <th style="width: 60%;">제 목</th>
+                    <th>작성자</th>
+                    <th>조회수</th>
+                    <th>작성일</th>
+                </tr>
+
+                <tr>
+                    <td>공지</td>
+                    <td style="text-align: left;">
+                    </td>
+                    <td>관리자</td>
+                    <td>관리자</td>
+                    <td>관리자</td>
+                </tr>
             </table>
         </div>
     </section>
 </main>
-<div th:replace="~{fragments/footer :: footer}"></div>
-<a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
-        class="bi bi-arrow-up-short"></i></a>
-<div id="preloader"></div>
-
-<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/vendor/aos/aos.js"></script>
-<script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
-<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
-<script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
-<script src="/assets/vendor/php-email-form/validate.js"></script>
-<script src="/assets/js/main.js"></script>
 </body>
 </html>
