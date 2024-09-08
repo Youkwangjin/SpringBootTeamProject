@@ -72,7 +72,9 @@ public class SpringSecurityConfig {
                                          "/user/join",
                                          "/user/login",
                                          "/owner/join",
-                                         "/owner/login").permitAll()
+                                         "/owner/login",
+                                         "/board/list/**",
+                                         "/board/detail/**").permitAll()
                         // Public User API
                         .requestMatchers("/api/logout",
                                          "/api/auth/user/register",
