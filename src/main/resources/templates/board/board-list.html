@@ -7,7 +7,6 @@
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
 </head>
@@ -26,42 +25,23 @@
     </div>
     <section>
         <div class="board-container">
-            <table style="border-collapse: collapse; border: none;">
+            <table>
                 <tr>
-                    <td colspan="5" style="text-align: left; border-bottom: none; padding-bottom: 0;">
-                        <span style="font-weight: 600; font-size: 25px;">자유게시판&nbsp;&nbsp;</span>
+                    <td colspan="5" class="table-top-info">
+                        <span class="title">자유게시판&nbsp;&nbsp;</span>
                         <span>에이콘테이너의 새로운 소식들을 한곳에서 확인하세요</span><br/><br/>
                     </td>
                 </tr>
-
-                <tr>
-                    <td colspan="5" style="border: none; padding-top: 20px;">
-                        <form action="/board/search" method="post" style="margin-bottom: 0;">
-                            검색 대상:
-                            <label>
-                                <select name="searchName" selected="selected">
-                                    <option value='title'>글제목</option>
-                                </select>
-                            </label>
-                            <label>
-                                <input type="text" name="searchValue">
-                            </label>
-                            <input type="submit" value="검 색">
-                        </form>
-                    </td>
-                </tr>
-
-                <tr style="border-bottom: 1px solid #000; padding-top: 20px; border-top: 1px solid #000;">
+                <tr class="table-row-styling">
                     <th>번호</th>
                     <th style="width: 60%;">제 목</th>
                     <th>작성자</th>
                     <th>조회수</th>
                     <th>작성일</th>
                 </tr>
-
                 <tr>
                     <td>공지</td>
-                    <td style="text-align: left;">
+                    <td>
                     </td>
                     <td>관리자</td>
                     <td>관리자</td>

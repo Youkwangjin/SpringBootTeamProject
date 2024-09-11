@@ -23,7 +23,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url("../../images/userloginimg.jpg") no-repeat center;
+    background: url("../../assets/img/login/user-loginImg.jpg") no-repeat center;
     background-size: cover;
 
 }

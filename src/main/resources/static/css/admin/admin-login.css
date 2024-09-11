@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url("../../images/adminloginimg.jpg") no-repeat center;
+    background: url("../../assets/img/login/admin-loginImg.jpg") no-repeat center;
     background-size: cover;
 
 }
