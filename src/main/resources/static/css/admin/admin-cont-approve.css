@@ -7,7 +7,7 @@ body {
     align-items: center;
     background-size: cover;
     position: relative;
-    background: rgba(0, 0, 0, 0.1) url("../../images/adminloginimg.jpg") no-repeat center;
+    background: rgba(0, 0, 0, 0.1) url("../../assets/img/login/admin-loginImg.jpg") no-repeat center;
 }
 
 .container-box {

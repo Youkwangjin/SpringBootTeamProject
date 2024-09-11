@@ -45,7 +45,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh; /* 뷰포트 최소 높이 설정 */
-    background: url("../../images/userloginimg.jpg") no-repeat center;
+    background: url("../../assets/img/login/user-loginImg.jpg") no-repeat center;
     background-size: cover;
     position: relative;
     z-index: 1;

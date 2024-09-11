@@ -22,6 +22,7 @@ public class UserRegisterController {
 
     @PostMapping("/api/auth/user/register")
     public ResponseEntity<ApiSuccessResponse<Object>> userRegister(@Valid @RequestBody User user) {
+        
         log.info(" *****************************    Register START    *****************************");
 
         userService.userRegister(user);
