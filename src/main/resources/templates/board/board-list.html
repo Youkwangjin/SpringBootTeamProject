@@ -32,21 +32,52 @@
                         <span>에이콘테이너의 새로운 소식들을 한곳에서 확인하세요</span><br/><br/>
                     </td>
                 </tr>
-                <tr class="table-row-styling">
-                    <th>번호</th>
-                    <th style="width: 60%;">제 목</th>
-                    <th>작성자</th>
-                    <th>조회수</th>
-                    <th>작성일</th>
-                </tr>
+                <!-- board search area -->
                 <tr>
-                    <td>공지</td>
-                    <td>
+                    <td colspan="5">
+                        <div id="board-search" class="search-bar-container">
+                            <div class="container">
+                                <div class="search-window">
+                                    <form action="" class="search-form">
+                                        <div class="search-wrap">
+                                            <label for="search" class="blind">공지사항 내용 검색</label>
+                                            <input id="search" type="search" name="searchName" placeholder="검색어를 입력해주세요.">
+                                            <button type="submit" class="btn btn-dark">검색</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </td>
-                    <td>관리자</td>
-                    <td>관리자</td>
-                    <td>관리자</td>
                 </tr>
+
+                <!-- board list area -->
+                <div id="board-list">
+                    <div class="container">
+                        <table class="board-table">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="th-num">번호</th>
+                                <th scope="col" class="th-title">제목</th>
+                                <th scope="col" class="th-writer">작성자</th>
+                                <th scope="col" class="th-date">등록일</th>
+                                <th scope="col" class="th-views">조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <th>
+                                    <a href="">[공지사항] 개인정보 처리방침 변경안내처리방침</a>
+                                </th>
+                                <td>관리자</td>
+                                <td>2017-07-13</td>
+                                <td>1</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </table>
         </div>
     </section>
