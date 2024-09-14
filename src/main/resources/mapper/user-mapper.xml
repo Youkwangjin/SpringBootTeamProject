@@ -10,7 +10,7 @@
         <result property="userPassword"     column="USER_PASSWORD"/>
         <result property="userDisplayName"  column="USER_NAME"/>
         <result property="userTel"          column="USER_TEL"/>
-        <result property="userAddress"      column="USER_ADDRESS"/>
+        <result property="userAddr"      column="USER_ADDRESS"/>
         <result property="userRole"         column="USER_ROLE"/>
     </resultMap>
     <!-- 이메일 중복 체크 -->
@@ -30,7 +30,7 @@
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
         INSERT INTO TB_USER (USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE)
-        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userDisplayName}, #{userTel}, #{userAddress}, #{userRole})
+        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userDisplayName}, #{userTel}, #{userAddr}, #{userRole})
     </insert>
 
     <!-- 아이디 검증 -->
@@ -53,7 +53,7 @@
         SET
             USER_NAME = #{userDisplayName},
             USER_TEL = #{userTel},
-            USER_ADDRESS = #{userAddress}
+            USER_ADDRESS = #{userAddr}
         WHERE USER_UUID = #{userUUId}
     </update>
 
