@@ -1,7 +1,7 @@
 package com.acorn.api.controller.owner;
 
-import com.acorn.api.com.acorn.api.code.code.common.ApiHttpSuccessCode;
-import com.acorn.api.com.acorn.api.code.response.ApiSuccessResponse;
+import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.service.owner.OwnerService;
 import jakarta.validation.Valid;

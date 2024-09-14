@@ -1,8 +1,8 @@
 package com.acorn.api.exception.global;
 
 
-import com.acorn.api.com.acorn.api.code.code.common.ApiValidationErrorCode;
-import com.acorn.api.com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.code.common.ApiValidationErrorCode;
+import com.acorn.api.code.response.ApiErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

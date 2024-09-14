@@ -1,7 +1,7 @@
 package com.acorn.api.security;
 
-import com.acorn.api.com.acorn.api.code.code.common.ApiHttpSuccessCode;
-import com.acorn.api.com.acorn.api.code.response.ApiSuccessResponse;
+import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.response.ApiSuccessResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

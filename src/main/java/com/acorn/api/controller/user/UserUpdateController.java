@@ -1,8 +1,8 @@
 package com.acorn.api.controller.user;
 
 
-import com.acorn.api.com.acorn.api.code.code.common.ApiHttpSuccessCode;
-import com.acorn.api.com.acorn.api.code.response.ApiSuccessResponse;
+import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.model.user.User;
 import com.acorn.api.service.user.UserService;
 import jakarta.validation.Valid;

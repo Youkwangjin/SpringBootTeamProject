@@ -2,8 +2,8 @@ package com.acorn.api.exception.owner;
 
 
 
-import com.acorn.api.com.acorn.api.code.code.common.ApiValidationErrorCode;
-import com.acorn.api.com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.code.common.ApiValidationErrorCode;
+import com.acorn.api.code.response.ApiErrorResponse;
 import com.acorn.api.controller.owner.OwnerRegisterController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

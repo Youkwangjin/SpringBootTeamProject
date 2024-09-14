@@ -1,7 +1,7 @@
 package com.acorn.api.exception.global;
 
-import com.acorn.api.com.acorn.api.code.code.common.ApiHttpErrorCode;
-import com.acorn.api.com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.code.response.ApiErrorResponse;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

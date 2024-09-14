@@ -1,10 +1,9 @@
 package com.acorn.api.controller.user;
 
-
-import com.acorn.api.com.acorn.api.code.code.common.ApiValidationErrorCode;
-import com.acorn.api.com.acorn.api.code.code.common.ApiValidationSuccessCode;
-import com.acorn.api.com.acorn.api.code.response.ApiErrorResponse;
-import com.acorn.api.com.acorn.api.code.response.ApiSuccessResponse;
+import com.acorn.api.code.common.ApiValidationErrorCode;
+import com.acorn.api.code.common.ApiValidationSuccessCode;
+import com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
