@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
                 .userEmail(user.getUserEmail())
                 .userPassword(encodedPassword)
                 .userDisplayName(user.getUserDisplayName())
-                .userAddress(user.getUserAddress())
+                .userAddr(user.getUserAddr())
                 .userTel(user.getUserTel())
                 .userRole(UserRole.USER)
                 .build();
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
         User updateUser = User.builder()
                 .userUUId(user.getUserUUId())
                 .userDisplayName(user.getUserDisplayName())
-                .userAddress(user.getUserAddress())
+                .userAddr(user.getUserAddr())
                 .userTel(user.getUserTel())
                 .userRole(UserRole.USER)
                 .build();

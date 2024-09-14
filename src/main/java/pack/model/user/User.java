@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Pattern(regexp = "^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$")
     private String userTel;
 
-    private String userAddress;
+    private String userAddr;
 
     private LocalDate userCreated;
 
