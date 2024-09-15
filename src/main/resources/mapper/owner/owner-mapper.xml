@@ -12,7 +12,7 @@
         <result property="ownerName"           column="OWNER_NAME"/>
         <result property="ownerTel"            column="OWNER_TEL"/>
         <result property="ownerCompanyName"    column="OWNER_COMPANY_NAME"/>
-        <result property="ownerAddress"        column="OWNER_ADDRESS"/>
+        <result property="ownerAddr"           column="OWNER_ADDRESS"/>
         <result property="ownerRole"           column="OWNER_ROLE"/>
     </resultMap>
 
@@ -47,7 +47,7 @@
     <!-- 회원가입 -->
     <insert id="ownerRegister" parameterType="owner" useGeneratedKeys="true" keyProperty="ownerId" >
         INSERT INTO TB_OWNER (OWNER_UUID, OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NAME, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
-        VALUES (#{ownerUUId}, #{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerName}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddress}, #{ownerRole})
+        VALUES (#{ownerUUId}, #{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerName}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddr}, #{ownerRole})
     </insert>
 
     <!-- 아이디 검증 -->
@@ -72,7 +72,7 @@
             OWNER_NAME = #{ownerName},
             OWNER_TEL = #{ownerTel},
             OWNER_COMPANY_NAME = #{ownerCompanyName},
-            OWNER_ADDRESS = #{ownerAddress}
+            OWNER_ADDRESS = #{ownerAddr}
         WHERE OWNER_UUID = #{ownerUUId}
     </update>
 

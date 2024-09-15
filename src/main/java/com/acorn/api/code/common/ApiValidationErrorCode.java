@@ -24,7 +24,7 @@ public enum ApiValidationErrorCode {
     TELEPHONE_DUPLICATED(409, "TPD", "이미 사용 중인 전화번호입니다."),
 
     // 회사 이름 관련 이름
-    COMPANY_NAME_ERROR(400, "CNE", "회사명 형식이 유효하지 않습니다."),
+    COMPANY_NAME_ERROR(400, "CNE", "이미 사용 중인 회사명입니다."),
 
     // 이름 관련 오류
     NAME_FORMAT_ERROR(400, "NFE", "이름 형식이 유효하지 않습니다."),

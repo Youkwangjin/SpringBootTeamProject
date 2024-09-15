@@ -1,5 +1,6 @@
 package com.acorn.api.service.owner;
 
+import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.model.owner.Owner;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public interface OwnerService {
 
     boolean isCompanyNameDuplicate(String ownerCompanyName);
 
-    void ownerRegister(Owner owner);
+    void ownerRegister(OwnerRegisterDTO ownerRegisterData);
 
     Owner getOwnerData();
 

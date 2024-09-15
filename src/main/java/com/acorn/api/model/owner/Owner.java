@@ -47,7 +47,7 @@ public class Owner implements UserDetails {
     @Pattern(regexp = "^[0-9\\p{L}&\\-'.\\s]{2,50}$")
     private String ownerCompanyName;
 
-    private String ownerAddress;
+    private String ownerAddr;
 
     private LocalDate ownerCreated;
 

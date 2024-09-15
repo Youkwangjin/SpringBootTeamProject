@@ -1,5 +1,6 @@
 package com.acorn.api.service.owner.impl;
 
+import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.role.OwnerRole;
@@ -65,22 +66,22 @@ public class OwnerServiceImpl implements OwnerService {
     // 공급자 회원가입
     @Override
     @Transactional
-    public void ownerRegister(Owner owner) {
-        String encodedPassword = passwordEncoder.encode(owner.getOwnerPassword());
+    public void ownerRegister(OwnerRegisterDTO ownerRegisterData) {
+        String encodedPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
 
-        Owner newOwner = Owner.builder()
+        Owner newRegisterDataOwner = Owner.builder()
                 .ownerUUId(UUID.randomUUID().toString())
-                .ownerEmail(owner.getOwnerEmail())
-                .ownerBusinessNum(owner.getOwnerBusinessNum())
+                .ownerEmail(ownerRegisterData.getOwnerEmail())
+                .ownerBusinessNum(ownerRegisterData.getOwnerBusinessNum())
                 .ownerPassword(encodedPassword)
-                .ownerName(owner.getOwnerName())
-                .ownerCompanyName(owner.getOwnerCompanyName())
-                .ownerAddress(owner.getOwnerAddress())
-                .ownerTel(owner.getOwnerTel())
+                .ownerName(ownerRegisterData.getOwnerName())
+                .ownerCompanyName(ownerRegisterData.getOwnerCompanyName())
+                .ownerAddr(ownerRegisterData.getOwnerAddr())
+                .ownerTel(ownerRegisterData.getOwnerTel())
                 .ownerRole(OwnerRole.OWNER)
                 .build();
 
-        ownerRepository.ownerRegister(newOwner);
+        ownerRepository.ownerRegister(newRegisterDataOwner);
 
     }
     
@@ -127,7 +128,7 @@ public class OwnerServiceImpl implements OwnerService {
                 .ownerName(owner.getOwnerName())
                 .ownerTel(owner.getOwnerTel())
                 .ownerCompanyName(owner.getOwnerCompanyName())
-                .ownerAddress(owner.getOwnerAddress())
+                .ownerAddr(owner.getOwnerAddr())
                 .build();
 
         ownerRepository.ownerUpdate(updateOwner);
