@@ -2,6 +2,7 @@ package com.acorn.api.service.user.impl;
 
 import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
+import com.acorn.api.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + userEmail);
         }
-        return user;  // User 객체를 바로 반환
+        return new CustomUserDetails(user);
     }
 }

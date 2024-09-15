@@ -1,4 +1,4 @@
-package com.acorn.api.security;
+package com.acorn.api.security.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

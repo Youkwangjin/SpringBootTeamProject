@@ -1,7 +1,6 @@
 package com.acorn.api.utils;
 
-
-import com.acorn.api.model.user.User;
+import com.acorn.api.security.user.CustomUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -14,7 +13,7 @@ public class UserSecurityUtil {
     private static final Logger log = LoggerFactory.getLogger(UserSecurityUtil.class);
 
     public static String getAuthenticatedUUId() {
-        User userUUIdData = getUserPrincipal();
+        CustomUserDetails userUUIdData = getUserPrincipal();
 
         if (userUUIdData != null) {
             return userUUIdData.getUserUUId();
@@ -23,7 +22,7 @@ public class UserSecurityUtil {
     }
 
     public static String getAuthenticatedTelNumber() {
-        User userTelData = getUserPrincipal();
+        CustomUserDetails userTelData = getUserPrincipal();
 
         if (userTelData != null) {
             return userTelData.getUserTel();
@@ -31,12 +30,12 @@ public class UserSecurityUtil {
         return null;
     }
 
-    private static User getUserPrincipal() {
+    private static CustomUserDetails getUserPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
             try {
-                return (User) authentication.getPrincipal();
+                return (CustomUserDetails) authentication.getPrincipal();
             } catch (Exception e) {
                 log.error(" =============== UserData Not Found : {} =============== ", e.getMessage());
             }

@@ -1,6 +1,10 @@
 package com.acorn.api.service.user.impl;
 
 
+import com.acorn.api.dto.user.UserDeleteDTO;
+import com.acorn.api.dto.user.UserResponseDTO;
+import com.acorn.api.dto.user.UserRegisterDTO;
+import com.acorn.api.dto.user.UserUpdateDTO;
 import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
@@ -43,24 +47,25 @@ public class UserServiceImpl implements UserService {
     // 회원가입
     @Override
     @Transactional
-    public void userRegister(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getUserPassword());
+    public void userRegister(UserRegisterDTO userRegisterData) {
+        String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
 
         User newUser = User.builder()
                 .userUUId(UUID.randomUUID().toString())
-                .userEmail(user.getUserEmail())
+                .userEmail(userRegisterData.getUserEmail())
                 .userPassword(encodedPassword)
-                .userDisplayName(user.getUserDisplayName())
-                .userAddr(user.getUserAddr())
-                .userTel(user.getUserTel())
+                .userDisplayName(userRegisterData.getUserDisplayName())
+                .userAddr(userRegisterData.getUserAddr())
+                .userTel(userRegisterData.getUserTel())
                 .userRole(UserRole.USER)
                 .build();
 
         userRepository.userRegister(newUser);
     }
-
+    
+    // 사용자 정보 가져오기
     @Override
-    public User getUserData() throws AuthenticationException {
+    public UserResponseDTO getUserData() throws AuthenticationException {
         String userUUId = UserSecurityUtil.getAuthenticatedUUId();
 
         if (!StringUtils.isNotBlank(userUUId)) {
@@ -73,16 +78,22 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User data not found");
         }
 
-        return userData;
+        return UserResponseDTO.builder()
+                .userUUId(userData.getUserUUId())
+                .userEmail(userData.getUserEmail())
+                .userDisplayName(userData.getUserDisplayName())
+                .userTel(userData.getUserTel())
+                .userAddr(userData.getUserAddr())
+                .build();
     }
 
     // 회원 수정
     @Override
     @Transactional
-    public void userDataUpdate(User user) {
+    public void userDataUpdate(UserUpdateDTO userUpdateData) {
         String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userUpdateData.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to update user data");
         }
 
@@ -91,16 +102,15 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found with UUID: " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(user.getUserPassword()) && !passwordEncoder.matches(user.getUserPassword(), existingUser.getUserPassword())) {
+        if (StringUtils.isNotBlank(userUpdateData.getUserPassword()) && !passwordEncoder.matches(userUpdateData.getUserPassword(), existingUser.getUserPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
         User updateUser = User.builder()
-                .userUUId(user.getUserUUId())
-                .userDisplayName(user.getUserDisplayName())
-                .userAddr(user.getUserAddr())
-                .userTel(user.getUserTel())
-                .userRole(UserRole.USER)
+                .userUUId(userUpdateData.getUserUUId())
+                .userDisplayName(userUpdateData.getUserDisplayName())
+                .userAddr(userUpdateData.getUserAddr())
+                .userTel(userUpdateData.getUserTel())
                 .build();
 
         // 최종 반환
@@ -110,11 +120,11 @@ public class UserServiceImpl implements UserService {
     // 회원탈퇴
     @Override
     @Transactional
-    public void userDataDelete(User user) {
+    public void userDataDelete(UserDeleteDTO userDeleteData) {
 
         String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userDeleteData.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to delete user data");
         }
 
@@ -123,11 +133,15 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found : " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(user.getUserPassword()) && !passwordEncoder.matches(user.getUserPassword(), existingUser.getUserPassword())) {
+        if (StringUtils.isNotBlank(userDeleteData.getUserPassword()) && !passwordEncoder.matches(userDeleteData.getUserPassword(), existingUser.getUserPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
-        userRepository.userDelete(user);
+        User deleteUser = User.builder()
+                .userUUId(userDeleteData.getUserUUId())
+                .build();
+
+        userRepository.userDelete(deleteUser);
 
     }
 }

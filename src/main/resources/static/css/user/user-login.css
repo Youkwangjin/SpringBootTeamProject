@@ -113,10 +113,3 @@ body::before {
     color: burlywood;
     text-decoration: none;
 }
-
-.warning-message {
-    display: none;
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-}

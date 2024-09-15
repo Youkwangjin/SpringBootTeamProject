@@ -1,6 +1,11 @@
 package com.acorn.api.config;
 
 import com.acorn.api.security.*;
+import com.acorn.api.security.common.CustomCsrfTokenRepository;
+import com.acorn.api.security.common.CustomLogoutSuccessHandler;
+import com.acorn.api.security.user.CustomUserJsonAuthenticationFilter;
+import com.acorn.api.security.user.CustomUserLoginFailureHandler;
+import com.acorn.api.security.user.CustomUserLoginSuccessHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -25,23 +30,23 @@ public class SpringSecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final CustomLoginSuccessHandler customLoginSuccessHandler;
-    private final CustomLoginFailureHandler customLoginFailureHandler;
+    private final CustomUserLoginSuccessHandler customUserLoginSuccessHandler;
+    private final CustomUserLoginFailureHandler customUserLoginFailureHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final UserDetailsService userService;
     private final UserDetailsService ownerService;
 
     public SpringSecurityConfig(ObjectMapper objectMapper,
                                 BCryptPasswordEncoder passwordEncoder,
-                                CustomLoginSuccessHandler customLoginSuccessHandler,
-                                CustomLoginFailureHandler customLoginFailureHandler,
+                                CustomUserLoginSuccessHandler customUserLoginSuccessHandler,
+                                CustomUserLoginFailureHandler customUserLoginFailureHandler,
                                 CustomLogoutSuccessHandler customLogoutSuccessHandler,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
         this.objectMapper = objectMapper;
         this.passwordEncoder = passwordEncoder;
-        this.customLoginSuccessHandler = customLoginSuccessHandler;
-        this.customLoginFailureHandler = customLoginFailureHandler;
+        this.customUserLoginSuccessHandler = customUserLoginSuccessHandler;
+        this.customUserLoginFailureHandler = customUserLoginFailureHandler;
         this.customLogoutSuccessHandler = customLogoutSuccessHandler;
         this.userService = userService;
         this.ownerService = ownerService;
@@ -121,14 +126,14 @@ public class SpringSecurityConfig {
 
     @Bean
     public CustomUserJsonAuthenticationFilter userJsonUsernamePasswordAuthenticationFilter() {
-        CustomUserJsonAuthenticationFilter customUserJsonAuthenticationFilter = new CustomUserJsonAuthenticationFilter(objectMapper, customLoginSuccessHandler, customLoginFailureHandler);
+        CustomUserJsonAuthenticationFilter customUserJsonAuthenticationFilter = new CustomUserJsonAuthenticationFilter(objectMapper, customUserLoginSuccessHandler, customUserLoginFailureHandler);
         customUserJsonAuthenticationFilter.setAuthenticationManager(userAuthenticationManager());
         return customUserJsonAuthenticationFilter;
     }
 
     @Bean
     public CustomOwnerJsonAuthenticationFilter ownerJsonUsernamePasswordAuthenticationFilter() {
-        CustomOwnerJsonAuthenticationFilter customOwnerJsonAuthenticationFilter = new CustomOwnerJsonAuthenticationFilter(objectMapper, customLoginSuccessHandler, customLoginFailureHandler);
+        CustomOwnerJsonAuthenticationFilter customOwnerJsonAuthenticationFilter = new CustomOwnerJsonAuthenticationFilter(objectMapper, customUserLoginSuccessHandler, customUserLoginFailureHandler);
         customOwnerJsonAuthenticationFilter.setAuthenticationManager(ownerAuthenticationManager());
         return customOwnerJsonAuthenticationFilter;
     }
