@@ -1,4 +1,4 @@
-package com.acorn.api.security;
+package com.acorn.api.security.owner;
 
 import com.acorn.api.model.owner.Owner;
 import com.fasterxml.jackson.databind.ObjectMapper;
