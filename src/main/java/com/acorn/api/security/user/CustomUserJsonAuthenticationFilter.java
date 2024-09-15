@@ -1,6 +1,6 @@
-package com.acorn.api.security;
+package com.acorn.api.security.user;
 
-import com.acorn.api.model.user.User;
+import com.acorn.api.dto.user.UserLoginDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,11 +20,11 @@ import java.nio.charset.StandardCharsets;
 
 public class CustomUserJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/user/login";
+    private static final String LOGIN_REQUEST_URL = "/api/auth/user/login";
     private static final String HTTP_METHOD_POST = "POST";
     private static final String CONTENT_TYPE = "application/json";
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
-            new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD_POST);
+            new AntPathRequestMatcher(LOGIN_REQUEST_URL, HTTP_METHOD_POST);
 
     private final ObjectMapper objectMapper;
 
@@ -47,10 +47,10 @@ public class CustomUserJsonAuthenticationFilter extends AbstractAuthenticationPr
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
-        User user = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), User.class);
+        UserLoginDTO userLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), UserLoginDTO.class);
 
-        String username = user.getUserEmail();
-        String password = user.getUserPassword();
+        String username = userLoginData.getUserEmail();
+        String password = userLoginData.getUserPassword();
 
         if (username == null || password == null) {
             throw new AuthenticationServiceException("Missing required fields");

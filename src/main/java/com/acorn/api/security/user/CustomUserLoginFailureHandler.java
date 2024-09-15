@@ -1,4 +1,4 @@
-package com.acorn.api.security;
+package com.acorn.api.security.user;
 
 
 import com.acorn.api.code.user.ApiUserErrorCode;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
+public class CustomUserLoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {

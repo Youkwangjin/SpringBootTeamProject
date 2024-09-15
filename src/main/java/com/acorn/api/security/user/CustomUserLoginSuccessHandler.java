@@ -1,4 +1,4 @@
-package com.acorn.api.security;
+package com.acorn.api.security.user;
 
 import com.acorn.api.code.common.ApiHttpSuccessCode;
 import com.acorn.api.code.response.ApiSuccessResponse;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomUserLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
