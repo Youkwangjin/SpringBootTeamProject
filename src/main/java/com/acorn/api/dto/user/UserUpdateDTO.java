@@ -1,10 +1,10 @@
 package com.acorn.api.dto.user;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@Builder
+@AllArgsConstructor
 public class UserUpdateDTO {
 
     private String userUUId;
