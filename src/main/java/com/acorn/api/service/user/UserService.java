@@ -1,9 +1,9 @@
 package com.acorn.api.service.user;
 
+import com.acorn.api.dto.user.UserDeleteDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.dto.user.UserUpdateDTO;
-import com.acorn.api.model.user.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,5 +19,5 @@ public interface UserService {
 
     void userDataUpdate(UserUpdateDTO userUpdateData);
 
-    void userDataDelete(User user);
+    void userDataDelete(UserDeleteDTO userDeleteData);
 }

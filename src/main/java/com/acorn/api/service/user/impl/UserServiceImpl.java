@@ -1,6 +1,7 @@
 package com.acorn.api.service.user.impl;
 
 
+import com.acorn.api.dto.user.UserDeleteDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.dto.user.UserUpdateDTO;
@@ -119,11 +120,11 @@ public class UserServiceImpl implements UserService {
     // 회원탈퇴
     @Override
     @Transactional
-    public void userDataDelete(User user) {
+    public void userDataDelete(UserDeleteDTO userDeleteData) {
 
         String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userDeleteData.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to delete user data");
         }
 
@@ -132,11 +133,15 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found : " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(user.getUserPassword()) && !passwordEncoder.matches(user.getUserPassword(), existingUser.getUserPassword())) {
+        if (StringUtils.isNotBlank(userDeleteData.getUserPassword()) && !passwordEncoder.matches(userDeleteData.getUserPassword(), existingUser.getUserPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
-        userRepository.userDelete(user);
+        User deleteUser = User.builder()
+                .userUUId(userDeleteData.getUserUUId())
+                .build();
+
+        userRepository.userDelete(deleteUser);
 
     }
 }
