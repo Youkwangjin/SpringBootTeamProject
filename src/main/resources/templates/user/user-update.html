@@ -157,6 +157,11 @@
                         return;
                     }
 
+                    if (!confirm('변경 사항을 저장하시겠습니까?')) {
+                        alert('회원 정보 수정이 취소되었습니다.');
+                        return;
+                    }
+
                     const userData = {
                         userUUId: userUUId,
                         userPassword: userPassword.value,
