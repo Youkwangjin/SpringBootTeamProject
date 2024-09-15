@@ -1,6 +1,7 @@
 package com.acorn.api.service.user.impl;
 
 
+import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
@@ -59,9 +60,10 @@ public class UserServiceImpl implements UserService {
 
         userRepository.userRegister(newUser);
     }
-
+    
+    // 사용자 정보 가져오기
     @Override
-    public User getUserData() throws AuthenticationException {
+    public UserResponseDTO getUserData() throws AuthenticationException {
         String userUUId = UserSecurityUtil.getAuthenticatedUUId();
 
         if (!StringUtils.isNotBlank(userUUId)) {
@@ -74,7 +76,13 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User data not found");
         }
 
-        return userData;
+        return UserResponseDTO.builder()
+                .userUUId(userData.getUserUUId())
+                .userEmail(userData.getUserEmail())
+                .userDisplayName(userData.getUserDisplayName())
+                .userTel(userData.getUserTel())
+                .userAddr(userData.getUserAddr())
+                .build();
     }
 
     // 회원 수정

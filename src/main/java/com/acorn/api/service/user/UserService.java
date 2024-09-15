@@ -1,5 +1,6 @@
 package com.acorn.api.service.user;
 
+import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.model.user.User;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public interface UserService {
 
     boolean isTelPhoneDuplicate(String userTel);
 
-    User getUserData();
+    UserResponseDTO getUserData();
 
     void userDataUpdate(User user);
 
