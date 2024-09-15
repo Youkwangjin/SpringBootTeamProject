@@ -3,7 +3,7 @@ package com.acorn.api.controller.user;
 
 import com.acorn.api.code.common.ApiHttpSuccessCode;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.model.user.User;
+import com.acorn.api.dto.user.UserUpdateDTO;
 import com.acorn.api.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +22,11 @@ public class UserUpdateController {
     private final UserService userService;
 
     @PatchMapping("/api/user/update/{userUUId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> userUpdate(@Valid @RequestBody User user) {
+    public ResponseEntity<ApiSuccessResponse<Object>> userUpdate(@Valid @RequestBody UserUpdateDTO userUpdateData) {
 
         log.info(" *****************************    User Update START    *****************************");
 
-        userService.userDataUpdate(user);
+        userService.userDataUpdate(userUpdateData);
 
         ApiSuccessResponse<Object> updateResponse = ApiSuccessResponse.builder()
                 .resultCode(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus())

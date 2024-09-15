@@ -53,7 +53,8 @@
         SET
             USER_NAME = #{userDisplayName},
             USER_TEL = #{userTel},
-            USER_ADDRESS = #{userAddr}
+            USER_ADDRESS = #{userAddr},
+            USER_UPDATED = NOW()
         WHERE USER_UUID = #{userUUId}
     </update>
 

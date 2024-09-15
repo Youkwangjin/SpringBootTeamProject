@@ -10,7 +10,6 @@
     <script src="/js/user/daum-postcode.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let userEmail = document.getElementById('userEmail');
             let userPassword = document.getElementById('userPassword');
             let userDisplayName = document.getElementById('userDisplayName');
             let userTel = document.getElementById('userTel');
@@ -160,7 +159,6 @@
 
                     const userData = {
                         userUUId: userUUId,
-                        userEmail: userEmail.value,
                         userPassword: userPassword.value,
                         userDisplayName: userDisplayName.value,
                         userTel: userTel.value,
@@ -205,8 +203,8 @@
 <div class="join-form">
     <div class="content">
         <form id="userUpdate">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <input type="hidden" name="userUUId" id="userUUId" class="text-field" th:value="${userData.userUUId}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" readonly>
+            <input type="hidden" name="userUUId" id="userUUId" class="text-field" th:value="${userData.userUUId}" readonly>
 
             <h3>이메일</h3>
             <label for="userEmail">
@@ -262,7 +260,7 @@
             <h3>입력한 주소</h3>
             <label for="userAddress">
                 <input type="text" name="userAddress" id="userAddress" class="text-field"
-                       th:value="${userData.userAddress}">
+                       th:value="${userData.userAddr}">
             </label>
 
             <input type="submit" class="submit-btn" id="userUpdateBtn" value="수정하기">

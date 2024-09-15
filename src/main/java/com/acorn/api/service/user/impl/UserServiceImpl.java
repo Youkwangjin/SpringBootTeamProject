@@ -3,6 +3,7 @@ package com.acorn.api.service.user.impl;
 
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
+import com.acorn.api.dto.user.UserUpdateDTO;
 import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
@@ -88,10 +89,10 @@ public class UserServiceImpl implements UserService {
     // 회원 수정
     @Override
     @Transactional
-    public void userDataUpdate(User user) {
+    public void userDataUpdate(UserUpdateDTO userUpdateData) {
         String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, user.getUserUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userUpdateData.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to update user data");
         }
 
@@ -100,16 +101,15 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found with UUID: " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(user.getUserPassword()) && !passwordEncoder.matches(user.getUserPassword(), existingUser.getUserPassword())) {
+        if (StringUtils.isNotBlank(userUpdateData.getUserPassword()) && !passwordEncoder.matches(userUpdateData.getUserPassword(), existingUser.getUserPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
         User updateUser = User.builder()
-                .userUUId(user.getUserUUId())
-                .userDisplayName(user.getUserDisplayName())
-                .userAddr(user.getUserAddr())
-                .userTel(user.getUserTel())
-                .userRole(UserRole.USER)
+                .userUUId(userUpdateData.getUserUUId())
+                .userDisplayName(userUpdateData.getUserDisplayName())
+                .userAddr(userUpdateData.getUserAddr())
+                .userTel(userUpdateData.getUserTel())
                 .build();
 
         // 최종 반환
