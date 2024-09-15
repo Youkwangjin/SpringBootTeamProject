@@ -1,6 +1,7 @@
 package com.acorn.api.service.user.impl;
 
 
+import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
@@ -43,16 +44,16 @@ public class UserServiceImpl implements UserService {
     // 회원가입
     @Override
     @Transactional
-    public void userRegister(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getUserPassword());
+    public void userRegister(UserRegisterDTO userRegisterData) {
+        String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
 
         User newUser = User.builder()
                 .userUUId(UUID.randomUUID().toString())
-                .userEmail(user.getUserEmail())
+                .userEmail(userRegisterData.getUserEmail())
                 .userPassword(encodedPassword)
-                .userDisplayName(user.getUserDisplayName())
-                .userAddr(user.getUserAddr())
-                .userTel(user.getUserTel())
+                .userDisplayName(userRegisterData.getUserDisplayName())
+                .userAddr(userRegisterData.getUserAddr())
+                .userTel(userRegisterData.getUserTel())
                 .userRole(UserRole.USER)
                 .build();
 

@@ -10,7 +10,7 @@
         <result property="userPassword"     column="USER_PASSWORD"/>
         <result property="userDisplayName"  column="USER_NAME"/>
         <result property="userTel"          column="USER_TEL"/>
-        <result property="userAddr"      column="USER_ADDRESS"/>
+        <result property="userAddr"         column="USER_ADDRESS"/>
         <result property="userRole"         column="USER_ROLE"/>
     </resultMap>
     <!-- 이메일 중복 체크 -->
