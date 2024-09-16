@@ -23,46 +23,40 @@
 <main>
     <div class="custom-gap-top"></div>
     <div class="text-header">
-        <h3 class="align-detail">창고 상세 정보</h3>
+        <h3 class="align-detail">예약 정보</h3>
     </div>
-    <form>
-        <div class="table-detail">
-            <div class="table-row">
-                <div class="table-cell-detail">창고 번호:</div>
-
-                <div class="table-cell-detail"></div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell-detail">임대인 이름:</div>
-                <div class="table-cell-detail"></div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell-detail">창고 주소:</div>
-                <div class="table-cell-detail"></div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell-detail">창고 크기:</div>
-                <div class="table-cell-detail"></div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell-detail">창고 상세 설명:</div>
-                <div class="table-cell-detail"></div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell-detail">창고 이미지:</div>
-                <div class="table-cell-detail">
-                    <img src="" alt="창고 이미지"/>
+    <div class="table-body">
+        <div class="table-row">
+            <div class="table-detail">
+                <div class="table-row">
+                    <div class="table-cell-detail">창고 번호:</div>
+                    <div class="table-cell-detail"></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell-detail">예약자:</div>
+                    <div class="table-cell-detail"></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell-detail">전화번호:</div>
+                    <div class="table-cell-detail"></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell-detail">이메일:</div>
+                    <div class="table-cell-detail"></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell-detail">시작날짜</div>
+                    <div class="table-cell-detail"></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell-detail">종료날짜</div>
+                    <div class="table-cell-detail"></div>
                 </div>
             </div>
         </div>
-        <div class="button-link">
-            <div class="button-container">
-                <input type="button" value="목록" id="btnList"/>
-                <a>수정</a>
-                <input type="button" value="삭제" id="btnDelete"/>
-            </div>
-        </div>
-    </form>
+    </div>
 </main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</div>
 </body>
 </html>
