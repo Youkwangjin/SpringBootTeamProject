@@ -19,7 +19,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 </head>
 <body>
-<div th:if="${session.ownerSession != null}">
     <div th:replace="~{fragments/header_owner :: header}"></div>
     <main>
         <div class="custom-gap-top"></div>
@@ -34,14 +33,14 @@
                 <div class="table-header-cell">창고상태</div>
                 <div class="table-header-cell">임대인이름</div>
             </div>
-            <div th:if="${datas.size > 0}" class="table-body">
-                <div th:each="data:${datas}" class="table-row">
-                    <div class="table-cell">[[${data.cont_no}]]</div>
+            <div class="table-body">
+                <div class="table-row">
+                    <div class="table-cell"></div>
                     <div class="table-cell">
-                        <a th:href="@{/container/detail(cont_no=${data.cont_no})}" th:text="${data.cont_addr}"></a>
+                        <a></a>
                     </div>
-                    <div class="table-cell">[[${data.cont_size}]]</div>
-                    <div class="table-cell" th:switch="${data.cont_status}">
+                    <div class="table-cell"></div>
+                    <div class="table-cell">
                         <a th:case='0'>승인대기</a>
                         <a th:case='1'>사용가능</a>
                         <a th:case='2'>예약중</a>
@@ -57,6 +56,5 @@
             <a th:href="@{/container/register}" class="button-align">추가</a>
         </div>
     </main>
-</div>
 </body>
 </html>

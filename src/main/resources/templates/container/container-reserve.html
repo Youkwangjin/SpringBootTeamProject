@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 창고대여</title>
-	<link rel="stylesheet" type="text/css" href="../css/container/container.css">
+    <link rel="stylesheet" type="text/css" href="../css/container/container.css">
     <link href="/assets/img/favicon.png" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,40 +19,38 @@
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
 <body>
-<div th:if="${session.ownerSession != null}">
-    <div th:replace="~{fragments/header_owner :: header}"></div>
-    <main>
-        <div class="custom-gap-top"></div>
-        <div class="text-header">
-            <h3 class="align">예약 창고 정보</h3>
+<div th:replace="~{fragments/header_owner :: header}"></div>
+<main>
+    <div class="custom-gap-top"></div>
+    <div class="text-header">
+        <h3 class="align">예약 창고 정보</h3>
+    </div>
+    <div class="custom-table">
+        <div class="table-header">
+            <div class="table-header-cell">창고번호</div>
+            <div class="table-header-cell">창고주소</div>
+            <div class="table-header-cell">창고크기</div>
+            <div class="table-header-cell">창고상태</div>
+            <div class="table-header-cell">임대인이름</div>
         </div>
-        <div class="custom-table">
-            <div class="table-header">
-                <div class="table-header-cell">창고번호</div>
-                <div class="table-header-cell">창고주소</div>
-                <div class="table-header-cell">창고크기</div>
-                <div class="table-header-cell">창고상태</div>
-                <div class="table-header-cell">임대인이름</div>
-            </div>
-            <div th:if="${datas.size > 0}" class="table-body">
-                <div th:each="data:${datas}" class="table-row">
-                    <div class="table-cell">[[${data.cont_no}]]</div>
-                    <div class="table-cell">
-                        [[${data.cont_addr}]]
-                    </div>
-                    <div class="table-cell">[[${data.cont_size}]]</div>
-                    <div class="table-cell" th:switch="${data.cont_status}">
-                        <a th:case='0'>승인대기</a>
-                        <a th:case='1'>사용가능</a>
-                        <a th:case='2'>예약중</a>
-                        <a th:case='3'>사용중</a>
-                        <a th:case='4'>승인거절</a>
-                    </div>
-                    <div class="table-cell">[[${data.owner_name}]]</div>
+        <div class="table-body">
+            <div class="table-row">
+                <div class="table-cell"></div>
+                <div class="table-cell">
+
                 </div>
+                <div class="table-cell"></div>
+                <div class="table-cell">
+                    <a th:case='0'>승인대기</a>
+                    <a th:case='1'>사용가능</a>
+                    <a th:case='2'>예약중</a>
+                    <a th:case='3'>사용중</a>
+                    <a th:case='4'>승인거절</a>
+                </div>
+                <div class="table-cell"></div>
             </div>
         </div>
-    </main>
-</div>
+    </div>
+</main>
 </body>
 </html>
