@@ -1,6 +1,6 @@
 package com.acorn.api.security.owner;
 
-import com.acorn.api.model.owner.Owner;
+import com.acorn.api.dto.owner.OwnerLoginDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,11 +20,11 @@ import java.nio.charset.StandardCharsets;
 
 public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/auth/owner/login";
+    private static final String LOGIN_REQUEST_URL = "/api/auth/owner/login";
     private static final String HTTP_METHOD_POST = "POST";
     private static final String CONTENT_TYPE = "application/json";
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
-            new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD_POST);
+            new AntPathRequestMatcher(LOGIN_REQUEST_URL, HTTP_METHOD_POST);
 
     private final ObjectMapper objectMapper;
 
@@ -47,10 +47,10 @@ public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationP
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
-        Owner owner = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), Owner.class);
+        OwnerLoginDTO ownerLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), OwnerLoginDTO.class);
 
-        String username = owner.getOwnerBusinessNum();
-        String password = owner.getOwnerPassword();
+        String username = ownerLoginData.getOwnerBusinessNum();
+        String password = ownerLoginData.getOwnerPassword();
 
         if (username == null || password == null) {
             throw new AuthenticationServiceException("Missing required fields");

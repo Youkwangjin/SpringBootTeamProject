@@ -2,6 +2,7 @@ package com.acorn.api.service.owner.impl;
 
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
+import com.acorn.api.security.owner.CustomOwnerDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,6 @@ public class OwnerDetailsServiceImpl implements UserDetailsService {
         if (owner == null) {
             throw new UsernameNotFoundException("Owner not found with BusinessNumber: " + ownerBusinessNum);
         }
-        return owner;
+        return new CustomOwnerDetails(owner);
     }
 }
