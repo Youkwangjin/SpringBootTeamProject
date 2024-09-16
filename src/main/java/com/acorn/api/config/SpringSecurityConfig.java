@@ -1,8 +1,10 @@
 package com.acorn.api.config;
 
-import com.acorn.api.security.*;
 import com.acorn.api.security.common.CustomCsrfTokenRepository;
 import com.acorn.api.security.common.CustomLogoutSuccessHandler;
+import com.acorn.api.security.owner.CustomOwnerJsonAuthenticationFilter;
+import com.acorn.api.security.owner.CustomOwnerLoginFailureHandler;
+import com.acorn.api.security.owner.CustomOwnerLoginSuccessHandler;
 import com.acorn.api.security.user.CustomUserJsonAuthenticationFilter;
 import com.acorn.api.security.user.CustomUserLoginFailureHandler;
 import com.acorn.api.security.user.CustomUserLoginSuccessHandler;
@@ -32,6 +34,8 @@ public class SpringSecurityConfig {
     private final BCryptPasswordEncoder passwordEncoder;
     private final CustomUserLoginSuccessHandler customUserLoginSuccessHandler;
     private final CustomUserLoginFailureHandler customUserLoginFailureHandler;
+    private final CustomOwnerLoginSuccessHandler customOwnerLoginSuccessHandler;
+    private final CustomOwnerLoginFailureHandler customOwnerLoginFailureHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final UserDetailsService userService;
     private final UserDetailsService ownerService;
@@ -40,6 +44,8 @@ public class SpringSecurityConfig {
                                 BCryptPasswordEncoder passwordEncoder,
                                 CustomUserLoginSuccessHandler customUserLoginSuccessHandler,
                                 CustomUserLoginFailureHandler customUserLoginFailureHandler,
+                                CustomOwnerLoginSuccessHandler customOwnerLoginSuccessHandler,
+                                CustomOwnerLoginFailureHandler customOwnerLoginFailureHandler,
                                 CustomLogoutSuccessHandler customLogoutSuccessHandler,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
@@ -47,6 +53,8 @@ public class SpringSecurityConfig {
         this.passwordEncoder = passwordEncoder;
         this.customUserLoginSuccessHandler = customUserLoginSuccessHandler;
         this.customUserLoginFailureHandler = customUserLoginFailureHandler;
+        this.customOwnerLoginSuccessHandler = customOwnerLoginSuccessHandler;
+        this.customOwnerLoginFailureHandler = customOwnerLoginFailureHandler;
         this.customLogoutSuccessHandler = customLogoutSuccessHandler;
         this.userService = userService;
         this.ownerService = ownerService;
@@ -133,7 +141,7 @@ public class SpringSecurityConfig {
 
     @Bean
     public CustomOwnerJsonAuthenticationFilter ownerJsonUsernamePasswordAuthenticationFilter() {
-        CustomOwnerJsonAuthenticationFilter customOwnerJsonAuthenticationFilter = new CustomOwnerJsonAuthenticationFilter(objectMapper, customUserLoginSuccessHandler, customUserLoginFailureHandler);
+        CustomOwnerJsonAuthenticationFilter customOwnerJsonAuthenticationFilter = new CustomOwnerJsonAuthenticationFilter(objectMapper, customOwnerLoginSuccessHandler, customOwnerLoginFailureHandler);
         customOwnerJsonAuthenticationFilter.setAuthenticationManager(ownerAuthenticationManager());
         return customOwnerJsonAuthenticationFilter;
     }

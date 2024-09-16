@@ -1,6 +1,6 @@
 package com.acorn.api.utils;
 
-import com.acorn.api.model.owner.Owner;
+import com.acorn.api.security.owner.CustomOwnerDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -12,7 +12,7 @@ public class OwnerSecurityUtil {
     private static final Logger log = LoggerFactory.getLogger(OwnerSecurityUtil.class);
 
     public static String getAuthenticatedUUId() {
-        Owner ownerUUId = getOwnerPrincipal();
+        CustomOwnerDetails ownerUUId = getOwnerPrincipal();
 
         if (ownerUUId != null) {
             return ownerUUId.getOwnerUUId();
@@ -22,7 +22,7 @@ public class OwnerSecurityUtil {
     }
 
     public static String getAuthenticatedEmail() {
-        Owner ownerEmail = getOwnerPrincipal();
+        CustomOwnerDetails ownerEmail = getOwnerPrincipal();
 
         if (ownerEmail != null) {
             return ownerEmail.getOwnerEmail();
@@ -32,7 +32,7 @@ public class OwnerSecurityUtil {
     }
 
     public static String getAuthenticatedTelNumber() {
-        Owner ownerTel = getOwnerPrincipal();
+        CustomOwnerDetails ownerTel = getOwnerPrincipal();
 
         if (ownerTel != null) {
             return ownerTel.getOwnerTel();
@@ -42,7 +42,7 @@ public class OwnerSecurityUtil {
     }
 
     public static String getAuthenticatedCompanyName() {
-        Owner ownerCompanyName = getOwnerPrincipal();
+        CustomOwnerDetails ownerCompanyName = getOwnerPrincipal();
 
         if (ownerCompanyName != null) {
             return ownerCompanyName.getOwnerCompanyName();
@@ -51,12 +51,12 @@ public class OwnerSecurityUtil {
         return null;
     }
 
-    private static Owner getOwnerPrincipal() {
+    private static CustomOwnerDetails getOwnerPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
             try {
-                return (Owner) authentication.getPrincipal();
+                return (CustomOwnerDetails) authentication.getPrincipal();
             } catch (Exception e) {
                 log.error(" =============== OwnerData Not Found : {} =============== ", e.getMessage());
             }

@@ -32,8 +32,8 @@ public class OwnerRepository {
         return companyNameCount > 0;
     }
 
-    public void ownerRegister(Owner owner) {
-        sql.insert("Owner.ownerRegister", owner);
+    public void ownerRegister(Owner newRegisterDataOwner) {
+        sql.insert("Owner.ownerRegister", newRegisterDataOwner);
     }
 
     public Owner findByOwnerBusinessNum(String ownerBusinessNum) {
