@@ -18,79 +18,56 @@
     </style>
 </head>
 <body>
-<div th:if="${session.adminSession != null}">
-    <div th:replace="~{fragments/header_admin :: header}"></div>
-    <main id="main">
-        <div class="breadcrumbs d-flex align-items-center"
-             style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
-            <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-                <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">Service</h2>
-            </div>
+<div th:replace="~{fragments/header_admin :: header}"></div>
+<main id="main">
+    <div class="breadcrumbs d-flex align-items-center"
+         style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+        <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+            <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">Service</h2>
         </div>
-        <br/>
-        <h2 style="text-align: center;">이용자 회원 정보 확인(<span th:text="${user_records}"></span>명)</h2><br/><br/>
-        <table>
+    </div>
+    <br/>
+    <h2 style="text-align: center;">이용자 회원 정보 확인(<span></span>명)</h2><br/><br/>
+    <table>
+        <tr>
+            <th>이메일</th>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>주소</th>
+            <th>삭제</th>
+        </tr>
+        <th:block>
             <tr>
-                <th>아이디</th>
-                <th>비밀번호</th>
-                <th>이름</th>
-                <th>전화번호</th>
-                <th>이메일</th>
-                <th>주소</th>
-                <th>주민번호</th>
-                <th>삭제</th>
+                <td>num 출력</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-            <th:block th:if="${lists.size > 0}">
-                <tr th:each="data:${lists}">
-                    <td th:text="${data.user_id}">num 출력</td>
-                    <td th:text="${#strings.substring(data.user_pwd, 0, 2) + '******'}"></td>
-
-                    <td th:text="${data.user_name}"></td>
-                    <td th:text="${data.user_tel}"></td>
-                    <td th:text="${data.user_email}"></td>
-                    <td th:text="${data.user_addr}"></td>
-                    <td th:text="${#strings.substring(data.user_jumin, 0, 8) + '******'}"></td>
-
-                    <td>
-                        <form action="/admin/user/delete" method="post">
-                            <input type="hidden" name="user_id" th:value="${data.user_id}"/>
-                            <input type="submit" value="삭제" class="delete-button"
-                                   onclick="if(!confirm('삭제하시면 복구할 수 없습니다. \n 정말로 삭제하시겠습니까?')){return false;}"/>
-                        </form>
-                    </td>
-                </tr>
-            </th:block>
-        </table>
-        <br/><br/>
-        <form action="/user/search" method="post" style="text-align: center;">
-            검색 대상:
-            <label>
-                <select name="searchName" style="width: 100px;">
-                    <option value="user_name" selected>회원이름</option>
-                    <option value="user_id">아이디</option>
-                </select>
-            </label>
-            <label>
-                <input type="text" name="searchValue" style="width: 200px;">
-            </label>
-            <input type="submit" value="검 색" style="width: 80px;">
-        </form>
-        <table style="margin-top: 20px;">
-            <tr style="text-align: center;">
-                <td colspan="5">
-                    <th:block th:each="num : ${#numbers.sequence(1, pageSu)}">
-                        <th:span th:if="${num == page}">
-                            <b th:text="${num}">num 표시(현재 페이지는 링크를 걸지 않음)</b>
-                        </th:span>
-                        <th:span th:if="${num != page}">
-                            <a th:href="@{/user(page=${num})}" th:text="${num}">num 표시</a>
-                        </th:span>
-                    </th:block>
-                </td>
-            </tr>
-        </table>
-        <div th:replace="~{fragments/footer :: footer}"></div>
-    </main>
-</div>
+        </th:block>
+    </table>
+    <br/><br/>
+    <form action="/user/search" method="post" style="text-align: center;">
+        검색 대상:
+        <label>
+            <select name="searchName" style="width: 100px;">
+                <option value="user_name" selected>회원이름</option>
+                <option value="user_id">아이디</option>
+            </select>
+        </label>
+        <label>
+            <input type="text" name="searchValue" style="width: 200px;">
+        </label>
+        <input type="submit" value="검 색" style="width: 80px;">
+    </form>
+    <table style="margin-top: 20px;">
+        <tr style="text-align: center;">
+            <td colspan="5">
+            </td>
+        </tr>
+    </table>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</main>
 </body>
 </html>
