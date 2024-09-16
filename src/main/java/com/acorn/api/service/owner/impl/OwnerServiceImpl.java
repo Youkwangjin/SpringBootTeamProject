@@ -1,6 +1,7 @@
 package com.acorn.api.service.owner.impl;
 
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
+import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.role.OwnerRole;
@@ -106,10 +107,10 @@ public class OwnerServiceImpl implements OwnerService {
     // 공급자 회원수정
     @Override
     @Transactional
-    public void ownerDataUpdate(Owner owner) throws AuthenticationException {
+    public void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData) throws AuthenticationException {
         String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, owner.getOwnerUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, ownerUpdateData.getOwnerUUId())) {
             throw new AccessDeniedException("Unauthorized to update owner data");
         }
 
@@ -118,17 +119,17 @@ public class OwnerServiceImpl implements OwnerService {
             throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(owner.getOwnerPassword()) && !passwordEncoder.matches(owner.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+        if (StringUtils.isNotBlank(ownerUpdateData.getOwnerPassword()) && !passwordEncoder.matches(ownerUpdateData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
         Owner updateOwner = Owner.builder()
-                .ownerUUId(owner.getOwnerUUId())
-                .ownerEmail(owner.getOwnerEmail())
-                .ownerName(owner.getOwnerName())
-                .ownerTel(owner.getOwnerTel())
-                .ownerCompanyName(owner.getOwnerCompanyName())
-                .ownerAddr(owner.getOwnerAddr())
+                .ownerUUId(ownerUpdateData.getOwnerUUId())
+                .ownerEmail(ownerUpdateData.getOwnerEmail())
+                .ownerName(ownerUpdateData.getOwnerName())
+                .ownerTel(ownerUpdateData.getOwnerTel())
+                .ownerCompanyName(ownerUpdateData.getOwnerCompanyName())
+                .ownerAddr(ownerUpdateData.getOwnerAddr())
                 .build();
 
         ownerRepository.ownerUpdate(updateOwner);

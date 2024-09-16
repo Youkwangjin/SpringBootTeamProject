@@ -11,7 +11,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let ownerEmail = document.getElementById('ownerEmail');
-            let ownerBusinessNum = document.getElementById('ownerBusinessNum');
             let ownerPassword = document.getElementById('ownerPassword');
             let ownerName = document.getElementById('ownerName');
             let ownerTel = document.getElementById('ownerTel');
@@ -306,10 +305,14 @@
                         return;
                     }
 
+                    if (!confirm('변경 사항을 저장하시겠습니까?')) {
+                        alert('회원 정보 수정이 취소되었습니다.');
+                        return;
+                    }
+
                     const ownerData = {
                         ownerUUId: ownerUUId,
                         ownerEmail: ownerEmail.value,
-                        ownerBusinessNum: ownerBusinessNum.value,
                         ownerPassword: ownerPassword.value,
                         ownerName: ownerName.value,
                         ownerTel: ownerTel.value,
@@ -427,7 +430,7 @@
             <h3>입력한 주소</h3>
             <label for="userAddress">
                 <input type="text" name="ownerAddress" id="userAddress" class="text-field"
-                       th:value="${ownerData.ownerAddress}" placeholder="입력한 주소">
+                       th:value="${ownerData.ownerAddr}" placeholder="입력한 주소">
             </label>
 
             <input type="submit" class="submit-btn" id="ownerUpdateBtn" value="수정하기">

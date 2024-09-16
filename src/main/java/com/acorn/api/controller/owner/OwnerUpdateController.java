@@ -2,6 +2,7 @@ package com.acorn.api.controller.owner;
 
 import com.acorn.api.code.common.ApiHttpSuccessCode;
 import com.acorn.api.code.response.ApiSuccessResponse;
+import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.service.owner.OwnerService;
 import jakarta.validation.Valid;
@@ -21,11 +22,11 @@ public class OwnerUpdateController {
     private final OwnerService ownerService;
 
     @PatchMapping("/api/owner/update/{ownerUUId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> updateOwner(@Valid @RequestBody Owner owner) {
+    public ResponseEntity<ApiSuccessResponse<Object>> updateOwner(@Valid @RequestBody OwnerUpdateDTO ownerUpdateData) {
 
         log.info(" *****************************    Owner Update START    *****************************");
 
-        ownerService.ownerDataUpdate(owner);
+        ownerService.ownerDataUpdate(ownerUpdateData);
 
         ApiSuccessResponse<Object> updateResponse = ApiSuccessResponse.builder()
                 .resultCode(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus())

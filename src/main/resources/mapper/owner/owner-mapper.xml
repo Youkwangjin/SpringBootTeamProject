@@ -72,7 +72,8 @@
             OWNER_NAME = #{ownerName},
             OWNER_TEL = #{ownerTel},
             OWNER_COMPANY_NAME = #{ownerCompanyName},
-            OWNER_ADDRESS = #{ownerAddr}
+            OWNER_ADDRESS = #{ownerAddr},
+            OWNER_UPDATED = NOW()
         WHERE OWNER_UUID = #{ownerUUId}
     </update>
 

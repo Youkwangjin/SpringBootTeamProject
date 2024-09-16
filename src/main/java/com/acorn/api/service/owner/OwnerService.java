@@ -1,6 +1,7 @@
 package com.acorn.api.service.owner;
 
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
+import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.model.owner.Owner;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public interface OwnerService {
 
     Owner getOwnerData();
 
-    void ownerDataUpdate(Owner owner);
+    void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData);
 
     void ownerDataDelete(Owner owner);
 }
