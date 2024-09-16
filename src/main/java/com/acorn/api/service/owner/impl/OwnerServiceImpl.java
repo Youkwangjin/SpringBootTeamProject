@@ -1,5 +1,6 @@
 package com.acorn.api.service.owner.impl;
 
+import com.acorn.api.dto.owner.OwnerDeleteDTO;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.model.owner.Owner;
@@ -139,10 +140,10 @@ public class OwnerServiceImpl implements OwnerService {
     // 회원탈퇴
     @Override
     @Transactional
-    public void ownerDataDelete(Owner owner) {
+    public void ownerDataDelete(OwnerDeleteDTO ownerDeleteData) {
         String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, owner.getOwnerUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, ownerDeleteData.getOwnerUUId())) {
             throw new AccessDeniedException("Unauthorized to update owner data");
         }
 
@@ -151,10 +152,14 @@ public class OwnerServiceImpl implements OwnerService {
             throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(owner.getOwnerPassword()) && !passwordEncoder.matches(owner.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+        if (StringUtils.isNotBlank(ownerDeleteData.getOwnerPassword()) && !passwordEncoder.matches(ownerDeleteData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
-        ownerRepository.ownerDelete(owner);
+        Owner deleteOwner = Owner.builder()
+                .ownerUUId(ownerDeleteData.getOwnerUUId())
+                .build();
+
+        ownerRepository.ownerDelete(deleteOwner);
     }
 }

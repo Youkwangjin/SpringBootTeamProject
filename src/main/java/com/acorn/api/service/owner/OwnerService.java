@@ -1,5 +1,6 @@
 package com.acorn.api.service.owner;
 
+import com.acorn.api.dto.owner.OwnerDeleteDTO;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.model.owner.Owner;
@@ -22,5 +23,5 @@ public interface OwnerService {
 
     void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData);
 
-    void ownerDataDelete(Owner owner);
+    void ownerDataDelete(OwnerDeleteDTO ownerDeleteData);
 }

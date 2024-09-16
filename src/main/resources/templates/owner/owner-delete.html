@@ -8,13 +8,7 @@
     <link href="/assets/css/main.css" rel="stylesheet">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let ownerEmail = document.getElementById('ownerEmail');
             let ownerPassword = document.getElementById('ownerPassword');
-            let ownerBusinessNum = document.getElementById('ownerBusinessNum');
-            let ownerName = document.getElementById('ownerName');
-            let ownerTel = document.getElementById('ownerTel');
-            let ownerCompanyName = document.getElementById('ownerCompanyName');
-            let ownerAddress = document.getElementById('userAddress');
 
             let resetButton = document.getElementById('resetBtn');
             let submitButton = document.getElementById('ownerDeleteBtn');
@@ -39,48 +33,44 @@
                         document.getElementById('ownerPassword').focus();
                         return;
                     }
-
-                    const ownerData = {
-                        ownerUUId: ownerUUId,
-                        ownerEmail: ownerEmail.value,
-                        ownerPassword: ownerPassword.value,
-                        ownerBusinessNum: ownerBusinessNum.value,
-                        ownerName: ownerName.value,
-                        ownerTel: ownerTel.value,
-                        ownerCompanyName: ownerCompanyName.value,
-                        ownerAddr: ownerAddress.value,
-                        _csrf: document.querySelector('[name="_csrf"]').value
-                    };
-                    fetch(`/api/owner/delete/${ownerUUId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify(ownerData)
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(errorData => {
-                                    throw new Error(errorData.errorMsg);
-                                });
-                            }
-                            return response.json();
+                    if (confirm('정말로 탈퇴하시겠습니까?')) {
+                        const ownerData = {
+                            ownerUUId: ownerUUId,
+                            ownerPassword: ownerPassword.value,
+                            _csrf: document.querySelector('[name="_csrf"]').value
+                        };
+                        fetch(`/api/owner/delete/${ownerUUId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify(ownerData)
                         })
-                        .then(data => {
-                            if (data.resultCode === 200) {
-                                alert(data.resultMsg);
-                                performLogout();
-                            } else {
-                                throw new Error(data.errorMsg);
-                            }
-                        })
-                        .catch(error => {
-                            alert(error.message);
-                        });
+                            .then(response => {
+                                if (!response.ok) {
+                                    return response.json().then(errorData => {
+                                        throw new Error(errorData.errorMsg);
+                                    });
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.resultCode === 200) {
+                                    alert(data.resultMsg);
+                                    performLogout();
+                                } else {
+                                    throw new Error(data.errorMsg);
+                                }
+                            })
+                            .catch(error => {
+                                alert(error.message);
+                            });
+                    }
                 }
             });
+
             function performLogout() {
                 fetch('/api/logout', {
                     method: 'POST',
@@ -107,7 +97,8 @@
 
             <h3>이메일</h3>
             <label for="ownerEmail">
-                <input type="text" name="ownerEmail" id="ownerEmail" class="text-field" th:value="${ownerData.ownerEmail}" readonly>
+                <input type="text" name="ownerEmail" id="ownerEmail" class="text-field"
+                       th:value="${ownerData.ownerEmail}" readonly>
             </label><br/>
 
             <h3>비밀번호</h3>
@@ -141,34 +132,9 @@
             </label><br/>
 
             <h3>주소</h3>
-            <label for="user_postcode">
-                <input type="text" id="user_postcode" class="text-field-postcode" placeholder="우편번호">
-            </label>
-
-            <input type="button" onclick="user_execDaumPostcode()" class="button-postcode" value="우편번호 찾기"><br>
-
-            <label for="user_roadAddress">
-                <input type="text" id="user_roadAddress" class="text-field-postcode" placeholder="도로명주소">
-            </label>
-
-            <label for="user_jibunAddress">
-                <input type="text" id="user_jibunAddress" class="text-field-postcode" placeholder="지번주소">
-            </label>
-
-            <span id="guide" style="color:#999;display:none"></span>
-            <label for="user_detailAddress">
-                <input type="text" id="user_detailAddress" class="text-field-postcode" placeholder="상세주소">
-            </label>
-
-            <label for="user_extraAddress">
-                <input type="text" id="user_extraAddress" class="text-field-postcode" placeholder="참고항목">
-            </label>
-            <br/>
-
-            <h3>입력한 주소</h3>
             <label for="userAddress">
                 <input type="text" name="ownerAddress" id="userAddress" class="text-field"
-                       th:value="${ownerData.ownerAddress}" placeholder="입력한 주소" readonly>
+                       th:value="${ownerData.ownerAddr}" placeholder="입력한 주소" readonly>
             </label>
 
             <input type="submit" class="submit-btn" id="ownerDeleteBtn" value="탈퇴하기">
