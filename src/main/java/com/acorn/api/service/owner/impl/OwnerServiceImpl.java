@@ -2,6 +2,7 @@ package com.acorn.api.service.owner.impl;
 
 import com.acorn.api.dto.owner.OwnerDeleteDTO;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
+import com.acorn.api.dto.owner.OwnerResponseDTO;
 import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
@@ -89,7 +90,7 @@ public class OwnerServiceImpl implements OwnerService {
     
     // 공급자 정보 불러오기
     @Override
-    public Owner getOwnerData() throws AuthenticationException {
+    public OwnerResponseDTO getOwnerData() throws AuthenticationException {
         String ownerUUId = OwnerSecurityUtil.getAuthenticatedUUId();
 
         if (!StringUtils.isNotBlank(ownerUUId)) {
@@ -102,7 +103,15 @@ public class OwnerServiceImpl implements OwnerService {
             throw new UsernameNotFoundException("User data not found");
         }
 
-        return ownerData;
+        return OwnerResponseDTO.builder()
+                .ownerUUId(ownerData.getOwnerUUId())
+                .ownerEmail(ownerData.getOwnerEmail())
+                .ownerBusinessNum(ownerData.getOwnerBusinessNum())
+                .ownerName(ownerData.getOwnerName())
+                .ownerCompanyName(ownerData.getOwnerCompanyName())
+                .ownerAddr(ownerData.getOwnerAddr())
+                .ownerTel(ownerData.getOwnerTel())
+                .build();
     }
 
     // 공급자 회원수정
