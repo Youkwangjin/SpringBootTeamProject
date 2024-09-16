@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 창고대여</title>
-	<link rel="stylesheet" type="text/css" href="../css/container/container.css">
+    <link rel="stylesheet" type="text/css" href="../css/container/container.css">
     <link href="/assets/img/favicon.png" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,6 @@
     <link href="/assets/css/main.css" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzGKmDfbyNTWo-0WqNSdQlQSlxc6Wjna4&libraries=places"
             defer></script>
-	<script src="/js/user/user-join.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         function getCoordinatesFromAddress() {
@@ -41,126 +40,101 @@
             });
         }
     </script>
-    <script>
-        window.onload = function () {
-            document.querySelector("#btnList").onclick = function () {
-                location.href = "/owner/list";
-            }
-            document.querySelector("#btnUpdate").onclick = function () {
-                if (confirm("정말 수정 하시겠습니까?")) {
-                    let form = document.forms['frm'];
-                    form.action = "update";
-                    form.method = "post";
-                    form.submit();
-                }
-            }
-            document.querySelector("#btnDelete").onclick = function () {
-                if (confirm("정말 삭제 하시겠습니까?")) {
-                    let form = document.forms['frm'];
-                    form.action = "delete";
-                    form.method = "get";
-                    form.submit();
-                }
-            }
-        }
-    </script>
 </head>
 <body>
-<div th:if="${session.ownerSession != null}">
-    <div th:replace="~{fragments/header_owner :: header}"></div>
-    <main>
-        <div class="custom-gap-top"></div>
-        <div class="text-header">
-            <h3 class="align-detail">창고 정보 수정</h3>
+<div th:replace="~{fragments/header_owner :: header}"></div>
+<main>
+    <div class="custom-gap-top"></div>
+    <div class="text-header">
+        <h3 class="align-detail">창고 정보 수정</h3>
+    </div>
+    <form>
+        <div class="table-detail">
+            <input type="hidden"/> <br/>
+            <div class="table-row">
+                <div class="table-cell-detail">창고 번호:</div>
+                <div class="table-cell-detail"></div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell-detail">임대인 이름:</div>
+                <div class="table-cell-detail">
+                    <label>
+                        <input type="text" class="text-field"/>
+                    </label>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell-detail">창고 주소:</div>
+                <div class="table-cell-detail">
+                    <label for="user_postcode">
+                        <input type="text" id="user_postcode" class="text-field-postcode" placeholder="우편번호"/>
+                    </label>
+                    <input type="button" onclick="user_execDaumPostcode()" class="button-postcode"
+                           value="우편번호 찾기"/><br/>
+                    <label for="user_roadAddress">
+                        <input type="text" id="user_roadAddress" class="text-field-postcode" placeholder="도로명주소"/>
+                    </label>
+                    <label for="user_jibunAddress">
+                        <input type="text" id="user_jibunAddress" class="text-field-postcode" placeholder="지번주소"/>
+                    </label>
+                    <span id="guide" style="color:#999;display:none"></span>
+                    <label for="user_detailAddress">
+                        <input type="text" id="user_detailAddress" class="text-field-postcode" placeholder="상세주소"/>
+                    </label>
+                    <label for="user_extraAddress">
+                        <input type="text" id="user_extraAddress" class="text-field-postcode"
+                               placeholder="참고항목"/><br/>
+                    </label>
+                    <label for="user_combinedAddress">
+                        <input type="text" name="cont_addr" id="user_combinedAddress" class="text-field"
+                               placeholder="입력한 주소"/>
+                    </label>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell-detail">위/경도 :</div>
+                <div class="table-cell-detail">
+                    <label for="cont_we">
+                        <input type="text" id="cont_we" name="cont_we" class="text-field-postcode" placeholder="위도">
+                    </label>
+                    <label for="cont_kyung"><input type="text" id="cont_kyung" name="cont_kyung"
+                                                   class="text-field-postcode" placeholder="경도"></label>
+                    <input type="button" onclick="getCoordinatesFromAddress()" class="button-postcode"
+                           value="자동입력"/><br/>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell-detail">창고 크기:</div>
+                <div class="table-cell-detail">
+                    <label>
+                        <input type="text" class="text-field"/>
+                    </label>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell-detail">창고 상세 설명:</div>
+                <div class="table-cell-detail">
+                    <label>
+                        <textarea rows="5" cols="50" name="content"></textarea>
+                    </label>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell-detail">창고 이미지:</div>
+                <div class="table-cell-detail">
+                    <img src="" alt="창고 이미지"/>
+                </div>
+            </div>
         </div>
-        <form name="frm" id="frm" th:object="${conDto}">
-            <div class="table-detail">
-                <input type="hidden" th:field="*{cont_no}"/> <br/>
-                <div class="table-row">
-                    <div class="table-cell-detail">창고 번호:</div>
-                    <div class="table-cell-detail">[[${conDto.cont_no}]]</div>
-                </div>
-                <div class="table-row">
-                    <div class="table-cell-detail">임대인 이름:</div>
-                    <div class="table-cell-detail">
-                        <label>
-                            <input type="text" th:field="*{owner_name}" class="text-field"/>
-                        </label>
-                    </div>
-                </div>
-                <div class="table-row">
-                    <div class="table-cell-detail">창고 주소:</div>
-                    <div class="table-cell-detail">
-                        <label for="user_postcode">
-                            <input type="text" id="user_postcode" class="text-field-postcode" placeholder="우편번호"/>
-                        </label>
-                        <input type="button" onclick="user_execDaumPostcode()" class="button-postcode"
-                               value="우편번호 찾기"/><br/>
-                        <label for="user_roadAddress">
-                            <input type="text" id="user_roadAddress" class="text-field-postcode" placeholder="도로명주소"/>
-                        </label>
-                        <label for="user_jibunAddress">
-                            <input type="text" id="user_jibunAddress" class="text-field-postcode" placeholder="지번주소"/>
-                        </label>
-                        <span id="guide" style="color:#999;display:none"></span>
-                        <label for="user_detailAddress">
-                            <input type="text" id="user_detailAddress" class="text-field-postcode" placeholder="상세주소"/>
-                        </label>
-                        <label for="user_extraAddress">
-                            <input type="text" id="user_extraAddress" class="text-field-postcode"
-                                   placeholder="참고항목"/><br/>
-                        </label>
-                        <label for="user_combinedAddress">
-                            <input type="text" name="cont_addr" id="user_combinedAddress" class="text-field"
-                                   placeholder="입력한 주소"/>
-                        </label>
-                    </div>
-                </div>
-                <div class="table-row">
-                    <div class="table-cell-detail">위/경도 :</div>
-                    <div class="table-cell-detail">
-                        <label for="cont_we">
-                            <input type="text" id="cont_we" name="cont_we" class="text-field-postcode" placeholder="위도">
-                        </label>
-                        <label for="cont_kyung"><input type="text" id="cont_kyung" name="cont_kyung"
-                                                       class="text-field-postcode" placeholder="경도"></label>
-                        <input type="button" onclick="getCoordinatesFromAddress()" class="button-postcode"
-                               value="자동입력"/><br/>
-                    </div>
-                </div>
-                <div class="table-row">
-                    <div class="table-cell-detail">창고 크기:</div>
-                    <div class="table-cell-detail">
-                        <label>
-                            <input type="text" th:field="*{cont_size}" class="text-field"/>
-                        </label>
-                    </div>
-                </div>
-                <div class="table-row">
-                    <div class="table-cell-detail">창고 상세 설명:</div>
-                    <div class="table-cell-detail">
-                        <label>
-                            <textarea rows="5" cols="50" name="content"></textarea>
-                        </label>
-                    </div>
-                </div>
-                <div class="table-row">
-                    <div class="table-cell-detail">창고 이미지:</div>
-                    <div class="table-cell-detail">
-                        <img th:src="@{'/upload/' + ${conDto.cont_image}}" alt="창고 이미지"/>
-                    </div>
-                </div>
+        <div class="button-link">
+            <div class="button-container">
+                <input type="button" value="취소" id="btnList"/>
+                <input type="button" value="수정" id="btnUpdate"/>
+                <input type="button" value="삭제" id="btnDelete"/>
             </div>
-            <div class="button-link">
-                <div class="button-container">
-                    <input type="button" value="취소" id="btnList"/>
-                    <input type="button" value="수정" id="btnUpdate"/>
-                    <input type="button" value="삭제" id="btnDelete"/>
-                </div>
-            </div>
-        </form>
-    </main>
-    <div th:replace="~{fragments/footer :: footer}"></div>
-</div>
+        </div>
+    </form>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
