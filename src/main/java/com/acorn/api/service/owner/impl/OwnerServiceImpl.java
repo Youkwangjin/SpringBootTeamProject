@@ -1,5 +1,9 @@
 package com.acorn.api.service.owner.impl;
 
+import com.acorn.api.dto.owner.OwnerDeleteDTO;
+import com.acorn.api.dto.owner.OwnerRegisterDTO;
+import com.acorn.api.dto.owner.OwnerResponseDTO;
+import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.role.OwnerRole;
@@ -65,28 +69,28 @@ public class OwnerServiceImpl implements OwnerService {
     // 공급자 회원가입
     @Override
     @Transactional
-    public void ownerRegister(Owner owner) {
-        String encodedPassword = passwordEncoder.encode(owner.getOwnerPassword());
+    public void ownerRegister(OwnerRegisterDTO ownerRegisterData) {
+        String encodedPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
 
-        Owner newOwner = Owner.builder()
+        Owner newRegisterDataOwner = Owner.builder()
                 .ownerUUId(UUID.randomUUID().toString())
-                .ownerEmail(owner.getOwnerEmail())
-                .ownerBusinessNum(owner.getOwnerBusinessNum())
+                .ownerEmail(ownerRegisterData.getOwnerEmail())
+                .ownerBusinessNum(ownerRegisterData.getOwnerBusinessNum())
                 .ownerPassword(encodedPassword)
-                .ownerName(owner.getOwnerName())
-                .ownerCompanyName(owner.getOwnerCompanyName())
-                .ownerAddress(owner.getOwnerAddress())
-                .ownerTel(owner.getOwnerTel())
+                .ownerName(ownerRegisterData.getOwnerName())
+                .ownerCompanyName(ownerRegisterData.getOwnerCompanyName())
+                .ownerAddr(ownerRegisterData.getOwnerAddr())
+                .ownerTel(ownerRegisterData.getOwnerTel())
                 .ownerRole(OwnerRole.OWNER)
                 .build();
 
-        ownerRepository.ownerRegister(newOwner);
+        ownerRepository.ownerRegister(newRegisterDataOwner);
 
     }
     
     // 공급자 정보 불러오기
     @Override
-    public Owner getOwnerData() throws AuthenticationException {
+    public OwnerResponseDTO getOwnerData() throws AuthenticationException {
         String ownerUUId = OwnerSecurityUtil.getAuthenticatedUUId();
 
         if (!StringUtils.isNotBlank(ownerUUId)) {
@@ -99,16 +103,24 @@ public class OwnerServiceImpl implements OwnerService {
             throw new UsernameNotFoundException("User data not found");
         }
 
-        return ownerData;
+        return OwnerResponseDTO.builder()
+                .ownerUUId(ownerData.getOwnerUUId())
+                .ownerEmail(ownerData.getOwnerEmail())
+                .ownerBusinessNum(ownerData.getOwnerBusinessNum())
+                .ownerName(ownerData.getOwnerName())
+                .ownerCompanyName(ownerData.getOwnerCompanyName())
+                .ownerAddr(ownerData.getOwnerAddr())
+                .ownerTel(ownerData.getOwnerTel())
+                .build();
     }
 
     // 공급자 회원수정
     @Override
     @Transactional
-    public void ownerDataUpdate(Owner owner) throws AuthenticationException {
+    public void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData) throws AuthenticationException {
         String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, owner.getOwnerUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, ownerUpdateData.getOwnerUUId())) {
             throw new AccessDeniedException("Unauthorized to update owner data");
         }
 
@@ -117,17 +129,17 @@ public class OwnerServiceImpl implements OwnerService {
             throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(owner.getOwnerPassword()) && !passwordEncoder.matches(owner.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+        if (StringUtils.isNotBlank(ownerUpdateData.getOwnerPassword()) && !passwordEncoder.matches(ownerUpdateData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
         Owner updateOwner = Owner.builder()
-                .ownerUUId(owner.getOwnerUUId())
-                .ownerEmail(owner.getOwnerEmail())
-                .ownerName(owner.getOwnerName())
-                .ownerTel(owner.getOwnerTel())
-                .ownerCompanyName(owner.getOwnerCompanyName())
-                .ownerAddress(owner.getOwnerAddress())
+                .ownerUUId(ownerUpdateData.getOwnerUUId())
+                .ownerEmail(ownerUpdateData.getOwnerEmail())
+                .ownerName(ownerUpdateData.getOwnerName())
+                .ownerTel(ownerUpdateData.getOwnerTel())
+                .ownerCompanyName(ownerUpdateData.getOwnerCompanyName())
+                .ownerAddr(ownerUpdateData.getOwnerAddr())
                 .build();
 
         ownerRepository.ownerUpdate(updateOwner);
@@ -137,10 +149,10 @@ public class OwnerServiceImpl implements OwnerService {
     // 회원탈퇴
     @Override
     @Transactional
-    public void ownerDataDelete(Owner owner) {
+    public void ownerDataDelete(OwnerDeleteDTO ownerDeleteData) {
         String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, owner.getOwnerUUId())) {
+        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, ownerDeleteData.getOwnerUUId())) {
             throw new AccessDeniedException("Unauthorized to update owner data");
         }
 
@@ -149,10 +161,14 @@ public class OwnerServiceImpl implements OwnerService {
             throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
         }
 
-        if (StringUtils.isNotBlank(owner.getOwnerPassword()) && !passwordEncoder.matches(owner.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+        if (StringUtils.isNotBlank(ownerDeleteData.getOwnerPassword()) && !passwordEncoder.matches(ownerDeleteData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
             throw new IllegalArgumentException("Invalid current password");
         }
 
-        ownerRepository.ownerDelete(owner);
+        Owner deleteOwner = Owner.builder()
+                .ownerUUId(ownerDeleteData.getOwnerUUId())
+                .build();
+
+        ownerRepository.ownerDelete(deleteOwner);
     }
 }

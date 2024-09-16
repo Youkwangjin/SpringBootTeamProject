@@ -3,6 +3,7 @@ package com.acorn.api.controller.owner;
 
 import com.acorn.api.code.common.ApiHttpSuccessCode;
 import com.acorn.api.code.response.ApiSuccessResponse;
+import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.service.owner.OwnerService;
 import jakarta.validation.Valid;
@@ -23,11 +24,11 @@ public class OwnerRegisterController {
     private final OwnerService ownerService;
 
     @PostMapping("/api/auth/owner/register")
-    public ResponseEntity<ApiSuccessResponse<Object>> registerOwner(@Valid @RequestBody Owner owner) {
+    public ResponseEntity<ApiSuccessResponse<Object>> registerOwner(@Valid @RequestBody OwnerRegisterDTO ownerRegisterData) {
 
         log.info(" *****************************    Register START    *****************************");
 
-        ownerService.ownerRegister(owner);
+        ownerService.ownerRegister(ownerRegisterData);
 
         ApiSuccessResponse<Object> registerResponse = ApiSuccessResponse.builder()
                 .resultCode(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getStatus())

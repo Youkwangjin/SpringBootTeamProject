@@ -1,6 +1,6 @@
 package com.acorn.api.controller.owner;
 
-import com.acorn.api.model.owner.Owner;
+import com.acorn.api.dto.owner.OwnerResponseDTO;
 import com.acorn.api.service.owner.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,21 +25,21 @@ public class OwnerPageController {
 
     @GetMapping("/owner/mypage")
     public String mypage(Model model) {
-        Owner ownerData = ownerService.getOwnerData();
+        OwnerResponseDTO ownerData = ownerService.getOwnerData();
         model.addAttribute("ownerName", ownerData.getOwnerName());
         return "common/mypage";
     }
 
     @GetMapping("/owner/update/profile")
     public String userUpdatePage(Model model) {
-        Owner ownerData = ownerService.getOwnerData();
+        OwnerResponseDTO ownerData = ownerService.getOwnerData();
         model.addAttribute("ownerData", ownerData);
         return "owner/owner-update";
     }
 
     @GetMapping("/owner/delete/profile")
     public String userDeletePage(Model model) {
-        Owner ownerData = ownerService.getOwnerData();
+        OwnerResponseDTO ownerData = ownerService.getOwnerData();
         model.addAttribute("ownerData", ownerData);
         return "owner/owner-delete";
     }
