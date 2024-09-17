@@ -1,5 +1,4 @@
 body {
-    font-family: "Noto Sans KR", serif;
     margin: 0;
     padding: 0;
 }
@@ -95,38 +94,46 @@ section.notice {
 
 #board-search .search-window {
     padding: 15px 0;
-
 }
 
 #board-search .search-window .search-wrap {
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin: 0 auto;
     width: 80%;
     max-width: 564px;
 }
 
-#board-search .search-window .search-wrap input {
+#board-search .search-window .search-wrap select {
     height: 40px;
-    width: 100%;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+}
+
+#board-search .search-window .search-wrap input {
+    flex-grow: 1;
+    height: 40px;
     font-size: 14px;
     padding: 7px 14px;
     border: 1px solid #ccc;
+    width: 580px;
+
 }
 
 #board-search .search-window .search-wrap input:focus {
     border-color: #333;
     outline: 0;
-    border-width: 1px;
 }
 
 #board-search .search-window .search-wrap .btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 108px;
-    padding: 0;
+    height: 40px;
     font-size: 16px;
+    width: 150px;
+    padding: 0;
+    margin-left: 5px;
+    line-height: 40px;
 }
 
 .board-table {
@@ -220,12 +227,12 @@ section.notice {
     color: #fff;
 }
 
-.btn-dark {
+.resetBtn-dark {
     background: #555;
     color: #fff;
 }
 
-.btn-dark:hover, .btn-dark:focus {
+.resetBtn-dark:hover, .resetBtn-dark:focus {
     background: #373737;
     border-color: #373737;
     color: #fff;
