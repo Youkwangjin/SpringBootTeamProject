@@ -1,13 +1,29 @@
 package com.acorn.api.controller.board;
 
+import com.acorn.api.dto.board.BoardResponseDTO;
+import com.acorn.api.service.board.BoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
+@RequiredArgsConstructor
 public class BoardPageController {
 
+    private final BoardService boardService;
+
     @GetMapping("/board/list")
-    public String boardList() {
+    public String boardList(Model model) {
+        List<BoardResponseDTO> boardData = boardService.getBoardListData();
+        model.addAttribute("boardData", boardData);
         return "board/board-list";
+    }
+
+    @GetMapping("/board/write")
+    public String boardWrite() {
+        return "board/board-write";
     }
 }

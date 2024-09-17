@@ -1,13 +1,11 @@
-package com.acorn.api.model.board;
+package com.acorn.api.dto.board;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 @Builder
-public class Board {
+public class BoardResponseDTO {
 
     private int boardId;
 
