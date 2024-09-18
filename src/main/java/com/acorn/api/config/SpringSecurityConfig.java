@@ -1,5 +1,7 @@
 package com.acorn.api.config;
 
+import com.acorn.api.security.common.CustomAccessDeniedHandler;
+import com.acorn.api.security.common.CustomAuthenticationEntryPoint;
 import com.acorn.api.security.common.CustomCsrfTokenRepository;
 import com.acorn.api.security.common.CustomLogoutSuccessHandler;
 import com.acorn.api.security.owner.CustomOwnerJsonAuthenticationFilter;
@@ -37,6 +39,8 @@ public class SpringSecurityConfig {
     private final CustomOwnerLoginSuccessHandler customOwnerLoginSuccessHandler;
     private final CustomOwnerLoginFailureHandler customOwnerLoginFailureHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final UserDetailsService userService;
     private final UserDetailsService ownerService;
 
@@ -47,6 +51,8 @@ public class SpringSecurityConfig {
                                 CustomOwnerLoginSuccessHandler customOwnerLoginSuccessHandler,
                                 CustomOwnerLoginFailureHandler customOwnerLoginFailureHandler,
                                 CustomLogoutSuccessHandler customLogoutSuccessHandler,
+                                CustomAccessDeniedHandler customAccessDeniedHandler,
+                                CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
         this.objectMapper = objectMapper;
@@ -56,6 +62,8 @@ public class SpringSecurityConfig {
         this.customOwnerLoginSuccessHandler = customOwnerLoginSuccessHandler;
         this.customOwnerLoginFailureHandler = customOwnerLoginFailureHandler;
         this.customLogoutSuccessHandler = customLogoutSuccessHandler;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
         this.userService = userService;
         this.ownerService = ownerService;
     }
@@ -81,6 +89,7 @@ public class SpringSecurityConfig {
                                          "/assets/img/favicon.png").permitAll()
                         // Public Pages
                         .requestMatchers("/",
+                                         "/service",
                                          "/containerMaps",
                                          "/user/join",
                                          "/user/login",
@@ -88,9 +97,13 @@ public class SpringSecurityConfig {
                                          "/owner/login",
                                          "/board/list/**",
                                          "/board/detail/**").permitAll()
-                        // Public User API
+
+                        // Public Common API
                         .requestMatchers("/api/logout",
-                                         "/api/auth/user/register",
+                                         "/api/auth/check").permitAll()
+
+                        // Public User API
+                        .requestMatchers("/api/auth/user/register",
                                          "/api/auth/user/emailCheck",
                                          "/api/auth/user/userTelCheck",
                                          "/api/auth/user/login").permitAll()
@@ -102,6 +115,9 @@ public class SpringSecurityConfig {
                                          "/api/auth/owner/ownerTelCheck",
                                          "/api/auth/owner/companyNameCheck",
                                          "/api/auth/owner/login").permitAll()
+
+                        // Protected Common Pages
+                        .requestMatchers("/board/write").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
                         // Protected User Common Pages
                         .requestMatchers("/user/mypage",
@@ -122,11 +138,13 @@ public class SpringSecurityConfig {
                                          "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
 
                         .anyRequest().authenticated())
-
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증되지 않은 사용자 처리
+                        .accessDeniedHandler(customAccessDeniedHandler) // 권한이 부족한 사용자 처리
+                )
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
                         .logoutSuccessHandler(customLogoutSuccessHandler))
-
                 .addFilterBefore(userJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(ownerJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
