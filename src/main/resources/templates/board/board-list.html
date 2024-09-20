@@ -5,7 +5,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 자유게시판</title>
     <link href="/assets/img/favicon.png" rel="icon">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
@@ -22,7 +22,7 @@
                 fetch('/board/write', {
                     method: 'GET'
                 }).then(response => {
-                    if (response.status === 401) {
+                    if (!response.ok) {
                         response.json().then(data => {
                             alert(data.errorMsg);
                             window.location.href = '/user/login';
