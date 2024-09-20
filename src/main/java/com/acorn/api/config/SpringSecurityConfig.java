@@ -1,9 +1,6 @@
 package com.acorn.api.config;
 
-import com.acorn.api.security.common.CustomAccessDeniedHandler;
-import com.acorn.api.security.common.CustomAuthenticationEntryPoint;
-import com.acorn.api.security.common.CustomCsrfTokenRepository;
-import com.acorn.api.security.common.CustomLogoutSuccessHandler;
+import com.acorn.api.security.common.*;
 import com.acorn.api.security.owner.CustomOwnerJsonAuthenticationFilter;
 import com.acorn.api.security.owner.CustomOwnerLoginFailureHandler;
 import com.acorn.api.security.owner.CustomOwnerLoginSuccessHandler;
@@ -41,6 +38,7 @@ public class SpringSecurityConfig {
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomSessionExpiredHandler customSessionExpiredHandler;
     private final UserDetailsService userService;
     private final UserDetailsService ownerService;
 
@@ -53,6 +51,7 @@ public class SpringSecurityConfig {
                                 CustomLogoutSuccessHandler customLogoutSuccessHandler,
                                 CustomAccessDeniedHandler customAccessDeniedHandler,
                                 CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+                                CustomSessionExpiredHandler customSessionExpiredHandler,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
         this.objectMapper = objectMapper;
@@ -64,6 +63,7 @@ public class SpringSecurityConfig {
         this.customLogoutSuccessHandler = customLogoutSuccessHandler;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.customSessionExpiredHandler = customSessionExpiredHandler;
         this.userService = userService;
         this.ownerService = ownerService;
     }
@@ -139,8 +139,13 @@ public class SpringSecurityConfig {
 
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증되지 않은 사용자 처리
-                        .accessDeniedHandler(customAccessDeniedHandler) // 권한이 부족한 사용자 처리
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                )
+                .sessionManagement(session -> session
+                        .invalidSessionUrl("/user/login?sessionExpired=true")
+                        .maximumSessions(1)
+                        .expiredSessionStrategy(customSessionExpiredHandler)
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
