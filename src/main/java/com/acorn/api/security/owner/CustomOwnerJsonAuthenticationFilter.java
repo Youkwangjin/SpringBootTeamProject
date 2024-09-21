@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,17 +21,18 @@ import java.nio.charset.StandardCharsets;
 
 public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+    @Value("${response.content-type}")
+    private String contentType;
     private static final String LOGIN_REQUEST_URL = "/api/auth/owner/login";
     private static final String HTTP_METHOD_POST = "POST";
-    private static final String CONTENT_TYPE = "application/json";
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
             new AntPathRequestMatcher(LOGIN_REQUEST_URL, HTTP_METHOD_POST);
 
     private final ObjectMapper objectMapper;
 
     public CustomOwnerJsonAuthenticationFilter(ObjectMapper objectMapper,
-                                              AuthenticationSuccessHandler authenticationSuccessHandler,
-                                              AuthenticationFailureHandler authenticationFailureHandler) {
+                                               AuthenticationSuccessHandler authenticationSuccessHandler,
+                                               AuthenticationFailureHandler authenticationFailureHandler) {
 
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
 
@@ -43,7 +45,7 @@ public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationP
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        if (request.getContentType() == null || !CONTENT_TYPE.equals(request.getContentType())) {
+        if (request.getContentType() == null || !contentType.equals(request.getContentType())) {
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
@@ -64,5 +66,4 @@ public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationP
     protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
-
 }

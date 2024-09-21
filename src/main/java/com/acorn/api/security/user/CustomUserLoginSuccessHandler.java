@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,15 @@ import java.io.IOException;
 
 @Component
 public class CustomUserLoginSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Value("${response.content-type}")
+    private String contentType;
+
+    @Value("${response.character-encoding}")
+    private String characterEncoding;
+
+    @Value("${error.message.default}")
+    private String defaultErrorMessage;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -46,17 +56,18 @@ public class CustomUserLoginSuccessHandler implements AuthenticationSuccessHandl
                 .build();
 
         response.setStatus(apiHttpSuccessCode.getStatus());
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(contentType);
+        response.setCharacterEncoding(characterEncoding);
         response.getWriter().write(convertObjectToJson(apiSuccessResponse));
 
     }
+
     private String convertObjectToJson(ApiSuccessResponse<?> successResponse) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(successResponse);
         } catch (JsonProcessingException e) {
-            return "{\"error\":\"서버에 내부적으로 오류가 발생했습니다. 잠시 후 다시 시도해주세요.\"}";
+            return "{\"error\":\"" + defaultErrorMessage + "\"}";
         }
     }
 }

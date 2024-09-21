@@ -1,9 +1,6 @@
 package com.acorn.api.config;
 
-import com.acorn.api.security.common.CustomAccessDeniedHandler;
-import com.acorn.api.security.common.CustomAuthenticationEntryPoint;
-import com.acorn.api.security.common.CustomCsrfTokenRepository;
-import com.acorn.api.security.common.CustomLogoutSuccessHandler;
+import com.acorn.api.security.common.*;
 import com.acorn.api.security.owner.CustomOwnerJsonAuthenticationFilter;
 import com.acorn.api.security.owner.CustomOwnerLoginFailureHandler;
 import com.acorn.api.security.owner.CustomOwnerLoginSuccessHandler;
@@ -24,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -41,6 +39,7 @@ public class SpringSecurityConfig {
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomSessionExpiredHandler customSessionExpiredHandler;
     private final UserDetailsService userService;
     private final UserDetailsService ownerService;
 
@@ -53,6 +52,8 @@ public class SpringSecurityConfig {
                                 CustomLogoutSuccessHandler customLogoutSuccessHandler,
                                 CustomAccessDeniedHandler customAccessDeniedHandler,
                                 CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+                                CustomSessionExpiredHandler customSessionExpiredHandler,
+                                CustomInvalidSessionStrategy customInvalidSessionStrategy,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
         this.objectMapper = objectMapper;
@@ -64,6 +65,7 @@ public class SpringSecurityConfig {
         this.customLogoutSuccessHandler = customLogoutSuccessHandler;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.customSessionExpiredHandler = customSessionExpiredHandler;
         this.userService = userService;
         this.ownerService = ownerService;
     }
@@ -77,8 +79,9 @@ public class SpringSecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new CustomCsrfTokenRepository())
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/api/logout", "POST"))
-                )
+                );
 
+        http
                 //.csrf(AbstractHttpConfigurer::disable) // 테스트용
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         // Static Resource
@@ -89,10 +92,13 @@ public class SpringSecurityConfig {
                                          "/assets/img/favicon.png").permitAll()
                         // Public Pages
                         .requestMatchers("/",
+                                         "/error/401",
+                                         "/error/403",
                                          "/service",
                                          "/containerMaps",
                                          "/user/join",
                                          "/user/login",
+                                         "/user/login?sessionExpired=true",
                                          "/owner/join",
                                          "/owner/login",
                                          "/board/list/**",
@@ -137,16 +143,32 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/owner/update/{ownerUUId}",
                                          "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
 
-                        .anyRequest().authenticated())
+                        .anyRequest().denyAll()
+                );
+
+        http
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .expiredSessionStrategy(customSessionExpiredHandler)
+                        .maxSessionsPreventsLogin(true)
+                );
+
+        http
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증되지 않은 사용자 처리
-                        .accessDeniedHandler(customAccessDeniedHandler) // 권한이 부족한 사용자 처리
-                )
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                );
+
+        http
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
-                        .logoutSuccessHandler(customLogoutSuccessHandler))
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
+                );
+
+        http
                 .addFilterBefore(userJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(ownerJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

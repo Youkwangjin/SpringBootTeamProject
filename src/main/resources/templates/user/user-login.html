@@ -40,42 +40,45 @@
     </div>
 </section>
 <script>
-    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+    document.addEventListener("DOMContentLoaded", function () {
 
-    document.getElementById('userLoginForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-        const userEmail = document.getElementById('userEmail').value.trim();
-        const userPassword = document.getElementById('userPassword').value.trim();
+        document.getElementById('userLoginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        if (!userEmail || !userPassword) {
-            alert("이메일과 비밀번호를 모두 입력해주세요.");
-            return;
-        }
+            const userEmail = document.getElementById('userEmail').value.trim();
+            const userPassword = document.getElementById('userPassword').value.trim();
 
-        fetch('/api/auth/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-            },
-            body: JSON.stringify ({
-                userEmail: userEmail,
-                userPassword: userPassword
-            })
-        }).then(response => response.json())
-            .then(data => {
-                if (data.resultCode === 200) {
-                    window.location.href = '/user/mypage';
-                } else {
-                    alert(data.errorMsg);
-                }
-            })
-            .catch(error => {
-                alert(error.errorMsg);
-            })
-    })
+            if (!userEmail || !userPassword) {
+                alert("이메일과 비밀번호를 모두 입력해주세요.");
+                return;
+            }
+
+            fetch('/api/auth/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    userEmail: userEmail,
+                    userPassword: userPassword
+                })
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.resultCode === 200) {
+                        window.location.href = '/user/mypage';
+                    } else {
+                        alert(data.errorMsg);
+                    }
+                })
+                .catch(error => {
+                    alert(error.errorMsg);
+                })
+        });
+    });
 </script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>401 Unauthorized</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            alert("로그인 후 이용 가능합니다.");
+            performLogout();
+
+            function performLogout() {
+                fetch('/api/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/';
+                        } else {
+                            alert("서버에 오류가 발생했습니다. 관리자에게 문의하세요.");
+                        }
+                    });
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
