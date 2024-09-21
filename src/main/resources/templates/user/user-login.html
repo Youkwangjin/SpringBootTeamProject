@@ -41,13 +41,6 @@
 </section>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const sessionExpired = urlParams.get('sessionExpired');
-
-        if (sessionExpired) {
-            alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-            window.location.href = "/user/login";
-        }
 
         const csrfTokenElement = document.querySelector('input[name="_csrf"]');
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;

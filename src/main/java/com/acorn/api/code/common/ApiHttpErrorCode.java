@@ -23,7 +23,7 @@ public enum ApiHttpErrorCode {
     AUTHENTICATION_ERROR(401, "ACE", "로그인 후 이용 가능합니다."),
 
     // 세션 만료
-    SESSION_EXPIRE(401,"SEE", "세션이 만료되었습니다."),
+    SESSION_EXPIRE(401,"SEE", "세션이 만료되었습니다. 다시 로그인해주세요."),
 
     // 권한 없음
     FORBIDDEN_ERROR(403, "FBE", "접근 권한이 없습니다."),

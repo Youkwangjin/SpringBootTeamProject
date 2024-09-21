@@ -31,8 +31,8 @@ public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationP
     private final ObjectMapper objectMapper;
 
     public CustomOwnerJsonAuthenticationFilter(ObjectMapper objectMapper,
-                                              AuthenticationSuccessHandler authenticationSuccessHandler,
-                                              AuthenticationFailureHandler authenticationFailureHandler) {
+                                               AuthenticationSuccessHandler authenticationSuccessHandler,
+                                               AuthenticationFailureHandler authenticationFailureHandler) {
 
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
 
@@ -66,5 +66,4 @@ public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationP
     protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
-
 }
