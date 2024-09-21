@@ -89,6 +89,7 @@ public class SpringSecurityConfig {
                                          "/assets/img/favicon.png").permitAll()
                         // Public Pages
                         .requestMatchers("/",
+                                         "/error/403",
                                          "/service",
                                          "/containerMaps",
                                          "/user/join",
@@ -138,14 +139,13 @@ public class SpringSecurityConfig {
                                          "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
 
                         .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .expiredSessionStrategy(customSessionExpiredHandler)
+                )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
-                )
-                .sessionManagement(session -> session
-                        .invalidSessionUrl("/user/login?sessionExpired=true")
-                        .maximumSessions(1)
-                        .expiredSessionStrategy(customSessionExpiredHandler)
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
