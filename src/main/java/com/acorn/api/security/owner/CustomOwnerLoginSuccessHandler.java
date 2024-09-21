@@ -61,6 +61,7 @@ public class CustomOwnerLoginSuccessHandler implements AuthenticationSuccessHand
         response.getWriter().write(convertObjectToJson(apiSuccessResponse));
 
     }
+
     private String convertObjectToJson(ApiSuccessResponse<?> successResponse) {
         try {
             ObjectMapper mapper = new ObjectMapper();
