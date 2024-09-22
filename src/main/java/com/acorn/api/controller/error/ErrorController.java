@@ -16,4 +16,9 @@ public class ErrorController {
     public String error403Page() {
         return "common/403";
     }
+
+    @GetMapping("/error/sessionExpired")
+    public String sessionExpiredPage() {
+        return "common/sessionExpired";
+    }
 }

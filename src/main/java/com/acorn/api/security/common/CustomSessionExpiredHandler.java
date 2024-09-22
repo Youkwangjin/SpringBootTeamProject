@@ -1,9 +1,5 @@
 package com.acorn.api.security.common;
 
-import com.acorn.api.code.common.ApiHttpErrorCode;
-import com.acorn.api.code.response.ApiErrorResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
