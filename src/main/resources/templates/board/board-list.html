@@ -8,31 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/img/favicon.png" rel="icon">
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
             let resetButton = document.getElementById('resetBtn');
+            let writeButton = document.getElementById('boardWriteBtn');
 
             resetButton.addEventListener('click', function () {
                 window.location.href = '/board/list';
             });
 
-            document.getElementById('boardWriteBtn').addEventListener('click', function() {
-                fetch('/board/write', {
-                    method: 'GET'
-                }).then(response => {
-                    if (!response.ok) {
-                        response.json().then(data => {
-                            alert(data.errorMsg);
-                            window.location.href = '/user/login';
-                        });
-                    } else if (response.ok) {
-                        window.location.href = '/board/write';
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                });
+            writeButton.addEventListener('click', function () {
+                window.location.href = '/board/write';
             });
 
         })
