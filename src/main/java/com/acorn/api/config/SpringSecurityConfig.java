@@ -21,14 +21,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
-
 
     private final ObjectMapper objectMapper;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -53,7 +50,6 @@ public class SpringSecurityConfig {
                                 CustomAccessDeniedHandler customAccessDeniedHandler,
                                 CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
                                 CustomSessionExpiredHandler customSessionExpiredHandler,
-                                CustomInvalidSessionStrategy customInvalidSessionStrategy,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
         this.objectMapper = objectMapper;
@@ -70,8 +66,6 @@ public class SpringSecurityConfig {
         this.ownerService = ownerService;
     }
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -79,6 +73,13 @@ public class SpringSecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new CustomCsrfTokenRepository())
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/api/logout", "POST"))
+                );
+
+        http
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .expiredSessionStrategy(customSessionExpiredHandler)
+                        .maxSessionsPreventsLogin(true)
                 );
 
         http
@@ -94,11 +95,11 @@ public class SpringSecurityConfig {
                         .requestMatchers("/",
                                          "/error/401",
                                          "/error/403",
+                                         "/error/sessionExpired",
                                          "/service",
                                          "/containerMaps",
                                          "/user/join",
                                          "/user/login",
-                                         "/user/login?sessionExpired=true",
                                          "/owner/join",
                                          "/owner/login",
                                          "/board/list/**",
@@ -143,14 +144,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/owner/update/{ownerUUId}",
                                          "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
 
-                        .anyRequest().denyAll()
-                );
-
-        http
-                .sessionManagement(session -> session
-                        .maximumSessions(1)
-                        .expiredSessionStrategy(customSessionExpiredHandler)
-                        .maxSessionsPreventsLogin(true)
+                        .anyRequest().authenticated()
                 );
 
         http

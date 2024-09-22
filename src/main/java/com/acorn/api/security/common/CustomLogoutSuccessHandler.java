@@ -1,6 +1,5 @@
 package com.acorn.api.security.common;
 
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +14,7 @@ import java.io.IOException;
 @Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    private static final String MAIN_URL = "/";
+    private static final String LOGIN_URL = "/user/login";
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -38,6 +37,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             }
         }
 
-        response.sendRedirect(MAIN_URL);
+        response.sendRedirect(LOGIN_URL);
     }
 }
