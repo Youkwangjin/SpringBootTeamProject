@@ -10,6 +10,7 @@
     <link href="/assets/img/favicon.png" rel="icon">
     <title>에이콘테이너 : 글 작성하기</title>
     <script src="https://cdn.tiny.cloud/1/ko0z729tparrg6hwynh2s6yoesmpc2oph6uc8qt2vshio6m9/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="/js/common/tinyMCEConfig.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let selectFiles = [];
@@ -90,9 +91,6 @@
 
             });
 
-            tinymce.init({
-                selector: 'textarea',
-            });
         });
     </script>
 </head>
