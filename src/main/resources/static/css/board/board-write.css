@@ -54,7 +54,8 @@
     background-color: #4a5464;
 }
 
-.board-write-form input[type="button"] {
+.board-write-form input[type="button"],
+.board-write-form input[type="submit"] {
     padding: 10px 20px;
     background-color: #0d6efd;
     color: white;
