@@ -149,7 +149,7 @@
                     .then(data => {
                         if (data.resultCode === 201) {
                             alert(data.resultMsg);
-                            window.location.href = '/user/login';
+                            window.location.href = '/board/list';
                         } else {
                             throw new Error(data.errorMsg);
                         }
