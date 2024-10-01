@@ -82,3 +82,22 @@
 .board-write-form input[type="button"][value="목록"]:hover {
     background-color: #5a6268;
 }
+
+#fileListArea {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.file-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.file-entry span {
+    flex-grow: 1;
+    margin-right: 10px;
+}
