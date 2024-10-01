@@ -11,14 +11,12 @@
     <title>에이콘테이너 : 글 작성하기</title>
     <script src="/js/tinymce/tinymce.min.js"></script>
     <script src="/js/common/tinyMCEConfig.js"></script>
+    <script src="/js/common/fileModule.js"></script>
     <script>
-        let selectFiles = [];
-        let fileNames = {};
-
         document.addEventListener("DOMContentLoaded", function () {
-            initFileHandling();
-            initSubmitHandler();
+            let fileHandler = fileModule.init(document.getElementById('fileInput'));
             initBackListButton();
+            initSubmitHandler(fileHandler);
         });
 
         function initBackListButton() {
@@ -26,77 +24,6 @@
             backListButton.addEventListener('click', function () {
                 window.location.href = "/board/list";
             });
-        }
-
-        function initFileHandling() {
-            const fileChoiceButton = document.getElementById('fileChoiceBtn');
-            const fileInput = document.getElementById('fileInput');
-
-            fileChoiceButton.addEventListener('click', function (event) {
-                fileInput.click();
-                event.preventDefault();
-            });
-
-            fileInput.addEventListener('change', function (event) {
-                handleFiles(this.files);
-                this.value = '';
-                event.preventDefault();
-            });
-        }
-
-        function handleFiles(files) {
-            let duplicateFiles = [];
-
-            Array.from(files).forEach(file => {
-                if (fileNames[file.name]) {
-                    duplicateFiles.push(file.name);
-                } else {
-                    selectFiles.push(file);
-                    fileNames[file.name] = true;
-                }
-            });
-
-            if (duplicateFiles.length > 0) {
-                alert("중복된 파일은 업로드 할 수 없습니다");
-            }
-
-            if (selectFiles.length > 5) {
-                alert("파일은 최대 5개까지 업로드할 수 있습니다.");
-                selectFiles = selectFiles.slice(0, 5);
-            }
-
-            displayFiles();
-        }
-
-        function displayFiles() {
-            const fileListArea = document.getElementById('fileListArea');
-            fileListArea.innerHTML = '';
-
-            selectFiles.forEach(file => {
-                const fileEntry = document.createElement('div');
-                fileEntry.classList.add('file-entry');
-
-                const fileNameSpan = document.createElement('span');
-                fileNameSpan.textContent = file.name;
-                fileEntry.appendChild(fileNameSpan);
-
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = '삭제';
-                deleteButton.classList.add('delete-btn');
-                deleteButton.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    removeFile(file.name);
-                });
-
-                fileEntry.appendChild(deleteButton);
-                fileListArea.appendChild(fileEntry);
-            });
-        }
-
-        function removeFile(fileName) {
-            selectFiles = selectFiles.filter(file => file.name !== fileName);
-            delete fileNames[fileName];
-            displayFiles();
         }
 
         function initSubmitHandler() {
@@ -127,7 +54,7 @@
                 formData.append('boardPassword', boardPassword);
                 formData.append('boardContents', boardContents);
 
-                selectFiles.forEach(file => {
+                fileHandler.getFiles().forEach(file => {
                     formData.append('files', file);
                 });
 
