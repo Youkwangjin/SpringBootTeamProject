@@ -35,6 +35,15 @@ public enum ApiValidationErrorCode {
     // 기타 관련 유류
     VALIDATION_ERROR(400, "VE", "기타 형식이 유효하지 않습니다."),
 
+    // 게시글 제목
+    BOARD_TITLE_LENGTH_ERROR(400, "BTL", "게시글 제목은 50글자 미만이어야 합니다."),
+
+    // 공백 관련 오류
+    FIELD_BLANK_ERROR(400, "FBE", "필수 입력 항목이 비어 있습니다."),
+
+    // 게시글 비밀번호 관련 오류
+    PASSWORD_LENGTH_ERROR(400, "PLE", "비밀번호는 6글자 이상이어야 합니다."),
+
     // 인증 실패
     UNAUTHORIZED_ERROR(401, "URE", "로그인 이후 이용 가능합니다.");
 
