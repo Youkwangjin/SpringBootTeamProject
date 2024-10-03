@@ -24,6 +24,10 @@ public class CustomOwnerDetails implements UserDetails {
         return owner.getOwnerEmail();
     }
 
+    public String getOwnerName() {
+        return owner.getOwnerName();
+    }
+
     public String getOwnerTel() {
         return owner.getOwnerTel();
     }

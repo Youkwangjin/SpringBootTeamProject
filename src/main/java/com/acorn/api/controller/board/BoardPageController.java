@@ -23,7 +23,9 @@ public class BoardPageController {
     }
 
     @GetMapping("/board/write")
-    public String boardWrite() {
+    public String boardWrite(Model model) {
+        String boardWriter = boardService.getAuthenticatedUserName();
+        model.addAttribute("boardWriter", boardWriter);
         return "board/board-write";
     }
 }
