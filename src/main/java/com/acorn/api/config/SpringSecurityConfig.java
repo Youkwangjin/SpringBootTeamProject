@@ -52,6 +52,7 @@ public class SpringSecurityConfig {
                                 CustomSessionExpiredHandler customSessionExpiredHandler,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
+
         this.objectMapper = objectMapper;
         this.passwordEncoder = passwordEncoder;
         this.customUserLoginSuccessHandler = customUserLoginSuccessHandler;
@@ -131,7 +132,7 @@ public class SpringSecurityConfig {
                                          "/user/update/profile",
                                          "/user/delete/profile").hasAuthority("ROLE_USER")
 
-                        // Protected User Common Pages
+                        // Protected Owner Common Pages
                         .requestMatchers("/owner/mypage",
                                          "/owner/update/profile",
                                          "/owner/delete/profile").hasAuthority("ROLE_OWNER")
@@ -143,6 +144,9 @@ public class SpringSecurityConfig {
                         // Protected Owner API
                         .requestMatchers("/api/owner/update/{ownerUUId}",
                                          "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
+
+                        // Protected Common Api
+                        .requestMatchers("/api/board/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
                         .anyRequest().authenticated()
                 );

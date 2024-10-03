@@ -20,6 +20,10 @@ public class CustomUserDetails implements UserDetails {
         return user.getUserUUId();
     }
 
+    public String getUserDisplayName() {
+        return user.getUserDisplayName();
+    }
+
     public String getUserTel() {
         return user.getUserTel();
     }
