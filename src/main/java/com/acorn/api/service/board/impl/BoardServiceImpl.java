@@ -1,10 +1,13 @@
 package com.acorn.api.service.board.impl;
 
+import com.acorn.api.dto.board.BoardRegisterDTO;
 import com.acorn.api.dto.board.BoardResponseDTO;
 import com.acorn.api.model.board.Board;
 import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.service.board.BoardService;
+import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,5 +36,20 @@ public class BoardServiceImpl implements BoardService {
                         .boardUpdated(board.getBoardUpdated())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getAuthenticatedUserName() {
+        Object principal = CommonSecurityUtil.getAuthenticatedUUId();
+
+        if (principal == null) {
+            throw new AccessDeniedException("Unauthorized access - user is not logged in");
+        }
+        return CommonSecurityUtil.getAuthenticatedName();
+    }
+
+    @Override
+    public void boardDataSave(BoardRegisterDTO boardRegisterData) {
+
     }
 }
