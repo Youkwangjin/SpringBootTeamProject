@@ -2,6 +2,7 @@ package com.acorn.api.exception.board;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.controller.board.BoardRegisterController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackageClasses = BoardRegisterController.class)
 public class BoardExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(BoardExceptionHandler.class);
@@ -56,8 +57,15 @@ public class BoardExceptionHandler {
 
         return switch (fieldError.getField()) {
             case "boardTitle" -> ApiValidationErrorCode.BOARD_TITLE_LENGTH_ERROR;
-            case "boardPassword" -> ApiValidationErrorCode.PASSWORD_LENGTH_ERROR;
-            default -> ApiValidationErrorCode.VALIDATION_ERROR;
+            case "boardPassword" -> {
+                if (defaultMessage.contains("size must be between")) {
+                    yield ApiValidationErrorCode.PASSWORD_LENGTH_ERROR;
+                } else {
+                    yield ApiValidationErrorCode.FIELD_BLANK_ERROR;
+                }
+            }
+
+            default -> ApiValidationErrorCode.FIELD_BLANK_ERROR;
         };
     }
 }
