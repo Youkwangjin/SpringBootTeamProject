@@ -17,7 +17,7 @@ public class BoardRegisterDTO {
     private String boardWriter;
 
     @NotBlank
-    @Size(max = 6)
+    @Size(min = 6)
     private String boardPassword;
 
     @NotBlank
