@@ -4,9 +4,11 @@
 
 <mapper namespace="Board">
     <resultMap id="boardResultMap"                  type="board" autoMapping="true">
+        <result property="rowNum"                   column="ROW_NUM"/>
         <result property="boardId"                  column="BOARD_ID"/>
         <result property="boardTitle"               column="BOARD_TITLE"/>
         <result property="boardWriter"              column="BOARD_WRITER"/>
+        <result property="boardPassword"            column="BOARD_PASSWORD"/>
         <result property="boardContents"            column="BOARD_CONTENTS"/>
         <result property="boardContentsText"        column="BOARD_CONTENTS_TEXT"/>
         <result property="boardHits"                column="BOARD_HITS"/>
@@ -14,6 +16,24 @@
 
     <!-- 게시글 전체 조회 -->
     <select id="selectBoardListData" resultMap="boardResultMap">
-        SELECT * FROM TB_BOARD;
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY BOARD_CREATED ASC) AS ROW_NUM,
+            BOARD_ID,
+            BOARD_TITLE,
+            BOARD_WRITER,
+            BOARD_PASSWORD,
+            BOARD_CONTENTS,
+            BOARD_CONTENTS_TEXT,
+            BOARD_HITS,
+            DATE_FORMAT(BOARD_CREATED, '%Y-%m-%d') AS BOARD_CREATED,
+            BOARD_UPDATED
+        FROM TB_BOARD
     </select>
+
+    <!-- 게시글 작성 -->
+    <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO TB_BOARD (BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
+        VALUES (#{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
+    </insert>
+
 </mapper>

@@ -146,7 +146,8 @@ public class SpringSecurityConfig {
                                          "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
 
                         // Protected Common Api
-                        .requestMatchers("/api/board/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                        .requestMatchers("/api/editor/image/upload",
+                                         "/api/board/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
                         .anyRequest().authenticated()
                 );

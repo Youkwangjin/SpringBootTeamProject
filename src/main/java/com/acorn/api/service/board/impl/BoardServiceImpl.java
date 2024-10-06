@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    private final BCryptPasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
 
     @Override
@@ -26,6 +27,7 @@ public class BoardServiceImpl implements BoardService {
 
         return boardListData.stream()
                 .map(board -> BoardResponseDTO.builder()
+                        .rowNum(board.getRowNum())
                         .boardId(board.getBoardId())
                         .boardTitle(board.getBoardTitle())
                         .boardWriter(board.getBoardWriter())
@@ -51,5 +53,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void boardDataSave(BoardRegisterDTO boardRegisterData) {
 
+        String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
+
+        Board newBoardSaveData = Board.builder()
+                .boardTitle(boardSaveDTO.getBoardTitle())
+                .boardWriter(boardSaveDTO.getBoardWriter())
+                .boardPassword(encodedBoardPassword)
+                .boardContents(boardSaveDTO.getBoardContents())
+                .boardContentsText(Jsoup.parse(boardSaveDTO.getBoardContents()).text())
+                .build();
+
+        boardRepository.boardSave(newBoardSaveData);
     }
 }
