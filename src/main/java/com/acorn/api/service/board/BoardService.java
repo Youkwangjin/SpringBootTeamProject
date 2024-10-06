@@ -13,5 +13,7 @@ public interface BoardService {
 
     String getAuthenticatedUserName();
 
-    void boardDataSave(BoardRegisterDTO boardRegisterData);
+    Map<String, String> saveImageFile(MultipartFile file, String imageUploadPath, String imageUrl) throws IOException;
+
+    void boardDataSave(BoardSaveDTO boardSaveDTO);
 }

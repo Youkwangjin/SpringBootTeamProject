@@ -9,11 +9,15 @@ import lombok.Getter;
 @Builder
 public class Board {
 
+    private int rowNum;
+
     private int boardId;
 
     private String boardTitle;
 
     private String boardWriter;
+
+    private String boardPassword;
 
     private String boardContents;
 

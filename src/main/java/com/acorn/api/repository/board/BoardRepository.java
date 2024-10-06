@@ -16,4 +16,8 @@ public class BoardRepository {
     public List<Board> selectBoardListData() {
         return sql.selectList("Board.selectBoardListData");
     }
+
+    public void boardSave(Board newBoardSaveData) {
+        sql.insert("Board.insertBoard", newBoardSaveData);
+    }
 }
