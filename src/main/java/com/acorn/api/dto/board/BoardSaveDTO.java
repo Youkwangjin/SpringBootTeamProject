@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class BoardRegisterDTO {
+public class BoardSaveDTO {
 
     @NotBlank
     @Size(max = 50)

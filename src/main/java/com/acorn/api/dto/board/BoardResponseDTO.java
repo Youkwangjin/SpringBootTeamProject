@@ -7,6 +7,8 @@ import lombok.Getter;
 @Builder
 public class BoardResponseDTO {
 
+    private int rowNum;
+
     private int boardId;
 
     private String boardTitle;
@@ -22,5 +24,4 @@ public class BoardResponseDTO {
     private String boardCreated;
 
     private String boardUpdated;
-
 }

@@ -82,7 +82,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 201) {
+                        if (data.resultCode === 200) {
                             alert(data.resultMsg);
                             window.location.href = '/board/list';
                         } else {
