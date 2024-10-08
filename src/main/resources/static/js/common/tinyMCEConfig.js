@@ -6,21 +6,40 @@ document.addEventListener("DOMContentLoaded", function () {
             selector: 'textarea',
             height: 500,
             width: 760,
-            plugins: [
-                'lists',
-                'image',
-                'charmap',
-                'preview',
-                'searchreplace',
-                'fullscreen',
-                'table',
-                'quickbars',
+            plugins: "image imagetools table textcolor",
+            toolbar: [
+                "undo redo | code | styleselect | bold italic | fontsizeselect forecolor backcolor",
+                "alignleft aligncenter alignright alignjustify | outdent indent | table | custom_image"
             ],
-            toolbar:
-                'undo redo blocks bold italic forecolor alignleft aligncenter' +
-                'alignright alignjustify bullist numlist outdent indent lists' +
-                'fullscreen preview',
+            convert_urls: false,
             menubar: false,
+            setup: function (editor) {
+                editor.ui.registry.addButton("custom_image", {
+                    icon: "image",
+                    tooltip: "이미지 업로드",
+                    onAction: function () {
+                        let input = document.createElement("input");
+                        input.setAttribute("type", "file");
+                        input.onchange = function () {
+                            let file = input.files[0];
+                            let formData = new FormData();
+                            formData.append("file", file);
+
+                            fetch("/api/editor/image/upload", {
+                                method: "POST",
+                                body: formData
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    let img = "<img src='" + data.body.path + "' alt=''/>";
+                                    editor.insertContent(img);
+                                })
+                                .catch(error => console.error('Error:', error));
+                        };
+                        input.click();
+                    }
+                });
+            }
         });
     }
 });
