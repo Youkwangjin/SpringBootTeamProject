@@ -34,17 +34,10 @@ public enum ApiHttpErrorCode {
     // 서버 오류
     INTERNAL_SERVER_ERROR(500, "ISE", "서버 내부 오류가 발생하였습니다. 관리자에게 문의하세요.");
 
-    /**
-     * ******************************* Error Code Constructor ***************************************
-     */
-
-    // 에러 코드의 '코드 상태'을 반환
     private final int errorStatus;
 
-    // 에러 코드의 '코드간 구분 값'을 반환
     private final String errorDivisionCode;
 
-    // 에러 코드의 '코드 메시지'을 반환
     private final String errorMsg;
 
     ApiHttpErrorCode(final int errorStatus, final String errorDivisionCode, final String errorMsg) {
@@ -52,5 +45,4 @@ public enum ApiHttpErrorCode {
         this.errorDivisionCode = errorDivisionCode;
         this.errorMsg = errorMsg;
     }
-
 }

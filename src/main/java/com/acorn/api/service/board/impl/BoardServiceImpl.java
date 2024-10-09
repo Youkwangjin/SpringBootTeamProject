@@ -1,13 +1,15 @@
 package com.acorn.api.service.board.impl;
 
-import com.acorn.api.dto.board.BoardRegisterDTO;
+import com.acorn.api.dto.board.BoardSaveDTO;
 import com.acorn.api.dto.board.BoardResponseDTO;
 import com.acorn.api.model.board.Board;
 import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,7 +53,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void boardDataSave(BoardRegisterDTO boardRegisterData) {
+    public void boardDataSave(BoardSaveDTO boardSaveDTO) {
+        Object principal = CommonSecurityUtil.getAuthenticatedUUId();
+
+        if (principal == null) {
+            throw new AccessDeniedException("Unauthorized access - user is not logged in");
+        }
 
         String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
 
