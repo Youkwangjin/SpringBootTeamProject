@@ -1,6 +1,5 @@
 package com.acorn.api.code.common;
 
-
 import lombok.Getter;
 
 @Getter
@@ -22,14 +21,10 @@ public enum ApiHttpSuccessCode {
     // 삭제 성공 코드 (HTTP Response: 200 OK)
     INFO_DELETE_SUCCESS(200, "IDS", "그동안 이용해 주셔서 감사합니다.");
 
-
-    // 성공 코드의 '코드 상태'를 반환
     private final int status;
 
-    // 성공 코드의 '코드 값'을 반환
     private final String code;
 
-    // 성공 코드의 '코드 메시지'를 반환
     private final String message;
 
     ApiHttpSuccessCode(final int status, final String code, final String message) {
