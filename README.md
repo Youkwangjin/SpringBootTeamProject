@@ -35,7 +35,8 @@
 
 
 ## 🏬 ERD
-![image](https://github.com/user-attachments/assets/8fb9e097-eeaa-4999-b041-69fb84e4d0fa)
+![image](https://github.com/user-attachments/assets/1027a606-3d86-4c60-baf8-cf395c7f1381)
+
 
 
 ## 🛠 개발환경 
