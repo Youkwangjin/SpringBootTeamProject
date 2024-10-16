@@ -18,6 +18,9 @@ public class CommonServiceImpl implements CommonService {
     @Value("${image.upload.path}")
     private String editorImageUploadPath;
 
+    @Value("${image.access.path}")
+    private String imageAccessPath;
+
     private static final String[] permitImageExtension = {"jpg", "jpeg", "bmp", "png", "gif"};
 
     @Override
@@ -37,7 +40,6 @@ public class CommonServiceImpl implements CommonService {
 
         File localFile = new File(editorImageUploadPath, imageFileName);
         file.transferTo(localFile);
-
-        return localFile.getPath();
+        return imageAccessPath + imageFileName;
     }
 }

@@ -23,15 +23,24 @@ document.addEventListener("DOMContentLoaded", function () {
                         input.onchange = function () {
                             let file = input.files[0];
                             let formData = new FormData();
-                            formData.append("file", file);
+                            formData.append("file", file)
+
+                            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+                            const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
                             fetch("/api/editor/image/upload", {
                                 method: "POST",
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken,
+                                },
                                 body: formData
                             })
                                 .then(response => response.json())
                                 .then(data => {
-                                    let img = "<img src='" + data.body.path + "' alt=''/>";
+                                    if (!data.uploaded || !data.data) {
+                                        throw new Error('서버에서 이미지 경로를 반환하지 않았습니다.');
+                                    }
+                                    let img = "<img src='" + data.data + "' alt='' />";
                                     editor.insertContent(img);
                                 })
                                 .catch(error => console.error('Error:', error));
