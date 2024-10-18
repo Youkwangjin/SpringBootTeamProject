@@ -37,9 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             })
                                 .then(response => response.json())
                                 .then(data => {
-                                    if (!data.uploaded || !data.data) {
-                                        throw new Error('서버에서 이미지 경로를 반환하지 않았습니다.');
-                                    }
                                     let img = "<img src='" + data.data + "' alt='' />";
                                     editor.insertContent(img);
                                 })
