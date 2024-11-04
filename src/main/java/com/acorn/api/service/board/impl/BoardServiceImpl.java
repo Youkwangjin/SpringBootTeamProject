@@ -59,7 +59,6 @@ public class BoardServiceImpl implements BoardService {
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
         }
-
         String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
 
         Board newBoardSaveData = Board.builder()
@@ -69,7 +68,6 @@ public class BoardServiceImpl implements BoardService {
                 .boardContents(boardSaveDTO.getBoardContents())
                 .boardContentsText(Jsoup.parse(boardSaveDTO.getBoardContents()).text())
                 .build();
-
-        boardRepository.boardSave(newBoardSaveData);
+        Board savedBoard = boardRepository.boardSave(newBoardSaveData);
     }
 }
