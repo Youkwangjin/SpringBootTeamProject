@@ -55,5 +55,4 @@
         INSERT INTO TB_BOARD (BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
         VALUES (#{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
     </insert>
-
 </mapper>

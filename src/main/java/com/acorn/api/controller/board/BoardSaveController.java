@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class BoardRegisterController {
+public class BoardSaveController {
 
-    private static final Logger log = LoggerFactory.getLogger(BoardRegisterController.class);
+    private static final Logger log = LoggerFactory.getLogger(BoardSaveController.class);
     private final BoardService boardService;
 
     @PostMapping("/api/board/save")
     public ResponseEntity<ApiSuccessResponse<Object>> boardSave(@Valid BoardSaveDTO boardSaveDTO) {
 
-        log.info(" *****************************    Board Register START    *****************************");
+        log.info(" *****************************    Board Save START    *****************************");
 
         boardService.boardDataSave(boardSaveDTO);
 
