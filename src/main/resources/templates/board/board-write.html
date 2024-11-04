@@ -38,17 +38,14 @@
                 let boardPassword = document.getElementById('boardPassword').value.trim();
                 let boardContents = document.getElementById('boardContents').value.trim();
 
-
                 if (!boardTitle || !boardPassword || !boardContents) {
                     alert("제목, 비밀번호, 내용 입력란은 필수 항목입니다.");
                     return;
                 }
-
                 if (boardTitle.length > 50) {
                     alert("제목은 최대 50자까지 입력 가능합니다.");
                     return;
                 }
-
                 if (boardPassword.length < 6) {
                     alert("비밀번호는 6글자 이상이어야 합니다.");
                     return;
@@ -59,8 +56,6 @@
                 formData.append('boardWriter', boardWriter);
                 formData.append('boardPassword', boardPassword);
                 formData.append('boardContents', boardContents);
-
-                console.log(boardWriter);
 
                 fileHandler.getFiles().forEach(file => {
                     formData.append('files', file);
