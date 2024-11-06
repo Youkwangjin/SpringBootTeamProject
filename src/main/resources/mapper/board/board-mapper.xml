@@ -13,6 +13,15 @@
         <result property="boardContentsText"        column="BOARD_CONTENTS_TEXT"/>
         <result property="boardHits"                column="BOARD_HITS"/>
     </resultMap>
+
+    <resultMap id="boardFileResultMap"              type="boardFile" autoMapping="true">
+        <result property="boardFileId"              column="BOARD_FILE_ID"/>
+        <result property="boardId"                  column="BOARD_FILE_BOARD_ID"/>
+        <result property="boardOriginalFileName"    column="BOARD_FILE_ORIGINAL_FILE_NAME"/>
+        <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
+        <result property="boardFileType"            column="BOARD_FILE_TYPE"/>
+        <result property="boardFileSize"            column="BOARD_FILE_SIZE"/>
+    </resultMap>
     <!-- 게시글 갯수 확인 -->
     <select id="selectListByCount" resultType="int">
         SELECT
@@ -54,5 +63,11 @@
     <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO TB_BOARD (BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
         VALUES (#{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
+    </insert>
+
+    <!-- 게시글 첨부파일 저장 -->
+    <insert id="insertBoardFile" parameterType="boardFile">
+        INSERT INTO TB_BOARD_FILE (BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_TYPE, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
+        VALUES (#{boardOriginalFileName}, #{boardStoredFileName}, #{boardFileType}, #{boardFileSize}, #{boardId})
     </insert>
 </mapper>

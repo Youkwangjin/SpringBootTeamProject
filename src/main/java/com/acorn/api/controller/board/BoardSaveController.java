@@ -22,7 +22,6 @@ public class BoardSaveController {
 
     @PostMapping("/api/board/save")
     public ResponseEntity<ApiSuccessResponse<Object>> boardSave(@Valid BoardSaveDTO boardSaveDTO) {
-
         log.info(" *****************************    Board Save START    *****************************");
 
         boardService.boardDataSave(boardSaveDTO);

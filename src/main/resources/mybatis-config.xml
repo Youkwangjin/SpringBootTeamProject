@@ -6,5 +6,6 @@
         <typeAlias type="com.acorn.api.model.user.User" alias="user" />
         <typeAlias type="com.acorn.api.model.owner.Owner" alias="owner" />
         <typeAlias type="com.acorn.api.model.board.Board" alias="board" />
+        <typeAlias type="com.acorn.api.model.board.BoardFile" alias="boardFile" />
     </typeAliases>
 </configuration>
