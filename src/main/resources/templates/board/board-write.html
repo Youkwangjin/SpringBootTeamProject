@@ -60,7 +60,7 @@
                 fileHandler.getFiles().forEach(file => {
                     formData.append('files', file);
                 });
-
+                console.log([...formData]);
                 fetch('/api/board/save', {
                     method: 'POST',
                     headers: {

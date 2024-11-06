@@ -1,6 +1,7 @@
 package com.acorn.api.repository.board;
 
 import com.acorn.api.model.board.Board;
+import com.acorn.api.model.board.BoardFile;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,16 @@ public class BoardRepository {
         return sql.selectList("Board.selectBoardListData");
     }
 
-    public void boardSave(Board newBoardSaveData) {
-        sql.insert("Board.insertBoard", newBoardSaveData);
+    public Board boardSave(Board newBoardSaveData) {
+        int result = sql.insert("Board.insertBoard", newBoardSaveData);
+        if (result > 0) {
+            return newBoardSaveData;
+        } else {
+            return null;
+        }
+    }
+
+    public void insertBoardFile(BoardFile boardFile) {
+        sql.insert("Board.insertBoardFile", boardFile);
     }
 }

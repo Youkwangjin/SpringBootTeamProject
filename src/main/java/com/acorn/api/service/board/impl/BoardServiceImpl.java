@@ -3,6 +3,7 @@ package com.acorn.api.service.board.impl;
 import com.acorn.api.dto.board.BoardSaveDTO;
 import com.acorn.api.dto.board.BoardResponseDTO;
 import com.acorn.api.model.board.Board;
+import com.acorn.api.model.board.BoardFile;
 import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
@@ -11,8 +12,10 @@ import org.jsoup.Jsoup;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,5 +72,23 @@ public class BoardServiceImpl implements BoardService {
                 .boardContentsText(Jsoup.parse(boardSaveDTO.getBoardContents()).text())
                 .build();
         Board savedBoard = boardRepository.boardSave(newBoardSaveData);
+
+        if(boardSaveDTO.getBoardFiles() != null && boardSaveDTO.getBoardFiles().isEmpty()) {
+            for(MultipartFile file : boardSaveDTO.getBoardFiles()) {
+                String originalFileName = file.getOriginalFilename();
+                String storedFileName = String.format("[%s_%s]%s", newBoardSaveData.getBoardId(), UUID.randomUUID().toString().replaceAll("-", ""), originalFileName);
+                String fileType = file.getContentType();
+                String fileSize = String.valueOf(file.getSize());
+
+                BoardFile boardFile = BoardFile.builder()
+                        .boardOriginalFileName(originalFileName)
+                        .boardStoredFileName(storedFileName)
+                        .boardFileType(fileType)
+                        .boardFileSize(fileSize)
+                        .boardId(savedBoard.getBoardId())
+                        .build();
+                boardRepository.insertBoardFile(boardFile);
+            }
+        }
     }
 }
