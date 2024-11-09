@@ -58,9 +58,8 @@
                 formData.append('boardContents', boardContents);
 
                 fileHandler.getFiles().forEach(file => {
-                    formData.append('files', file);
+                    formData.append('boardFiles', file);
                 });
-                console.log([...formData]);
                 fetch('/api/board/save', {
                     method: 'POST',
                     headers: {

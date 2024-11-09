@@ -19,7 +19,6 @@
         <result property="boardId"                  column="BOARD_FILE_BOARD_ID"/>
         <result property="boardOriginalFileName"    column="BOARD_FILE_ORIGINAL_FILE_NAME"/>
         <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
-        <result property="boardFileType"            column="BOARD_FILE_TYPE"/>
         <result property="boardFileSize"            column="BOARD_FILE_SIZE"/>
     </resultMap>
     <!-- 게시글 갯수 확인 -->
@@ -67,7 +66,7 @@
 
     <!-- 게시글 첨부파일 저장 -->
     <insert id="insertBoardFile" parameterType="boardFile">
-        INSERT INTO TB_BOARD_FILE (BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_TYPE, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
-        VALUES (#{boardOriginalFileName}, #{boardStoredFileName}, #{boardFileType}, #{boardFileSize}, #{boardId})
+        INSERT INTO TB_BOARD_FILE (BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
+        VALUES (#{boardOriginalFileName}, #{boardStoredFileName}, #{boardFileSize}, #{boardId})
     </insert>
 </mapper>
