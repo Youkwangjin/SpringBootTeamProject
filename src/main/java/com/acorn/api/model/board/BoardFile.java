@@ -17,7 +17,5 @@ public class BoardFile {
 
     private String boardStoredFileName;
 
-    private String boardFileType;
-
     private String boardFileSize;
 }

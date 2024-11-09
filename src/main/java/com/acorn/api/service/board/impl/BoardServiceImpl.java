@@ -73,17 +73,15 @@ public class BoardServiceImpl implements BoardService {
                 .build();
         Board savedBoard = boardRepository.boardSave(newBoardSaveData);
 
-        if(boardSaveDTO.getBoardFiles() != null && boardSaveDTO.getBoardFiles().isEmpty()) {
+        if(boardSaveDTO.getBoardFiles() != null && !boardSaveDTO.getBoardFiles().isEmpty()) {
             for(MultipartFile file : boardSaveDTO.getBoardFiles()) {
                 String originalFileName = file.getOriginalFilename();
                 String storedFileName = String.format("[%s_%s]%s", newBoardSaveData.getBoardId(), UUID.randomUUID().toString().replaceAll("-", ""), originalFileName);
-                String fileType = file.getContentType();
                 String fileSize = String.valueOf(file.getSize());
 
                 BoardFile boardFile = BoardFile.builder()
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
-                        .boardFileType(fileType)
                         .boardFileSize(fileSize)
                         .boardId(savedBoard.getBoardId())
                         .build();
