@@ -39,16 +39,13 @@ let fileModule = (function () {
                 this.fileNames[file.name] = true;
             }
         });
-
         if (duplicateFiles.length > 0) {
             alert("중복된 파일은 업로드 할 수 없습니다");
         }
-
         if (this.fileList.length > 5) {
             alert("파일은 최대 5개까지 업로드할 수 있습니다.");
             this.fileList = this.fileList.slice(0, 5);
         }
-
         this.displayFiles();
     };
 
@@ -70,7 +67,6 @@ let fileModule = (function () {
                 event.preventDefault();
                 this.removeFile(file.name);
             });
-
             fileEntry.appendChild(deleteButton);
             fileListArea.appendChild(fileEntry);
         });

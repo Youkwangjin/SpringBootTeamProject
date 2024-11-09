@@ -4,6 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -22,4 +25,6 @@ public class BoardSaveDTO {
 
     @NotBlank
     private String boardContents;
+
+    private List<MultipartFile> boardFiles;
 }
