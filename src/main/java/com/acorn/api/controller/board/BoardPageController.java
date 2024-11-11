@@ -1,6 +1,6 @@
 package com.acorn.api.controller.board;
 
-import com.acorn.api.dto.board.BoardResponseDTO;
+import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class BoardPageController {
 
     @GetMapping("/board/list")
     public String boardList(Model model) {
-        List<BoardResponseDTO> boardData = boardService.getBoardListData();
+        List<BoardListDTO> boardData = boardService.getBoardListData();
         model.addAttribute("boardData", boardData);
         return "board/board-list";
     }

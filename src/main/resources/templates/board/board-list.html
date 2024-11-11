@@ -12,16 +12,15 @@
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            let resetButton = document.getElementById("resetBtn");
+            let writeButton = document.getElementById("boardWriteBtn");
 
-            let resetButton = document.getElementById('resetBtn');
-            let writeButton = document.getElementById('boardWriteBtn');
-
-            resetButton.addEventListener('click', function () {
-                window.location.href = '/board/list';
+            resetButton.addEventListener("click", function () {
+                window.location.href = "/board/list";
             });
 
-            writeButton.addEventListener('click', function () {
-                window.location.href = '/board/write';
+            writeButton.addEventListener("click", function () {
+                window.location.href = "/board/write";
             });
 
         })
