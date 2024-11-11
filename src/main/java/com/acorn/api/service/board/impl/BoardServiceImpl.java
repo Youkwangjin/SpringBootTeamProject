@@ -1,7 +1,7 @@
 package com.acorn.api.service.board.impl;
 
 import com.acorn.api.dto.board.BoardSaveDTO;
-import com.acorn.api.dto.board.BoardResponseDTO;
+import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.model.board.Board;
 import com.acorn.api.model.board.BoardFile;
 import com.acorn.api.repository.board.BoardRepository;
@@ -26,12 +26,12 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
-    public List<BoardResponseDTO> getBoardListData() {
+    public List<BoardListDTO> getBoardListData() {
 
         List<Board> boardListData = boardRepository.selectBoardListData();
 
         return boardListData.stream()
-                .map(board -> BoardResponseDTO.builder()
+                .map(board -> BoardListDTO.builder()
                         .rowNum(board.getRowNum())
                         .boardId(board.getBoardId())
                         .boardTitle(board.getBoardTitle())
