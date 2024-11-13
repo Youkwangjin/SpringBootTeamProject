@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -27,5 +28,10 @@ public class BoardPageController {
         String boardWriter = boardService.getAuthenticatedUserName();
         model.addAttribute("boardWriter", boardWriter);
         return "board/board-write";
+    }
+
+    @GetMapping("/board/detail/{boardId}")
+    public String boardDetail(@PathVariable("boardId") Long boardId, Model model) {
+        return "board/board-detail";
     }
 }
