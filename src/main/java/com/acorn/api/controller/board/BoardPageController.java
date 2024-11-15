@@ -1,5 +1,6 @@
 package com.acorn.api.controller.board;
 
+import com.acorn.api.dto.board.BoardDetailDTO;
 import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,8 @@ public class BoardPageController {
 
     @GetMapping("/board/detail/{boardId}")
     public String boardDetail(@PathVariable("boardId") Long boardId, Model model) {
+        BoardDetailDTO detailData = boardService.getBoardDetailData(boardId);
+        model.addAttribute("boardDetailData", detailData);
         return "board/board-detail";
     }
 }
