@@ -1,5 +1,6 @@
 package com.acorn.api.service.board;
 
+import com.acorn.api.dto.board.BoardDetailDTO;
 import com.acorn.api.dto.board.BoardSaveDTO;
 import com.acorn.api.dto.board.BoardListDTO;
 import org.springframework.stereotype.Service;
@@ -14,4 +15,6 @@ public interface BoardService {
     String getAuthenticatedUserName();
 
     void boardDataSave(BoardSaveDTO boardSaveDTO);
+
+    BoardDetailDTO getBoardDetailData(Long boardId);
 }
