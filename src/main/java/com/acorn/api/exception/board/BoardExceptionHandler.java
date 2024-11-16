@@ -2,7 +2,7 @@ package com.acorn.api.exception.board;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
-import com.acorn.api.controller.board.BoardRegisterController;
+import com.acorn.api.controller.board.BoardSaveController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackageClasses = BoardRegisterController.class)
+@RestControllerAdvice(basePackageClasses = BoardSaveController.class)
 public class BoardExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(BoardExceptionHandler.class);
