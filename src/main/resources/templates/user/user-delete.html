@@ -4,48 +4,49 @@
     <meta charset="UTF-8">
     <title>에이콘테이너 : 회원탈퇴</title>
     <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/css/user/user-join.css">
     <script src="/js/common/daum-postcode.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let userPassword = document.getElementById('userPassword');
+            let userPassword = document.getElementById("userPassword");
 
-            let resetButton = document.getElementById('btnReset');
-            let submitButton = document.getElementById('userDeleteBtn');
+            let resetButton = document.getElementById("btnReset");
+            let submitButton = document.getElementById("userDeleteBtn");
 
-            resetButton.addEventListener('click', function () {
-                window.location.href = '/user/mypage';
+            resetButton.addEventListener("click", function () {
+                window.location.href = "/user/mypage";
             });
 
-            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
             // 회원삭제 폼 데이터 전송
-            document.getElementById('userDelete').addEventListener('submit', function (e) {
+            document.getElementById("userDelete").addEventListener("submit", function (e) {
                 e.preventDefault();
 
                 if (!submitButton.disabled) {
-                    const userUUId = document.getElementById('userUUId').value;
+                    const userUUId = document.getElementById("userUUId").value;
                     const passwordValue = userPassword.value.trim();
 
-                    if (passwordValue === '') {
-                        alert('비밀번호를 입력해주세요.');
-                        document.getElementById('userPassword').focus();
+                    if (passwordValue === "") {
+                        alert("비밀번호를 입력해주세요.");
+                        document.getElementById("userPassword").focus();
                         return;
                     }
-                    if (confirm('정말로 탈퇴하시겠습니까?')) {
+                    if (confirm("정말로 탈퇴하시겠습니까?")) {
                         const userData = {
                             userUUId: userUUId,
                             userPassword: userPassword.value,
-                            _csrf: document.querySelector('[name="_csrf"]').value
+                            _csrf: document.querySelector("[name=_csrf]").value
                         };
                         fetch(`/api/user/delete/${userUUId}`, {
-                            method: 'POST',
+                            method: "POST",
                             headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": csrfToken
                             },
-                            credentials: 'include',
+                            credentials: "include",
                             body: JSON.stringify(userData)
                         })
                             .then(response => {
@@ -57,7 +58,7 @@
                                 return response.json();
                             })
                             .then(data => {
-                                if (data.resultCode === 200) {
+                                if (data.httpStatus === "OK") {
                                     alert(data.resultMsg);
                                     performLogout();
                                 } else {
@@ -72,13 +73,13 @@
             });
 
             function performLogout() {
-                fetch('/api/logout', {
-                    method: 'POST',
-                    credentials: 'include'
+                fetch("/api/logout", {
+                    method: "POST",
+                    credentials: "include",
                 })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = '/';
+                            window.location.href = "/";
                         } else {
                             alert("서버에 오류가 발생했습니다. 관리자에게 문의하세요.")
                         }
