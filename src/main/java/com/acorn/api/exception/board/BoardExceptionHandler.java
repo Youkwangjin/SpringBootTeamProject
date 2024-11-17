@@ -39,11 +39,11 @@ public class BoardExceptionHandler {
         log.info("  ========================  Board Data Validation errors  ========================  : {}", errorBoardMsg);
 
         ApiErrorResponse response = new ApiErrorResponse(
-                boardErrorCode.getErrorStatus(),
+                boardErrorCode.getHttpStatus(),
                 boardErrorCode.getErrorDivisionCode(),
                 boardErrorCode.getErrorMsg()
         );
-        return ResponseEntity.status(boardErrorCode.getErrorStatus()).body(response);
+        return ResponseEntity.status(boardErrorCode.getHttpStatus()).body(response);
 
     }
 

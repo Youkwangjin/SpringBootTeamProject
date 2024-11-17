@@ -1,6 +1,5 @@
 package com.acorn.api.controller.owner;
 
-
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.common.ApiValidationSuccessCode;
 import com.acorn.api.code.response.ApiErrorResponse;
@@ -30,19 +29,19 @@ public class OwnerValidationController {
 
         if (ownerEmailDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus())
+                    .httpStatus(ApiValidationErrorCode.EMAIL_DUPLICATED.getHttpStatus())
                     .errorDivisionCode(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorDivisionCode())
                     .errorMsg(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
+            return ResponseEntity.status(ApiValidationErrorCode.EMAIL_DUPLICATED.getHttpStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> emailCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus())
+                    .httpStatus(ApiValidationSuccessCode.EMAIL_AVAILABLE.getHttpStatus())
                     .resultMsg(ApiValidationSuccessCode.EMAIL_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus()).body(emailCheckResponse);
-        }
 
+            return ResponseEntity.status(ApiValidationSuccessCode.EMAIL_AVAILABLE.getHttpStatus()).body(emailCheckResponse);
+        }
     }
 
     @GetMapping("/api/auth/owner/businessNumCheck")
@@ -53,17 +52,19 @@ public class OwnerValidationController {
 
         if (ownerBusinessNumDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorStatus())
+                    .httpStatus(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getHttpStatus())
                     .errorDivisionCode(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorDivisionCode())
                     .errorMsg(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getErrorStatus()).body(errorResponse);
+
+            return ResponseEntity.status(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT.getHttpStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> businessNumCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getStatus())
+                    .httpStatus(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getHttpStatus())
                     .resultMsg(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getStatus()).body(businessNumCheckResponse);
+
+            return ResponseEntity.status(ApiValidationSuccessCode.BUSINESS_NUMBER_AVAILABLE.getHttpStatus()).body(businessNumCheckResponse);
         }
     }
 
@@ -75,17 +76,19 @@ public class OwnerValidationController {
 
         if (ownerTelDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus())
+                    .httpStatus(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getHttpStatus())
                     .errorDivisionCode(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorDivisionCode())
                     .errorMsg(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
+
+            return ResponseEntity.status(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getHttpStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> telPhoneCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus())
+                    .httpStatus(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getHttpStatus())
                     .resultMsg(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
+
+            return ResponseEntity.status(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getHttpStatus()).body(telPhoneCheckResponse);
         }
     }
 
@@ -97,17 +100,19 @@ public class OwnerValidationController {
 
         if (ownerCompanyNameDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorStatus())
+                    .httpStatus(ApiValidationErrorCode.COMPANY_NAME_ERROR.getHttpStatus())
                     .errorDivisionCode(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorDivisionCode())
                     .errorMsg(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiValidationErrorCode.COMPANY_NAME_ERROR.getErrorStatus()).body(errorResponse);
+
+            return ResponseEntity.status(ApiValidationErrorCode.COMPANY_NAME_ERROR.getHttpStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> companyNameResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getStatus())
+                    .httpStatus(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getHttpStatus())
                     .resultMsg(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getStatus()).body(companyNameResponse);
+
+            return ResponseEntity.status(ApiValidationSuccessCode.COMPANY_NAME_AVAILABLE.getHttpStatus()).body(companyNameResponse);
         }
     }
 }

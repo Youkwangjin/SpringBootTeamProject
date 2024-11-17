@@ -42,25 +42,25 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-        document.getElementById('userLoginForm').addEventListener('submit', function (event) {
+        document.getElementById("userLoginForm").addEventListener("submit", function (event) {
             event.preventDefault();
 
-            const userEmail = document.getElementById('userEmail').value.trim();
-            const userPassword = document.getElementById('userPassword').value.trim();
+            const userEmail = document.getElementById("userEmail").value.trim();
+            const userPassword = document.getElementById("userPassword").value.trim();
 
             if (!userEmail || !userPassword) {
                 alert("이메일과 비밀번호를 모두 입력해주세요.");
                 return;
             }
 
-            fetch('/api/auth/user/login', {
-                method: 'POST',
+            fetch("/api/auth/user/login", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
                 },
                 body: JSON.stringify({
                     userEmail: userEmail,
@@ -68,8 +68,8 @@
                 })
             }).then(response => response.json())
                 .then(data => {
-                    if (data.resultCode === 200) {
-                        window.location.href = '/user/mypage';
+                    if (data.httpStatus === "OK") {
+                        window.location.href = "/user/mypage";
                     } else {
                         alert(data.errorMsg);
                     }

@@ -1,6 +1,5 @@
 package com.acorn.api.service.user.impl;
 
-
 import com.acorn.api.dto.user.UserDeleteDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
@@ -27,14 +26,12 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    
-    // 이메일 중복 검증
+
     @Override
     public boolean isEmailDuplicate(String userEmail) {
         return userRepository.isEmailDuplicate(userEmail);
     }
-    
-    //  전화번호 중복 검증
+
     @Override
     public boolean isTelPhoneDuplicate(String userTel) {
         String currentUserTelData = UserSecurityUtil.getAuthenticatedTelNumber();
@@ -44,7 +41,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.isTelDuplicate(userTel);
     }
 
-    // 회원가입
     @Override
     @Transactional
     public void userRegister(UserRegisterDTO userRegisterData) {
@@ -62,8 +58,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.userRegister(newUser);
     }
-    
-    // 사용자 정보 가져오기
+
     @Override
     public UserResponseDTO getUserData() throws AuthenticationException {
         String userUUId = UserSecurityUtil.getAuthenticatedUUId();
@@ -87,7 +82,6 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    // 회원 수정
     @Override
     @Transactional
     public void userDataUpdate(UserUpdateDTO userUpdateData) {
@@ -113,11 +107,9 @@ public class UserServiceImpl implements UserService {
                 .userTel(userUpdateData.getUserTel())
                 .build();
 
-        // 최종 반환
         userRepository.userUpdate(updateUser);
     }
 
-    // 회원탈퇴
     @Override
     @Transactional
     public void userDataDelete(UserDeleteDTO userDeleteData) {
@@ -142,6 +134,5 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         userRepository.userDelete(deleteUser);
-
     }
 }

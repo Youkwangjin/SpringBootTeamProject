@@ -20,27 +20,27 @@ public class UserValidationController {
     private static final Logger log = LoggerFactory.getLogger(UserValidationController.class);
     private final UserService userService;
 
-
     @GetMapping("/api/auth/user/emailCheck")
     public ResponseEntity<Object> emailCheck(@RequestParam String userEmail) {
-
         log.info(" *****************************    emailCheck START    *****************************");
 
         boolean emailDuplicate = userService.isEmailDuplicate(userEmail);
 
         if (emailDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus())
+                    .httpStatus(ApiValidationErrorCode.EMAIL_DUPLICATED.getHttpStatus())
                     .errorDivisionCode(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorDivisionCode())
                     .errorMsg(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiValidationErrorCode.EMAIL_DUPLICATED.getErrorStatus()).body(errorResponse);
+
+            return ResponseEntity.status(ApiValidationErrorCode.EMAIL_DUPLICATED.getHttpStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> emailCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus())
+                    .httpStatus(ApiValidationSuccessCode.EMAIL_AVAILABLE.getHttpStatus())
                     .resultMsg(ApiValidationSuccessCode.EMAIL_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiValidationSuccessCode.EMAIL_AVAILABLE.getStatus()).body(emailCheckResponse);
+
+            return ResponseEntity.status(ApiValidationSuccessCode.EMAIL_AVAILABLE.getHttpStatus()).body(emailCheckResponse);
         }
     }
 
@@ -52,17 +52,19 @@ public class UserValidationController {
 
         if (userTelDuplicate) {
             ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                    .errorStatus(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus())
+                    .httpStatus(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getHttpStatus())
                     .errorDivisionCode(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorDivisionCode())
                     .errorMsg(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorMsg())
                     .build();
-            return ResponseEntity.status(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getErrorStatus()).body(errorResponse);
+
+            return ResponseEntity.status(ApiValidationErrorCode.TELEPHONE_DUPLICATED.getHttpStatus()).body(errorResponse);
         } else {
             ApiSuccessResponse<Object> telPhoneCheckResponse = ApiSuccessResponse.builder()
-                    .resultCode(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus())
+                    .httpStatus(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getHttpStatus())
                     .resultMsg(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getMessage())
                     .build();
-            return ResponseEntity.status(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getStatus()).body(telPhoneCheckResponse);
+
+            return ResponseEntity.status(ApiValidationSuccessCode.TELEPHONE_AVAILABLE.getHttpStatus()).body(telPhoneCheckResponse);
         }
     }
 }
