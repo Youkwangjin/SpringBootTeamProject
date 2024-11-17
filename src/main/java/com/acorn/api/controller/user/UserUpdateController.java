@@ -1,6 +1,5 @@
 package com.acorn.api.controller.user;
 
-
 import com.acorn.api.code.common.ApiHttpSuccessCode;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.user.UserUpdateDTO;
@@ -29,11 +28,10 @@ public class UserUpdateController {
         userService.userDataUpdate(userUpdateData);
 
         ApiSuccessResponse<Object> updateResponse = ApiSuccessResponse.builder()
-                .resultCode(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus())
+                .httpStatus(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getHttpStatus())
                 .resultMsg(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getMessage())
                 .build();
-        return ResponseEntity.status(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus()).body(updateResponse);
 
+        return ResponseEntity.status(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getHttpStatus()).body(updateResponse);
     }
-
 }

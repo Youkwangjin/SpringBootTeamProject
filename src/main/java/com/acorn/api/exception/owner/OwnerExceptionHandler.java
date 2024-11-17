@@ -48,10 +48,10 @@ public class OwnerExceptionHandler {
         log.info("  ========================  Validation errors  ========================  : {}", errorOwnerMsg);
 
         ApiErrorResponse response = new ApiErrorResponse(
-                ownerErrorCode.getErrorStatus(),
+                ownerErrorCode.getHttpStatus(),
                 ownerErrorCode.getErrorDivisionCode(),
                 ownerErrorCode.getErrorMsg()
         );
-        return ResponseEntity.status(ownerErrorCode.getErrorStatus()).body(response);
+        return ResponseEntity.status(ownerErrorCode.getHttpStatus()).body(response);
     }
 }

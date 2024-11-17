@@ -15,37 +15,35 @@ public class GlobalHttpExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalHttpExceptionHandler.class);
 
-    // 401 (AuthenticationException)
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiErrorResponse> authenticationException(AuthenticationException ex) {
 
         log.error(" =========================== AuthenticationException: {} =========================== ", ex.getMessage());
 
         ApiErrorResponse response = ApiErrorResponse.builder()
-                .errorStatus(ApiHttpErrorCode.AUTHENTICATION_ERROR.getErrorStatus())
+                .httpStatus(ApiHttpErrorCode.AUTHENTICATION_ERROR.getHttpStatus())
                 .errorDivisionCode(ApiHttpErrorCode.AUTHENTICATION_ERROR.getErrorDivisionCode())
                 .errorMsg(ApiHttpErrorCode.AUTHENTICATION_ERROR.getErrorMsg())
                 .build();
 
         return ResponseEntity
-                .status(ApiHttpErrorCode.AUTHENTICATION_ERROR.getErrorStatus())
+                .status(ApiHttpErrorCode.AUTHENTICATION_ERROR.getHttpStatus())
                 .body(response);
     }
 
-    // 403 (AccessDeniedException)
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiErrorResponse> accessDeniedException(AccessDeniedException ex) {
 
         log.error(" =========================== AccessDeniedException: {} =========================== ", ex.getMessage());
 
         ApiErrorResponse response = ApiErrorResponse.builder()
-                .errorStatus(ApiHttpErrorCode.FORBIDDEN_ERROR.getErrorStatus())
+                .httpStatus(ApiHttpErrorCode.FORBIDDEN_ERROR.getHttpStatus())
                 .errorDivisionCode(ApiHttpErrorCode.FORBIDDEN_ERROR.getErrorDivisionCode())
                 .errorMsg(ApiHttpErrorCode.FORBIDDEN_ERROR.getErrorMsg())
                 .build();
 
         return ResponseEntity
-                .status(ApiHttpErrorCode.FORBIDDEN_ERROR.getErrorStatus())
+                .status(ApiHttpErrorCode.FORBIDDEN_ERROR.getHttpStatus())
                 .body(response);
     }
 }

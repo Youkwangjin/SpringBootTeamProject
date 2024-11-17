@@ -27,9 +27,10 @@ public class BoardSaveController {
         boardService.boardDataSave(boardSaveDTO);
 
         ApiSuccessResponse<Object> boardSaveResponse = ApiSuccessResponse.builder()
-                .resultCode(ApiBoardSuccessCode.BOARD_SAVE_SUCCESS.getBoardSuccessStatus())
+                .httpStatus(ApiBoardSuccessCode.BOARD_SAVE_SUCCESS.getHttpStatus())
                 .resultMsg(ApiBoardSuccessCode.BOARD_SAVE_SUCCESS.getBoardSuccessMsg())
                 .build();
-        return ResponseEntity.status(ApiBoardSuccessCode.BOARD_SAVE_SUCCESS.getBoardSuccessStatus()).body(boardSaveResponse);
+
+        return ResponseEntity.status(ApiBoardSuccessCode.BOARD_SAVE_SUCCESS.getHttpStatus()).body(boardSaveResponse);
     }
 }

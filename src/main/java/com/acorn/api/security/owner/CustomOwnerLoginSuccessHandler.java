@@ -41,21 +41,19 @@ public class CustomOwnerLoginSuccessHandler implements AuthenticationSuccessHand
 
         HttpSession newSession = request.getSession(true);
 
-        // 새로운 SecurityContext 생성 및 인증 정보 설정
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
 
-        // 새로운 세션에 SecurityContext 저장
         newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
         ApiHttpSuccessCode apiHttpSuccessCode = ApiHttpSuccessCode.LOGIN_SUCCESS;
         ApiSuccessResponse<String> apiSuccessResponse = ApiSuccessResponse.<String>builder()
-                .resultCode(apiHttpSuccessCode.getStatus())
+                .httpStatus(apiHttpSuccessCode.getHttpStatus())
                 .resultMsg(apiHttpSuccessCode.getMessage())
                 .build();
 
-        response.setStatus(apiHttpSuccessCode.getStatus());
+        response.setStatus(apiHttpSuccessCode.getHttpStatus().value());
         response.setContentType(contentType);
         response.setCharacterEncoding(characterEncoding);
         response.getWriter().write(convertObjectToJson(apiSuccessResponse));

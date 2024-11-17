@@ -102,7 +102,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 200) {
+                        if (data.httpStatus === "OK") {
                             resultElement.textContent = "사용 가능한 이메일입니다.";
                             resultElement.classList.add("success");
                             resultElement.classList.remove("error");
@@ -239,7 +239,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 200) {
+                        if (data.httpStatus === "OK") {
                             resultElement.textContent = data.resultMsg;
                             resultElement.classList.add("success");
                             resultElement.classList.remove("error");
@@ -296,7 +296,7 @@
                             return response.json();
                         })
                         .then(data => {
-                            if (data.resultCode === 201) {
+                            if (data.httpStatus === "CREATED") {
                                 alert(data.resultMsg);
                                 window.location.href = "/user/login";
                             } else {

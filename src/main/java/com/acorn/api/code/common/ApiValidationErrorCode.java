@@ -1,63 +1,47 @@
 package com.acorn.api.code.common;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ApiValidationErrorCode {
 
-    // 비밀번호 관련 오류
-    PASSWORD_STRENGTH_ERROR(400, "PSE", "제공된 비밀번호가 유효하지 않습니다."),
+    PASSWORD_STRENGTH_ERROR(HttpStatus.BAD_REQUEST, "PSE", "제공된 비밀번호가 유효하지 않습니다."),
 
-    // 이메일 관련 오류
-    EMAIL_FORMAT_ERROR(400, "EFE", "이메일 형식이 유효하지 않습니다."),
+    EMAIL_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "EFE", "이메일 형식이 유효하지 않습니다."),
 
-    // 사업자 번호 관련 오류
-    BUSINESS_NUMBER_ERROR(400, "BNE", "사업자 번호 형식이 유효하지 않습니다."),
+    BUSINESS_NUMBER_ERROR(HttpStatus.BAD_REQUEST, "BNE", "사업자 번호 형식이 유효하지 않습니다."),
 
-    // 사업자 번호 중복
-    BUSINESS_NUMBER_CONFLICT(409, "BNC", "이미 사용 중인 사업자 번호입니다."),
+    BUSINESS_NUMBER_CONFLICT(HttpStatus.CONFLICT, "BNC", "이미 사용 중인 사업자 번호입니다."),
 
-    // 이메일 중복
-    EMAIL_DUPLICATED(409, "EDU", "이미 사용 중인 이메일입니다."),
+    EMAIL_DUPLICATED(HttpStatus.CONFLICT, "EDU", "이미 사용 중인 이메일입니다."),
 
-    // 전화번호 중복
-    TELEPHONE_DUPLICATED(409, "TPD", "이미 사용 중인 전화번호입니다."),
+    TELEPHONE_DUPLICATED(HttpStatus.CONFLICT, "TPD", "이미 사용 중인 전화번호입니다."),
 
-    // 회사 이름 관련 이름
-    COMPANY_NAME_ERROR(400, "CNE", "이미 사용 중인 회사명입니다."),
+    COMPANY_NAME_ERROR(HttpStatus.BAD_REQUEST, "CNE", "이미 사용 중인 회사명입니다."),
 
-    // 이름 관련 오류
-    NAME_FORMAT_ERROR(400, "NFE", "이름 형식이 유효하지 않습니다."),
+    NAME_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "NFE", "이름 형식이 유효하지 않습니다."),
 
-    // 전화번호 관련 오류
-    TELEPHONE_FORMAT_ERROR(400, "TFE", "전화번호 형식이 유효하지 않습니다."),
+    TELEPHONE_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "TFE", "전화번호 형식이 유효하지 않습니다."),
 
-    // 기타 관련 유류
-    VALIDATION_ERROR(400, "VE", "기타 형식이 유효하지 않습니다."),
+    VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "VE", "기타 형식이 유효하지 않습니다."),
 
-    // 게시글 제목
-    BOARD_TITLE_LENGTH_ERROR(400, "BTL", "게시글 제목은 50글자 미만이어야 합니다."),
+    BOARD_TITLE_LENGTH_ERROR(HttpStatus.BAD_REQUEST, "BTL", "게시글 제목은 50글자 미만이어야 합니다."),
 
-    // 공백 관련 오류
-    FIELD_BLANK_ERROR(400, "FBE", "필수 입력 항목이 비어 있습니다."),
+    FIELD_BLANK_ERROR(HttpStatus.BAD_REQUEST, "FBE", "필수 입력 항목이 비어 있습니다."),
 
-    // 게시글 비밀번호 관련 오류
-    PASSWORD_LENGTH_ERROR(400, "PLE", "비밀번호는 6글자 이상이어야 합니다."),
+    PASSWORD_LENGTH_ERROR(HttpStatus.BAD_REQUEST, "PLE", "비밀번호는 6글자 이상이어야 합니다."),
 
-    // 인증 실패
-    UNAUTHORIZED_ERROR(401, "URE", "로그인 이후 이용 가능합니다.");
+    UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "URE", "로그인 이후 이용 가능합니다.");
 
-    // 에러 코드의 '코드 상태'을 반환
-    private final int errorStatus;
+    private final HttpStatus httpStatus;
 
-    // 에러 코드의 '코드간 구분 값'을 반환
     private final String errorDivisionCode;
 
-    // 에러 코드의 '코드 메시지'을 반환
     private final String errorMsg;
 
-    ApiValidationErrorCode(final int errorStatus, final String errorDivisionCode, final String errorMsg) {
-        this.errorStatus = errorStatus;
+    ApiValidationErrorCode(final HttpStatus httpStatus, final String errorDivisionCode, final String errorMsg) {
+        this.httpStatus = httpStatus;
         this.errorDivisionCode = errorDivisionCode;
         this.errorMsg = errorMsg;
     }

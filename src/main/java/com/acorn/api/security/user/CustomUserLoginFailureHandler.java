@@ -31,12 +31,12 @@ public class CustomUserLoginFailureHandler implements AuthenticationFailureHandl
         ApiUserErrorCode errorCode = ApiUserErrorCode.USER_AUTHENTICATION_FAILED;
 
         ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                .errorStatus(errorCode.getUserErrorStatus())
+                .httpStatus(errorCode.getHttpStatus())
                 .errorDivisionCode(errorCode.getUserErrorDivisionCode())
                 .errorMsg(errorCode.getUserErrorMsg())
                 .build();
 
-        response.setStatus(errorResponse.getErrorStatus());
+        response.setStatus(errorResponse.getHttpStatus().value());
         response.setContentType(contentType);
         response.setCharacterEncoding(characterEncoding);
         response.getWriter().write(convertObjectToJson(errorResponse));
