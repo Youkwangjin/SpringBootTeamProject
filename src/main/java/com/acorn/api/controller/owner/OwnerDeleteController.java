@@ -1,7 +1,5 @@
 package com.acorn.api.controller.owner;
 
-
-
 import com.acorn.api.code.common.ApiHttpSuccessCode;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.owner.OwnerDeleteDTO;
@@ -30,10 +28,10 @@ public class OwnerDeleteController {
         ownerService.ownerDataDelete(ownerDeleteData);
 
         ApiSuccessResponse<Object> deleteResponse = ApiSuccessResponse.builder()
-                .resultCode(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getStatus())
+                .httpStatus(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getHttpStatus())
                 .resultMsg(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getMessage())
                 .build();
-        return ResponseEntity.status(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getStatus()).body(deleteResponse);
 
+        return ResponseEntity.status(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getHttpStatus()).body(deleteResponse);
     }
 }

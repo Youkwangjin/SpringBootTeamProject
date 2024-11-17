@@ -1,7 +1,5 @@
 package com.acorn.api.exception.user;
 
-
-
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
 import com.acorn.api.controller.user.UserRegisterController;
@@ -12,7 +10,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 
 @RestControllerAdvice(basePackageClasses  = UserRegisterController.class)
 public class UserExceptionHandler {
@@ -46,10 +43,10 @@ public class UserExceptionHandler {
         log.info("  ========================  Validation errors  ========================  : {}", errorUserMsg);
 
         ApiErrorResponse response = new ApiErrorResponse(
-                userErrorCode.getErrorStatus(),
+                userErrorCode.getHttpStatus(),
                 userErrorCode.getErrorDivisionCode(),
                 userErrorCode.getErrorMsg()
         );
-        return ResponseEntity.status(userErrorCode.getErrorStatus()).body(response);
+        return ResponseEntity.status(userErrorCode.getHttpStatus()).body(response);
     }
 }

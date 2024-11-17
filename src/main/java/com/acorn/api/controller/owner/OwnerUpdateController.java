@@ -28,9 +28,10 @@ public class OwnerUpdateController {
         ownerService.ownerDataUpdate(ownerUpdateData);
 
         ApiSuccessResponse<Object> updateResponse = ApiSuccessResponse.builder()
-                .resultCode(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus())
+                .httpStatus(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getHttpStatus())
                 .resultMsg(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getMessage())
                 .build();
-        return ResponseEntity.status(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getStatus()).body(updateResponse);
+
+        return ResponseEntity.status(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getHttpStatus()).body(updateResponse);
     }
 }

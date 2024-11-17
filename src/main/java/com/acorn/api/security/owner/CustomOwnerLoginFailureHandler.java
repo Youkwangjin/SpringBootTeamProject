@@ -31,12 +31,12 @@ public class CustomOwnerLoginFailureHandler implements AuthenticationFailureHand
         ApiOwnerErrorCode errorCode = ApiOwnerErrorCode.OWNER_AUTHENTICATION_FAILED;
 
         ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                .errorStatus(errorCode.getOwnerErrorStatus())
+                .httpStatus(errorCode.getHttpStatus())
                 .errorDivisionCode(errorCode.getOwnerErrorDivisionCode())
                 .errorMsg(errorCode.getOwnerErrorMsg())
                 .build();
 
-        response.setStatus(errorResponse.getErrorStatus());
+        response.setStatus(errorResponse.getHttpStatus().value());
         response.setContentType(contentType);
         response.setCharacterEncoding(characterEncoding);
         response.getWriter().write(convertObjectToJson(errorResponse));

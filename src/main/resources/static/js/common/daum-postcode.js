@@ -75,10 +75,3 @@ function user_execDaumPostcode() {
         document.getElementById("userAddress").value = combinedAddress.trim();
     });
 }
-
-
-
-
-
-
-

@@ -1,11 +1,13 @@
 package com.acorn.api.controller.board;
 
-import com.acorn.api.dto.board.BoardResponseDTO;
+import com.acorn.api.dto.board.BoardDetailDTO;
+import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class BoardPageController {
 
     @GetMapping("/board/list")
     public String boardList(Model model) {
-        List<BoardResponseDTO> boardData = boardService.getBoardListData();
+        List<BoardListDTO> boardData = boardService.getBoardListData();
         model.addAttribute("boardData", boardData);
         return "board/board-list";
     }
@@ -27,5 +29,12 @@ public class BoardPageController {
         String boardWriter = boardService.getAuthenticatedUserName();
         model.addAttribute("boardWriter", boardWriter);
         return "board/board-write";
+    }
+
+    @GetMapping("/board/detail/{boardId}")
+    public String boardDetail(@PathVariable("boardId") Long boardId, Model model) {
+        BoardDetailDTO detailData = boardService.getBoardDetailData(boardId);
+        model.addAttribute("boardDetailData", detailData);
+        return "board/board-detail";
     }
 }

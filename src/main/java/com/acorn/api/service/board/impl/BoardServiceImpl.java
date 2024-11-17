@@ -1,7 +1,8 @@
 package com.acorn.api.service.board.impl;
 
+import com.acorn.api.dto.board.BoardDetailDTO;
 import com.acorn.api.dto.board.BoardSaveDTO;
-import com.acorn.api.dto.board.BoardResponseDTO;
+import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.model.board.Board;
 import com.acorn.api.model.board.BoardFile;
 import com.acorn.api.repository.board.BoardRepository;
@@ -26,12 +27,12 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
-    public List<BoardResponseDTO> getBoardListData() {
+    public List<BoardListDTO> getBoardListData() {
 
         List<Board> boardListData = boardRepository.selectBoardListData();
 
         return boardListData.stream()
-                .map(board -> BoardResponseDTO.builder()
+                .map(board -> BoardListDTO.builder()
                         .rowNum(board.getRowNum())
                         .boardId(board.getBoardId())
                         .boardTitle(board.getBoardTitle())
@@ -88,5 +89,14 @@ public class BoardServiceImpl implements BoardService {
                 boardRepository.insertBoardFile(boardFile);
             }
         }
+    }
+
+    @Override
+    public BoardDetailDTO getBoardDetailData(Long boardId) {
+        /*
+            1. 상세보기에는 목록, 수정, 삭제 버튼이 있다
+            2. 자신이 작성한 게시글만 수정, 삭제 버튼이 보이고 아니면 목록만 보여진다.
+         */
+        return null;
     }
 }
