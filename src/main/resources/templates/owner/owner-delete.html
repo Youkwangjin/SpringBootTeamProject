@@ -8,44 +8,43 @@
     <link href="/assets/css/main.css" rel="stylesheet">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let ownerPassword = document.getElementById('ownerPassword');
+            let ownerPassword = document.getElementById("ownerPassword");
 
-            let resetButton = document.getElementById('resetBtn');
-            let submitButton = document.getElementById('ownerDeleteBtn');
-
-            resetButton.addEventListener('click', function () {
-                window.location.href = '/owner/mypage';
+            let resetButton = document.getElementById("resetBtn");
+            let submitButton = document.getElementById("ownerDeleteBtn");
+            resetButton.addEventListener("click", function () {
+                window.location.href = "/owner/mypage";
             });
 
-            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
             // 회원삭제 폼 데이터 전송
-            document.getElementById('ownerDelete').addEventListener('submit', function (e) {
+            document.getElementById("ownerDelete").addEventListener("submit", function (e) {
                 e.preventDefault();
 
                 if (!submitButton.disabled) {
-                    const ownerUUId = document.getElementById('ownerUUId').value;
+                    const ownerUUId = document.getElementById("ownerUUId").value;
                     const passwordValue = ownerPassword.value.trim();
 
-                    if (passwordValue === '') {
-                        alert('비밀번호를 입력해주세요.');
-                        document.getElementById('ownerPassword').focus();
+                    if (passwordValue === "") {
+                        alert("비밀번호를 입력해주세요.");
+                        document.getElementById("ownerPassword").focus();
                         return;
                     }
-                    if (confirm('정말로 탈퇴하시겠습니까?')) {
+                    if (confirm("정말로 탈퇴하시겠습니까?")) {
                         const ownerData = {
                             ownerUUId: ownerUUId,
                             ownerPassword: ownerPassword.value,
-                            _csrf: document.querySelector('[name="_csrf"]').value
+                            _csrf: document.querySelector("[name=_csrf]").value
                         };
                         fetch(`/api/owner/delete/${ownerUUId}`, {
-                            method: 'POST',
+                            method: "POST",
                             headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": csrfToken
                             },
-                            credentials: 'include',
+                            credentials: "include",
                             body: JSON.stringify(ownerData)
                         })
                             .then(response => {
@@ -57,7 +56,7 @@
                                 return response.json();
                             })
                             .then(data => {
-                                if (data.resultCode === 200) {
+                                if (data.httpStatus === "OK") {
                                     alert(data.resultMsg);
                                     performLogout();
                                 } else {
@@ -72,13 +71,13 @@
             });
 
             function performLogout() {
-                fetch('/api/logout', {
-                    method: 'POST',
-                    credentials: 'include'
+                fetch("/api/logout", {
+                    method: "POST",
+                    credentials: "include"
                 })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = '/';
+                            window.location.href = "/";
                         } else {
                             alert("서버에 오류가 발생했습니다. 관리자에게 문의하세요.")
                         }

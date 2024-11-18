@@ -12,14 +12,14 @@
     <script src="/js/common/daum-postcode.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let ownerEmail = document.getElementById('ownerEmail');
-            let ownerBusinessNum = document.getElementById('ownerBusinessNum');
-            let ownerPassword = document.getElementById('ownerPassword');
-            let ownerRePassword = document.getElementById('ownerRePassword');
-            let ownerName = document.getElementById('ownerName');
-            let ownerTel = document.getElementById('ownerTel');
-            let ownerCompanyName = document.getElementById('ownerCompanyName');
-            let ownerAddr = document.getElementById('userAddress');
+            let ownerEmail = document.getElementById("ownerEmail");
+            let ownerBusinessNum = document.getElementById("ownerBusinessNum");
+            let ownerPassword = document.getElementById("ownerPassword");
+            let ownerRePassword = document.getElementById("ownerRePassword");
+            let ownerName = document.getElementById("ownerName");
+            let ownerTel = document.getElementById("ownerTel");
+            let ownerCompanyName = document.getElementById("ownerCompanyName");
+            let ownerAddr = document.getElementById("userAddress");
 
             let emailResult = document.querySelector(".email-result");
             let businessNumResult = document.querySelector(".businessNum-result");
@@ -29,8 +29,8 @@
             let telResult = document.querySelector(".tel-result");
             let companyNameResult = document.querySelector(".companyName-result");
 
-            let resetButton = document.getElementById('btnReset');
-            let submitButton = document.getElementById('btnOwnerJoin');
+            let resetButton = document.getElementById("resetBtn");
+            let submitButton = document.getElementById("registerBtn");
 
             let validStates = {
                 ownerEmail: false,
@@ -75,31 +75,30 @@
                 validCompanyName(e.target, companyNameResult);
             });
 
-            resetButton.addEventListener('click', function () {
-                window.location.href = '/owner/login';
+            resetButton.addEventListener("click", function () {
+                window.location.href = "/owner/login";
             });
 
-            document.getElementById('ownerEmail').addEventListener('blur', function () {
-                validEmail(this, document.querySelector('.email-result'));
+            document.getElementById("ownerEmail").addEventListener("blur", function () {
+                validEmail(this, document.querySelector(".email-result"));
             });
 
             // 이메일 형식 체크 정규식
             function validEmail(emailInput, resultElement) {
                 const email = emailInput.value.trim();
                 if (email.length === 0) {
-                    resultElement.textContent = '이메일을 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "이메일을 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     emailInput.focus();
                     validStates.ownerEmail = false;
                 } else if (!validEmailCheck(email)) {
-                    resultElement.textContent = '이메일 형식으로 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "이메일 형식으로 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     emailInput.focus();
                     validStates.ownerEmail = false;
                 } else {
-                    // 이메일 형식이 유효한 경우, 서버에 중복 검사 요청
                     checkEmailDuplication(emailInput, resultElement);
                 }
                 checkFormValid();
@@ -108,22 +107,21 @@
             // 서버에 이메일 중복 검사 요청
             function checkEmailDuplication(emailInput, resultElement) {
                 const ownerEmail = emailInput.value.trim();
-                fetch('/api/auth/owner/emailCheck?ownerEmail=' + encodeURIComponent(ownerEmail), {
-                    method: 'GET',
-                    credentials: 'include',
+                fetch("/api/auth/owner/emailCheck?ownerEmail=" + encodeURIComponent(ownerEmail), {
+                    method: "GET",
+                    credentials: "include",
                 })
                     .then(response => {
                         if (!response.ok) {
-                            // HTTP 상태 코드가 200-299 범위 밖인 경우
                             throw response;
                         }
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 200) {
+                        if (data.httpStatus === "OK") {
                             resultElement.textContent = data.resultMsg;
-                            resultElement.classList.add('success');
-                            resultElement.classList.remove('error');
+                            resultElement.classList.add("success");
+                            resultElement.classList.remove("error");
                             validStates.ownerEmail = true;
                             checkFormValid();
                         }
@@ -131,8 +129,8 @@
                     .catch(errorResponse => {
                         errorResponse.json().then(errorData => {
                             resultElement.textContent = errorData.errorMsg;
-                            resultElement.classList.add('error');
-                            resultElement.classList.remove('success');
+                            resultElement.classList.add("error");
+                            resultElement.classList.remove("success");
                             validStates.ownerEmail = false;
                             checkFormValid();
                         });
@@ -147,19 +145,18 @@
             function validBusinessNum(businessNumInput, resultElement) {
                 const businessNum = businessNumInput.value.trim();
                 if (businessNum.length === 0) {
-                    resultElement.textContent = '사업자 번호를 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "사업자 번호를 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     businessNumInput.focus();
                     validStates.ownerBusinessNum = false;
                 } else if (!validBusinessNumCheck(businessNum)) {
-                    resultElement.textContent = '사업자 번호 형식에 맞게 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "사업자 번호 형식에 맞게 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     businessNumInput.focus();
                     validStates.ownerBusinessNum = false;
                 } else {
-                    // 이메일 형식이 유효한 경우, 서버에 중복 검사 요청
                     checkBusinessNumDuplication(businessNumInput, resultElement);
                 }
                 checkFormValid();
@@ -167,22 +164,21 @@
 
             function checkBusinessNumDuplication(businessNumInput, resultElement) {
                 const ownerBusinessNum = businessNumInput.value.trim();
-                fetch('/api/auth/owner/businessNumCheck?ownerBusinessNum=' + encodeURIComponent(ownerBusinessNum), {
-                    method: 'GET',
-                    credentials: 'include',
+                fetch("/api/auth/owner/businessNumCheck?ownerBusinessNum=" + encodeURIComponent(ownerBusinessNum), {
+                    method: "GET",
+                    credentials: "include",
                 })
                     .then(response => {
                         if (!response.ok) {
-                            // HTTP 상태 코드가 200-299 범위 밖인 경우
                             throw response;
                         }
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 200) {
+                        if (data.httpStatus === "OK") {
                             resultElement.textContent = data.resultMsg;
-                            resultElement.classList.add('success');
-                            resultElement.classList.remove('error');
+                            resultElement.classList.add("success");
+                            resultElement.classList.remove("error");
                             validStates.ownerBusinessNum = true;
                             checkFormValid();
                         }
@@ -190,8 +186,8 @@
                     .catch(errorResponse => {
                         errorResponse.json().then(errorData => {
                             resultElement.textContent = errorData.errorMsg;
-                            resultElement.classList.add('error');
-                            resultElement.classList.remove('success');
+                            resultElement.classList.add("error");
+                            resultElement.classList.remove("success");
                             validStates.ownerBusinessNum = false;
                             checkFormValid();
                         });
@@ -207,21 +203,21 @@
             function validPassword(passwordInput, resultElement) {
                 const password = passwordInput.value.trim();
                 if (password.length === 0) {
-                    resultElement.textContent = '비밀번호를 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "비밀번호를 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     passwordInput.focus();
                     validStates.ownerPassword = false;
                 } else if (!validPasswordCheck(password)) {
-                    resultElement.textContent = '비밀번호는 10자 이상이며, 특수문자를 포함해야 합니다.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "비밀번호는 10자 이상이며, 특수문자를 포함해야 합니다.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     passwordInput.focus();
                     validStates.ownerPassword = false;
                 } else {
-                    resultElement.textContent = '사용 가능한 비밀번호입니다.';
-                    resultElement.classList.remove('error');
-                    resultElement.classList.add('success');
+                    resultElement.textContent = "사용 가능한 비밀번호입니다.";
+                    resultElement.classList.remove("error");
+                    resultElement.classList.add("success");
                     validStates.ownerPassword = true;
                 }
                 checkFormValid();
@@ -235,18 +231,18 @@
             // 비밀번호 재확인
             function validRePassword(rePasswordInput, originalPassword, resultElement) {
                 if (rePasswordInput.value !== originalPassword) {
-                    resultElement.textContent = '비밀번호가 일치하지 않습니다.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "비밀번호가 일치하지 않습니다.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     rePasswordInput.focus();
                     validStates.ownerRePassword = false;
                 } else if (rePasswordInput.value === '') {
                     resultElement.textContent = '';
-                    resultElement.classList.remove('success', 'error');
+                    resultElement.classList.remove("success", "error");
                 } else {
-                    resultElement.textContent = '비밀번호가 일치합니다.';
-                    resultElement.classList.remove('error');
-                    resultElement.classList.add('success');
+                    resultElement.textContent = "비밀번호가 일치합니다.";
+                    resultElement.classList.remove("error");
+                    resultElement.classList.add("success");
                     validStates.ownerRePassword = true;
                 }
                 checkFormValid();
@@ -256,21 +252,21 @@
             function validName(nameInput, resultElement) {
                 const name = nameInput.value.trim();
                 if (name.length === 0) {
-                    resultElement.textContent = '이름을 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "이름을 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     nameInput.focus();
                     validStates.ownerName = false;
                 } else if (!validNameCheck(name)) {
-                    resultElement.textContent = '이름을 올바르게 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "이름을 올바르게 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     nameInput.focus();
                     validStates.ownerName = false;
                 } else {
-                    resultElement.textContent = '사용 가능한 이름입니다.';
-                    resultElement.classList.remove('error');
-                    resultElement.classList.add('success');
+                    resultElement.textContent = "사용 가능한 이름입니다.";
+                    resultElement.classList.remove("error");
+                    resultElement.classList.add("success");
                     validStates.ownerName = true;
                 }
                 checkFormValid();
@@ -285,19 +281,18 @@
             function validTel(telInput, resultElement) {
                 const tel = telInput.value.trim();
                 if (tel.length === 0) {
-                    resultElement.textContent = '전화번호를 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "전화번호를 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     telInput.focus();
                     validStates.ownerTel = false;
                 } else if (!validTelCheck(tel)) {
-                    resultElement.textContent = '번호를 올바르게 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "번호를 올바르게 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     telInput.focus();
                     validStates.ownerTel = false;
                 } else {
-                    // 전화번호 형식이 유효한 경우, 서버에 중복 검사 요청
                     checkTelDuplication(telInput, resultElement);
                 }
                 checkFormValid();
@@ -306,22 +301,21 @@
             // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const ownerTel = telInput.value.trim();
-                fetch('/api/auth/owner/ownerTelCheck?ownerTel=' + encodeURIComponent(ownerTel), {
-                    method: 'GET',
-                    credentials: 'include',
+                fetch("/api/auth/owner/ownerTelCheck?ownerTel=" + encodeURIComponent(ownerTel), {
+                    method: "GET",
+                    credentials: "include",
                 })
                     .then(response => {
                         if (!response.ok) {
-                            // HTTP 상태 코드가 200-299 범위 밖인 경우
                             throw response;
                         }
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 200) {
+                        if (data.httpStatus === "OK") {
                             resultElement.textContent = data.resultMsg;
-                            resultElement.classList.add('success');
-                            resultElement.classList.remove('error');
+                            resultElement.classList.add("success");
+                            resultElement.classList.remove("error");
                             validStates.ownerTel = true;
                             checkFormValid();
                         }
@@ -329,8 +323,8 @@
                     .catch(errorResponse => {
                         errorResponse.json().then(errorData => {
                             resultElement.textContent = errorData.errorMsg;
-                            resultElement.classList.add('error');
-                            resultElement.classList.remove('success');
+                            resultElement.classList.add("error");
+                            resultElement.classList.remove("success");
                             validStates.ownerTel = false;
                             checkFormValid();
                         });
@@ -346,14 +340,14 @@
                 const companyName = companyNameInput.value.trim();
                 if (companyName.length === 0) {
                     resultElement.textContent = '회사명을 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     companyNameInput.focus();
                     validStates.ownerCompanyName = false;
                 } else if (!validCompanyNameCheck(companyName)) {
-                    resultElement.textContent = '회사명을 올바르게 입력해주세요.';
-                    resultElement.classList.remove('success');
-                    resultElement.classList.add('error');
+                    resultElement.textContent = "회사명을 올바르게 입력해주세요.";
+                    resultElement.classList.remove("success");
+                    resultElement.classList.add("error");
                     companyNameInput.focus();
                     validStates.ownerCompanyName = false;
                 } else {
@@ -364,9 +358,9 @@
 
             function checkCompanyNameDuplication(companyNameInput, resultElement) {
                 const ownerCompanyName = companyNameInput.value.trim();
-                fetch('/api/auth/owner/companyNameCheck?ownerCompanyName=' + encodeURIComponent(ownerCompanyName), {
-                    method: 'GET',
-                    credentials: 'include',
+                fetch("/api/auth/owner/companyNameCheck?ownerCompanyName=" + encodeURIComponent(ownerCompanyName), {
+                    method: "GET",
+                    credentials: "include",
                 })
                     .then(response => {
                         if (!response.ok) {
@@ -375,10 +369,10 @@
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 200) {
-                            resultElement.textContent = '사용 가능한 회사명 입니다.';
-                            resultElement.classList.add('success');
-                            resultElement.classList.remove('error');
+                        if (data.httpStatus === "OK") {
+                            resultElement.textContent = "사용 가능한 회사명 입니다.";
+                            resultElement.classList.add("success");
+                            resultElement.classList.remove("error");
                             validStates.ownerCompanyName = true;
                             checkFormValid();
                         }
@@ -386,8 +380,8 @@
                     .catch(errorResponse => {
                         errorResponse.json().then(errorData => {
                             resultElement.textContent = errorData.errorMsg;
-                            resultElement.classList.add('error');
-                            resultElement.classList.remove('success');
+                            resultElement.classList.add("error");
+                            resultElement.classList.remove("success");
                             validStates.ownerCompanyName = false;
                             checkFormValid();
                         });
@@ -399,11 +393,11 @@
                 return companyNamePattern.test(companyName.trim());
             }
 
-            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
             // 회원가입 폼 데이터 전송
-            document.getElementById('ownerRegister').addEventListener('submit', function (e) {
+            document.getElementById("ownerRegister").addEventListener("submit", function (e) {
                 e.preventDefault();
                 if (!submitButton.disabled) {
                     const ownerData = {
@@ -414,15 +408,15 @@
                         ownerTel: ownerTel.value,
                         ownerCompanyName: ownerCompanyName.value,
                         ownerAddr: ownerAddr.value,
-                        _csrf: document.querySelector('[name="_csrf"]').value
+                        _csrf: document.querySelector("[name=_csrf]").value
                     };
-                    fetch('/api/auth/owner/register', {
-                        method: 'POST',
+                    fetch("/api/auth/owner/register", {
+                        method: "POST",
                         headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken
                         },
-                        credentials: 'include',
+                        credentials: "include",
                         body: JSON.stringify(ownerData)
                     })
                         .then(response => {
@@ -434,9 +428,9 @@
                             return response.json();
                         })
                         .then(data => {
-                            if (data.resultCode === 201) {
+                            if (data.httpStatus === "CREATED") {
                                 alert(data.resultMsg);
-                                window.location.href = '/owner/login';
+                                window.location.href = "/owner/login";
                             } else {
                                 throw new Error(data.errorMsg);
                             }
@@ -534,8 +528,8 @@
                        placeholder="입력한 주소">
             </label>
 
-            <input type="submit" class="submit-btn" id="btnOwnerJoin" value="가입하기" disabled>
-            <input type="reset" class="reset-btn" id="btnReset" value="취소">
+            <input type="submit" class="submit-btn" id="registerBtn" value="가입하기" disabled>
+            <input type="reset" class="reset-btn" id="resetBtn" value="취소">
         </form>
     </div>
 </div>
