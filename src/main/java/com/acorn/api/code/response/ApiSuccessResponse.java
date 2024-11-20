@@ -19,4 +19,8 @@ public class ApiSuccessResponse<T> {
         this.result = result;
         this.resultMsg = resultMsg;
     }
+
+    public static <T> ApiSuccessResponse<T> of(HttpStatus httpStatus, T result, String resultMsg) {
+        return new ApiSuccessResponse<>(httpStatus, result, resultMsg);
+    }
 }

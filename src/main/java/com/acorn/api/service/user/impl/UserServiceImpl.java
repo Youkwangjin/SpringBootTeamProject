@@ -1,9 +1,11 @@
 package com.acorn.api.service.user.impl;
 
+import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.dto.user.UserDeleteDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.dto.user.UserUpdateDTO;
+import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
@@ -28,8 +30,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public boolean isEmailDuplicate(String userEmail) {
-        return userRepository.isEmailDuplicate(userEmail);
+    public void isEmailDuplicate(String userEmail) {
+        int emailCount = userRepository.isEmailDuplicate(userEmail);
+
+        if (emailCount > 0) {
+            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED);
+        }
     }
 
     @Override

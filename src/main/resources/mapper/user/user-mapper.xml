@@ -15,7 +15,7 @@
     </resultMap>
     <!-- 이메일 중복 체크 -->
     <select id="emailDuplicates" parameterType="String" resultType="int">
-        SELECT COUNT(*)
+        SELECT COUNT(USER_EMAIL)
         FROM TB_USER
         WHERE USER_EMAIL = #{userEmail}
     </select>
