@@ -13,7 +13,7 @@ public interface UserService {
 
     void userRegister(UserRegisterDTO userRegisterData);
 
-    boolean isTelPhoneDuplicate(String userTel);
+    void isTelPhoneDuplicate(String userTel);
 
     UserResponseDTO getUserData();
 

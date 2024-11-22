@@ -15,9 +15,8 @@ public class UserRepository {
         return sql.selectOne("User.emailDuplicates", userEmail);
     }
 
-    public boolean isTelDuplicate(String userTel) {
-        int telCount = sql.selectOne("User.telDuplicates", userTel);
-        return telCount > 0;
+    public String isTelDuplicate(String userTel) {
+        return sql.selectOne("User.telDuplicates", userTel);
     }
 
     public void userRegister(User user) {

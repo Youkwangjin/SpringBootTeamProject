@@ -6,8 +6,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class AcontainerException extends RuntimeException {
+
     private final HttpStatus httpStatus;
+
     private final String errorDivisionCode;
+
     private final String errorMsg;
 
     public AcontainerException(ApiValidationErrorCode errorCode) {
@@ -17,4 +20,3 @@ public class AcontainerException extends RuntimeException {
         this.errorMsg = errorCode.getErrorMsg();
     }
 }
-
