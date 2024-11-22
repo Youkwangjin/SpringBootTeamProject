@@ -1,9 +1,11 @@
 package com.acorn.api.service.user.impl;
 
+import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.dto.user.UserDeleteDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.dto.user.UserUpdateDTO;
+import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
@@ -28,17 +30,25 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public boolean isEmailDuplicate(String userEmail) {
-        return userRepository.isEmailDuplicate(userEmail);
+    public void isEmailDuplicate(String userEmail) {
+        int emailCount = userRepository.isEmailDuplicate(userEmail);
+
+        if (emailCount > 0) {
+            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED);
+        }
     }
 
     @Override
-    public boolean isTelPhoneDuplicate(String userTel) {
+    public void isTelPhoneDuplicate(String userTel) {
         String currentUserTelData = UserSecurityUtil.getAuthenticatedTelNumber();
         if (currentUserTelData != null && StringUtils.equals(currentUserTelData, userTel)) {
-            return false;
+            return;
         }
-        return userRepository.isTelDuplicate(userTel);
+
+        int telCount = Integer.parseInt(userRepository.isTelDuplicate(userTel));
+        if (telCount > 0) {
+            throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
+        }
     }
 
     @Override

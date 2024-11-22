@@ -40,25 +40,25 @@
     </div>
 </section>
 <script>
-    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+    const csrfTokenElement = document.querySelector("input[name=_csrf]");
     const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-    document.getElementById('ownerLoginForm').addEventListener('submit', function (event) {
+    document.getElementById("ownerLoginForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const ownerBusinessNum = document.getElementById('ownerBusinessNum').value.trim();
-        const ownerPassword = document.getElementById('ownerPassword').value.trim();
+        const ownerBusinessNum = document.getElementById("ownerBusinessNum").value.trim();
+        const ownerPassword = document.getElementById("ownerPassword").value.trim();
 
         if (!ownerBusinessNum || !ownerPassword) {
             alert("사업자 번호와 비밀번호를 모두 입력해주세요.");
             return;
         }
 
-        fetch('/api/auth/owner/login', {
-            method: 'POST',
+        fetch("/api/auth/owner/login", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
             },
             body: JSON.stringify ({
                 ownerBusinessNum: ownerBusinessNum,
@@ -66,8 +66,8 @@
             })
         }).then(response => response.json())
             .then(data => {
-                if (data.resultCode === 200) {
-                    window.location.href = '/owner/mypage';
+                if (data.httpStatus === "OK") {
+                    window.location.href = "/owner/mypage";
                 } else {
                     alert(data.errorMsg);
                 }

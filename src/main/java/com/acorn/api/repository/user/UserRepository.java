@@ -11,14 +11,12 @@ public class UserRepository {
 
     private final SqlSessionTemplate sql;
 
-    public boolean isEmailDuplicate(String userEmail) {
-        int emailCount = sql.selectOne("User.emailDuplicates", userEmail);
-        return emailCount > 0;
+    public int isEmailDuplicate(String userEmail) {
+        return sql.selectOne("User.emailDuplicates", userEmail);
     }
 
-    public boolean isTelDuplicate(String userTel) {
-        int telCount = sql.selectOne("User.telDuplicates", userTel);
-        return telCount > 0;
+    public String isTelDuplicate(String userTel) {
+        return sql.selectOne("User.telDuplicates", userTel);
     }
 
     public void userRegister(User user) {

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
 
-    boolean isEmailDuplicate(String userEmail);
+    void isEmailDuplicate(String userEmail);
 
     void userRegister(UserRegisterDTO userRegisterData);
 
-    boolean isTelPhoneDuplicate(String userTel);
+    void isTelPhoneDuplicate(String userTel);
 
     UserResponseDTO getUserData();
 
