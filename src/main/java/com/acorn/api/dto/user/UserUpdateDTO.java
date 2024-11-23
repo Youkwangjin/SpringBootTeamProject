@@ -24,5 +24,4 @@ public class UserUpdateDTO {
     private String userTel;
 
     private String userAddr;
-
 }

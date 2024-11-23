@@ -1,6 +1,7 @@
 package com.acorn.api.controller.user;
 
 import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.user.UserDeleteDTO;
 import com.acorn.api.service.user.UserService;
@@ -27,11 +28,6 @@ public class UserDeleteController {
 
         userService.userDataDelete(userDeleteData);
 
-        ApiSuccessResponse<Object> deleteResponse = ApiSuccessResponse.builder()
-                .httpStatus(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getHttpStatus())
-                .resultMsg(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getMessage())
-                .build();
-
-        return ResponseEntity.status(ApiHttpSuccessCode.INFO_DELETE_SUCCESS.getHttpStatus()).body(deleteResponse);
+        return ApiResponseBuilder.success(ApiHttpSuccessCode.INFO_DELETE_SUCCESS);
     }
 }

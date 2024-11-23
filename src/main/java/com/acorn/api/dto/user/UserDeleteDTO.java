@@ -14,5 +14,4 @@ public class UserDeleteDTO {
     @NotBlank
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+{}\":;'<>?,./]).{10,}$")
     private String userPassword;
-
 }
