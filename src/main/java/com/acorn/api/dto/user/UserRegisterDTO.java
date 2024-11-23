@@ -1,6 +1,5 @@
 package com.acorn.api.dto.user;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -26,5 +25,4 @@ public class UserRegisterDTO {
     private String userTel;
 
     private String userAddr;
-
 }

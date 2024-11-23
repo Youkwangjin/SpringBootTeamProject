@@ -1,6 +1,5 @@
 package com.acorn.api.dto.user;
 
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,5 +18,4 @@ public class UserResponseDTO {
     private String userTel;
 
     private String userAddr;
-
 }
