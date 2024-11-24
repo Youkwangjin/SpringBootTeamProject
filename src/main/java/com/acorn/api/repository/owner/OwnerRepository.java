@@ -1,6 +1,5 @@
 package com.acorn.api.repository.owner;
 
-
 import com.acorn.api.model.owner.Owner;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -12,24 +11,20 @@ public class OwnerRepository {
 
     private final SqlSessionTemplate sql;
 
-    public boolean isEmailDuplicate(String ownerEmail) {
-        int emailCount = sql.selectOne("Owner.emailDuplicates", ownerEmail);
-        return emailCount > 0;
+    public int isEmailDuplicate(String ownerEmail) {
+        return sql.selectOne("Owner.emailDuplicates", ownerEmail);
     }
 
-    public boolean isBusinessNumDuplicate(String ownerBusinessNum) {
-        int telCount = sql.selectOne("Owner.businessNumDuplicates", ownerBusinessNum);
-        return telCount > 0;
+    public int isBusinessNumDuplicate(String ownerBusinessNum) {
+        return sql.selectOne("Owner.businessNumDuplicates", ownerBusinessNum);
     }
 
-    public boolean isTelDuplicate(String ownerTel) {
-        int telCount = sql.selectOne("Owner.telDuplicates", ownerTel);
-        return telCount > 0;
+    public int isTelDuplicate(String ownerTel) {
+        return sql.selectOne("Owner.telDuplicates", ownerTel);
     }
 
-    public boolean isCompanyNameDuplicate(String ownerCompanyName) {
-        int companyNameCount = sql.selectOne("Owner.companyNameDuplicates", ownerCompanyName);
-        return companyNameCount > 0;
+    public int isCompanyNameDuplicate(String ownerCompanyName) {
+        return sql.selectOne("Owner.companyNameDuplicates", ownerCompanyName);
     }
 
     public void ownerRegister(Owner newRegisterDataOwner) {
