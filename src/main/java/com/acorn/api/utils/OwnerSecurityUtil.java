@@ -21,26 +21,6 @@ public class OwnerSecurityUtil {
         return null;
     }
 
-    public static String getAuthenticatedEmail() {
-        CustomOwnerDetails ownerEmail = getOwnerPrincipal();
-
-        if (ownerEmail != null) {
-            return ownerEmail.getOwnerEmail();
-        }
-
-        return null;
-    }
-
-    public static String getAuthenticatedTelNumber() {
-        CustomOwnerDetails ownerTel = getOwnerPrincipal();
-
-        if (ownerTel != null) {
-            return ownerTel.getOwnerTel();
-        }
-
-        return null;
-    }
-
     public static String getAuthenticatedCompanyName() {
         CustomOwnerDetails ownerCompanyName = getOwnerPrincipal();
 
@@ -63,5 +43,4 @@ public class OwnerSecurityUtil {
         }
         return null;
     }
-
 }

@@ -1,9 +1,11 @@
 package com.acorn.api.service.owner.impl;
 
+import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.dto.owner.OwnerDeleteDTO;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.dto.owner.OwnerResponseDTO;
 import com.acorn.api.dto.owner.OwnerUpdateDTO;
+import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.model.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.role.OwnerRole;
@@ -27,46 +29,42 @@ public class OwnerServiceImpl implements OwnerService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final OwnerRepository ownerRepository;
 
-    // 이메일 중복 검증
     @Override
-    public boolean isOwnerEmailDuplicate(String ownerEmail) {
-        String currentOwnerEmailData = OwnerSecurityUtil.getAuthenticatedEmail();
-        if (currentOwnerEmailData != null && StringUtils.equals(currentOwnerEmailData, ownerEmail)) {
-            return false;
-        }
+    public void isOwnerEmailDuplicate(String ownerEmail) {
+        int emailCount = ownerRepository.isEmailDuplicate(ownerEmail);
 
-        return ownerRepository.isEmailDuplicate(ownerEmail);
-    }
-    
-    // 사업자 번호 중복 검증
-    @Override
-    public boolean isBusinessNumDuplicate(String ownerBusinessNum) {
-        return ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
-    }
-    
-    // 전화번호 중복 검증
-    @Override
-    public boolean isTelPhoneDuplicate(String ownerTel) {
-        String currentOwnerTelData = OwnerSecurityUtil.getAuthenticatedTelNumber();
-        if (currentOwnerTelData != null && StringUtils.equals(currentOwnerTelData, ownerTel)) {
-            return false;
+        if (emailCount > 0) {
+            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED);
         }
-
-        return ownerRepository.isTelDuplicate(ownerTel);
     }
-    
-    // 회사명 중복 검증
+
     @Override
-    public boolean isCompanyNameDuplicate(String ownerCompanyName) {
-        String currentOwnerCompanyNameData = OwnerSecurityUtil.getAuthenticatedCompanyName();
-        if (currentOwnerCompanyNameData != null && StringUtils.equals(currentOwnerCompanyNameData, ownerCompanyName)) {
-            return false;
-        }
+    public void isBusinessNumDuplicate(String ownerBusinessNum) {
+        int businessNumCount = ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
 
-        return ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
+        if (businessNumCount > 0) {
+            throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
+        }
     }
-    
-    // 공급자 회원가입
+
+    @Override
+    public void isTelPhoneDuplicate(String ownerTel) {
+        int telCount = ownerRepository.isTelDuplicate(ownerTel);
+
+        if (telCount > 0) {
+            throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
+        }
+    }
+
+    @Override
+    public void isCompanyNameDuplicate(String ownerCompanyName) {
+        int companyNameCount = ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
+
+        if (companyNameCount > 0) {
+            throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
+        }
+    }
+
     @Override
     @Transactional
     public void ownerRegister(OwnerRegisterDTO ownerRegisterData) {
@@ -85,10 +83,8 @@ public class OwnerServiceImpl implements OwnerService {
                 .build();
 
         ownerRepository.ownerRegister(newRegisterDataOwner);
-
     }
-    
-    // 공급자 정보 불러오기
+
     @Override
     public OwnerResponseDTO getOwnerData() throws AuthenticationException {
         String ownerUUId = OwnerSecurityUtil.getAuthenticatedUUId();
@@ -114,7 +110,6 @@ public class OwnerServiceImpl implements OwnerService {
                 .build();
     }
 
-    // 공급자 회원수정
     @Override
     @Transactional
     public void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData) throws AuthenticationException {
@@ -146,7 +141,6 @@ public class OwnerServiceImpl implements OwnerService {
 
     }
 
-    // 회원탈퇴
     @Override
     @Transactional
     public void ownerDataDelete(OwnerDeleteDTO ownerDeleteData) {

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 public interface OwnerService {
 
-    boolean isOwnerEmailDuplicate(String ownerEmail);
+    void isOwnerEmailDuplicate(String ownerEmail);
 
-    boolean isBusinessNumDuplicate(String ownerBusinessNum);
+    void isBusinessNumDuplicate(String ownerBusinessNum);
 
-    boolean isTelPhoneDuplicate(String ownerTel);
+    void isTelPhoneDuplicate(String ownerTel);
 
-    boolean isCompanyNameDuplicate(String ownerCompanyName);
+    void isCompanyNameDuplicate(String ownerCompanyName);
 
     void ownerRegister(OwnerRegisterDTO ownerRegisterData);
 
