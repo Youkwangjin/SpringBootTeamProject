@@ -1,6 +1,7 @@
 package com.acorn.api.controller.owner;
 
 import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.service.owner.OwnerService;
@@ -27,11 +28,6 @@ public class OwnerRegisterController {
 
         ownerService.ownerRegister(ownerRegisterData);
 
-        ApiSuccessResponse<Object> registerResponse = ApiSuccessResponse.builder()
-                .httpStatus(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getHttpStatus())
-                .resultMsg(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getMessage())
-                .build();
-
-        return ResponseEntity.status(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS.getHttpStatus()).body(registerResponse);
+        return ApiResponseBuilder.success(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS);
     }
 }
