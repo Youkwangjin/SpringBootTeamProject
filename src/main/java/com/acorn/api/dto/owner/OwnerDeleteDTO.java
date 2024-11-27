@@ -14,5 +14,4 @@ public class OwnerDeleteDTO {
     @NotBlank
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+{}\":;'<>?,./]).{10,}$")
     private String ownerPassword;
-
 }
