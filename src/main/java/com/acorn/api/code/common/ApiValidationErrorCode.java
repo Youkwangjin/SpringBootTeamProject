@@ -18,7 +18,7 @@ public enum ApiValidationErrorCode {
 
     TELEPHONE_DUPLICATED(HttpStatus.CONFLICT, "TPD", "이미 사용 중인 전화번호입니다."),
 
-    COMPANY_NAME_ERROR(HttpStatus.BAD_REQUEST, "CNE", "이미 사용 중인 회사명입니다."),
+    COMPANY_NAME_ERROR(HttpStatus.CONFLICT, "CNE", "이미 사용 중인 회사명입니다."),
 
     NAME_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "NFE", "이름 형식이 유효하지 않습니다."),
 

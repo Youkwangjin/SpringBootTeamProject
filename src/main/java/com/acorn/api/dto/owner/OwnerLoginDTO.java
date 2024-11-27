@@ -1,6 +1,5 @@
 package com.acorn.api.dto.owner;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

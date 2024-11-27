@@ -40,12 +40,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void isTelPhoneDuplicate(String userTel) {
-        String currentUserTelData = UserSecurityUtil.getAuthenticatedTelNumber();
-        if (currentUserTelData != null && StringUtils.equals(currentUserTelData, userTel)) {
-            return;
-        }
+        int telCount = userRepository.isTelDuplicate(userTel);
 
-        int telCount = Integer.parseInt(userRepository.isTelDuplicate(userTel));
         if (telCount > 0) {
             throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
         }

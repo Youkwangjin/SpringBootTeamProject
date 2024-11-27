@@ -22,5 +22,4 @@ public class OwnerResponseDTO {
     private String ownerCompanyName;
 
     private String ownerAddr;
-
 }

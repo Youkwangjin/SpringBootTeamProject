@@ -83,7 +83,6 @@
                 validEmail(this, document.querySelector(".email-result"));
             });
 
-            // 이메일 형식 체크 정규식
             function validEmail(emailInput, resultElement) {
                 const email = emailInput.value.trim();
                 if (email.length === 0) {
@@ -104,7 +103,6 @@
                 checkFormValid();
             }
 
-            // 서버에 이메일 중복 검사 요청
             function checkEmailDuplication(emailInput, resultElement) {
                 const ownerEmail = emailInput.value.trim();
                 fetch("/api/auth/owner/emailCheck?ownerEmail=" + encodeURIComponent(ownerEmail), {
@@ -199,7 +197,6 @@
                 return businessNumPattern.test(businessNum.trim());
             }
 
-            // 비밀번호 형식 체크 정규식
             function validPassword(passwordInput, resultElement) {
                 const password = passwordInput.value.trim();
                 if (password.length === 0) {
@@ -228,7 +225,6 @@
                 return passwordPattern.test(password.trim());
             }
 
-            // 비밀번호 재확인
             function validRePassword(rePasswordInput, originalPassword, resultElement) {
                 if (rePasswordInput.value !== originalPassword) {
                     resultElement.textContent = "비밀번호가 일치하지 않습니다.";
@@ -236,8 +232,8 @@
                     resultElement.classList.add("error");
                     rePasswordInput.focus();
                     validStates.ownerRePassword = false;
-                } else if (rePasswordInput.value === '') {
-                    resultElement.textContent = '';
+                } else if (rePasswordInput.value === "") {
+                    resultElement.textContent = "";
                     resultElement.classList.remove("success", "error");
                 } else {
                     resultElement.textContent = "비밀번호가 일치합니다.";
@@ -277,7 +273,6 @@
                 return namePattern.test(name.trim());
             }
 
-            // 전화번호 형식 정규식 체크
             function validTel(telInput, resultElement) {
                 const tel = telInput.value.trim();
                 if (tel.length === 0) {
@@ -298,7 +293,6 @@
                 checkFormValid();
             }
 
-            // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const ownerTel = telInput.value.trim();
                 fetch("/api/auth/owner/ownerTelCheck?ownerTel=" + encodeURIComponent(ownerTel), {
