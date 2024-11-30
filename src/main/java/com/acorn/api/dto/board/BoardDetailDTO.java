@@ -21,5 +21,4 @@ public class BoardDetailDTO {
     private String boardContents;
 
     private List<MultipartFile> boardFiles;
-
 }
