@@ -34,7 +34,7 @@ public class UserExceptionHandler {
             userErrorCode = switch (fieldError.getField()) {
                 case "userEmail" -> ApiValidationErrorCode.EMAIL_FORMAT_ERROR;
                 case "userPassword" -> ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR;
-                case "userDisplayName" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;
+                case "userNm" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;
                 case "userTel" -> ApiValidationErrorCode.TELEPHONE_FORMAT_ERROR;
                 default -> userErrorCode;
             };
