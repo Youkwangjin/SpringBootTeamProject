@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
                 .userUUId(UUID.randomUUID().toString())
                 .userEmail(userRegisterData.getUserEmail())
                 .userPassword(encodedPassword)
-                .userDisplayName(userRegisterData.getUserDisplayName())
+                .userNm(userRegisterData.getUserNm())
                 .userAddr(userRegisterData.getUserAddr())
                 .userTel(userRegisterData.getUserTel())
                 .userRole(UserRole.USER)
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
         return UserResponseDTO.builder()
                 .userUUId(userData.getUserUUId())
                 .userEmail(userData.getUserEmail())
-                .userDisplayName(userData.getUserDisplayName())
+                .userNm(userData.getUserNm())
                 .userTel(userData.getUserTel())
                 .userAddr(userData.getUserAddr())
                 .build();
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
         User updateUser = User.builder()
                 .userUUId(userUpdateData.getUserUUId())
-                .userDisplayName(userUpdateData.getUserDisplayName())
+                .userNm(userUpdateData.getUserNm())
                 .userAddr(userUpdateData.getUserAddr())
                 .userTel(userUpdateData.getUserTel())
                 .build();

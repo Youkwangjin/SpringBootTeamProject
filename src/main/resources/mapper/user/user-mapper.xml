@@ -8,7 +8,7 @@
         <result property="userUUId"         column="USER_UUID"/>
         <result property="userEmail"        column="USER_EMAIL"/>
         <result property="userPassword"     column="USER_PASSWORD"/>
-        <result property="userDisplayName"  column="USER_NAME"/>
+        <result property="userNm"           column="USER_NM"/>
         <result property="userTel"          column="USER_TEL"/>
         <result property="userAddr"         column="USER_ADDRESS"/>
         <result property="userRole"         column="USER_ROLE"/>
@@ -29,8 +29,8 @@
 
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
-        INSERT INTO TB_USER (USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NAME, USER_TEL, USER_ADDRESS, USER_ROLE)
-        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userDisplayName}, #{userTel}, #{userAddr}, #{userRole})
+        INSERT INTO TB_USER (USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NM, USER_TEL, USER_ADDRESS, USER_ROLE)
+        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userNm}, #{userTel}, #{userAddr}, #{userRole})
     </insert>
 
     <!-- 아이디 검증 -->
@@ -51,7 +51,7 @@
     <update id="userUpdate" parameterType="user">
         UPDATE TB_USER
         SET
-            USER_NAME = #{userDisplayName},
+            USER_NM = #{userNm},
             USER_TEL = #{userTel},
             USER_ADDRESS = #{userAddr},
             USER_UPDATED = NOW()

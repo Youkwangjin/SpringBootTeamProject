@@ -13,7 +13,7 @@
             let userEmail = document.getElementById("userEmail");
             let userPassword = document.getElementById("userPassword");
             let userRePassword = document.getElementById("userRePassword");
-            let userDisplayName = document.getElementById("userDisplayName");
+            let userNm = document.getElementById("userNm");
             let userTel = document.getElementById("userTel");
             let userAddr = document.getElementById("userAddress");
 
@@ -30,7 +30,7 @@
                 userEmail: false,
                 userPassword: false,
                 userRePassword: false,
-                userDisplayName: false,
+                userNm: false,
                 userTel: false
             };
 
@@ -51,7 +51,7 @@
                 validRePassword(e.target, userPassword.value, rePasswordResult);
             });
 
-            userDisplayName.addEventListener("input", (e) => {
+            userNm.addEventListener("input", (e) => {
                 validName(e.target, nameResult);
             });
 
@@ -67,7 +67,6 @@
                 validEmail(this, document.querySelector(".email-result"));
             });
 
-            // 이메일 형식 체크 정규식
             function validEmail(emailInput, resultElement) {
                 const email = emailInput.value.trim();
                 if (email.length === 0) {
@@ -88,7 +87,6 @@
                 checkFormValid();
             }
 
-            // 서버에 이메일 중복 검사 요청
             function checkEmailDuplication(emailInput, resultElement) {
                 const userEmail = emailInput.value.trim();
                 fetch("/api/auth/user/emailCheck?userEmail=" + encodeURIComponent(userEmail), {
@@ -126,7 +124,6 @@
                 return emailPattern.test(email.trim());
             }
 
-            // 비밀번호 형식 체크 정규식
             function validPassword(passwordInput, resultElement) {
                 const password = passwordInput.value.trim();
                 if (password.length === 0) {
@@ -155,7 +152,6 @@
                 return passwordPattern.test(password.trim());
             }
 
-            // 비밀번호 재확인
             function validRePassword(rePasswordInput, originalPassword, resultElement) {
                 if (rePasswordInput.value !== originalPassword) {
                     resultElement.textContent = "비밀번호가 일치하지 않습니다.";
@@ -175,7 +171,6 @@
                 checkFormValid();
             }
 
-            // 이름 형식 정규식 체크
             function validName(nameInput, resultElement) {
                 const name = nameInput.value.trim();
                 if (name.length === 0) {
@@ -183,18 +178,18 @@
                     resultElement.classList.remove("success");
                     resultElement.classList.add("error");
                     nameInput.focus();
-                    validStates.userDisplayName = false;
+                    validStates.userNm = false;
                 } else if (!validNameCheck(name)) {
                     resultElement.textContent = "이름을 올바르게 입력해주세요.";
                     resultElement.classList.remove("success");
                     resultElement.classList.add("error");
                     nameInput.focus();
-                    validStates.userDisplayName = false;
+                    validStates.userNm = false;
                 } else {
                     resultElement.textContent = "사용 가능한 이름입니다.";
                     resultElement.classList.remove("error");
                     resultElement.classList.add("success");
-                    validStates.userDisplayName = true;
+                    validStates.userNm = true;
                 }
                 checkFormValid();
             }
@@ -204,7 +199,6 @@
                 return namePattern.test(name.trim());
             }
 
-            // 전화번호 형식 정규식 체크
             function validTel(telInput, resultElement) {
                 const tel = telInput.value.trim();
                 if (tel.length === 0) {
@@ -225,7 +219,6 @@
                 checkFormValid();
             }
 
-            // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const userTel = telInput.value.trim();
                 fetch("/api/auth/user/userTelCheck?userTel=" + encodeURIComponent(userTel), {
@@ -266,14 +259,13 @@
             const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-            // 회원가입 폼 데이터 전송
             document.getElementById("userRegister").addEventListener("submit", function (e) {
                 e.preventDefault();
                 if (!submitButton.disabled) {
                     const userData = {
                         userEmail: userEmail.value,
                         userPassword: userPassword.value,
-                        userDisplayName: userDisplayName.value,
+                        userNm: userNm.value,
                         userTel: userTel.value,
                         userAddr: userAddr.value,
                         _csrf: document.querySelector("[name=_csrf]").value
@@ -338,8 +330,8 @@
             <span class="rePassword-result"></span>
 
             <h3>이름</h3>
-            <label for="userDisplayName">
-                <input type="text" name="userDisplayName" id="userDisplayName" class="text-field" placeholder="이름">
+            <label for="userNm">
+                <input type="text" name="userNm" id="userNm" class="text-field" placeholder="이름">
             </label><br/>
             <span class="name-result"></span>
 
