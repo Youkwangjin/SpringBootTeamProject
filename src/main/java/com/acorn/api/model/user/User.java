@@ -3,7 +3,6 @@ package com.acorn.api.model.user;
 import com.acorn.api.role.UserRole;
 import lombok.*;
 
-
 @Getter
 @AllArgsConstructor
 @Builder
@@ -19,7 +18,7 @@ public class User {
 
     private String userPassword;
 
-    private String userDisplayName;
+    private String userNm;
 
     private String userTel;
 

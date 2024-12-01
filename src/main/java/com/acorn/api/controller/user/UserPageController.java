@@ -26,7 +26,7 @@ public class UserPageController {
     @GetMapping("/user/mypage")
     public String mypage(Model model) {
         UserResponseDTO userData = userService.getUserData();
-        model.addAttribute("userName", userData.getUserDisplayName());
+        model.addAttribute("userName", userData.getUserNm());
         return "common/mypage";
     }
 
