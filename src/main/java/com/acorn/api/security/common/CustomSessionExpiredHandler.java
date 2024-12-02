@@ -29,5 +29,3 @@ public class CustomSessionExpiredHandler implements SessionInformationExpiredStr
         response.sendRedirect(loginPage);
     }
 }
-
-

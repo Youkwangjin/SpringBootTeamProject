@@ -19,7 +19,9 @@ public class CustomCsrfTokenRepository implements CsrfTokenRepository {
     @Override
     public CsrfToken generateToken(HttpServletRequest request) {
         CsrfToken token = delegate.generateToken(request);
+
         logger.debug(" ******************** Generated CSRF Token ******************** : {}", token.getToken());
+
         return token;
     }
 
