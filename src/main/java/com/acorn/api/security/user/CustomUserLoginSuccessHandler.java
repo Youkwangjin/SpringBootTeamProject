@@ -48,6 +48,7 @@ public class CustomUserLoginSuccessHandler implements AuthenticationSuccessHandl
         newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
         ApiHttpSuccessCode apiHttpSuccessCode = ApiHttpSuccessCode.LOGIN_SUCCESS;
+
         ApiSuccessResponse<String> apiSuccessResponse = ApiSuccessResponse.<String>builder()
                 .httpStatus(apiHttpSuccessCode.getHttpStatus())
                 .resultMsg(apiHttpSuccessCode.getMessage())
@@ -57,7 +58,6 @@ public class CustomUserLoginSuccessHandler implements AuthenticationSuccessHandl
         response.setContentType(contentType);
         response.setCharacterEncoding(characterEncoding);
         response.getWriter().write(convertObjectToJson(apiSuccessResponse));
-
     }
 
     private String convertObjectToJson(ApiSuccessResponse<?> successResponse) {

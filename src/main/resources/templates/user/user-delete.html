@@ -11,7 +11,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             let userPassword = document.getElementById("userPassword");
 
-            let resetButton = document.getElementById("btnReset");
+            let resetButton = document.getElementById("resetBtn");
             let submitButton = document.getElementById("userDeleteBtn");
 
             resetButton.addEventListener("click", function () {
@@ -21,7 +21,6 @@
             const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-            // 회원삭제 폼 데이터 전송
             document.getElementById("userDelete").addEventListener("submit", function (e) {
                 e.preventDefault();
 
@@ -89,7 +88,7 @@
     </script>
 </head>
 <body>
-<h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userDisplayName}"></span>님의 회원정보</h3>
+<h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userNm}"></span>님의 회원정보</h3>
 <div class="join-form">
     <div class="content">
         <form id="userDelete">
@@ -109,9 +108,9 @@
             <span class="password-result"></span>
 
             <h3>이름</h3>
-            <label for="userDisplayName">
-                <input type="text" name="userDisplayName" id="userDisplayName" class="text-field"
-                       th:value="${userData.userDisplayName}" placeholder="이름" readonly>
+            <label for="userNm">
+                <input type="text" name="userNm" id="userNm" class="text-field"
+                       th:value="${userData.userNm}" placeholder="이름" readonly>
             </label><br/>
             <span class="name-result"></span>
 
@@ -129,7 +128,7 @@
             </label>
 
             <input type="submit" class="submit-btn" id="userDeleteBtn" value="탈퇴하기">
-            <input type="reset" class="reset-btn" id="btnReset" value="돌아가기">
+            <input type="reset" class="reset-btn" id="resetBtn" value="돌아가기">
         </form>
     </div>
 </div>

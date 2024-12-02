@@ -1,6 +1,7 @@
 package com.acorn.api.controller.owner;
 
 import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.service.owner.OwnerService;
@@ -27,11 +28,6 @@ public class OwnerUpdateController {
 
         ownerService.ownerDataUpdate(ownerUpdateData);
 
-        ApiSuccessResponse<Object> updateResponse = ApiSuccessResponse.builder()
-                .httpStatus(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getHttpStatus())
-                .resultMsg(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getMessage())
-                .build();
-
-        return ResponseEntity.status(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS.getHttpStatus()).body(updateResponse);
+        return ApiResponseBuilder.success(ApiHttpSuccessCode.INFO_UPDATE_SUCCESS);
     }
 }

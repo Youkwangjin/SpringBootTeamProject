@@ -15,7 +15,7 @@ public class UserRepository {
         return sql.selectOne("User.emailDuplicates", userEmail);
     }
 
-    public String isTelDuplicate(String userTel) {
+    public int isTelDuplicate(String userTel) {
         return sql.selectOne("User.telDuplicates", userTel);
     }
 

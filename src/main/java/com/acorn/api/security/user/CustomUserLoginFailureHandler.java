@@ -1,6 +1,5 @@
 package com.acorn.api.security.user;
 
-
 import com.acorn.api.code.user.ApiUserErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,4 +50,3 @@ public class CustomUserLoginFailureHandler implements AuthenticationFailureHandl
         }
     }
 }
-

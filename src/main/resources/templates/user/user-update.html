@@ -11,7 +11,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let userPassword = document.getElementById("userPassword");
-            let userDisplayName = document.getElementById("userDisplayName");
+            let userNm = document.getElementById("userNm");
             let userTel = document.getElementById("userTel");
             let userAddr = document.getElementById("userAddress");
 
@@ -26,14 +26,14 @@
                 userTel: true
             };
 
-            const initialName = userDisplayName.value;
+            const initialName = userNm.value;
 
             function checkFormValid() {
                 const allValid = Object.values(validStates).every(Boolean);
                 submitButton.disabled = !allValid;
             }
 
-            userDisplayName.addEventListener("input", (e) => {
+            userNm.addEventListener("input", (e) => {
                 validName(e.target, nameResult);
             });
 
@@ -45,7 +45,6 @@
                 window.location.href = "/user/mypage";
             });
 
-            // 이름 형식 정규식 체크
             function validName(nameInput, resultElement) {
                 const name = nameInput.value.trim();
                 if (name.length === 0) {
@@ -79,7 +78,6 @@
                 return namePattern.test(name.trim());
             }
 
-            // 전화번호 형식 정규식 체크
             function validTel(telInput, resultElement) {
                 const tel = telInput.value.trim();
                 if (tel.length === 0) {
@@ -100,7 +98,6 @@
                 checkFormValid();
             }
 
-            // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const userTel = telInput.value.trim();
                 fetch("/api/auth/user/userTelCheck?userTel=" + encodeURIComponent(userTel), {
@@ -141,7 +138,6 @@
             const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-            // 회원수정 폼 데이터 전송
             document.getElementById("userUpdate").addEventListener("submit", function (e) {
                 e.preventDefault();
 
@@ -163,7 +159,7 @@
                     const userData = {
                         userUUId: userUUId,
                         userPassword: userPassword.value,
-                        userDisplayName: userDisplayName.value,
+                        userNm: userNm.value,
                         userTel: userTel.value,
                         userAddr: userAddr.value,
                         _csrf: document.querySelector("[name=_csrf]").value
@@ -202,7 +198,7 @@
     </script>
 </head>
 <body>
-<h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userDisplayName}"></span>님의 회원정보</h3>
+<h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userNm}"></span>님의 회원정보</h3>
 <div class="join-form">
     <div class="content">
         <form id="userUpdate">
@@ -222,9 +218,9 @@
             <span class="password-result"></span>
 
             <h3>이름</h3>
-            <label for="userDisplayName">
-                <input type="text" name="userDisplayName" id="userDisplayName" class="text-field"
-                       th:value="${userData.userDisplayName}" placeholder="이름">
+            <label for="userNm">
+                <input type="text" name="userNm" id="userNm" class="text-field"
+                       th:value="${userData.userNm}" placeholder="이름">
             </label><br/>
             <span class="name-result"></span>
 

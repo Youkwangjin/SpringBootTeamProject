@@ -32,5 +32,4 @@ public class OwnerUpdateDTO {
     private String ownerCompanyName;
 
     private String ownerAddr;
-
 }

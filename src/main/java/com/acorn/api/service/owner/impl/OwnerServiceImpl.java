@@ -138,7 +138,6 @@ public class OwnerServiceImpl implements OwnerService {
                 .build();
 
         ownerRepository.ownerUpdate(updateOwner);
-
     }
 
     @Override

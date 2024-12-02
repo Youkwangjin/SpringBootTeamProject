@@ -15,9 +15,7 @@ import java.io.IOException;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    /*
-        로그인하지 않은 사용자가 보호된 리소스에 접근할 때 동작.
-     */
+
     @Value("${page.url.board.write}")
     private String boardWriteUrl;
 

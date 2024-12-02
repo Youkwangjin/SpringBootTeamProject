@@ -24,7 +24,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             session.invalidate();
         }
 
-        // JSESSIONID 쿠키 삭제
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {

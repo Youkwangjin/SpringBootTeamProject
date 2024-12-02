@@ -28,10 +28,11 @@ public class CommonSecurityUtil {
         Object principal = getPrincipal();
 
         if (principal instanceof CustomUserDetails) {
-            return ((CustomUserDetails) principal).getUserDisplayName();
+            return ((CustomUserDetails) principal).getUserNm();
         } else if (principal instanceof CustomOwnerDetails) {
             return ((CustomOwnerDetails) principal).getOwnerName();
         }
+
 
         return null;
     }

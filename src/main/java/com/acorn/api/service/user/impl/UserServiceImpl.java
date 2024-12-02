@@ -10,7 +10,7 @@ import com.acorn.api.model.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
 import com.acorn.api.service.user.UserService;
-import com.acorn.api.utils.UserSecurityUtil;
+import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,12 +40,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void isTelPhoneDuplicate(String userTel) {
-        String currentUserTelData = UserSecurityUtil.getAuthenticatedTelNumber();
-        if (currentUserTelData != null && StringUtils.equals(currentUserTelData, userTel)) {
-            return;
-        }
+        int telCount = userRepository.isTelDuplicate(userTel);
 
-        int telCount = Integer.parseInt(userRepository.isTelDuplicate(userTel));
         if (telCount > 0) {
             throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
         }
@@ -60,7 +56,7 @@ public class UserServiceImpl implements UserService {
                 .userUUId(UUID.randomUUID().toString())
                 .userEmail(userRegisterData.getUserEmail())
                 .userPassword(encodedPassword)
-                .userDisplayName(userRegisterData.getUserDisplayName())
+                .userNm(userRegisterData.getUserNm())
                 .userAddr(userRegisterData.getUserAddr())
                 .userTel(userRegisterData.getUserTel())
                 .userRole(UserRole.USER)
@@ -71,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getUserData() throws AuthenticationException {
-        String userUUId = UserSecurityUtil.getAuthenticatedUUId();
+        String userUUId = CommonSecurityUtil.getAuthenticatedUUId();
 
         if (!StringUtils.isNotBlank(userUUId)) {
             throw new UsernameNotFoundException("User is not authenticated");
@@ -86,7 +82,7 @@ public class UserServiceImpl implements UserService {
         return UserResponseDTO.builder()
                 .userUUId(userData.getUserUUId())
                 .userEmail(userData.getUserEmail())
-                .userDisplayName(userData.getUserDisplayName())
+                .userNm(userData.getUserNm())
                 .userTel(userData.getUserTel())
                 .userAddr(userData.getUserAddr())
                 .build();
@@ -95,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userDataUpdate(UserUpdateDTO userUpdateData) {
-        String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
+        String authenticatedUUId  = CommonSecurityUtil.getAuthenticatedUUId();
 
         if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userUpdateData.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to update user data");
@@ -112,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
         User updateUser = User.builder()
                 .userUUId(userUpdateData.getUserUUId())
-                .userDisplayName(userUpdateData.getUserDisplayName())
+                .userNm(userUpdateData.getUserNm())
                 .userAddr(userUpdateData.getUserAddr())
                 .userTel(userUpdateData.getUserTel())
                 .build();
@@ -124,7 +120,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void userDataDelete(UserDeleteDTO userDeleteData) {
 
-        String authenticatedUUId  = UserSecurityUtil.getAuthenticatedUUId();
+        String authenticatedUUId  = CommonSecurityUtil.getAuthenticatedUUId();
 
         if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userDeleteData.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to delete user data");
