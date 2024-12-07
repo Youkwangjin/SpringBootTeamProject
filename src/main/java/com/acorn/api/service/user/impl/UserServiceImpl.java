@@ -50,9 +50,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userRegister(UserRegisterDTO userRegisterData) {
-        String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
+        final Integer userId = userRepository.selectUserIdKey();
+        final String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
 
         User newUser = User.builder()
+                .userId(userId)
                 .userUUId(UUID.randomUUID().toString())
                 .userEmail(userRegisterData.getUserEmail())
                 .userPassword(encodedPassword)

@@ -13,6 +13,12 @@
         <result property="userAddr"         column="USER_ADDRESS"/>
         <result property="userRole"         column="USER_ROLE"/>
     </resultMap>
+
+    <!-- select key -->
+    <select id="selectUserIdKey"  resultType="Integer">
+        SELECT nextval(USER_SEQ)
+    </select>
+
     <!-- 이메일 중복 체크 -->
     <select id="emailDuplicates" parameterType="String" resultType="int">
         SELECT COUNT(USER_EMAIL)
@@ -29,8 +35,8 @@
 
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
-        INSERT INTO TB_USER (USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NM, USER_TEL, USER_ADDRESS, USER_ROLE)
-        VALUES (#{userUUId}, #{userEmail}, #{userPassword}, #{userNm}, #{userTel}, #{userAddr}, #{userRole})
+        INSERT INTO TB_USER (USER_ID, USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NM, USER_TEL, USER_ADDRESS, USER_ROLE)
+        VALUES (#{userId}, #{userUUId}, #{userEmail}, #{userPassword}, #{userNm}, #{userTel}, #{userAddr}, #{userRole})
     </insert>
 
     <!-- 아이디 검증 -->
