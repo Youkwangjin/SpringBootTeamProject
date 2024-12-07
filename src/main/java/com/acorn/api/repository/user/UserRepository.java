@@ -11,6 +11,10 @@ public class UserRepository {
 
     private final SqlSessionTemplate sql;
 
+    public Integer selectUserIdKey() {
+        return sql.selectOne("User.selectUserIdKey");
+    }
+
     public int isEmailDuplicate(String userEmail) {
         return sql.selectOne("User.emailDuplicates", userEmail);
     }
