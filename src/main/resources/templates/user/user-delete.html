@@ -25,7 +25,7 @@
                 e.preventDefault();
 
                 if (!submitButton.disabled) {
-                    const userUUId = document.getElementById("userUUId").value;
+                    const userId = document.getElementById("userId").value;
                     const passwordValue = userPassword.value.trim();
 
                     if (passwordValue === "") {
@@ -35,11 +35,11 @@
                     }
                     if (confirm("정말로 탈퇴하시겠습니까?")) {
                         const userData = {
-                            userUUId: userUUId,
+                            userId: userId,
                             userPassword: userPassword.value,
                             _csrf: document.querySelector("[name=_csrf]").value
                         };
-                        fetch(`/api/user/delete/${userUUId}`, {
+                        fetch(`/api/user/delete/${userId}`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -93,7 +93,7 @@
     <div class="content">
         <form id="userDelete">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" readonly/>
-            <input type="hidden" name="userUUId" id="userUUId" class="text-field" th:value="${userData.userUUId}" readonly>
+            <input type="hidden" name="userId" id="userId" class="text-field" th:value="${userData.userId}" readonly>
 
             <h3>이메일</h3>
             <label for="userEmail">

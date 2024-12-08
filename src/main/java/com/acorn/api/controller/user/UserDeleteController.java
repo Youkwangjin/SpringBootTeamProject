@@ -21,7 +21,7 @@ public class UserDeleteController {
     private static final Logger log = LoggerFactory.getLogger(UserDeleteController.class);
     private final UserService userService;
 
-    @PostMapping("/api/user/delete/{userUUId}")
+    @PostMapping("/api/user/delete/{userId}")
     public ResponseEntity<ApiSuccessResponse<Object>> userDelete(@Valid @RequestBody UserDeleteDTO userDeleteData) {
 
         log.info(" *****************************    User Delete START    *****************************");

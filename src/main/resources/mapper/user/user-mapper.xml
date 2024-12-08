@@ -5,7 +5,6 @@
 <mapper namespace="User">
     <resultMap id="userResultMap" type="com.acorn.api.model.user.User" autoMapping="true">
         <result property="userId"           column="USER_ID"/>
-        <result property="userUUId"         column="USER_UUID"/>
         <result property="userEmail"        column="USER_EMAIL"/>
         <result property="userPassword"     column="USER_PASSWORD"/>
         <result property="userNm"           column="USER_NM"/>
@@ -35,8 +34,8 @@
 
     <!-- 회원가입 -->
     <insert id="userRegister" parameterType="user" useGeneratedKeys="true" keyProperty="userId" >
-        INSERT INTO TB_USER (USER_ID, USER_UUID, USER_EMAIL, USER_PASSWORD, USER_NM, USER_TEL, USER_ADDRESS, USER_ROLE)
-        VALUES (#{userId}, #{userUUId}, #{userEmail}, #{userPassword}, #{userNm}, #{userTel}, #{userAddr}, #{userRole})
+        INSERT INTO TB_USER (USER_ID, USER_EMAIL, USER_PASSWORD, USER_NM, USER_TEL, USER_ADDRESS, USER_ROLE)
+        VALUES (#{userId}, #{userEmail}, #{userPassword}, #{userNm}, #{userTel}, #{userAddr}, #{userRole})
     </insert>
 
     <!-- 아이디 검증 -->
@@ -68,6 +67,6 @@
     <delete id="userDelete" parameterType="user">
         DELETE
         FROM TB_USER
-        WHERE USER_UUID = #{userUUId}
+        WHERE USER_ID = #{userId}
     </delete>
 </mapper>

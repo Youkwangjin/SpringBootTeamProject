@@ -24,9 +24,7 @@ public class CommonSecurityUtil {
     public static String getAuthenticatedUUId() {
         Object principal = getPrincipal();
 
-        if (principal instanceof CustomUserDetails) {
-            return ((CustomUserDetails) principal).getUserUUId();
-        } else if (principal instanceof CustomOwnerDetails) {
+        if (principal instanceof CustomOwnerDetails) {
             return ((CustomOwnerDetails) principal).getOwnerUUId();
         }
 
