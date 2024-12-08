@@ -20,8 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -55,7 +53,6 @@ public class UserServiceImpl implements UserService {
 
         User newUser = User.builder()
                 .userId(userId)
-                .userUUId(UUID.randomUUID().toString())
                 .userEmail(userRegisterData.getUserEmail())
                 .userPassword(encodedPassword)
                 .userNm(userRegisterData.getUserNm())
@@ -123,15 +120,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void userDataDelete(UserDeleteDTO userDeleteData) {
         final Integer userId = CommonSecurityUtil.getCurrentUserId();
-        String authenticatedUUId  = CommonSecurityUtil.getAuthenticatedUUId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userDeleteData.getUserUUId())) {
-            throw new AccessDeniedException("Unauthorized to delete user data");
+        if (userId == null || !userId.equals(userDeleteData.getUserId())) {
+            throw new AccessDeniedException("Unauthorized to update user data");
         }
 
         User existingUser = userRepository.selectAllUserData(userId);
+
         if (existingUser == null) {
-            throw new UsernameNotFoundException("User not found : " + authenticatedUUId);
+            throw new UsernameNotFoundException("User not found : " + userId);
         }
 
         if (StringUtils.isNotBlank(userDeleteData.getUserPassword()) && !passwordEncoder.matches(userDeleteData.getUserPassword(), existingUser.getUserPassword())) {
@@ -139,7 +136,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User deleteUser = User.builder()
-                .userUUId(userDeleteData.getUserUUId())
+                .userId(userDeleteData.getUserId())
                 .build();
 
         userRepository.userDelete(deleteUser);

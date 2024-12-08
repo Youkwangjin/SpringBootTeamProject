@@ -10,8 +10,6 @@ public class User {
 
     private Integer userId;
 
-    private String userUUId;
-
     private String userEmail;
 
     private String userPassword;

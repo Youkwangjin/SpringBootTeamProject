@@ -9,8 +9,6 @@ public class UserResponseDTO {
 
     private Integer userId;
 
-    private String userUUId;
-
     private String userEmail;
 
     private String userNm;
