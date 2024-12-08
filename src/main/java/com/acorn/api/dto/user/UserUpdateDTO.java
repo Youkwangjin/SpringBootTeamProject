@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserUpdateDTO {
 
-    private String userUUId;
+    private Integer userId;
 
     @NotBlank
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+{}\":;'<>?,./]).{10,}$")

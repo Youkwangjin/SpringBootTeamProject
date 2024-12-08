@@ -16,6 +16,10 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public Integer getUserId() {
+        return user.getUserId();
+    }
+
     public String getUserUUId() {
         return user.getUserUUId();
     }

@@ -21,7 +21,7 @@ public class UserUpdateController {
     private static final Logger log = LoggerFactory.getLogger(UserUpdateController.class);
     private final UserService userService;
 
-    @PatchMapping("/api/user/update/{userUUId}")
+    @PatchMapping("/api/user/update/{userId}")
     public ResponseEntity<ApiSuccessResponse<Object>> userUpdate(@Valid @RequestBody UserUpdateDTO userUpdateData) {
 
         log.info(" *****************************    User Update START    *****************************");

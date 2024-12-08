@@ -47,10 +47,10 @@
     </select>
 
     <!-- 회원조회 -->
-    <select id="selectAllUserData" parameterType="String" resultMap="userResultMap">
+    <select id="selectAllUserData" parameterType="Integer" resultMap="userResultMap">
         SELECT *
         FROM TB_USER
-        WHERE USER_UUID = #{userUUId}
+        WHERE USER_ID = #{userId}
     </select>
 
     <!-- 회원수정 -->
@@ -61,7 +61,7 @@
             USER_TEL = #{userTel},
             USER_ADDRESS = #{userAddr},
             USER_UPDATED = NOW()
-        WHERE USER_UUID = #{userUUId}
+        WHERE USER_ID = #{userId}
     </update>
 
     <!-- 회원탈퇴 -->

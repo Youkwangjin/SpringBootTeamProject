@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 public class UserResponseDTO {
 
-    private int userId;
+    private Integer userId;
 
     private String userUUId;
 
