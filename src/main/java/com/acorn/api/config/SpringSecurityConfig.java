@@ -138,8 +138,8 @@ public class SpringSecurityConfig {
                                          "/owner/delete/profile").hasAuthority("ROLE_OWNER")
 
                         // Protected User API
-                        .requestMatchers("/api/user/update/{userUUId}",
-                                         "/api/user/delete/{userUUId}").hasAuthority("ROLE_USER")
+                        .requestMatchers("/api/user/update/{userId}",
+                                         "/api/user/delete/{userId}").hasAuthority("ROLE_USER")
 
                         // Protected Owner API
                         .requestMatchers("/api/owner/update/{ownerUUId}",
