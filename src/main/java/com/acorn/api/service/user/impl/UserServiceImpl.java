@@ -50,9 +50,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userRegister(UserRegisterDTO userRegisterData) {
-        String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
+        final Integer userId = userRepository.selectUserIdKey();
+        final String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
 
         User newUser = User.builder()
+                .userId(userId)
                 .userUUId(UUID.randomUUID().toString())
                 .userEmail(userRegisterData.getUserEmail())
                 .userPassword(encodedPassword)
@@ -67,20 +69,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getUserData() throws AuthenticationException {
-        String userUUId = CommonSecurityUtil.getAuthenticatedUUId();
+        final Integer userId = CommonSecurityUtil.getCurrentUserId();
 
-        if (!StringUtils.isNotBlank(userUUId)) {
-            throw new UsernameNotFoundException("User is not authenticated");
+        if (userId == null) {
+            throw new AccessDeniedException("Unauthorized to update user data");
         }
 
-        User userData = userRepository.selectAllUserData(userUUId);
+        User userData = userRepository.selectAllUserData(userId);
 
         if (userData == null) {
             throw new UsernameNotFoundException("User data not found");
         }
 
         return UserResponseDTO.builder()
-                .userUUId(userData.getUserUUId())
+                .userId(userData.getUserId())
                 .userEmail(userData.getUserEmail())
                 .userNm(userData.getUserNm())
                 .userTel(userData.getUserTel())
@@ -91,15 +93,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userDataUpdate(UserUpdateDTO userUpdateData) {
-        String authenticatedUUId  = CommonSecurityUtil.getAuthenticatedUUId();
+        final Integer userId  = CommonSecurityUtil.getCurrentUserId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userUpdateData.getUserUUId())) {
+        if (userId == null || !userId.equals(userUpdateData.getUserId())) {
             throw new AccessDeniedException("Unauthorized to update user data");
         }
 
-        User existingUser = userRepository.selectAllUserData(authenticatedUUId);
+        User existingUser = userRepository.selectAllUserData(userId);
+
         if (existingUser == null) {
-            throw new UsernameNotFoundException("User not found with UUID: " + authenticatedUUId);
+            throw new UsernameNotFoundException("User data not found");
         }
 
         if (StringUtils.isNotBlank(userUpdateData.getUserPassword()) && !passwordEncoder.matches(userUpdateData.getUserPassword(), existingUser.getUserPassword())) {
@@ -107,7 +110,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User updateUser = User.builder()
-                .userUUId(userUpdateData.getUserUUId())
+                .userId(userUpdateData.getUserId())
                 .userNm(userUpdateData.getUserNm())
                 .userAddr(userUpdateData.getUserAddr())
                 .userTel(userUpdateData.getUserTel())
@@ -119,14 +122,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userDataDelete(UserDeleteDTO userDeleteData) {
-
+        final Integer userId = CommonSecurityUtil.getCurrentUserId();
         String authenticatedUUId  = CommonSecurityUtil.getAuthenticatedUUId();
 
         if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, userDeleteData.getUserUUId())) {
             throw new AccessDeniedException("Unauthorized to delete user data");
         }
 
-        User existingUser = userRepository.selectAllUserData(authenticatedUUId);
+        User existingUser = userRepository.selectAllUserData(userId);
         if (existingUser == null) {
             throw new UsernameNotFoundException("User not found : " + authenticatedUUId);
         }

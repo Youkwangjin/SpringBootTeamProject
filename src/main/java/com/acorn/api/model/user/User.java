@@ -7,10 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class User {
-    /*
-        애플리케이션의 비즈니스 로직과 데이터 관리를 처리
-     */
-    private int userId;
+
+    private Integer userId;
 
     private String userUUId;
 
