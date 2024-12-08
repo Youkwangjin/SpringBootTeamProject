@@ -142,7 +142,7 @@
                 e.preventDefault();
 
                 if (!submitButton.disabled) {
-                    const userUUId = document.getElementById("userUUId").value;
+                    const userId = document.getElementById("userId").value;
                     const passwordValue = userPassword.value.trim();
 
                     if (passwordValue === "") {
@@ -157,14 +157,14 @@
                     }
 
                     const userData = {
-                        userUUId: userUUId,
+                        userId: userId,
                         userPassword: userPassword.value,
                         userNm: userNm.value,
                         userTel: userTel.value,
                         userAddr: userAddr.value,
                         _csrf: document.querySelector("[name=_csrf]").value
                     };
-                    fetch(`/api/user/update/${userUUId}`, {
+                    fetch(`/api/user/update/${userId}`, {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json",
@@ -203,7 +203,7 @@
     <div class="content">
         <form id="userUpdate">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" readonly>
-            <input type="hidden" name="userUUId" id="userUUId" class="text-field" th:value="${userData.userUUId}" readonly>
+            <input type="hidden" name="userId" id="userId" class="text-field" th:value="${userData.userId}" readonly>
 
             <h3>이메일</h3>
             <label for="userEmail">

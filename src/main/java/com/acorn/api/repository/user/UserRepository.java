@@ -31,8 +31,8 @@ public class UserRepository {
         return sql.selectOne("User.findByUserEmail", username);
     }
 
-    public User selectAllUserData(String userUUId) {
-        return sql.selectOne("User.selectAllUserData", userUUId);
+    public User selectAllUserData(Integer userId) {
+        return sql.selectOne("User.selectAllUserData", userId);
     }
 
     public void userUpdate(User updateUser) {
