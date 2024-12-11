@@ -26,7 +26,7 @@ public class OwnerPageController {
     @GetMapping("/owner/mypage")
     public String mypage(Model model) {
         OwnerResponseDTO ownerData = ownerService.getOwnerData();
-        model.addAttribute("ownerName", ownerData.getOwnerName());
+        model.addAttribute("ownerName", ownerData.getOwnerNm());
         return "common/mypage";
     }
 

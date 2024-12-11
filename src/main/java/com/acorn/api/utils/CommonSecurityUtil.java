@@ -37,7 +37,7 @@ public class CommonSecurityUtil {
         if (principal instanceof CustomUserDetails) {
             return ((CustomUserDetails) principal).getUserNm();
         } else if (principal instanceof CustomOwnerDetails) {
-            return ((CustomOwnerDetails) principal).getOwnerName();
+            return ((CustomOwnerDetails) principal).getOwnerNm();
         }
 
         return null;

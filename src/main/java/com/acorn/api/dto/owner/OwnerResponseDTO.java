@@ -9,13 +9,11 @@ public class OwnerResponseDTO {
 
     private int ownerId;
 
-    private String ownerUUId;
-
     private String ownerEmail;
 
     private String ownerBusinessNum;
 
-    private String ownerName;
+    private String ownerNm;
 
     private String ownerTel;
 

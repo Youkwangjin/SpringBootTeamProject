@@ -30,7 +30,7 @@
                         <p style="color: #ffffff;"><strong th:text="${userName}">사용자 이름</strong> 고객님 환영합니다.</p>
                     </div>
                     <div sec:authorize="hasRole('ROLE_OWNER')">
-                        <p style="color: #ffffff;"><strong th:text="${ownerName}">사용자 이름</strong> 사업자님 환영합니다.</p>
+                        <p style="color: #ffffff;"><strong th:text="${ownerNm}">사용자 이름</strong> 사업자님 환영합니다.</p>
                     </div>
                 </div>
             </div>
