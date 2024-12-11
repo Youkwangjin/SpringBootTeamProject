@@ -68,14 +68,15 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     @Transactional
     public void ownerRegister(OwnerRegisterDTO ownerRegisterData) {
-        String encodedPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
+        final Integer ownerId = ownerRepository.selectOwnerIdKey();
+        final String encodedPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
 
         Owner newRegisterDataOwner = Owner.builder()
-                .ownerUUId(UUID.randomUUID().toString())
+                .ownerId(ownerId)
                 .ownerEmail(ownerRegisterData.getOwnerEmail())
                 .ownerBusinessNum(ownerRegisterData.getOwnerBusinessNum())
                 .ownerPassword(encodedPassword)
-                .ownerName(ownerRegisterData.getOwnerName())
+                .ownerNm(ownerRegisterData.getOwnerNm())
                 .ownerCompanyName(ownerRegisterData.getOwnerCompanyName())
                 .ownerAddr(ownerRegisterData.getOwnerAddr())
                 .ownerTel(ownerRegisterData.getOwnerTel())
@@ -100,10 +101,9 @@ public class OwnerServiceImpl implements OwnerService {
         }
 
         return OwnerResponseDTO.builder()
-                .ownerUUId(ownerData.getOwnerUUId())
                 .ownerEmail(ownerData.getOwnerEmail())
                 .ownerBusinessNum(ownerData.getOwnerBusinessNum())
-                .ownerName(ownerData.getOwnerName())
+                .ownerNm(ownerData.getOwnerNm())
                 .ownerCompanyName(ownerData.getOwnerCompanyName())
                 .ownerAddr(ownerData.getOwnerAddr())
                 .ownerTel(ownerData.getOwnerTel())
@@ -131,7 +131,7 @@ public class OwnerServiceImpl implements OwnerService {
         Owner updateOwner = Owner.builder()
                 .ownerUUId(ownerUpdateData.getOwnerUUId())
                 .ownerEmail(ownerUpdateData.getOwnerEmail())
-                .ownerName(ownerUpdateData.getOwnerName())
+                .ownerNm(ownerUpdateData.getOwnerName())
                 .ownerTel(ownerUpdateData.getOwnerTel())
                 .ownerCompanyName(ownerUpdateData.getOwnerCompanyName())
                 .ownerAddr(ownerUpdateData.getOwnerAddr())

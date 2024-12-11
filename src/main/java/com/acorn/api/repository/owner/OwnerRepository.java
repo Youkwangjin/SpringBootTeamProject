@@ -11,6 +11,10 @@ public class OwnerRepository {
 
     private final SqlSessionTemplate sql;
 
+    public Integer selectOwnerIdKey() {
+        return sql.selectOne("Owner.selectOwnerIdKey");
+    }
+
     public int isEmailDuplicate(String ownerEmail) {
         return sql.selectOne("Owner.emailDuplicates", ownerEmail);
     }
