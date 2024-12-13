@@ -39,8 +39,8 @@ public class OwnerRepository {
         return  sql.selectOne("Owner.findByOwnerBusinessNum", ownerBusinessNum);
     }
 
-    public Owner selectAllOwnerData(String ownerUUId) {
-        return sql.selectOne("Owner.selectAllOwnerData", ownerUUId);
+    public Owner selectAllOwnerData(Integer ownerId) {
+        return sql.selectOne("Owner.selectAllOwnerData", ownerId);
     }
 
     public void ownerUpdate(Owner updateOwner) {

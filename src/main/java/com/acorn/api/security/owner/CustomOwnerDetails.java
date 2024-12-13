@@ -16,8 +16,8 @@ public class CustomOwnerDetails implements UserDetails {
         this.owner = owner;
     }
 
-    public String getOwnerUUId() {
-        return owner.getOwnerUUId();
+    public Integer getOwnerId() {
+        return owner.getOwnerId();
     }
 
     public String getOwnerEmail() {

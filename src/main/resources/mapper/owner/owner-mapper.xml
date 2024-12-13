@@ -62,10 +62,10 @@
     </select>
 
     <!-- 회원조회 -->
-    <select id="selectAllOwnerData" parameterType="String" resultMap="ownerResultMap">
+    <select id="selectAllOwnerData" parameterType="Integer" resultMap="ownerResultMap">
         SELECT *
         FROM TB_OWNER
-        WHERE OWNER_UUID = #{ownerUUId}
+        WHERE OWNER_ID = #{ownerId}
     </select>
 
     <!-- 회원수정 -->
@@ -73,18 +73,18 @@
         UPDATE TB_OWNER
         SET
             OWNER_EMAIL = #{ownerEmail},
-            OWNER_NAME = #{ownerName},
+            OWNER_NM = #{ownerNm},
             OWNER_TEL = #{ownerTel},
             OWNER_COMPANY_NAME = #{ownerCompanyName},
             OWNER_ADDRESS = #{ownerAddr},
             OWNER_UPDATED = NOW()
-        WHERE OWNER_UUID = #{ownerUUId}
+        WHERE OWNER_ID = #{ownerId}
     </update>
 
     <!-- 회원탈퇴-->
     <delete id="ownerDelete" parameterType="owner">
         DELETE
         FROM TB_OWNER
-        WHERE OWNER_UUID = #{ownerUUId}
+        WHERE OWNER_ID = #{ownerId}
     </delete>
 </mapper>

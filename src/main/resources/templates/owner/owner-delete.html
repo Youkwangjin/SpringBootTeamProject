@@ -19,12 +19,11 @@
             const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-            // 회원삭제 폼 데이터 전송
             document.getElementById("ownerDelete").addEventListener("submit", function (e) {
                 e.preventDefault();
 
                 if (!submitButton.disabled) {
-                    const ownerUUId = document.getElementById("ownerUUId").value;
+                    const ownerId = document.getElementById("ownerId").value;
                     const passwordValue = ownerPassword.value.trim();
 
                     if (passwordValue === "") {
@@ -34,11 +33,11 @@
                     }
                     if (confirm("정말로 탈퇴하시겠습니까?")) {
                         const ownerData = {
-                            ownerUUId: ownerUUId,
+                            ownerId: ownerId,
                             ownerPassword: ownerPassword.value,
                             _csrf: document.querySelector("[name=_csrf]").value
                         };
-                        fetch(`/api/owner/delete/${ownerUUId}`, {
+                        fetch(`/api/owner/delete/${ownerId}`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -87,12 +86,12 @@
     </script>
 </head>
 <body>
-<h3 style="text-align: center; line-height: 2;"><span th:text="${ownerData.ownerName}"></span>님의 회원정보</h3>
+<h3 style="text-align: center; line-height: 2;"><span th:text="${ownerData.ownerNm}"></span>님의 회원정보</h3>
 <div class="join-form">
     <div class="content">
         <form id="ownerDelete">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <input type="hidden" name="ownerUUId" id="ownerUUId" class="text-field" th:value="${ownerData.ownerUUId}">
+            <input type="hidden" name="ownerId" id="ownerId" class="text-field" th:value="${ownerData.ownerId}">
 
             <h3>이메일</h3>
             <label for="ownerEmail">
@@ -115,7 +114,7 @@
             <h3>이름</h3>
             <label for="ownerName">
                 <input type="text" name="ownerName" id="ownerName" class="text-field"
-                       th:value="${ownerData.ownerName}" placeholder="이름" readonly>
+                       th:value="${ownerData.ownerNm}" placeholder="이름" readonly>
             </label><br/>
 
             <h3>전화번호</h3>
