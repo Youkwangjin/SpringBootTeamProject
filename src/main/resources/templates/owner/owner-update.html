@@ -12,7 +12,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             let ownerEmail = document.getElementById("ownerEmail");
             let ownerPassword = document.getElementById("ownerPassword");
-            let ownerName = document.getElementById("ownerName");
+            let ownerNm = document.getElementById("ownerNm");
             let ownerTel = document.getElementById("ownerTel");
             let ownerCompanyName = document.getElementById("ownerCompanyName");
             let ownerAddr = document.getElementById("userAddress");
@@ -27,13 +27,13 @@
 
             let validStates = {
                 ownerEmail: true,
-                ownerName: true,
+                ownerNm: true,
                 ownerTel: true,
                 ownerCompanyName: true
             };
 
             const initialEmail = ownerEmail.value;
-            const initialName = ownerName.value;
+            const initialName = ownerNm.value;
             const initialTel = ownerTel.value;
             const initialCompanyName = ownerCompanyName.value;
 
@@ -46,7 +46,7 @@
                 validEmail(e.target, emailResult);
             });
 
-            ownerName.addEventListener("input", (e) => {
+            ownerNm.addEventListener("input", (e) => {
                 validName(e.target, nameResult);
             });
 
@@ -131,23 +131,23 @@
                     resultElement.classList.remove("success");
                     resultElement.classList.add("error");
                     nameInput.focus();
-                    validStates.ownerName = false;
+                    validStates.ownerNm = false;
                 } else if (!validNameCheck(name)) {
                     resultElement.textContent = "이름을 올바르게 입력해주세요.";
                     resultElement.classList.remove("success");
                     resultElement.classList.add("error");
                     nameInput.focus();
-                    validStates.ownerName = false;
+                    validStates.ownerNm = false;
                 } else if (name === initialName) {
                     resultElement.textContent = "현재 기존 회원님 이름입니다.";
                     resultElement.classList.remove("error");
                     resultElement.classList.add("success");
-                    validStates.ownerName = true;
+                    validStates.ownerNm = true;
                 } else {
                     resultElement.textContent = "사용 가능한 이름입니다.";
                     resultElement.classList.remove("error");
                     resultElement.classList.add("success");
-                    validStates.ownerName = true;
+                    validStates.ownerNm = true;
                 }
                 checkFormValid();
             }
@@ -157,7 +157,6 @@
                 return namePattern.test(name.trim());
             }
 
-            // 전화번호 형식 정규식 체크
             function validTel(telInput, resultElement) {
                 const tel = telInput.value.trim();
                 if (tel.length === 0) {
@@ -183,7 +182,6 @@
                 checkFormValid();
             }
 
-            // 서버에 전화번호 중복 검사 요청
             function checkTelDuplication(telInput, resultElement) {
                 const ownerTel = telInput.value.trim();
                 fetch("/api/auth/owner/ownerTelCheck?ownerTel=" + encodeURIComponent(ownerTel), {
@@ -286,12 +284,11 @@
             const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-            // 회원수정 폼 데이터 전송
             document.getElementById("ownerUpdate").addEventListener("submit", function (e) {
                 e.preventDefault();
 
                 if (!submitButton.disabled) {
-                    const ownerUUId = document.getElementById("ownerUUId").value;
+                    const ownerId = document.getElementById("ownerId").value;
                     const passwordValue = ownerPassword.value.trim();
 
                     if (passwordValue === "") {
@@ -306,16 +303,16 @@
                     }
 
                     const ownerData = {
-                        ownerUUId: ownerUUId,
+                        ownerId: ownerId,
                         ownerEmail: ownerEmail.value,
                         ownerPassword: ownerPassword.value,
-                        ownerName: ownerName.value,
+                        ownerNm: ownerNm.value,
                         ownerTel: ownerTel.value,
                         ownerCompanyName: ownerCompanyName.value,
                         ownerAddr: ownerAddr.value,
                         _csrf: document.querySelector("[name=_csrf]").value
                     };
-                    fetch(`/api/owner/update/${ownerUUId}`, {
+                    fetch(`/api/owner/update/${ownerId}`, {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json",
@@ -349,12 +346,12 @@
     </script>
 </head>
 <body>
-<h3 style="text-align: center; line-height: 2;"><span th:text="${ownerData.ownerName}"></span>님의 회원수정</h3>
+<h3 style="text-align: center; line-height: 2;"><span th:text="${ownerData.ownerNm}"></span>님의 회원수정</h3>
 <div class="join-form">
     <div class="content">
         <form id="ownerUpdate">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <input type="hidden" name="ownerUUId" id="ownerUUId" class="text-field" th:value="${ownerData.ownerUUId}">
+            <input type="hidden" name="ownerId" id="ownerId" class="text-field" th:value="${ownerData.ownerId}">
 
             <h3>이메일</h3>
             <label for="ownerEmail">
@@ -377,9 +374,9 @@
             <span class="businessNum-result"></span>
 
             <h3>이름</h3>
-            <label for="ownerName">
-                <input type="text" name="ownerName" id="ownerName" class="text-field"
-                       th:value="${ownerData.ownerName}" placeholder="이름">
+            <label for="ownerNm">
+                <input type="text" name="ownerNm" id="ownerNm" class="text-field"
+                       th:value="${ownerData.ownerNm}" placeholder="이름">
             </label><br/>
             <span class="name-result"></span>
 

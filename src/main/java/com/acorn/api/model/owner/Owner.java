@@ -10,8 +10,6 @@ public class Owner {
 
     private Integer ownerId;
 
-    private String ownerUUId;
-
     private String ownerEmail;
 
     private String ownerBusinessNum;
@@ -27,5 +25,4 @@ public class Owner {
     private String ownerAddr;
 
     private OwnerRole ownerRole;
-
 }

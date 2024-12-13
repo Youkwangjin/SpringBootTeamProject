@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class OwnerUpdateDTO {
 
-    private String ownerUUId;
+    private Integer ownerId;
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
@@ -21,7 +21,7 @@ public class OwnerUpdateDTO {
 
     @NotBlank
     @Pattern(regexp = "^[가-힣a-zA-Z]{2,10}$")
-    private String ownerName;
+    private String ownerNm;
 
     @NotBlank
     @Pattern(regexp = "^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$")
