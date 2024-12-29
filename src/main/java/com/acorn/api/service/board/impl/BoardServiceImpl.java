@@ -48,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public String getAuthenticatedUserName() {
-        Object principal = CommonSecurityUtil.getAuthenticatedUUId();
+        Object principal = CommonSecurityUtil.getCurrentUserId();
 
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
@@ -58,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void boardDataSave(BoardSaveDTO boardSaveDTO) {
-        Object principal = CommonSecurityUtil.getAuthenticatedUUId();
+        Object principal = CommonSecurityUtil.getCurrentUserId();
 
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
