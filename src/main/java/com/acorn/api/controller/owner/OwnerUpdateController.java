@@ -21,7 +21,7 @@ public class OwnerUpdateController {
     private static final Logger log = LoggerFactory.getLogger(OwnerUpdateController.class);
     private final OwnerService ownerService;
 
-    @PatchMapping("/api/owner/update/{ownerUUId}")
+    @PatchMapping("/api/owner/update/{ownerId}")
     public ResponseEntity<ApiSuccessResponse<Object>> updateOwner(@Valid @RequestBody OwnerUpdateDTO ownerUpdateData) {
 
         log.info(" *****************************    Owner Update START    *****************************");

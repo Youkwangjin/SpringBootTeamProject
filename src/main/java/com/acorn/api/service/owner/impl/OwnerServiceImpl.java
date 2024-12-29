@@ -10,7 +10,7 @@ import com.acorn.api.model.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.role.OwnerRole;
 import com.acorn.api.service.owner.OwnerService;
-import com.acorn.api.utils.OwnerSecurityUtil;
+import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,8 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -68,14 +66,15 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     @Transactional
     public void ownerRegister(OwnerRegisterDTO ownerRegisterData) {
-        String encodedPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
+        final Integer ownerId = ownerRepository.selectOwnerIdKey();
+        final String encodedPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
 
         Owner newRegisterDataOwner = Owner.builder()
-                .ownerUUId(UUID.randomUUID().toString())
+                .ownerId(ownerId)
                 .ownerEmail(ownerRegisterData.getOwnerEmail())
                 .ownerBusinessNum(ownerRegisterData.getOwnerBusinessNum())
                 .ownerPassword(encodedPassword)
-                .ownerName(ownerRegisterData.getOwnerName())
+                .ownerNm(ownerRegisterData.getOwnerNm())
                 .ownerCompanyName(ownerRegisterData.getOwnerCompanyName())
                 .ownerAddr(ownerRegisterData.getOwnerAddr())
                 .ownerTel(ownerRegisterData.getOwnerTel())
@@ -87,23 +86,23 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public OwnerResponseDTO getOwnerData() throws AuthenticationException {
-        String ownerUUId = OwnerSecurityUtil.getAuthenticatedUUId();
+        Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
 
-        if (!StringUtils.isNotBlank(ownerUUId)) {
+        if (ownerId == null) {
             throw new UsernameNotFoundException("Owner is not authenticated");
         }
 
-        Owner ownerData = ownerRepository.selectAllOwnerData(ownerUUId);
+        Owner ownerData = ownerRepository.selectAllOwnerData(ownerId);
 
         if (ownerData == null) {
-            throw new UsernameNotFoundException("User data not found");
+            throw new UsernameNotFoundException("Owner data not found");
         }
 
         return OwnerResponseDTO.builder()
-                .ownerUUId(ownerData.getOwnerUUId())
+                .ownerId(ownerId)
                 .ownerEmail(ownerData.getOwnerEmail())
                 .ownerBusinessNum(ownerData.getOwnerBusinessNum())
-                .ownerName(ownerData.getOwnerName())
+                .ownerNm(ownerData.getOwnerNm())
                 .ownerCompanyName(ownerData.getOwnerCompanyName())
                 .ownerAddr(ownerData.getOwnerAddr())
                 .ownerTel(ownerData.getOwnerTel())
@@ -113,15 +112,15 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     @Transactional
     public void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData) throws AuthenticationException {
-        String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
+        Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, ownerUpdateData.getOwnerUUId())) {
+        if (ownerId == null || !ownerId.equals(ownerUpdateData.getOwnerId())) {
             throw new AccessDeniedException("Unauthorized to update owner data");
         }
 
-        Owner existingOwner = ownerRepository.selectAllOwnerData(authenticatedUUId);
+        Owner existingOwner = ownerRepository.selectAllOwnerData(ownerId);
         if (existingOwner == null) {
-            throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
+            throw new UsernameNotFoundException("Owner not found with ID: " + ownerId);
         }
 
         if (StringUtils.isNotBlank(ownerUpdateData.getOwnerPassword()) && !passwordEncoder.matches(ownerUpdateData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
@@ -129,9 +128,9 @@ public class OwnerServiceImpl implements OwnerService {
         }
 
         Owner updateOwner = Owner.builder()
-                .ownerUUId(ownerUpdateData.getOwnerUUId())
+                .ownerId(ownerUpdateData.getOwnerId())
                 .ownerEmail(ownerUpdateData.getOwnerEmail())
-                .ownerName(ownerUpdateData.getOwnerName())
+                .ownerNm(ownerUpdateData.getOwnerNm())
                 .ownerTel(ownerUpdateData.getOwnerTel())
                 .ownerCompanyName(ownerUpdateData.getOwnerCompanyName())
                 .ownerAddr(ownerUpdateData.getOwnerAddr())
@@ -143,15 +142,15 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     @Transactional
     public void ownerDataDelete(OwnerDeleteDTO ownerDeleteData) {
-        String authenticatedUUId = OwnerSecurityUtil.getAuthenticatedUUId();
+        Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
 
-        if (StringUtils.isBlank(authenticatedUUId) || !StringUtils.equals(authenticatedUUId, ownerDeleteData.getOwnerUUId())) {
+        if (ownerId == null || !ownerId.equals(ownerDeleteData.getOwnerId())) {
             throw new AccessDeniedException("Unauthorized to update owner data");
         }
 
-        Owner existingOwner = ownerRepository.selectAllOwnerData(authenticatedUUId);
+        Owner existingOwner = ownerRepository.selectAllOwnerData(ownerId);
         if (existingOwner == null) {
-            throw new UsernameNotFoundException("Owner not found with UUID: " + authenticatedUUId);
+            throw new UsernameNotFoundException("Owner not found with ID: " + ownerId);
         }
 
         if (StringUtils.isNotBlank(ownerDeleteData.getOwnerPassword()) && !passwordEncoder.matches(ownerDeleteData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
@@ -159,7 +158,7 @@ public class OwnerServiceImpl implements OwnerService {
         }
 
         Owner deleteOwner = Owner.builder()
-                .ownerUUId(ownerDeleteData.getOwnerUUId())
+                .ownerId(ownerDeleteData.getOwnerId())
                 .build();
 
         ownerRepository.ownerDelete(deleteOwner);

@@ -16,7 +16,7 @@
             let ownerBusinessNum = document.getElementById("ownerBusinessNum");
             let ownerPassword = document.getElementById("ownerPassword");
             let ownerRePassword = document.getElementById("ownerRePassword");
-            let ownerName = document.getElementById("ownerName");
+            let ownerNm = document.getElementById("ownerNm");
             let ownerTel = document.getElementById("ownerTel");
             let ownerCompanyName = document.getElementById("ownerCompanyName");
             let ownerAddr = document.getElementById("userAddress");
@@ -37,7 +37,7 @@
                 ownerBusinessNum: false,
                 ownerPassword: false,
                 ownerRePassword: false,
-                ownerName: false,
+                ownerNm: false,
                 ownerTel: false,
                 ownerCompanyName: false
             };
@@ -63,7 +63,7 @@
                 validRePassword(e.target, ownerPassword.value, rePasswordResult);
             });
 
-            ownerName.addEventListener("input", (e) => {
+            ownerNm.addEventListener("input", (e) => {
                 validName(e.target, nameResult);
             });
 
@@ -252,18 +252,18 @@
                     resultElement.classList.remove("success");
                     resultElement.classList.add("error");
                     nameInput.focus();
-                    validStates.ownerName = false;
+                    validStates.ownerNm = false;
                 } else if (!validNameCheck(name)) {
                     resultElement.textContent = "이름을 올바르게 입력해주세요.";
                     resultElement.classList.remove("success");
                     resultElement.classList.add("error");
                     nameInput.focus();
-                    validStates.ownerName = false;
+                    validStates.ownerNm = false;
                 } else {
                     resultElement.textContent = "사용 가능한 이름입니다.";
                     resultElement.classList.remove("error");
                     resultElement.classList.add("success");
-                    validStates.ownerName = true;
+                    validStates.ownerNm = true;
                 }
                 checkFormValid();
             }
@@ -390,7 +390,6 @@
             const csrfTokenElement = document.querySelector("input[name=_csrf]");
             const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-            // 회원가입 폼 데이터 전송
             document.getElementById("ownerRegister").addEventListener("submit", function (e) {
                 e.preventDefault();
                 if (!submitButton.disabled) {
@@ -398,7 +397,7 @@
                         ownerEmail: ownerEmail.value,
                         ownerBusinessNum: ownerBusinessNum.value,
                         ownerPassword: ownerPassword.value,
-                        ownerName: ownerName.value,
+                        ownerNm: ownerNm.value,
                         ownerTel: ownerTel.value,
                         ownerCompanyName: ownerCompanyName.value,
                         ownerAddr: ownerAddr.value,
@@ -472,8 +471,8 @@
             <span class="businessNum-result"></span>
 
             <h3>이름</h3>
-            <label for="ownerName">
-                <input type="text" name="ownerName" id="ownerName" class="text-field" placeholder="이름">
+            <label for="ownerNm">
+                <input type="text" name="ownerNm" id="ownerNm" class="text-field" placeholder="이름">
             </label><br/>
             <span class="name-result"></span>
 
@@ -486,7 +485,7 @@
 
             <h3>회사명</h3>
             <label for="ownerCompanyName">
-                <input type="tel" name="ownerCompanyName" id="ownerCompanyName" class="text-field"
+                <input type="text" name="ownerCompanyName" id="ownerCompanyName" class="text-field"
                        placeholder="회사명을 입력해주세요.">
             </label><br/>
             <span class="companyName-result"></span>

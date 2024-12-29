@@ -21,7 +21,7 @@ public class OwnerDeleteController {
     private static final Logger log = LoggerFactory.getLogger(OwnerDeleteController.class);
     private final OwnerService ownerService;
 
-    @PostMapping("/api/owner/delete/{ownerUUId}")
+    @PostMapping("/api/owner/delete/{ownerId}")
     public ResponseEntity<ApiSuccessResponse<Object>> ownerDelete(@Valid @RequestBody OwnerDeleteDTO ownerDeleteData) {
 
         log.info(" *****************************    User Delete START    *****************************");

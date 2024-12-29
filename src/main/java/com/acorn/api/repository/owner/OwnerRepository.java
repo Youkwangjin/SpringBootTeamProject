@@ -11,6 +11,10 @@ public class OwnerRepository {
 
     private final SqlSessionTemplate sql;
 
+    public Integer selectOwnerIdKey() {
+        return sql.selectOne("Owner.selectOwnerIdKey");
+    }
+
     public int isEmailDuplicate(String ownerEmail) {
         return sql.selectOne("Owner.emailDuplicates", ownerEmail);
     }
@@ -35,8 +39,8 @@ public class OwnerRepository {
         return  sql.selectOne("Owner.findByOwnerBusinessNum", ownerBusinessNum);
     }
 
-    public Owner selectAllOwnerData(String ownerUUId) {
-        return sql.selectOne("Owner.selectAllOwnerData", ownerUUId);
+    public Owner selectAllOwnerData(Integer ownerId) {
+        return sql.selectOne("Owner.selectAllOwnerData", ownerId);
     }
 
     public void ownerUpdate(Owner updateOwner) {

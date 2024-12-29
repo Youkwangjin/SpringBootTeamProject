@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class OwnerDeleteDTO {
 
-    private String ownerUUId;
+    private Integer ownerId;
 
     @NotBlank
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+{}\":;'<>?,./]).{10,}$")

@@ -21,11 +21,11 @@ public class CommonSecurityUtil {
         return null;
     }
 
-    public static String getAuthenticatedUUId() {
+    public static Integer getCurrentOwnerId() {
         Object principal = getPrincipal();
 
         if (principal instanceof CustomOwnerDetails) {
-            return ((CustomOwnerDetails) principal).getOwnerUUId();
+            return ((CustomOwnerDetails) principal).getOwnerId();
         }
 
         return null;
@@ -37,7 +37,7 @@ public class CommonSecurityUtil {
         if (principal instanceof CustomUserDetails) {
             return ((CustomUserDetails) principal).getUserNm();
         } else if (principal instanceof CustomOwnerDetails) {
-            return ((CustomOwnerDetails) principal).getOwnerName();
+            return ((CustomOwnerDetails) principal).getOwnerNm();
         }
 
         return null;

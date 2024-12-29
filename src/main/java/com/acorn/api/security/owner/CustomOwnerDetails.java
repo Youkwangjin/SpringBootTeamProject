@@ -16,16 +16,16 @@ public class CustomOwnerDetails implements UserDetails {
         this.owner = owner;
     }
 
-    public String getOwnerUUId() {
-        return owner.getOwnerUUId();
+    public Integer getOwnerId() {
+        return owner.getOwnerId();
     }
 
     public String getOwnerEmail() {
         return owner.getOwnerEmail();
     }
 
-    public String getOwnerName() {
-        return owner.getOwnerName();
+    public String getOwnerNm() {
+        return owner.getOwnerNm();
     }
 
     public String getOwnerTel() {

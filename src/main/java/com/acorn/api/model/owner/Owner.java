@@ -7,12 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Owner {
-    /*
-        애플리케이션의 비즈니스 로직과 데이터 관리를 처리
-     */
-    private int ownerId;
 
-    private String ownerUUId;
+    private Integer ownerId;
 
     private String ownerEmail;
 
@@ -20,7 +16,7 @@ public class Owner {
 
     private String ownerPassword;
 
-    private String ownerName;
+    private String ownerNm;
 
     private String ownerTel;
 
@@ -29,5 +25,4 @@ public class Owner {
     private String ownerAddr;
 
     private OwnerRole ownerRole;
-
 }

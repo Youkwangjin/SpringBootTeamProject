@@ -11,26 +11,6 @@ public class OwnerSecurityUtil {
 
     private static final Logger log = LoggerFactory.getLogger(OwnerSecurityUtil.class);
 
-    public static String getAuthenticatedUUId() {
-        CustomOwnerDetails ownerUUId = getOwnerPrincipal();
-
-        if (ownerUUId != null) {
-            return ownerUUId.getOwnerUUId();
-        }
-
-        return null;
-    }
-
-    public static String getAuthenticatedCompanyName() {
-        CustomOwnerDetails ownerCompanyName = getOwnerPrincipal();
-
-        if (ownerCompanyName != null) {
-            return ownerCompanyName.getOwnerCompanyName();
-        }
-
-        return null;
-    }
-
     private static CustomOwnerDetails getOwnerPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
