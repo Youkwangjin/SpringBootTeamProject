@@ -48,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public String getAuthenticatedUserName() {
-        Object principal = CommonSecurityUtil.getCurrentUserId();
+        Object principal = CommonSecurityUtil.getCurrentId();
 
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
@@ -63,9 +63,11 @@ public class BoardServiceImpl implements BoardService {
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
         }
-        String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
+        final Integer boardId = boardRepository.selectBoardIdKey();
+        final String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
 
         Board newBoardSaveData = Board.builder()
+                .boardId(boardId)
                 .boardTitle(boardSaveDTO.getBoardTitle())
                 .boardWriter(boardSaveDTO.getBoardWriter())
                 .boardPassword(encodedBoardPassword)
