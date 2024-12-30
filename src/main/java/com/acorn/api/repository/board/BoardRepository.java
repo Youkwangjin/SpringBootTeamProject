@@ -14,6 +14,10 @@ public class BoardRepository {
 
     private final SqlSessionTemplate sql;
 
+    public Integer selectBoardIdKey() {
+        return sql.selectOne("Board.selectBoardIdKey");
+    }
+
     public List<Board> selectBoardListData() {
         return sql.selectList("Board.selectBoardListData");
     }
