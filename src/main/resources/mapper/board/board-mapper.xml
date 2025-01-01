@@ -67,8 +67,8 @@
 
     <!-- 게시글 작성 -->
     <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
-        INSERT INTO TB_BOARD (BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
-        VALUES (#{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
+        INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
+        VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
     </insert>
 
     <!-- 게시글 첨부파일 저장 -->
