@@ -48,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public String getAuthenticatedUserName() {
-        Object principal = CommonSecurityUtil.getCurrentUserId();
+        Object principal = CommonSecurityUtil.getCurrentId();
 
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
@@ -58,21 +58,23 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void boardDataSave(BoardSaveDTO boardSaveDTO) {
-        Object principal = CommonSecurityUtil.getCurrentUserId();
+        Object principal = CommonSecurityUtil.getCurrentId();
 
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
         }
-        String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
+        final Integer boardId = boardRepository.selectBoardIdKey();
+        final String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
 
         Board newBoardSaveData = Board.builder()
+                .boardId(boardId)
                 .boardTitle(boardSaveDTO.getBoardTitle())
                 .boardWriter(boardSaveDTO.getBoardWriter())
                 .boardPassword(encodedBoardPassword)
                 .boardContents(boardSaveDTO.getBoardContents())
                 .boardContentsText(Jsoup.parse(boardSaveDTO.getBoardContents()).text())
                 .build();
-        Board savedBoard = boardRepository.boardSave(newBoardSaveData);
+        boardRepository.boardSave(newBoardSaveData);
 
         if(boardSaveDTO.getBoardFiles() != null && !boardSaveDTO.getBoardFiles().isEmpty()) {
             for(MultipartFile file : boardSaveDTO.getBoardFiles()) {
@@ -84,7 +86,7 @@ public class BoardServiceImpl implements BoardService {
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
                         .boardFileSize(fileSize)
-                        .boardId(savedBoard.getBoardId())
+                        .boardId(boardId)
                         .build();
                 boardRepository.insertBoardFile(boardFile);
             }

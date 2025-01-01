@@ -11,7 +11,7 @@ public class Board {
 
     private int rowNum;
 
-    private int boardId;
+    private Integer boardId;
 
     private String boardTitle;
 
@@ -28,5 +28,4 @@ public class Board {
     private String boardCreated;
 
     private String boardUpdated;
-
 }

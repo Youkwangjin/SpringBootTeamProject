@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
             selector: 'textarea',
             height: 500,
             width: 760,
-            plugins: "image imagetools table textcolor",
+            plugins: "image table textcolor",
             toolbar: [
                 "undo redo | code | styleselect | bold italic | fontsizeselect forecolor backcolor",
                 "alignleft aligncenter alignright alignjustify | outdent indent | table | custom_image"
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             fetch("/api/editor/image/upload", {
                                 method: "POST",
                                 headers: {
-                                    'X-CSRF-TOKEN': csrfToken,
+                                    "X-CSRF-TOKEN": csrfToken,
                                 },
                                 body: formData
                             })
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     let img = "<img src='" + data.data + "' alt='' />";
                                     editor.insertContent(img);
                                 })
-                                .catch(error => console.error('Error:', error));
+                                .catch(error => console.error("Error:", error));
                         };
                         input.click();
                     }

@@ -21,6 +21,12 @@
         <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
         <result property="boardFileSize"            column="BOARD_FILE_SIZE"/>
     </resultMap>
+
+    <!-- select key -->
+    <select id="selectBoardIdKey"  resultType="Integer">
+        SELECT nextval(BOARD_SEQ)
+    </select>
+
     <!-- 게시글 갯수 확인 -->
     <select id="selectListByCount" resultType="int">
         SELECT
@@ -42,6 +48,7 @@
             </if>
         </where>
     </select>
+
     <!-- 게시글 전체 조회 -->
     <select id="selectBoardListData" resultMap="boardResultMap">
         SELECT
@@ -60,8 +67,8 @@
 
     <!-- 게시글 작성 -->
     <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
-        INSERT INTO TB_BOARD (BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
-        VALUES (#{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
+        INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
+        VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
     </insert>
 
     <!-- 게시글 첨부파일 저장 -->

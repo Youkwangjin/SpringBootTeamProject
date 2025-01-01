@@ -12,6 +12,17 @@ public class CommonSecurityUtil {
 
     private static final Logger log = LoggerFactory.getLogger(CommonSecurityUtil.class);
 
+    public static Integer getCurrentId() {
+        Object principal = getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            return ((CustomUserDetails) principal).getUserId();
+        } else if (principal instanceof CustomOwnerDetails) {
+            return ((CustomOwnerDetails) principal).getOwnerId();
+        }
+
+        return null;
+    }
+
     public static Integer getCurrentUserId() {
         Object principal = getPrincipal();
         if (principal instanceof CustomUserDetails) {

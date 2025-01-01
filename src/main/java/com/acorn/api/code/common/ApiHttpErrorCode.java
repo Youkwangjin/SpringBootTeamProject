@@ -8,6 +8,8 @@ public enum ApiHttpErrorCode {
 
     BAD_REQUEST_ERROR(HttpStatus.BAD_REQUEST, "BRE", "잘못된 요청입니다."),
 
+    BOARD_SAVE_FAILED(HttpStatus.BAD_REQUEST, "BSF", "게시글 등록에 실패했습니다. 필수 입력 값이 누락되었는지 확인해주세요."),
+
     AUTHENTICATION_ERROR(HttpStatus.UNAUTHORIZED, "ACE", "로그인 후 이용 가능합니다."),
 
     SESSION_EXPIRE(HttpStatus.UNAUTHORIZED, "SEE", "세션이 만료되었습니다. 다시 로그인해주세요."),
