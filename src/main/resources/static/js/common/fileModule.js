@@ -11,15 +11,15 @@ let fileModule = (function () {
         this.fileList = [];
         this.fileNames = {};
 
-        this.elem.addEventListener('change', (event) => {
+        this.elem.addEventListener("change", (event) => {
             this.handleFiles(this.elem.files);
-            this.elem.value = '';
+            this.elem.value = "";
             event.preventDefault();
         });
 
-        const fileChoiceButton = document.getElementById('fileChoiceBtn');
+        const fileChoiceButton = document.getElementById("fileChoiceBtn");
         if (fileChoiceButton) {
-            fileChoiceButton.addEventListener('click', () => {
+            fileChoiceButton.addEventListener("click", () => {
                 this.elem.click();
             });
         }
@@ -50,20 +50,20 @@ let fileModule = (function () {
     };
 
     FileModule.prototype.displayFiles = function() {
-        const fileListArea = document.getElementById('fileListArea');
-        fileListArea.innerHTML = '';
+        const fileListArea = document.getElementById("fileListArea");
+        fileListArea.innerHTML = "";
         this.fileList.forEach(file => {
-            const fileEntry = document.createElement('div');
-            fileEntry.classList.add('file-entry');
+            const fileEntry = document.createElement("div");
+            fileEntry.classList.add("file-entry");
 
-            const fileNameSpan = document.createElement('span');
+            const fileNameSpan = document.createElement("span");
             fileNameSpan.textContent = file.name;
             fileEntry.appendChild(fileNameSpan);
 
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = '×';
-            deleteButton.classList.add('delete-btn');
-            deleteButton.addEventListener('click', (event) => {
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "×";
+            deleteButton.classList.add("delete-btn");
+            deleteButton.addEventListener("click", (event) => {
                 event.preventDefault();
                 this.removeFile(file.name);
             });
