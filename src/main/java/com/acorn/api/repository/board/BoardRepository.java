@@ -22,13 +22,8 @@ public class BoardRepository {
         return sql.selectList("Board.selectBoardListData");
     }
 
-    public Board boardSave(Board newBoardSaveData) {
-        int result = sql.insert("Board.insertBoard", newBoardSaveData);
-        if (result > 0) {
-            return newBoardSaveData;
-        } else {
-            return null;
-        }
+    public int boardSave(Board newBoardSaveData) {
+        return sql.insert("Board.insertBoard", newBoardSaveData);
     }
 
     public void insertBoardFile(BoardFile boardFile) {

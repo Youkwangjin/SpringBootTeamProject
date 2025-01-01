@@ -76,7 +76,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        if (data.resultCode === 200) {
+                        if (data.httpStatus === "OK") {
                             alert(data.resultMsg);
                             window.location.href = "/board/list";
                         } else {
