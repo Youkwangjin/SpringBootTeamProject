@@ -18,12 +18,16 @@ public class BoardRepository {
         return sql.selectOne("Board.selectBoardIdKey");
     }
 
+    public Integer selectBoardFileIdKey() {
+        return sql.selectOne("Board.selectBoardFileIdKey");
+    }
+
     public List<Board> selectBoardListData() {
         return sql.selectList("Board.selectBoardListData");
     }
 
-    public int boardSave(Board newBoardSaveData) {
-        return sql.insert("Board.insertBoard", newBoardSaveData);
+    public void boardSave(Board newBoardSaveData) {
+        sql.insert("Board.insertBoard", newBoardSaveData);
     }
 
     public void insertBoardFile(BoardFile boardFile) {
