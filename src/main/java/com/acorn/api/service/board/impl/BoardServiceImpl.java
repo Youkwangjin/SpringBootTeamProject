@@ -9,10 +9,13 @@ import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    @Value("${file.upload.path.board}")
+    private String uploadDir;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
 
@@ -57,6 +62,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public void boardDataSave(BoardSaveDTO boardSaveDTO) {
         Object principal = CommonSecurityUtil.getCurrentId();
 
@@ -78,13 +84,19 @@ public class BoardServiceImpl implements BoardService {
 
         if(boardSaveDTO.getBoardFiles() != null && !boardSaveDTO.getBoardFiles().isEmpty()) {
             for(MultipartFile file : boardSaveDTO.getBoardFiles()) {
-                String originalFileName = file.getOriginalFilename();
-                String storedFileName = String.format("[%s_%s]%s", newBoardSaveData.getBoardId(), UUID.randomUUID().toString().replaceAll("-", ""), originalFileName);
-                String fileSize = String.valueOf(file.getSize());
+                final Integer boardFileId = boardRepository.selectBoardFileIdKey();
+                final String originalFileName = FilenameUtils.getName(file.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(file.getSize());
 
                 BoardFile boardFile = BoardFile.builder()
+                        .boardFileId(boardFileId)
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
+                        .boardFilePath(filePath)
+                        .boardFileExtNm(fileExtNm)
                         .boardFileSize(fileSize)
                         .boardId(boardId)
                         .build();
