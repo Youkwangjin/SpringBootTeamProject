@@ -6,6 +6,8 @@ import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.model.board.Board;
 import com.acorn.api.model.board.BoardFile;
 import com.acorn.api.repository.board.BoardRepository;
+import com.acorn.api.security.owner.CustomOwnerDetails;
+import com.acorn.api.security.user.CustomUserDetails;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,11 +67,21 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void boardDataSave(BoardSaveDTO boardSaveDTO) {
-        Object principal = CommonSecurityUtil.getCurrentId();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
         }
+
+        Integer boardUserId = null;
+        Integer boardOwnerId = null;
+
+        if (principal instanceof CustomUserDetails) {
+            boardUserId = ((CustomUserDetails) principal).getUserId();
+        } else if (principal instanceof CustomOwnerDetails) {
+            boardOwnerId = ((CustomOwnerDetails) principal).getOwnerId();
+        }
+
         final Integer boardId = boardRepository.selectBoardIdKey();
         final String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
 
@@ -79,6 +92,8 @@ public class BoardServiceImpl implements BoardService {
                 .boardPassword(encodedBoardPassword)
                 .boardContents(boardSaveDTO.getBoardContents())
                 .boardContentsText(Jsoup.parse(boardSaveDTO.getBoardContents()).text())
+                .boardUserId(boardUserId)
+                .boardOwnerId(boardOwnerId)
                 .build();
         boardRepository.boardSave(newBoardSaveData);
 

@@ -11,7 +11,11 @@
         <result property="boardPassword"            column="BOARD_PASSWORD"/>
         <result property="boardContents"            column="BOARD_CONTENTS"/>
         <result property="boardContentsText"        column="BOARD_CONTENTS_TEXT"/>
+        <result property="boardUserId"              column="BOARD_USER_ID"/>
+        <result property="boardOwnerId"             column="BOARD_OWNER_ID"/>
         <result property="boardHits"                column="BOARD_HITS"/>
+        <result property="boardCreated"             column="BOARD_CREATED"/>
+        <result property="boardUpdated"             column="BOARD_UPDATED"/>
     </resultMap>
 
     <resultMap id="boardFileResultMap"              type="boardFile" autoMapping="true">
@@ -73,8 +77,8 @@
 
     <!-- 게시글 작성 -->
     <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
-        INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT)
-        VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText})
+        INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT, BOARD_USER_ID, BOARD_OWNER_ID)
+        VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText}, #{boardUserId}, #{boardOwnerId})
     </insert>
 
     <!-- 게시글 첨부파일 저장 -->
