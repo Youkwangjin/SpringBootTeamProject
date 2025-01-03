@@ -23,6 +23,10 @@ public class Board {
 
     private String boardContentsText;
 
+    private Integer boardUserId;
+
+    private Integer boardOwnerId;
+
     private String boardHits;
 
     private String boardCreated;
