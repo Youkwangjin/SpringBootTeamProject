@@ -3,6 +3,8 @@ package com.acorn.api.dto.board;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Builder
 public class BoardListDTO {
@@ -15,7 +17,7 @@ public class BoardListDTO {
 
     private int rowNum;
 
-    private int boardId;
+    private Integer boardId;
 
     private String boardTitle;
 
@@ -27,7 +29,7 @@ public class BoardListDTO {
 
     private String boardHits;
 
-    private String boardCreated;
+    private Timestamp boardCreated;
 
-    private String boardUpdated;
+    private Timestamp boardUpdated;
 }

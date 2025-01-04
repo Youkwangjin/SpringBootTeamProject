@@ -14,7 +14,7 @@
         <result property="boardUserId"              column="BOARD_USER_ID"/>
         <result property="boardOwnerId"             column="BOARD_OWNER_ID"/>
         <result property="boardHits"                column="BOARD_HITS"/>
-        <result property="boardCreated"             column="BOARD_CREATED"/>
+        <result property="boardCreated"             column="BOARD_CREATED" jdbcType="TIMESTAMP"/>
         <result property="boardUpdated"             column="BOARD_UPDATED"/>
     </resultMap>
 
@@ -38,7 +38,7 @@
     </select>
 
     <!-- 게시글 갯수 확인 -->
-    <select id="selectListByCount" resultType="int">
+    <select id="selectListByCount" resultType="Integer">
         SELECT
             COUNT(BOARD_ID)
         FROM TB_BOARD
@@ -70,7 +70,7 @@
             BOARD_CONTENTS,
             BOARD_CONTENTS_TEXT,
             BOARD_HITS,
-            DATE_FORMAT(BOARD_CREATED, '%Y-%m-%d') AS BOARD_CREATED,
+            BOARD_CREATED,
             BOARD_UPDATED
         FROM TB_BOARD
     </select>
