@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -31,7 +31,7 @@ public class Board {
 
     private String boardHits;
 
-    private Timestamp boardCreated;
+    private LocalDateTime boardCreated;
 
-    private Timestamp boardUpdated;
+    private LocalDateTime boardUpdated;
 }

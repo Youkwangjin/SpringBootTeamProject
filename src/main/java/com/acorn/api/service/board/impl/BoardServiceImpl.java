@@ -36,7 +36,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardListDTO> getBoardListData() {
-
         List<Board> boardListData = boardRepository.selectBoardListData();
 
         return boardListData.stream()
@@ -45,11 +44,8 @@ public class BoardServiceImpl implements BoardService {
                         .boardId(board.getBoardId())
                         .boardTitle(board.getBoardTitle())
                         .boardWriter(board.getBoardWriter())
-                        .boardContents(board.getBoardContents())
-                        .boardContentsText(board.getBoardContentsText())
-                        .boardHits(board.getBoardHits())
                         .boardCreated(board.getBoardCreated())
-                        .boardUpdated(board.getBoardUpdated())
+                        .boardHits(board.getBoardHits())
                         .build())
                 .collect(Collectors.toList());
     }
