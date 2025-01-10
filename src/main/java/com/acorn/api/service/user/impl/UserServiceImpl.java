@@ -6,7 +6,7 @@ import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.dto.user.UserRegisterDTO;
 import com.acorn.api.dto.user.UserUpdateDTO;
 import com.acorn.api.exception.global.AcontainerException;
-import com.acorn.api.model.user.User;
+import com.acorn.api.entity.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
 import com.acorn.api.service.user.UserService;

@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Owner">
-    <resultMap id="ownerResultMap"             type="com.acorn.api.model.owner.Owner" autoMapping="true">
+    <resultMap id="ownerResultMap" type="com.acorn.api.entity.owner.Owner" autoMapping="true">
         <result property="ownerId"             column="OWNER_ID"/>
         <result property="ownerEmail"          column="OWNER_EMAIL"/>
         <result property="ownerBusinessNum"    column="BUSINESS_NUMBER"/>

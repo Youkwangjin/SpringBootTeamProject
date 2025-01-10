@@ -1,6 +1,6 @@
 package com.acorn.api.repository.owner;
 
-import com.acorn.api.model.owner.Owner;
+import com.acorn.api.entity.owner.Owner;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;

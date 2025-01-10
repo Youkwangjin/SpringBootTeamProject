@@ -3,9 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="com.acorn.api.model.user.User" alias="user" />
-        <typeAlias type="com.acorn.api.model.owner.Owner" alias="owner" />
-        <typeAlias type="com.acorn.api.model.board.Board" alias="board" />
-        <typeAlias type="com.acorn.api.model.board.BoardFile" alias="boardFile" />
+        <typeAlias type="com.acorn.api.entity.user.User" alias="user" />
+        <typeAlias type="com.acorn.api.entity.owner.Owner" alias="owner" />
+        <typeAlias type="com.acorn.api.entity.board.Board" alias="board" />
+        <typeAlias type="com.acorn.api.entity.board.BoardFile" alias="boardFile" />
     </typeAliases>
+    <typeHandlers>
+        <typeHandler javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" handler="org.apache.ibatis.type.LocalDateTimeTypeHandler"/>
+    </typeHandlers>
 </configuration>
