@@ -1,6 +1,6 @@
 package com.acorn.api.service.owner.impl;
 
-import com.acorn.api.model.owner.Owner;
+import com.acorn.api.entity.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.security.owner.CustomOwnerDetails;
 import lombok.RequiredArgsConstructor;

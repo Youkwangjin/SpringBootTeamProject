@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="User">
-    <resultMap id="userResultMap" type="com.acorn.api.model.user.User" autoMapping="true">
+    <resultMap id="userResultMap" type="com.acorn.api.entity.user.User" autoMapping="true">
         <result property="userId"           column="USER_ID"/>
         <result property="userEmail"        column="USER_EMAIL"/>
         <result property="userPassword"     column="USER_PASSWORD"/>

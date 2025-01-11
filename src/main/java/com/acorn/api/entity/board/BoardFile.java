@@ -1,4 +1,4 @@
-package com.acorn.api.model.board;
+package com.acorn.api.entity.board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

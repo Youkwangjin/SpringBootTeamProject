@@ -1,7 +1,7 @@
 package com.acorn.api.repository.board;
 
-import com.acorn.api.model.board.Board;
-import com.acorn.api.model.board.BoardFile;
+import com.acorn.api.entity.board.Board;
+import com.acorn.api.entity.board.BoardFile;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;

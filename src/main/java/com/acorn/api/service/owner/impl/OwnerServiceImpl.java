@@ -6,7 +6,7 @@ import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.dto.owner.OwnerResponseDTO;
 import com.acorn.api.dto.owner.OwnerUpdateDTO;
 import com.acorn.api.exception.global.AcontainerException;
-import com.acorn.api.model.owner.Owner;
+import com.acorn.api.entity.owner.Owner;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.role.OwnerRole;
 import com.acorn.api.service.owner.OwnerService;

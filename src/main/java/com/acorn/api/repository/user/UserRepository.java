@@ -1,6 +1,6 @@
 package com.acorn.api.repository.user;
 
-import com.acorn.api.model.user.User;
+import com.acorn.api.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;

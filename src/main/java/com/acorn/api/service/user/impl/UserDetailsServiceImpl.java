@@ -1,6 +1,6 @@
 package com.acorn.api.service.user.impl;
 
-import com.acorn.api.model.user.User;
+import com.acorn.api.entity.user.User;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;

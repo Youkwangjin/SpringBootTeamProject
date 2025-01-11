@@ -4,18 +4,17 @@
 
 <mapper namespace="Board">
     <resultMap id="boardResultMap"                  type="board" autoMapping="true">
-        <result property="rowNum"                   column="ROW_NUM"/>
         <result property="boardId"                  column="BOARD_ID"/>
         <result property="boardTitle"               column="BOARD_TITLE"/>
         <result property="boardWriter"              column="BOARD_WRITER"/>
         <result property="boardPassword"            column="BOARD_PASSWORD"/>
         <result property="boardContents"            column="BOARD_CONTENTS"/>
         <result property="boardContentsText"        column="BOARD_CONTENTS_TEXT"/>
+        <result property="boardHits"                column="BOARD_HITS"/>
+        <result property="boardCreated"             column="BOARD_CREATED"/>
+        <result property="boardUpdated"             column="BOARD_UPDATED"/>
         <result property="boardUserId"              column="BOARD_USER_ID"/>
         <result property="boardOwnerId"             column="BOARD_OWNER_ID"/>
-        <result property="boardHits"                column="BOARD_HITS"/>
-        <result property="boardCreated"             column="BOARD_CREATED" jdbcType="TIMESTAMP"/>
-        <result property="boardUpdated"             column="BOARD_UPDATED"/>
     </resultMap>
 
     <resultMap id="boardFileResultMap"              type="boardFile" autoMapping="true">
@@ -62,7 +61,6 @@
     <!-- 게시글 전체 조회 -->
     <select id="selectBoardListData" resultMap="boardResultMap">
         SELECT
-            ROW_NUMBER() OVER (ORDER BY BOARD_CREATED DESC) AS ROW_NUM,
             BOARD_ID,
             BOARD_TITLE,
             BOARD_WRITER,
@@ -71,7 +69,9 @@
             BOARD_CONTENTS_TEXT,
             BOARD_HITS,
             BOARD_CREATED,
-            BOARD_UPDATED
+            BOARD_UPDATED,
+            BOARD_USER_ID,
+            BOARD_OWNER_ID
         FROM TB_BOARD
     </select>
 

@@ -90,7 +90,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="board: ${boardData}">
-                                <td th:text="${board.rowNum}"></td>
+                                <td th:text="${board.boardId}"></td>
                                 <td>
                                     <a th:href="@{|/board/detail/${board.boardId}|}" th:text="${board.boardTitle}"></a>
                                 </td>
