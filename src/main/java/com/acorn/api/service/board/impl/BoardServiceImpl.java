@@ -3,8 +3,8 @@ package com.acorn.api.service.board.impl;
 import com.acorn.api.dto.board.BoardDetailDTO;
 import com.acorn.api.dto.board.BoardSaveDTO;
 import com.acorn.api.dto.board.BoardListDTO;
-import com.acorn.api.model.board.Board;
-import com.acorn.api.model.board.BoardFile;
+import com.acorn.api.entity.board.Board;
+import com.acorn.api.entity.board.BoardFile;
 import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.security.owner.CustomOwnerDetails;
 import com.acorn.api.security.user.CustomUserDetails;
@@ -40,7 +40,6 @@ public class BoardServiceImpl implements BoardService {
 
         return boardListData.stream()
                 .map(board -> BoardListDTO.builder()
-                        .rowNum(board.getRowNum())
                         .boardId(board.getBoardId())
                         .boardTitle(board.getBoardTitle())
                         .boardWriter(board.getBoardWriter())

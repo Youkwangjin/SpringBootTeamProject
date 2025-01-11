@@ -1,4 +1,4 @@
-package com.acorn.api.model.board;
+package com.acorn.api.entity.board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Board {
-
-    private int rowNum;
 
     private Integer boardId;
 
@@ -25,13 +23,13 @@ public class Board {
 
     private String boardContentsText;
 
-    private Integer boardUserId;
-
-    private Integer boardOwnerId;
-
-    private String boardHits;
+    private Integer boardHits;
 
     private LocalDateTime boardCreated;
 
     private LocalDateTime boardUpdated;
+
+    private Integer boardUserId;
+
+    private Integer boardOwnerId;
 }

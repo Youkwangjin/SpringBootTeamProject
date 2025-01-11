@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class BoardListDTO {
 
-    private int rowNum;
+    private Integer rowNum;
 
     private Integer boardId;
 
@@ -21,7 +21,7 @@ public class BoardListDTO {
 
     private String boardContentsText;
 
-    private String boardHits;
+    private Integer boardHits;
 
     private LocalDateTime boardCreated;
 

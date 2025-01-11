@@ -8,7 +8,4 @@
         <typeAlias type="com.acorn.api.entity.board.Board" alias="board" />
         <typeAlias type="com.acorn.api.entity.board.BoardFile" alias="boardFile" />
     </typeAliases>
-    <typeHandlers>
-        <typeHandler javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" handler="org.apache.ibatis.type.LocalDateTimeTypeHandler"/>
-    </typeHandlers>
 </configuration>
