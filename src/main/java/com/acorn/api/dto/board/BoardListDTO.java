@@ -3,19 +3,15 @@ package com.acorn.api.dto.board;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 public class BoardListDTO {
 
-    private int pageNo;
+    private Integer rowNum;
 
-    private String searchName;
-
-    private String searchType;
-
-    private int rowNum;
-
-    private int boardId;
+    private Integer boardId;
 
     private String boardTitle;
 
@@ -25,9 +21,9 @@ public class BoardListDTO {
 
     private String boardContentsText;
 
-    private String boardHits;
+    private Integer boardHits;
 
-    private String boardCreated;
+    private LocalDateTime boardCreated;
 
-    private String boardUpdated;
+    private LocalDateTime boardUpdated;
 }

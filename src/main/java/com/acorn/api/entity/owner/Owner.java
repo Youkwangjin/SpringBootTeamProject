@@ -1,4 +1,4 @@
-package com.acorn.api.model.owner;
+package com.acorn.api.entity.owner;
 
 import com.acorn.api.role.OwnerRole;
 import lombok.*;

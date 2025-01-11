@@ -1,6 +1,6 @@
 package com.acorn.api.security.user;
 
-import com.acorn.api.model.user.User;
+import com.acorn.api.entity.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

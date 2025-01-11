@@ -1,6 +1,6 @@
 package com.acorn.api.security.owner;
 
-import com.acorn.api.model.owner.Owner;
+import com.acorn.api.entity.owner.Owner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

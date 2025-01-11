@@ -19,8 +19,8 @@ public class BoardPageController {
 
     @GetMapping("/board/list")
     public String boardList(Model model) {
-        List<BoardListDTO> boardData = boardService.getBoardListData();
-        model.addAttribute("boardData", boardData);
+        List<BoardListDTO> boardListData = boardService.getBoardListData();
+        model.addAttribute("boardData", boardListData);
         return "board/board-list";
     }
 

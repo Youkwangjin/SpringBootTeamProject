@@ -1,4 +1,4 @@
-package com.acorn.api.model.board;
+package com.acorn.api.entity.board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +9,17 @@ import lombok.Getter;
 @Builder
 public class BoardFile {
 
-    private int boardFileId;
+    private Integer boardFileId;
 
-    private int boardId;
+    private Integer boardId;
 
     private String boardOriginalFileName;
 
     private String boardStoredFileName;
+
+    private String boardFilePath;
+
+    private String boardFileExtNm;
 
     private String boardFileSize;
 }

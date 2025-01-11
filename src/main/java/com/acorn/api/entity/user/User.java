@@ -1,4 +1,4 @@
-package com.acorn.api.model.user;
+package com.acorn.api.entity.user;
 
 import com.acorn.api.role.UserRole;
 import lombok.*;
