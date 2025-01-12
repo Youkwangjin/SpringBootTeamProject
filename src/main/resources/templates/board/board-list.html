@@ -95,7 +95,7 @@
                                     <a th:href="@{|/board/detail/${board.boardId}|}" th:text="${board.boardTitle}"></a>
                                 </td>
                                 <td th:text="${board.boardWriter}"></td>
-                                <td th:text="${board.boardCreated}"></td>
+                                <td th:text="${#temporals.format(board.boardCreated, 'yyyy.MM.dd')}"></td>
                                 <td th:text="${board.boardHits}"></td>
                             </tr>
                             <tr th:if="${boardData.size() == 0}">
