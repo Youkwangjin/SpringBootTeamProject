@@ -67,15 +67,18 @@ public class BoardServiceImpl implements BoardService {
         }
 
         final Integer boardId = boardRepository.selectBoardIdKey();
+        final String boardTitle = boardSaveDTO.getBoardTitle();
+        final String boardWriter = boardSaveDTO.getBoardWriter();
         final String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
+        final String boardContents = boardSaveDTO.getBoardContents();
 
         Board newBoardSaveData = Board.builder()
                 .boardId(boardId)
-                .boardTitle(boardSaveDTO.getBoardTitle())
-                .boardWriter(boardSaveDTO.getBoardWriter())
+                .boardTitle(boardTitle)
+                .boardWriter(boardWriter)
                 .boardPassword(encodedBoardPassword)
-                .boardContents(boardSaveDTO.getBoardContents())
-                .boardContentsText(Jsoup.parse(boardSaveDTO.getBoardContents()).text())
+                .boardContents(boardContents)
+                .boardContentsText(Jsoup.parse(boardContents).text())
                 .boardUserId(boardUserId)
                 .boardOwnerId(boardOwnerId)
                 .build();
