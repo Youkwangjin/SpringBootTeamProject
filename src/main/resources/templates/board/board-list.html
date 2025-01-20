@@ -37,6 +37,8 @@
     <div th:replace="~{fragments/header-owner :: header}"></div>
 </div>
 <main id="main">
+<form id="boardListForm" method="get">
+    <input type="hidden" name="pageNo" value="${request.pageNo}" />
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
     </div>
     <section>
@@ -111,6 +113,7 @@
             </div>
         </div>
     </section>
+</form>
 </main>
 </body>
 </html>

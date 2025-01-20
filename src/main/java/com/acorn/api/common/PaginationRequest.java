@@ -45,19 +45,26 @@ public abstract class PaginationRequest {
             pageNo = 1;
             return;
         }
+
         if (pageNo == 0)
             pageNo = 1;
+
         if (this.pageSize == 0)
             this.pageSize = 10;
+
         int finalPage = (this.getTotalCount() + (this.pageSize - 1)) / this.pageSize;
+
         if (pageNo > finalPage)
             pageNo = finalPage;
+
         if (pageNo < 0||pageNo > finalPage)
             pageNo = 1;
+
         boolean isNowFirst = pageNo==1 ? true : false;
         boolean isNowFinal = pageNo==finalPage ? true : false;
         int startPage = ((pageNo - 1) / this.blockSize) * this.blockSize + 1;
         int endPage = startPage + this.blockSize - 1;
+
         if (endPage > finalPage) {
             endPage = finalPage;
         }

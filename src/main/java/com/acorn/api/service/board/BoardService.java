@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface BoardService {
 
-    List<BoardListDTO> getBoardListData();
+    List<BoardListDTO> getBoardListData(BoardListDTO boardListDTO);
 
     String getAuthenticatedUserName();
 

@@ -37,7 +37,7 @@
     </select>
 
     <!-- 게시글 갯수 확인 -->
-    <select id="selectListByCount" resultType="Integer">
+    <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
             COUNT(BOARD_ID)
         FROM TB_BOARD
@@ -59,7 +59,7 @@
     </select>
 
     <!-- 게시글 전체 조회 -->
-    <select id="selectBoardListData" resultMap="boardResultMap">
+    <select id="selectBoardListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="boardResultMap">
         SELECT
             BOARD_ID,
             BOARD_TITLE,
@@ -73,6 +73,23 @@
             BOARD_USER_ID,
             BOARD_OWNER_ID
         FROM TB_BOARD
+        <where>
+            <if test="searchType == 'boardTitle' and searchName != null and searchName.trim() !=''">
+                BOARD_TITLE LIKE CONCAT('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'boardContentsText' and searchName != null and searchName.trim() !=''">
+                BOARD_CONTENTS_TEXT LIKE CONCAT('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'boardWriter' and searchName != null and searchName.trim() !=''">
+                BOARD_WRITER LIKE CONCAT('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'boardTitleContents' and searchName != null and searchName.trim() !=''">
+                (BOARD_TITLE LIKE CONCAT('%', #{searchName}, '%') OR
+                BOARD_CONTENTS LIKE CONCAT('%', #{searchName}, '%'))
+            </if>
+        </where>
+        ORDER BY BOARD_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
     </select>
 
     <!-- 게시글 작성 -->
