@@ -32,8 +32,9 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
-    public List<BoardListDTO> getBoardListData() {
-        List<Board> boardListData = boardRepository.selectBoardListData();
+    public List<BoardListDTO> getBoardListData(BoardListDTO boardListDTO) {
+        boardListDTO.setTotalCount(boardRepository.selectListCountByRequest(boardListDTO));
+        List<Board> boardListData = boardRepository.selectBoardListData(boardListDTO);
 
         return boardListData.stream()
                 .map(board -> BoardListDTO.builder()

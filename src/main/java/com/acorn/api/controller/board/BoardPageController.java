@@ -18,8 +18,8 @@ public class BoardPageController {
     private final BoardService boardService;
 
     @GetMapping("/board/list")
-    public String boardList(Model model) {
-        List<BoardListDTO> boardListData = boardService.getBoardListData();
+    public String boardList(BoardListDTO boardListDTO, Model model) {
+        List<BoardListDTO> boardListData = boardService.getBoardListData(boardListDTO);
         model.addAttribute("boardData", boardListData);
         return "board/board-list";
     }
