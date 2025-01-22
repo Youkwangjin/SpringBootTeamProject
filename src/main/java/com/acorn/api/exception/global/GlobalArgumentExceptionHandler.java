@@ -1,6 +1,6 @@
 package com.acorn.api.exception.global;
 
-import com.acorn.api.code.common.ApiValidationErrorCode;
+import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +17,13 @@ public class GlobalArgumentExceptionHandler {
         log.error(" =========================== IllegalArgumentException: {} =========================== ", ex.getMessage());
 
         ApiErrorResponse response = ApiErrorResponse.builder()
-                .httpStatus(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR.getHttpStatus())
-                .errorDivisionCode(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR.getErrorDivisionCode())
-                .errorMsg(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR.getErrorMsg())
+                .httpStatus(ApiHttpErrorCode.BAD_REQUEST_ERROR.getHttpStatus())
+                .errorDivisionCode(ApiHttpErrorCode.BAD_REQUEST_ERROR.getErrorDivisionCode())
+                .errorMsg(ApiHttpErrorCode.BAD_REQUEST_ERROR.getErrorMsg())
                 .build();
 
         return ResponseEntity
-                .status(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR.getHttpStatus())
+                .status(ApiHttpErrorCode.BAD_REQUEST_ERROR.getHttpStatus())
                 .body(response);
     }
 }
