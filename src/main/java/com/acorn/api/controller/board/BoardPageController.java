@@ -21,6 +21,7 @@ public class BoardPageController {
     public String boardList(BoardListDTO boardListDTO, Model model) {
         List<BoardListDTO> boardListData = boardService.getBoardListData(boardListDTO);
         model.addAttribute("boardData", boardListData);
+        model.addAttribute("request", boardListDTO);
         return "board/board-list";
     }
 

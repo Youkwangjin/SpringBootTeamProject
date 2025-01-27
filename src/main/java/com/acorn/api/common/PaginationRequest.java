@@ -57,25 +57,37 @@ public abstract class PaginationRequest {
         if (pageNo > finalPage)
             pageNo = finalPage;
 
-        if (pageNo < 0||pageNo > finalPage)
+        if (pageNo < 0 || pageNo > finalPage)
             pageNo = 1;
 
-        boolean isNowFirst = pageNo==1 ? true : false;
-        boolean isNowFinal = pageNo==finalPage ? true : false;
+        boolean isNowFirst = pageNo == 1 ? true : false;
+
+        boolean isNowFinal = pageNo == finalPage ? true : false;
+
         int startPage = ((pageNo - 1) / this.blockSize) * this.blockSize + 1;
+
         int endPage = startPage + this.blockSize - 1;
 
         if (endPage > finalPage) {
             endPage = finalPage;
         }
+
         this.setFirstPageNo(1);
+
         this.setPrevPageNo(isNowFirst?1:((pageNo - 1) < 1 ? 1 : (pageNo - 1)));
+
         this.setStartPageNo(startPage);
+
         this.setEndPageNo(endPage);
+
         this.setNextPageNo(isNowFinal?finalPage:((pageNo + 1) > finalPage ? finalPage : (pageNo + 1)));
+
         this.setEndRowNum(pageNo * this.pageSize);
+
         this.setStartRowNum(this.getEndRowNum() - this.pageSize);
+
         this.setFinalPageNo(finalPage);
+
         this.setPageNo(String.valueOf(pageNo));
     }
 }
