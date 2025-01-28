@@ -1,5 +1,6 @@
 package com.acorn.api.repository.board;
 
+import com.acorn.api.common.PaginationRequest;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,12 @@ public class BoardRepository {
         return sql.selectOne("Board.selectBoardFileIdKey");
     }
 
-    public List<Board> selectBoardListData() {
-        return sql.selectList("Board.selectBoardListData");
+    public int selectListCountByRequest(PaginationRequest pagination) {
+        return sql.selectOne("Board.selectListCountByRequest", pagination);
+    }
+
+    public List<Board> selectBoardListData(PaginationRequest pagination) {
+        return sql.selectList("Board.selectBoardListData", pagination);
     }
 
     public void boardSave(Board newBoardSaveData) {

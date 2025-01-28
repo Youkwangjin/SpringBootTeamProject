@@ -10,21 +10,6 @@
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/assets/img/favicon.png" rel="icon">
     <link rel="stylesheet" th:href="@{/css/board/board.css}">
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let resetButton = document.getElementById("resetBtn");
-            let writeButton = document.getElementById("boardWriteBtn");
-
-            resetButton.addEventListener("click", function () {
-                window.location.href = "/board/list";
-            });
-
-            writeButton.addEventListener("click", function () {
-                window.location.href = "/board/write";
-            });
-
-        })
-    </script>
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
@@ -37,6 +22,8 @@
     <div th:replace="~{fragments/header-owner :: header}"></div>
 </div>
 <main id="main">
+<form id="boardListForm" method="get">
+    <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}" />
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
     </div>
     <section>
@@ -54,22 +41,19 @@
                         <div id="board-search" class="search-bar-container">
                             <div class="container">
                                 <div class="search-window">
-                                    <form action="" class="search-form">
-                                        <div class="search-wrap">
-                                            <label for="searchType" class="blind">검색 타입 선택</label>
-                                            <select id="searchType" name="searchType" class="search-type-select">
-                                                <option value="boardTitle">제목</option>
-                                                <option value="boardContentsText">내용</option>
-                                                <option value="boardWriter">작성자</option>
-                                                <option value="boardTitleContents">제목+내용</option>
-                                            </select>
-                                            <label for="search" class="blind">공지사항 내용 검색</label>
-                                            <input id="search" type="search" name="searchName"
-                                                   placeholder="검색어를 입력해주세요.">
-                                            <button id="searchBoard" type="submit" class="btn btn-dark">검색</button>
-                                            <button id="resetBtn" type="button" class="btn resetBtn-dark">초기화</button>
-                                        </div>
-                                    </form>
+                                    <div class="search-wrap">
+                                        <label for="searchType" class="blind">검색 타입 선택</label>
+                                        <select id="searchType" name="searchType" class="search-type-select">
+                                            <option value="boardTitle" th:selected="${request == 'boardTitle'}">제목</option>
+                                            <option value="boardContentsText" th:selected="${request == 'boardContentsText'}">내용</option>
+                                            <option value="boardWriter" th:selected="${request == 'boardWriter'}">작성자</option>
+                                            <option value="boardTitleContents" th:selected="${request == 'boardTitleContents'}">제목+내용</option>
+                                        </select>
+                                        <label for="search" class="blind">공지사항 내용 검색</label>
+                                        <input id="search" type="search" name="searchName" placeholder="검색어를 입력해주세요.">
+                                        <button id="searchBoard" type="submit" class="btn btn-dark">검색</button>
+                                        <button id="resetBtn" type="button" class="btn resetBtn-dark">초기화</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +79,7 @@
                                     <a th:href="@{|/board/detail/${board.boardId}|}" th:text="${board.boardTitle}"></a>
                                 </td>
                                 <td th:text="${board.boardWriter}"></td>
-                                <td th:text="${board.boardCreated}"></td>
+                                <td th:text="${#temporals.format(board.boardCreated, 'yyyy.MM.dd')}"></td>
                                 <td th:text="${board.boardHits}"></td>
                             </tr>
                             <tr th:if="${boardData.size() == 0}">
@@ -111,6 +95,33 @@
             </div>
         </div>
     </section>
+</form>
 </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let searchButton = document.getElementById("searchBoard");
+        let resetButton = document.getElementById("resetBtn");
+        let writeButton = document.getElementById("boardWriteBtn");
+
+        searchButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const pageNo = document.getElementById("pageNo").value;
+            const searchType = document.getElementById("searchType").value;
+            const searchName = document.getElementById("search").value;
+
+            window.location.href = `/board/list?pageNo=${pageNo}&searchType=${searchType}&searchName=${searchName}`;
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/board/list";
+        });
+
+        writeButton.addEventListener("click", function () {
+            window.location.href = "/board/write";
+        });
+
+    })
+</script>
 </body>
 </html>

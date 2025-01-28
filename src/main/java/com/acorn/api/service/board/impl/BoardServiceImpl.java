@@ -6,8 +6,6 @@ import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
 import com.acorn.api.repository.board.BoardRepository;
-import com.acorn.api.security.owner.CustomOwnerDetails;
-import com.acorn.api.security.user.CustomUserDetails;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +32,9 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
-    public List<BoardListDTO> getBoardListData() {
-        List<Board> boardListData = boardRepository.selectBoardListData();
+    public List<BoardListDTO> getBoardListData(BoardListDTO boardListDTO) {
+        boardListDTO.setTotalCount(boardRepository.selectListCountByRequest(boardListDTO));
+        List<Board> boardListData = boardRepository.selectBoardListData(boardListDTO);
 
         return boardListData.stream()
                 .map(board -> BoardListDTO.builder()
@@ -62,31 +60,26 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void boardDataSave(BoardSaveDTO boardSaveDTO) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer boardUserId = CommonSecurityUtil.getCurrentUserId();
+        Integer boardOwnerId = CommonSecurityUtil.getCurrentOwnerId();
 
-        if (principal == null) {
+        if (boardUserId == null && boardOwnerId == null) {
             throw new AccessDeniedException("Unauthorized access - user is not logged in");
         }
 
-        Integer boardUserId = null;
-        Integer boardOwnerId = null;
-
-        if (principal instanceof CustomUserDetails) {
-            boardUserId = ((CustomUserDetails) principal).getUserId();
-        } else if (principal instanceof CustomOwnerDetails) {
-            boardOwnerId = ((CustomOwnerDetails) principal).getOwnerId();
-        }
-
         final Integer boardId = boardRepository.selectBoardIdKey();
+        final String boardTitle = boardSaveDTO.getBoardTitle();
+        final String boardWriter = boardSaveDTO.getBoardWriter();
         final String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
+        final String boardContents = boardSaveDTO.getBoardContents();
 
         Board newBoardSaveData = Board.builder()
                 .boardId(boardId)
-                .boardTitle(boardSaveDTO.getBoardTitle())
-                .boardWriter(boardSaveDTO.getBoardWriter())
+                .boardTitle(boardTitle)
+                .boardWriter(boardWriter)
                 .boardPassword(encodedBoardPassword)
-                .boardContents(boardSaveDTO.getBoardContents())
-                .boardContentsText(Jsoup.parse(boardSaveDTO.getBoardContents()).text())
+                .boardContents(boardContents)
+                .boardContentsText(Jsoup.parse(boardContents).text())
                 .boardUserId(boardUserId)
                 .boardOwnerId(boardOwnerId)
                 .build();
