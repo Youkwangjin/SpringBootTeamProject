@@ -17,7 +17,7 @@ ul {
 
 li {
     font-size: 15px;
-    padding: 10px;
+    padding: 2px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -26,7 +26,6 @@ li:hover,
 li.active {
     font-weight: bold;
     color: darkslateblue;
-    background-color: #f2f2f2;
 }
 
 strong {
@@ -267,9 +266,9 @@ section.notice {
 }
 
 .write-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 220px;
+    text-align: right;
+    margin-top: 20px;
+    margin-right: 280px;
 }
 
 .write-btn .btn {
@@ -286,3 +285,54 @@ section.notice {
     color: #fff;
 }
 
+.custom-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.custom-pagination ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-pagination li {
+    margin: 0 5px;
+}
+
+.custom-pagination a {
+    display: inline-block;
+    padding: 8px 13px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #555;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-pagination a:hover {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+}
+
+.custom-pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    cursor: default;
+}
+
+.custom-pagination li.disabled a {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    pointer-events: none;
+}
