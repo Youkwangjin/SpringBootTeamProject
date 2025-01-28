@@ -23,7 +23,7 @@
 </div>
 <main id="main">
 <form id="boardListForm" method="get">
-    <input type="text" name="pageNo" value="${request.pageNo}" />
+    <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}" />
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
     </div>
     <section>
@@ -50,8 +50,7 @@
                                             <option value="boardTitleContents" th:selected="${request == 'boardTitleContents'}">제목+내용</option>
                                         </select>
                                         <label for="search" class="blind">공지사항 내용 검색</label>
-                                        <input id="search" type="search" name="searchName"
-                                               placeholder="검색어를 입력해주세요.">
+                                        <input id="search" type="search" name="searchName" placeholder="검색어를 입력해주세요.">
                                         <button id="searchBoard" type="submit" class="btn btn-dark">검색</button>
                                         <button id="resetBtn" type="button" class="btn resetBtn-dark">초기화</button>
                                     </div>
@@ -106,9 +105,12 @@
 
         searchButton.addEventListener("click", function (event) {
             event.preventDefault();
-            const searchType = document.getElementById("searchType").value;
-            const searchName = document.getElementById("s")
 
+            const pageNo = document.getElementById("pageNo").value;
+            const searchType = document.getElementById("searchType").value;
+            const searchName = document.getElementById("search").value;
+
+            window.location.href = `/board/list?pageNo=${pageNo}&searchType=${searchType}&searchName=${searchName}`;
         });
 
         resetButton.addEventListener("click", function () {
