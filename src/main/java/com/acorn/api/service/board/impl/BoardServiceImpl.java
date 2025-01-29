@@ -1,10 +1,13 @@
 package com.acorn.api.service.board.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
+import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.dto.board.BoardDetailDTO;
 import com.acorn.api.dto.board.BoardSaveDTO;
 import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
+import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
@@ -38,6 +41,7 @@ public class BoardServiceImpl implements BoardService {
 
         return boardListData.stream()
                 .map(board -> BoardListDTO.builder()
+                        .rowNum(board.getRowNum())
                         .boardId(board.getBoardId())
                         .boardTitle(board.getBoardTitle())
                         .boardWriter(board.getBoardWriter())
@@ -52,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
         Object principal = CommonSecurityUtil.getCurrentId();
 
         if (principal == null) {
-            throw new AccessDeniedException("Unauthorized access - user is not logged in");
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
         return CommonSecurityUtil.getAuthenticatedName();
     }
@@ -64,7 +68,7 @@ public class BoardServiceImpl implements BoardService {
         Integer boardOwnerId = CommonSecurityUtil.getCurrentOwnerId();
 
         if (boardUserId == null && boardOwnerId == null) {
-            throw new AccessDeniedException("Unauthorized access - user is not logged in");
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
         final Integer boardId = boardRepository.selectBoardIdKey();
