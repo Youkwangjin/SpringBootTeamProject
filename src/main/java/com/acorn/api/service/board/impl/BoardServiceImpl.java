@@ -38,6 +38,7 @@ public class BoardServiceImpl implements BoardService {
 
         return boardListData.stream()
                 .map(board -> BoardListDTO.builder()
+                        .rowNum(board.getRowNum())
                         .boardId(board.getBoardId())
                         .boardTitle(board.getBoardTitle())
                         .boardWriter(board.getBoardWriter())

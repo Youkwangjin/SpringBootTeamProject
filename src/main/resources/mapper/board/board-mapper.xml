@@ -4,6 +4,7 @@
 
 <mapper namespace="Board">
     <resultMap id="boardResultMap"                  type="board" autoMapping="true">
+        <result property="rowNum"                   column="ROW_NUM"/>
         <result property="boardId"                  column="BOARD_ID"/>
         <result property="boardTitle"               column="BOARD_TITLE"/>
         <result property="boardWriter"              column="BOARD_WRITER"/>
@@ -61,6 +62,7 @@
     <!-- 게시글 전체 조회 -->
     <select id="selectBoardListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="boardResultMap">
         SELECT
+            ROW_NUMBER() OVER (ORDER BY BOARD_CREATED ASC) AS ROW_NUM,
             BOARD_ID,
             BOARD_TITLE,
             BOARD_WRITER,

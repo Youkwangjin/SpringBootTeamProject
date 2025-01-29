@@ -2,7 +2,6 @@ package com.acorn.api.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @Setter
@@ -29,9 +28,9 @@ public abstract class PaginationRequest {
 
     private int endRowNum;
 
-    public abstract String getPageNo();
+    public abstract Integer getPageNo();
 
-    public abstract void setPageNo(String pageNo);
+    public abstract void setPageNo(Integer pageNo);
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
@@ -39,33 +38,26 @@ public abstract class PaginationRequest {
     }
 
     private void makePaging() {
-        int pageNo = Integer.valueOf(StringUtils.defaultIfBlank(this.getPageNo(), "1"));
+        int pageNo = (this.getPageNo() != null && this.getPageNo() > 0) ? this.getPageNo() : 1;
 
-        if (this.getTotalCount() == 0){
-            pageNo = 1;
+        if (this.totalCount == 0) {
+            this.setPageNo(1);
             return;
         }
 
-        if (pageNo == 0)
-            pageNo = 1;
-
-        if (this.pageSize == 0)
+        if (this.pageSize == 0) {
             this.pageSize = 10;
+        }
 
-        int finalPage = (this.getTotalCount() + (this.pageSize - 1)) / this.pageSize;
+        int finalPage = (this.totalCount + (this.pageSize - 1)) / this.pageSize;
 
-        if (pageNo > finalPage)
+        if (pageNo > finalPage) {
             pageNo = finalPage;
+        }
 
-        if (pageNo < 0 || pageNo > finalPage)
-            pageNo = 1;
-
-        boolean isNowFirst = pageNo == 1 ? true : false;
-
-        boolean isNowFinal = pageNo == finalPage ? true : false;
+        this.setPageNo(pageNo);
 
         int startPage = ((pageNo - 1) / this.blockSize) * this.blockSize + 1;
-
         int endPage = startPage + this.blockSize - 1;
 
         if (endPage > finalPage) {
@@ -73,21 +65,12 @@ public abstract class PaginationRequest {
         }
 
         this.setFirstPageNo(1);
-
-        this.setPrevPageNo(isNowFirst?1:((pageNo - 1) < 1 ? 1 : (pageNo - 1)));
-
+        this.setPrevPageNo(pageNo > 1 ? pageNo - 1 : 1);
         this.setStartPageNo(startPage);
-
         this.setEndPageNo(endPage);
-
-        this.setNextPageNo(isNowFinal?finalPage:((pageNo + 1) > finalPage ? finalPage : (pageNo + 1)));
-
-        this.setEndRowNum(pageNo * this.pageSize);
-
-        this.setStartRowNum(this.getEndRowNum() - this.pageSize);
-
+        this.setNextPageNo(pageNo < finalPage ? pageNo + 1 : finalPage);
         this.setFinalPageNo(finalPage);
-
-        this.setPageNo(String.valueOf(pageNo));
+        this.setEndRowNum(pageNo * this.pageSize);
+        this.setStartRowNum(this.getEndRowNum() - this.pageSize);
     }
 }

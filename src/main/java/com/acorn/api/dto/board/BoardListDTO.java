@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 @Builder
 public class BoardListDTO extends PaginationRequest {
 
-    private String pageNo;
+    private Integer rowNum;
+
+    private Integer pageNo;
 
     private String searchType;
 
@@ -33,12 +35,12 @@ public class BoardListDTO extends PaginationRequest {
     private LocalDateTime boardUpdated;
 
     @Override
-    public String getPageNo() {
+    public Integer getPageNo() {
         return this.pageNo;
     }
 
     @Override
-    public void setPageNo(String pageNo) {
+    public void setPageNo(Integer pageNo) {
         this.pageNo = pageNo;
     }
 

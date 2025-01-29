@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 public class Board {
 
+    private Integer rowNum;
+
     private Integer boardId;
 
     private String boardTitle;
