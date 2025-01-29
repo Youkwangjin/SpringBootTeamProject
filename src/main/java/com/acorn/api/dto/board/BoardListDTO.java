@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Builder
 public class BoardListDTO extends PaginationRequest {
 
+    private Integer rowNum;
+
     private Integer pageNo;
 
     private String searchType;
