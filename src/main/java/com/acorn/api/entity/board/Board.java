@@ -3,11 +3,14 @@ package com.acorn.api.entity.board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Board {
 
@@ -34,4 +37,6 @@ public class Board {
     private Integer boardUserId;
 
     private Integer boardOwnerId;
+
+    private List<BoardFile> boardFilesList;
 }

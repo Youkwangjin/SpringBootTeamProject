@@ -35,34 +35,32 @@
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div class="form-group">
                 <label for="boardTitle">제목</label>
-                <input type="text" id="boardTitle">
+                <input type="text" id="boardTitle" th:value="boardDetailData.boardTitle" readonly>
             </div>
 
             <div class="form-row">
                 <div class="form-group half">
                     <label for="boardWriter">작성자</label>
-                    <input type="text" id="boardWriter" th:value="${boardWriter}" readonly>
-                </div>
-                <div class="form-group half">
-                    <label for="boardPassword">비밀번호</label>
-                    <input type="password" id="boardPassword">
+                    <input type="text" id="boardWriter" th:value="${boardDetailData.boardWriter}" readonly>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="boardContents">내용</label>
-                <textarea id="boardContents"></textarea>
+                <textarea id="boardContents" th:text="${boardDetailData.boardContents}" readonly></textarea>
             </div>
 
             <div class="form-group">
-                <label for="fileInput">파일첨부</label>
-                <button type="button" id="fileChoiceBtn">파일 선택하기</button>
-                <input type="file" id="fileInput" name="boardFiles" multiple style="display: none;"/>
+                <label>첨부파일</label>
                 <div id="fileListArea">
-                    <!-- 파일 목록을 표시할 공간 -->
+                    <ul>
+                        <li th:each="file : ${boardDetailData.boardFiles}">
+                            <a th:href="@{|/uploads/${file.boardStoredFileName}|}" th:text="${file.boardOriginalFileName}" download></a>
+                            <span th:text="|(${#numbers.formatInteger(file.boardFileSize / 1024, 1, 'COMMA')} KB)|"></span>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
             <div class="form-group button-container">
                 <input type="button" id="backListBtn" value="목록">
                 <input type="submit" id="writeBtn" value="작성하기">
