@@ -33,7 +33,7 @@ public class BoardPageController {
     }
 
     @GetMapping("/board/detail/{boardId}")
-    public String boardDetail(@PathVariable("boardId") Long boardId, Model model) {
+    public String boardDetail(@PathVariable("boardId") Integer boardId, Model model) {
         BoardDetailDTO detailData = boardService.getBoardDetailData(boardId);
         model.addAttribute("boardDetailData", detailData);
         return "board/board-detail";

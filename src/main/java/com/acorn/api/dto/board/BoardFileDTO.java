@@ -1,15 +1,13 @@
-package com.acorn.api.entity.board;
+package com.acorn.api.dto.board;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
 @Builder
-public class BoardFile {
+public class BoardFileDTO {
     private Integer boardFileId;
 
     private Integer boardId;

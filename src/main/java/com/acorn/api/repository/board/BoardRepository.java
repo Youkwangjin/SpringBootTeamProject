@@ -38,4 +38,12 @@ public class BoardRepository {
     public void insertBoardFile(BoardFile boardFile) {
         sql.insert("Board.insertBoardFile", boardFile);
     }
+
+    public Board selectBoardDetailData(Integer boardId) {
+        return sql.selectOne("Board.selectBoardDetailData", boardId);
+    }
+
+    public void updateBoardHits(Integer boardId) {
+        sql.update("Board.updateBoardHits", boardId);
+    }
 }
