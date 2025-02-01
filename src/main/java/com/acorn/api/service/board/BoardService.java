@@ -16,5 +16,5 @@ public interface BoardService {
 
     void boardDataSave(BoardSaveDTO boardSaveDTO);
 
-    BoardDetailDTO getBoardDetailData(Long boardId);
+    BoardDetailDTO getBoardDetailData(Integer boardId);
 }

@@ -3,6 +3,7 @@ package com.acorn.api.service.board.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.dto.board.BoardDetailDTO;
+import com.acorn.api.dto.board.BoardFileDTO;
 import com.acorn.api.dto.board.BoardSaveDTO;
 import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.entity.board.Board;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,11 +113,36 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDetailDTO getBoardDetailData(Long boardId) {
-        /*
-            1. 상세보기에는 목록, 수정, 삭제 버튼이 있다
-            2. 자신이 작성한 게시글만 수정, 삭제 버튼이 보이고 아니면 목록만 보여진다.
-         */
-        return null;
+    public BoardDetailDTO getBoardDetailData(Integer boardId) {
+        Board detailData = boardRepository.selectBoardDetailData(boardId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+        //boardRepository.updateBoardHits(boardId);
+
+        List<BoardFileDTO> boardFileDTOs = detailData.getBoardFilesList().stream()
+                .map(file -> BoardFileDTO.builder()
+                        .boardFileId(file.getBoardFileId())
+                        .boardOriginalFileName(file.getBoardOriginalFileName())
+                        .boardStoredFileName(file.getBoardStoredFileName())
+                        .boardFilePath(file.getBoardFilePath())
+                        .boardFileExtNm(file.getBoardFileExtNm())
+                        .boardFileSize(file.getBoardFileSize())
+                        .boardFileCreated(file.getBoardFileCreated())
+                        .boardFileUpdated(file.getBoardFileUpdated())
+                        .build())
+                .collect(Collectors.toList());
+
+        return BoardDetailDTO.builder()
+                .boardId(detailData.getBoardId())
+                .boardTitle(detailData.getBoardTitle())
+                .boardWriter(detailData.getBoardWriter())
+                .boardContents(detailData.getBoardContents())
+                .boardCreated(detailData.getBoardCreated())
+                .boardHits(detailData.getBoardHits() + 1)
+                .boardFiles(boardFileDTOs)
+                .build();
     }
+
 }

@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Board">
-    <resultMap id="boardResultMap"                  type="board" autoMapping="true">
+    <resultMap id="boardResultMap"                  type="board" autoMapping="false">
         <result property="rowNum"                   column="ROW_NUM"/>
         <result property="boardId"                  column="BOARD_ID"/>
         <result property="boardTitle"               column="BOARD_TITLE"/>
@@ -16,6 +16,7 @@
         <result property="boardUpdated"             column="BOARD_UPDATED"/>
         <result property="boardUserId"              column="BOARD_USER_ID"/>
         <result property="boardOwnerId"             column="BOARD_OWNER_ID"/>
+        <collection property="boardFilesList" javaType="java.util.List" resultMap="boardFileResultMap" columnPrefix="F_"/>
     </resultMap>
 
     <resultMap id="boardFileResultMap"              type="boardFile" autoMapping="true">
@@ -105,4 +106,31 @@
         INSERT INTO TB_BOARD_FILE (BOARD_FILE_ID, BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_PATH, BOARD_FILE_TYPE, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
         VALUES (#{boardFileId}, #{boardOriginalFileName}, #{boardStoredFileName}, #{boardFilePath}, #{boardFileExtNm}, #{boardFileSize}, #{boardId})
     </insert>
+
+    <!-- 게시글 상세 조회 -->
+    <select id="selectBoardDetailData" resultMap="boardResultMap" parameterType="Integer">
+        SELECT
+            B.BOARD_ID,
+            B.BOARD_TITLE,
+            B.BOARD_WRITER,
+            B.BOARD_PASSWORD,
+            B.BOARD_CONTENTS,
+            B.BOARD_CONTENTS_TEXT,
+            B.BOARD_HITS,
+            B.BOARD_CREATED,
+            B.BOARD_UPDATED,
+            B.BOARD_USER_ID,
+            B.BOARD_OWNER_ID,
+            F.BOARD_FILE_ID,
+            F.BOARD_FILE_ORIGINAL_FILE_NAME,
+            F.BOARD_FILE_STORED_FILE_NAME,
+            F.BOARD_FILE_PATH,
+            F.BOARD_FILE_TYPE,
+            F.BOARD_FILE_SIZE,
+            F.BOARD_FILE_CREATED,
+            F.BOARD_FILE_UPDATED
+        FROM TB_BOARD B
+                 LEFT JOIN TB_BOARD_FILE F ON B.BOARD_ID = F.BOARD_FILE_BOARD_ID
+        WHERE B.BOARD_ID = #{boardId}
+    </select>
 </mapper>

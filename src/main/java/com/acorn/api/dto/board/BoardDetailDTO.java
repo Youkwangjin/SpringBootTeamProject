@@ -2,15 +2,15 @@ package com.acorn.api.dto.board;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Builder
 public class BoardDetailDTO {
 
-    private int boardId;
+    private Integer boardId;
 
     private String boardTitle;
 
@@ -20,5 +20,15 @@ public class BoardDetailDTO {
 
     private String boardContents;
 
-    private List<MultipartFile> boardFiles;
+    private Integer boardHits;
+
+    private LocalDateTime boardCreated;
+
+    private LocalDateTime boardUpdated;
+
+    private Integer boardUserId;
+
+    private Integer boardOwnerId;
+
+    private List<BoardFileDTO> boardFiles;
 }
