@@ -6,6 +6,7 @@ import lombok.*;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserRegisterDTO {
 
     @NotBlank
