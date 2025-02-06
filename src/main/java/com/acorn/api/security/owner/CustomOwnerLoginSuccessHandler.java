@@ -1,6 +1,6 @@
 package com.acorn.api.security.owner;
 
-import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,13 +47,13 @@ public class CustomOwnerLoginSuccessHandler implements AuthenticationSuccessHand
 
         newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
-        ApiHttpSuccessCode apiHttpSuccessCode = ApiHttpSuccessCode.LOGIN_SUCCESS;
+        ApiSuccessCode apiSuccessCode = ApiSuccessCode.LOGIN_SUCCESS;
         ApiSuccessResponse<String> apiSuccessResponse = ApiSuccessResponse.<String>builder()
-                .httpStatus(apiHttpSuccessCode.getHttpStatus())
-                .resultMsg(apiHttpSuccessCode.getMessage())
+                .httpStatus(apiSuccessCode.getHttpStatus())
+                .resultMsg(apiSuccessCode.getMessage())
                 .build();
 
-        response.setStatus(apiHttpSuccessCode.getHttpStatus().value());
+        response.setStatus(apiSuccessCode.getHttpStatus().value());
         response.setContentType(contentType);
         response.setCharacterEncoding(characterEncoding);
         response.getWriter().write(convertObjectToJson(apiSuccessResponse));

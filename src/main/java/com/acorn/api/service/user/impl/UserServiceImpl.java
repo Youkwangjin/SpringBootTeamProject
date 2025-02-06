@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         Integer emailCount = userRepository.isEmailDuplicate(userEmail);
 
         if (emailCount != null) {
-            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED);
+            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED_CONFLICT);
         }
     }
 
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         Integer telCount = userRepository.isTelDuplicate(userTel);
 
         if (telCount != null) {
-            throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
+            throw new AcontainerException(ApiValidationErrorCode.TELPHONE_DUPLICATED_CONFLICT);
         }
     }
 
@@ -116,13 +116,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void userDataDelete(UserDeleteDTO userDeleteData) {
         final Integer userId = CommonSecurityUtil.getCurrentUserId();
-
         if (userId == null || !userId.equals(userDeleteData.getUserId())) {
             throw new AccessDeniedException("Unauthorized to update user data");
         }
 
         User existingUser = userRepository.selectAllUserData(userId);
-
         if (existingUser == null) {
             throw new UsernameNotFoundException("User not found : " + userId);
         }

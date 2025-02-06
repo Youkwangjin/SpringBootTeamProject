@@ -1,6 +1,6 @@
 package com.acorn.api.controller.board;
 
-import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.board.BoardSaveDTO;
@@ -27,6 +27,6 @@ public class BoardSaveController {
 
         boardService.boardDataSave(boardSaveDTO);
 
-        return ApiResponseBuilder.success(ApiHttpSuccessCode.BOARD_SAVE_SUCCESS);
+        return ApiResponseBuilder.success(ApiSuccessCode.BOARD_SAVE_SUCCESS);
     }
 }

@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ApiErrorCode {
-
-    BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "BNF", "게시글이 존재하지 않습니다."),
-
-    BOARD_SAVE_FAILED(HttpStatus.BAD_REQUEST, "BSF", "게시글 등록에 실패했습니다. 필수 입력 값이 누락되었는지 확인해주세요.");
+    UNAUTHORIZED_USER_ERROR(HttpStatus.UNAUTHORIZED, "UNU", "존재하지 않는 사용자 입니다."),
+    BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST,          "BNF", "게시글이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
 
