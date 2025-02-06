@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ApiErrorCode {
-    UNAUTHORIZED_USER_ERROR(HttpStatus.UNAUTHORIZED, "UNU", "존재하지 않는 사용자 입니다."),
-    BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST,          "BNF", "게시글이 존재하지 않습니다.");
+    USER_FOUND_ERROR(HttpStatus.NOT_FOUND,           "UFE", "존재하지 않는 사용자 입니다."),
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND,            "BNF", "게시글이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
 
