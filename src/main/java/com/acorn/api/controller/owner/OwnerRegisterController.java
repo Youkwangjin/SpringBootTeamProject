@@ -1,6 +1,6 @@
 package com.acorn.api.controller.owner;
 
-import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
@@ -23,11 +23,10 @@ public class OwnerRegisterController {
 
     @PostMapping("/api/auth/owner/register")
     public ResponseEntity<ApiSuccessResponse<Object>> registerOwner(@Valid @RequestBody OwnerRegisterDTO ownerRegisterData) {
-
         log.info(" *****************************    Register START    *****************************");
 
         ownerService.ownerRegister(ownerRegisterData);
 
-        return ApiResponseBuilder.success(ApiHttpSuccessCode.REGISTER_INSERT_SUCCESS);
+        return ApiResponseBuilder.success(ApiSuccessCode.REGISTER_SUCCESS);
     }
 }

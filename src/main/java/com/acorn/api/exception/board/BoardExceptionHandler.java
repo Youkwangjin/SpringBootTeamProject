@@ -56,7 +56,7 @@ public class BoardExceptionHandler {
         }
 
         return switch (fieldError.getField()) {
-            case "boardTitle" -> ApiValidationErrorCode.BOARD_TITLE_LENGTH_ERROR;
+            case "boardTitle" -> ApiValidationErrorCode.TITLE_LENGTH_ERROR;
             case "boardPassword" -> {
                 if (defaultMessage.contains("size must be between")) {
                     yield ApiValidationErrorCode.PASSWORD_LENGTH_ERROR;

@@ -32,7 +32,7 @@ public class OwnerServiceImpl implements OwnerService {
         int emailCount = ownerRepository.isEmailDuplicate(ownerEmail);
 
         if (emailCount > 0) {
-            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED);
+            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED_CONFLICT);
         }
     }
 
@@ -50,7 +50,7 @@ public class OwnerServiceImpl implements OwnerService {
         int telCount = ownerRepository.isTelDuplicate(ownerTel);
 
         if (telCount > 0) {
-            throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
+            throw new AcontainerException(ApiValidationErrorCode.TELPHONE_DUPLICATED_CONFLICT);
         }
     }
 

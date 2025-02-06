@@ -1,6 +1,6 @@
 package com.acorn.api.code.response;
 
-import com.acorn.api.code.common.ApiHttpSuccessCode;
+import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.common.ApiValidationSuccessCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +12,11 @@ public class ApiResponseBuilder {
         return ResponseEntity.status(httpStatus).body(response);
     }
 
-    public static <T> ResponseEntity<ApiSuccessResponse<T>> success(ApiHttpSuccessCode successCode, T result) {
+    public static <T> ResponseEntity<ApiSuccessResponse<T>> success(ApiSuccessCode successCode, T result) {
         return success(successCode.getHttpStatus(), result, successCode.getMessage());
     }
 
-    public static <T> ResponseEntity<ApiSuccessResponse<T>> success(ApiHttpSuccessCode successCode) {
+    public static <T> ResponseEntity<ApiSuccessResponse<T>> success(ApiSuccessCode successCode) {
         return success(successCode.getHttpStatus(), null, successCode.getMessage());
     }
 

@@ -37,9 +37,7 @@ public class GlobalApiExceptionHandler {
                 .errorMsg(ApiHttpErrorCode.BAD_REQUEST_ERROR.getErrorMsg())
                 .build();
 
-        return ResponseEntity
-                .status(ApiHttpErrorCode.BAD_REQUEST_ERROR.getHttpStatus())
-                .body(response);
+        return ResponseEntity.status(ApiHttpErrorCode.BAD_REQUEST_ERROR.getHttpStatus()).body(response);
     }
 
     @ExceptionHandler(AuthenticationException.class)
@@ -47,19 +45,16 @@ public class GlobalApiExceptionHandler {
         log.error(" =========================== AuthenticationException: {} =========================== ", ex.getMessage());
 
         ApiErrorResponse response = ApiErrorResponse.builder()
-                .httpStatus(ApiHttpErrorCode.AUTHENTICATION_ERROR.getHttpStatus())
-                .errorDivisionCode(ApiHttpErrorCode.AUTHENTICATION_ERROR.getErrorDivisionCode())
-                .errorMsg(ApiHttpErrorCode.AUTHENTICATION_ERROR.getErrorMsg())
+                .httpStatus(ApiHttpErrorCode.UNAUTHORIZED_ERROR.getHttpStatus())
+                .errorDivisionCode(ApiHttpErrorCode.UNAUTHORIZED_ERROR.getErrorDivisionCode())
+                .errorMsg(ApiHttpErrorCode.UNAUTHORIZED_ERROR.getErrorMsg())
                 .build();
 
-        return ResponseEntity
-                .status(ApiHttpErrorCode.AUTHENTICATION_ERROR.getHttpStatus())
-                .body(response);
+        return ResponseEntity.status(ApiHttpErrorCode.UNAUTHORIZED_ERROR.getHttpStatus()).body(response);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
-
         log.error(" =========================== AccessDeniedException: {} =========================== ", ex.getMessage());
 
         ApiErrorResponse response = ApiErrorResponse.builder()
@@ -68,14 +63,11 @@ public class GlobalApiExceptionHandler {
                 .errorMsg(ApiHttpErrorCode.FORBIDDEN_ERROR.getErrorMsg())
                 .build();
 
-        return ResponseEntity
-                .status(ApiHttpErrorCode.FORBIDDEN_ERROR.getHttpStatus())
-                .body(response);
+        return ResponseEntity.status(ApiHttpErrorCode.FORBIDDEN_ERROR.getHttpStatus()).body(response);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleUnexpectedException(Exception ex) {
-
         log.error(" =========================== Unexpected Exception: {} =========================== ", ex.getMessage(), ex);
 
         ApiErrorResponse response = ApiErrorResponse.builder()
@@ -84,8 +76,6 @@ public class GlobalApiExceptionHandler {
                 .errorMsg(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorMsg())
                 .build();
 
-        return ResponseEntity
-                .status(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
-                .body(response);
+        return ResponseEntity.status(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus()).body(response);
     }
 }
