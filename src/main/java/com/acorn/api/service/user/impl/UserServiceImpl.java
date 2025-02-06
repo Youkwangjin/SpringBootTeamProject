@@ -29,18 +29,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void isEmailDuplicate(String userEmail) {
-        int emailCount = userRepository.isEmailDuplicate(userEmail);
+        Integer emailCount = userRepository.isEmailDuplicate(userEmail);
 
-        if (emailCount > 0) {
+        if (emailCount != null) {
             throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED);
         }
     }
 
     @Override
     public void isTelPhoneDuplicate(String userTel) {
-        int telCount = userRepository.isTelDuplicate(userTel);
+        Integer telCount = userRepository.isTelDuplicate(userTel);
 
-        if (telCount > 0) {
+        if (telCount != null) {
             throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
         }
     }
@@ -67,13 +67,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO getUserData() throws AuthenticationException {
         final Integer userId = CommonSecurityUtil.getCurrentUserId();
-
         if (userId == null) {
             throw new AccessDeniedException("Unauthorized to update user data");
         }
 
         User userData = userRepository.selectAllUserData(userId);
-
         if (userData == null) {
             throw new UsernameNotFoundException("User data not found");
         }
@@ -91,13 +89,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void userDataUpdate(UserUpdateDTO userUpdateData) {
         final Integer userId  = CommonSecurityUtil.getCurrentUserId();
-
         if (userId == null || !userId.equals(userUpdateData.getUserId())) {
             throw new AccessDeniedException("Unauthorized to update user data");
         }
 
         User existingUser = userRepository.selectAllUserData(userId);
-
         if (existingUser == null) {
             throw new UsernameNotFoundException("User data not found");
         }

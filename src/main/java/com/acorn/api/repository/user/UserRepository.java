@@ -1,45 +1,25 @@
 package com.acorn.api.repository.user;
 
 import com.acorn.api.entity.user.User;
-import lombok.RequiredArgsConstructor;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-@Repository
-@RequiredArgsConstructor
-public class UserRepository {
+@Mapper
+public interface UserRepository {
 
-    private final SqlSessionTemplate sql;
+    Integer selectUserIdKey();
 
-    public Integer selectUserIdKey() {
-        return sql.selectOne("User.selectUserIdKey");
-    }
+    Integer isEmailDuplicate(@Param("userEmail") String userEmail);
 
-    public int isEmailDuplicate(String userEmail) {
-        return sql.selectOne("User.emailDuplicates", userEmail);
-    }
+    Integer isTelDuplicate(@Param("userTel") String userTel);
 
-    public int isTelDuplicate(String userTel) {
-        return sql.selectOne("User.telDuplicates", userTel);
-    }
+    void userRegister(User user);
 
-    public void userRegister(User user) {
-        sql.insert("User.userRegister", user);
-    }
+    User findByUserEmail(@Param("userEmail") String userEmail);
 
-    public User findByUserEmail(String username) {
-        return sql.selectOne("User.findByUserEmail", username);
-    }
+    User selectAllUserData(@Param("userId") Integer userId);
 
-    public User selectAllUserData(Integer userId) {
-        return sql.selectOne("User.selectAllUserData", userId);
-    }
+    void userUpdate(User updateUser);
 
-    public void userUpdate(User updateUser) {
-        sql.update("User.userUpdate", updateUser);
-    }
-
-    public void userDelete(User user) {
-        sql.delete("User.userDelete", user);
-    }
+    void userDelete(User user);
 }
