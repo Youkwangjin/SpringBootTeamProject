@@ -65,17 +65,4 @@ public class GlobalApiExceptionHandler {
 
         return ResponseEntity.status(ApiHttpErrorCode.FORBIDDEN_ERROR.getHttpStatus()).body(response);
     }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleUnexpectedException(Exception ex) {
-        log.error(" =========================== Unexpected Exception: {} =========================== ", ex.getMessage(), ex);
-
-        ApiErrorResponse response = ApiErrorResponse.builder()
-                .httpStatus(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
-                .errorDivisionCode(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorDivisionCode())
-                .errorMsg(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getErrorMsg())
-                .build();
-
-        return ResponseEntity.status(ApiHttpErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus()).body(response);
-    }
 }
