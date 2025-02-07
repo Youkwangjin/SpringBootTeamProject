@@ -1,5 +1,7 @@
 package com.acorn.api.service.user.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
+import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.dto.user.UserDeleteDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
@@ -13,12 +15,11 @@ import com.acorn.api.service.user.UserService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,19 +30,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void isEmailDuplicate(String userEmail) {
-        int emailCount = userRepository.isEmailDuplicate(userEmail);
-
-        if (emailCount > 0) {
-            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED);
+        Integer emailCount = userRepository.isEmailDuplicate(userEmail);
+        if (emailCount != null) {
+            throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED_CONFLICT);
         }
     }
 
     @Override
     public void isTelPhoneDuplicate(String userTel) {
-        int telCount = userRepository.isTelDuplicate(userTel);
-
-        if (telCount > 0) {
-            throw new AcontainerException(ApiValidationErrorCode.TELEPHONE_DUPLICATED);
+        Integer telCount = userRepository.isTelDuplicate(userTel);
+        if (telCount != null) {
+            throw new AcontainerException(ApiValidationErrorCode.TELPHONE_DUPLICATED_CONFLICT);
         }
     }
 
@@ -65,17 +64,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO getUserData() throws AuthenticationException {
+    public UserResponseDTO getUserData() {
         final Integer userId = CommonSecurityUtil.getCurrentUserId();
-
         if (userId == null) {
-            throw new AccessDeniedException("Unauthorized to update user data");
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
         User userData = userRepository.selectAllUserData(userId);
-
         if (userData == null) {
-            throw new UsernameNotFoundException("User data not found");
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
 
         return UserResponseDTO.builder()
@@ -91,19 +88,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void userDataUpdate(UserUpdateDTO userUpdateData) {
         final Integer userId  = CommonSecurityUtil.getCurrentUserId();
-
-        if (userId == null || !userId.equals(userUpdateData.getUserId())) {
-            throw new AccessDeniedException("Unauthorized to update user data");
+        if (Objects.isNull(userId) || !Objects.equals(userId, userUpdateData.getUserId())) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
         User existingUser = userRepository.selectAllUserData(userId);
-
         if (existingUser == null) {
-            throw new UsernameNotFoundException("User data not found");
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
 
         if (StringUtils.isNotBlank(userUpdateData.getUserPassword()) && !passwordEncoder.matches(userUpdateData.getUserPassword(), existingUser.getUserPassword())) {
-            throw new IllegalArgumentException("Invalid current password");
+            throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
         User updateUser = User.builder()
@@ -119,20 +114,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userDataDelete(UserDeleteDTO userDeleteData) {
-        final Integer userId = CommonSecurityUtil.getCurrentUserId();
-
-        if (userId == null || !userId.equals(userDeleteData.getUserId())) {
-            throw new AccessDeniedException("Unauthorized to update user data");
+        final Integer userId  = CommonSecurityUtil.getCurrentUserId();
+        if (Objects.isNull(userId) || !Objects.equals(userId, userDeleteData.getUserId())) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
         User existingUser = userRepository.selectAllUserData(userId);
-
         if (existingUser == null) {
-            throw new UsernameNotFoundException("User not found : " + userId);
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
 
         if (StringUtils.isNotBlank(userDeleteData.getUserPassword()) && !passwordEncoder.matches(userDeleteData.getUserPassword(), existingUser.getUserPassword())) {
-            throw new IllegalArgumentException("Invalid current password");
+            throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
         User deleteUser = User.builder()

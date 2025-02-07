@@ -94,9 +94,7 @@ public class SpringSecurityConfig {
                                          "/assets/img/favicon.png").permitAll()
                         // Public Pages
                         .requestMatchers("/",
-                                         "/error/401",
-                                         "/error/403",
-                                         "/error/sessionExpired",
+                                         "/error",
                                          "/service",
                                          "/containerMaps",
                                          "/user/join",
