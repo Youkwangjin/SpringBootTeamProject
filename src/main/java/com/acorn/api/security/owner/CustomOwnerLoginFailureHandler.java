@@ -1,6 +1,5 @@
 package com.acorn.api.security.owner;
 
-
 import com.acorn.api.code.owner.ApiOwnerErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,12 +16,8 @@ import java.io.IOException;
 @Component
 public class CustomOwnerLoginFailureHandler implements AuthenticationFailureHandler {
 
-    @Value("${response.content-type}")
-    private String contentType;
-
-    @Value("${response.character-encoding}")
-    private String characterEncoding;
-
+    private static final String CONTENT_TYPE = "application/json";
+    private static final String ENCODING = "UTF-8";
     @Value("${error.message.default}")
     private String defaultErrorMessage;
 
@@ -37,8 +32,8 @@ public class CustomOwnerLoginFailureHandler implements AuthenticationFailureHand
                 .build();
 
         response.setStatus(errorResponse.getHttpStatus().value());
-        response.setContentType(contentType);
-        response.setCharacterEncoding(characterEncoding);
+        response.setContentType(CONTENT_TYPE);
+        response.setCharacterEncoding(ENCODING);
         response.getWriter().write(convertObjectToJson(errorResponse));
     }
 
@@ -51,4 +46,3 @@ public class CustomOwnerLoginFailureHandler implements AuthenticationFailureHand
         }
     }
 }
-

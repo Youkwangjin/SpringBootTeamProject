@@ -21,12 +21,8 @@ import java.io.IOException;
 @Component
 public class CustomOwnerLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Value("${response.content-type}")
-    private String contentType;
-
-    @Value("${response.character-encoding}")
-    private String characterEncoding;
-
+    private static final String CONTENT_TYPE = "application/json";
+    private static final String ENCODING = "UTF-8";
     @Value("${error.message.default}")
     private String defaultErrorMessage;
 
@@ -54,8 +50,8 @@ public class CustomOwnerLoginSuccessHandler implements AuthenticationSuccessHand
                 .build();
 
         response.setStatus(apiSuccessCode.getHttpStatus().value());
-        response.setContentType(contentType);
-        response.setCharacterEncoding(characterEncoding);
+        response.setContentType(CONTENT_TYPE);
+        response.setCharacterEncoding(ENCODING);
         response.getWriter().write(convertObjectToJson(apiSuccessResponse));
 
     }
