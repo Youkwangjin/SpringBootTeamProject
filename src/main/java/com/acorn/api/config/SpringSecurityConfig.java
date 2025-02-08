@@ -147,7 +147,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/editor/image/upload",
                                          "/api/board/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 );
 
         http
