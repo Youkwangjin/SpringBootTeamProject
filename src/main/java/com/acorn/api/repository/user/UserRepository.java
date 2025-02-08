@@ -19,7 +19,7 @@ public interface UserRepository {
 
     User selectAllUserData(@Param("userId") Integer userId);
 
-    void userUpdate(User updateUser);
+    void userUpdate(User User);
 
     void userDelete(User user);
 }

@@ -29,36 +29,32 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public void isOwnerEmailDuplicate(String ownerEmail) {
-        int emailCount = ownerRepository.isEmailDuplicate(ownerEmail);
-
-        if (emailCount > 0) {
+        Integer emailCount = ownerRepository.isEmailDuplicate(ownerEmail);
+        if (emailCount != null) {
             throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED_CONFLICT);
         }
     }
 
     @Override
     public void isBusinessNumDuplicate(String ownerBusinessNum) {
-        int businessNumCount = ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
-
-        if (businessNumCount > 0) {
+        Integer businessNumCount = ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
+        if (businessNumCount != null) {
             throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
         }
     }
 
     @Override
     public void isTelPhoneDuplicate(String ownerTel) {
-        int telCount = ownerRepository.isTelDuplicate(ownerTel);
-
-        if (telCount > 0) {
+        Integer telCount = ownerRepository.isTelDuplicate(ownerTel);
+        if (telCount != null) {
             throw new AcontainerException(ApiValidationErrorCode.TELPHONE_DUPLICATED_CONFLICT);
         }
     }
 
     @Override
     public void isCompanyNameDuplicate(String ownerCompanyName) {
-        int companyNameCount = ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
-
-        if (companyNameCount > 0) {
+        Integer companyNameCount = ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
+        if (companyNameCount != null) {
             throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
         }
     }
