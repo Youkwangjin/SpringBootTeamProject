@@ -70,5 +70,4 @@ public class CustomOwnerDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

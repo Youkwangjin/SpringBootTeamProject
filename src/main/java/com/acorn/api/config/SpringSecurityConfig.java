@@ -36,7 +36,6 @@ public class SpringSecurityConfig {
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final CustomSessionExpiredHandler customSessionExpiredHandler;
     private final UserDetailsService userService;
     private final UserDetailsService ownerService;
 
@@ -49,7 +48,6 @@ public class SpringSecurityConfig {
                                 CustomLogoutSuccessHandler customLogoutSuccessHandler,
                                 CustomAccessDeniedHandler customAccessDeniedHandler,
                                 CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
-                                CustomSessionExpiredHandler customSessionExpiredHandler,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
                                 @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
 
@@ -62,7 +60,6 @@ public class SpringSecurityConfig {
         this.customLogoutSuccessHandler = customLogoutSuccessHandler;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-        this.customSessionExpiredHandler = customSessionExpiredHandler;
         this.userService = userService;
         this.ownerService = ownerService;
     }
@@ -73,14 +70,8 @@ public class SpringSecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new CustomCsrfTokenRepository())
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/api/logout", "POST"))
-                );
-
-        http
-                .sessionManagement(session -> session
-                        .maximumSessions(1)
-                        .expiredSessionStrategy(customSessionExpiredHandler)
-                        .maxSessionsPreventsLogin(true)
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/api/logout", "POST"),
+                                                 new AntPathRequestMatcher("/session/expired"))
                 );
 
         http
@@ -95,6 +86,7 @@ public class SpringSecurityConfig {
                         // Public Pages
                         .requestMatchers("/",
                                          "/error",
+                                         "/session/expired",
                                          "/service",
                                          "/containerMaps",
                                          "/user/join",
@@ -147,7 +139,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/editor/image/upload",
                                          "/api/board/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 );
 
         http

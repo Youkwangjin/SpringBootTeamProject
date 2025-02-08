@@ -8,10 +8,10 @@
 </head>
 <body>
 <div class="container">
-  <h1 th:text="${httpStatus}">에러 코드</h1>
-  <p th:text="${resultMsg}">에러 메시지</p>
+  <h1 th:text="${httpStatus.value()}"></h1>
+  <p th:text="${resultMsg}"></p>
   <br/>
-  <a class="back-button" href="/">홈으로 돌아가기</a>
+  <a class="back-button" href="javascript:history.back();">돌아가기</a>
 </div>
 </body>
 </html>

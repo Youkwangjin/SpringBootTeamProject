@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Owner">
-    <resultMap id="ownerResultMap" type="com.acorn.api.entity.owner.Owner" autoMapping="true">
+<mapper namespace="com.acorn.api.repository.owner.OwnerRepository">
+    <resultMap id="ownerResultMap"             type="com.acorn.api.entity.owner.Owner">
         <result property="ownerId"             column="OWNER_ID"/>
         <result property="ownerEmail"          column="OWNER_EMAIL"/>
         <result property="ownerBusinessNum"    column="BUSINESS_NUMBER"/>
@@ -15,62 +15,66 @@
         <result property="ownerRole"           column="OWNER_ROLE"/>
     </resultMap>
 
-    <!-- select key -->
     <select id="selectOwnerIdKey"  resultType="Integer">
         SELECT nextval(OWNER_SEQ)
     </select>
 
-    <!-- 이메일 중복 체크 -->
-    <select id="emailDuplicates" parameterType="String" resultType="int">
-        SELECT COUNT(*)
-        FROM TB_OWNER
+    <select id="isEmailDuplicate" parameterType="String" resultType="Integer">
+        SELECT
+            OWNER_EMAIL
+        FROM
+            TB_OWNER
         WHERE OWNER_EMAIL = #{ownerEmail}
     </select>
 
-    <!-- 사업자 번호 중복 체크 -->
-    <select id="businessNumDuplicates" parameterType="String" resultType="int">
-        SELECT COUNT(*)
-        FROM TB_OWNER
+    <select id="isBusinessNumDuplicate" parameterType="String" resultType="Integer">
+        SELECT
+            BUSINESS_NUMBER
+        FROM
+            TB_OWNER
         WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
     </select>
 
-    <!-- 전화번호 중복 체크 -->
-    <select id="telDuplicates" parameterType="String" resultType="int">
-        SELECT COUNT(*)
-        FROM TB_OWNER
+    <select id="isTelDuplicate" parameterType="String" resultType="Integer">
+        SELECT
+            OWNER_TEL
+        FROM
+            TB_OWNER
         WHERE OWNER_TEL = #{ownerTel}
     </select>
 
-    <!-- 회사명 중복 체크 -->
-    <select id="companyNameDuplicates" parameterType="String" resultType="int">
-        SELECT COUNT(*)
-        FROM TB_OWNER
+    <select id="isCompanyNameDuplicate" parameterType="String" resultType="Integer">
+        SELECT
+            OWNER_COMPANY_NAME
+        FROM
+            TB_OWNER
         WHERE OWNER_COMPANY_NAME = #{ownerCompanyName}
     </select>
 
-    <!-- 회원가입 -->
-    <insert id="ownerRegister" parameterType="owner" useGeneratedKeys="true" keyProperty="ownerId" >
+    <insert id="ownerRegister" parameterType="com.acorn.api.entity.owner.Owner" useGeneratedKeys="true" keyProperty="ownerId" >
         INSERT INTO TB_OWNER (OWNER_ID, OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NM, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
         VALUES (#{ownerId}, #{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerNm}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddr}, #{ownerRole})
     </insert>
 
-    <!-- 아이디 검증 -->
     <select id="findByOwnerBusinessNum" parameterType="String" resultMap="ownerResultMap">
-        SELECT *
-        FROM TB_OWNER
+        SELECT
+            *
+        FROM
+            TB_OWNER
         WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
     </select>
 
-    <!-- 회원조회 -->
     <select id="selectAllOwnerData" parameterType="Integer" resultMap="ownerResultMap">
-        SELECT *
-        FROM TB_OWNER
+        SELECT
+            *
+        FROM
+            TB_OWNER
         WHERE OWNER_ID = #{ownerId}
     </select>
 
-    <!-- 회원수정 -->
-    <update id="ownerUpdate" parameterType="owner">
-        UPDATE TB_OWNER
+    <update id="ownerUpdate" parameterType="com.acorn.api.entity.owner.Owner">
+        UPDATE
+            TB_OWNER
         SET
             OWNER_EMAIL = #{ownerEmail},
             OWNER_NM = #{ownerNm},
@@ -81,10 +85,10 @@
         WHERE OWNER_ID = #{ownerId}
     </update>
 
-    <!-- 회원탈퇴-->
-    <delete id="ownerDelete" parameterType="owner">
+    <delete id="ownerDelete" parameterType="com.acorn.api.entity.owner.Owner">
         DELETE
-        FROM TB_OWNER
+        FROM
+            TB_OWNER
         WHERE OWNER_ID = #{ownerId}
     </delete>
 </mapper>
