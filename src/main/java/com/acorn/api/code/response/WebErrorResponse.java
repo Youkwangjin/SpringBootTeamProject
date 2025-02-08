@@ -1,5 +1,6 @@
 package com.acorn.api.code.response;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class WebErrorResponse {
 
     public ModelAndView response(HttpServletRequest request, HttpServletResponse response) {
-        HttpStatus httpStatus = HttpStatus.valueOf(response.getStatus());
+        Integer statusCode = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        if (statusCode == null) {
+            statusCode = response.getStatus();
+        }
+
+        HttpStatus httpStatus = HttpStatus.valueOf(statusCode);
 
         log.error("Error occurred Status: {}, Request URI: {}", httpStatus, request.getRequestURI());
 
@@ -26,7 +32,7 @@ public class WebErrorResponse {
 
     private String getErrorMessage(HttpStatus status) {
         return switch (status) {
-            case UNAUTHORIZED -> "로그인이 필요합니다.";
+            case UNAUTHORIZED -> "로그인 후 이용해주세요.";
             case FORBIDDEN -> "접근 권한이 없습니다.";
             case NOT_FOUND -> "요청하신 페이지를 찾을 수 없습니다.";
             case INTERNAL_SERVER_ERROR -> "서버 오류가 발생했습니다.";
