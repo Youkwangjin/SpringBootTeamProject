@@ -1,5 +1,7 @@
 package com.acorn.api.service.owner.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
+import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.dto.owner.OwnerDeleteDTO;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
@@ -13,9 +15,7 @@ import com.acorn.api.service.owner.OwnerService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,15 +83,13 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public OwnerResponseDTO getOwnerData() throws AuthenticationException {
         Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
-
         if (ownerId == null) {
-            throw new UsernameNotFoundException("Owner is not authenticated");
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
         Owner ownerData = ownerRepository.selectAllOwnerData(ownerId);
-
         if (ownerData == null) {
-            throw new UsernameNotFoundException("Owner data not found");
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
 
         return OwnerResponseDTO.builder()
@@ -109,18 +107,17 @@ public class OwnerServiceImpl implements OwnerService {
     @Transactional
     public void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData) throws AuthenticationException {
         Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
-
         if (ownerId == null || !ownerId.equals(ownerUpdateData.getOwnerId())) {
-            throw new AccessDeniedException("Unauthorized to update owner data");
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
         Owner existingOwner = ownerRepository.selectAllOwnerData(ownerId);
         if (existingOwner == null) {
-            throw new UsernameNotFoundException("Owner not found with ID: " + ownerId);
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
 
         if (StringUtils.isNotBlank(ownerUpdateData.getOwnerPassword()) && !passwordEncoder.matches(ownerUpdateData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
-            throw new IllegalArgumentException("Invalid current password");
+            throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
         Owner updateOwner = Owner.builder()
@@ -139,18 +136,17 @@ public class OwnerServiceImpl implements OwnerService {
     @Transactional
     public void ownerDataDelete(OwnerDeleteDTO ownerDeleteData) {
         Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
-
         if (ownerId == null || !ownerId.equals(ownerDeleteData.getOwnerId())) {
-            throw new AccessDeniedException("Unauthorized to update owner data");
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
         Owner existingOwner = ownerRepository.selectAllOwnerData(ownerId);
         if (existingOwner == null) {
-            throw new UsernameNotFoundException("Owner not found with ID: " + ownerId);
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
 
         if (StringUtils.isNotBlank(ownerDeleteData.getOwnerPassword()) && !passwordEncoder.matches(ownerDeleteData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
-            throw new IllegalArgumentException("Invalid current password");
+            throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
         Owner deleteOwner = Owner.builder()
