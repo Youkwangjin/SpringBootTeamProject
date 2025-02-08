@@ -1,53 +1,29 @@
 package com.acorn.api.repository.owner;
 
 import com.acorn.api.entity.owner.Owner;
-import lombok.RequiredArgsConstructor;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-@Repository
-@RequiredArgsConstructor
-public class OwnerRepository {
+@Mapper
+public interface OwnerRepository {
 
-    private final SqlSessionTemplate sql;
+    Integer selectOwnerIdKey();
 
-    public Integer selectOwnerIdKey() {
-        return sql.selectOne("Owner.selectOwnerIdKey");
-    }
+    Integer isEmailDuplicate(@Param("ownerEmail") String ownerEmail);
 
-    public int isEmailDuplicate(String ownerEmail) {
-        return sql.selectOne("Owner.emailDuplicates", ownerEmail);
-    }
+    Integer isBusinessNumDuplicate(@Param("ownerBusinessNum") String ownerBusinessNum);
 
-    public int isBusinessNumDuplicate(String ownerBusinessNum) {
-        return sql.selectOne("Owner.businessNumDuplicates", ownerBusinessNum);
-    }
+    Integer isTelDuplicate(@Param("ownerTel") String ownerTel);
 
-    public int isTelDuplicate(String ownerTel) {
-        return sql.selectOne("Owner.telDuplicates", ownerTel);
-    }
+    Integer isCompanyNameDuplicate(@Param("ownerCompanyName") String ownerCompanyName);
 
-    public int isCompanyNameDuplicate(String ownerCompanyName) {
-        return sql.selectOne("Owner.companyNameDuplicates", ownerCompanyName);
-    }
+    void ownerRegister(Owner owner);
 
-    public void ownerRegister(Owner newRegisterDataOwner) {
-        sql.insert("Owner.ownerRegister", newRegisterDataOwner);
-    }
+    Owner findByOwnerBusinessNum(String ownerBusinessNum);
 
-    public Owner findByOwnerBusinessNum(String ownerBusinessNum) {
-        return  sql.selectOne("Owner.findByOwnerBusinessNum", ownerBusinessNum);
-    }
+    Owner selectAllOwnerData(@Param("ownerId") Integer ownerId);
 
-    public Owner selectAllOwnerData(Integer ownerId) {
-        return sql.selectOne("Owner.selectAllOwnerData", ownerId);
-    }
+    void ownerUpdate(Owner owner);
 
-    public void ownerUpdate(Owner updateOwner) {
-        sql.update("Owner.ownerUpdate", updateOwner);
-    }
-
-    public void ownerDelete(Owner owner) {
-        sql.delete("Owner.ownerDelete", owner);
-    }
+    void ownerDelete(Owner owner);
 }
