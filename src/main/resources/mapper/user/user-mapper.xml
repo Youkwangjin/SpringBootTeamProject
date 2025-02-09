@@ -19,7 +19,7 @@
 
     <select id="isEmailDuplicate" parameterType="String" resultType="Integer">
         SELECT
-            USER_EMAIL
+            COUNT(*)
         FROM
             TB_USER
         WHERE USER_EMAIL = #{userEmail}
@@ -27,7 +27,7 @@
 
     <select id="isTelDuplicate" parameterType="String" resultType="Integer">
         SELECT
-            USER_TEL
+            COUNT(*)
         FROM
             TB_USER
         WHERE USER_TEL = #{userTel}
@@ -47,8 +47,10 @@
     </select>
 
     <select id="selectAllUserData" parameterType="Integer" resultMap="userResultMap">
-        SELECT *
-        FROM TB_USER
+        SELECT
+            *
+        FROM
+            TB_USER
         WHERE USER_ID = #{userId}
     </select>
 
