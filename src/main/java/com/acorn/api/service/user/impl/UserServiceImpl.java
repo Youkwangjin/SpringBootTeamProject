@@ -48,15 +48,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void userRegister(UserRegisterDTO userRegisterData) {
         final Integer userId = userRepository.selectUserIdKey();
+        final String userEmail = userRegisterData.getUserEmail();
         final String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
+        final String userNm = userRegisterData.getUserNm();
+        final String userAddr = userRegisterData.getUserAddr();
+        final String userTel = userRegisterData.getUserTel();
 
         User newUser = User.builder()
                 .userId(userId)
-                .userEmail(userRegisterData.getUserEmail())
+                .userEmail(userEmail)
                 .userPassword(encodedPassword)
-                .userNm(userRegisterData.getUserNm())
-                .userAddr(userRegisterData.getUserAddr())
-                .userTel(userRegisterData.getUserTel())
+                .userNm(userNm)
+                .userAddr(userAddr)
+                .userTel(userTel)
                 .userRole(UserRole.USER)
                 .build();
 
@@ -74,13 +78,17 @@ public class UserServiceImpl implements UserService {
         if (userData == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
+        final String userEmail = userData.getUserEmail();
+        final String userNm = userData.getUserNm();
+        final String userTel = userData.getUserTel();
+        final String userAddr = userData.getUserAddr();
 
         return UserResponseDTO.builder()
-                .userId(userData.getUserId())
-                .userEmail(userData.getUserEmail())
-                .userNm(userData.getUserNm())
-                .userTel(userData.getUserTel())
-                .userAddr(userData.getUserAddr())
+                .userId(userId)
+                .userEmail(userEmail)
+                .userNm(userNm)
+                .userTel(userTel)
+                .userAddr(userAddr)
                 .build();
     }
 
@@ -100,12 +108,15 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(userUpdateData.getUserPassword()) && !passwordEncoder.matches(userUpdateData.getUserPassword(), existingUser.getUserPassword())) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
+        final String userNm = userUpdateData.getUserNm();
+        final String userAddr = userUpdateData.getUserAddr();
+        final String userTel = userUpdateData.getUserTel();
 
         User updateUser = User.builder()
-                .userId(userUpdateData.getUserId())
-                .userNm(userUpdateData.getUserNm())
-                .userAddr(userUpdateData.getUserAddr())
-                .userTel(userUpdateData.getUserTel())
+                .userId(userId)
+                .userNm(userNm)
+                .userAddr(userAddr)
+                .userTel(userTel)
                 .build();
 
         userRepository.userUpdate(updateUser);
@@ -129,7 +140,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User deleteUser = User.builder()
-                .userId(userDeleteData.getUserId())
+                .userId(userId)
                 .build();
 
         userRepository.userDelete(deleteUser);
