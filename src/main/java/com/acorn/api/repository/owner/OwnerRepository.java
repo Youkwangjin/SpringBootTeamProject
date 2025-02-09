@@ -9,13 +9,13 @@ public interface OwnerRepository {
 
     Integer selectOwnerIdKey();
 
-    Integer isEmailDuplicate(@Param("ownerEmail") String ownerEmail);
+    Boolean isEmailDuplicate(@Param("ownerEmail") String ownerEmail);
 
-    Integer isBusinessNumDuplicate(@Param("ownerBusinessNum") String ownerBusinessNum);
+    Boolean isBusinessNumDuplicate(@Param("ownerBusinessNum") String ownerBusinessNum);
 
-    Integer isTelDuplicate(@Param("ownerTel") String ownerTel);
+    Boolean isTelDuplicate(@Param("ownerTel") String ownerTel);
 
-    Integer isCompanyNameDuplicate(@Param("ownerCompanyName") String ownerCompanyName);
+    Boolean isCompanyNameDuplicate(@Param("ownerCompanyName") String ownerCompanyName);
 
     void ownerRegister(Owner owner);
 

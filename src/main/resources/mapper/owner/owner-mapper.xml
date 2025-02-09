@@ -19,36 +19,44 @@
         SELECT nextval(OWNER_SEQ)
     </select>
 
-    <select id="isEmailDuplicate" parameterType="String" resultType="Integer">
-        SELECT
-            OWNER_EMAIL
-        FROM
-            TB_OWNER
-        WHERE OWNER_EMAIL = #{ownerEmail}
+    <select id="isEmailDuplicate" parameterType="String" resultType="Boolean">
+        SELECT EXISTS (
+            SELECT
+                1
+            FROM
+                TB_OWNER
+            WHERE OWNER_EMAIL = #{ownerEmail}
+        )
     </select>
 
-    <select id="isBusinessNumDuplicate" parameterType="String" resultType="Integer">
-        SELECT
-            BUSINESS_NUMBER
-        FROM
-            TB_OWNER
-        WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
+    <select id="isBusinessNumDuplicate" parameterType="String" resultType="Boolean">
+        SELECT EXISTS(
+            SELECT
+                1
+            FROM
+                TB_OWNER
+            WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
+        )
     </select>
 
-    <select id="isTelDuplicate" parameterType="String" resultType="Integer">
-        SELECT
-            OWNER_TEL
-        FROM
-            TB_OWNER
-        WHERE OWNER_TEL = #{ownerTel}
+    <select id="isTelDuplicate" parameterType="String" resultType="Boolean">
+        SELECT EXISTS(
+            SELECT
+                1
+            FROM
+                TB_OWNER
+            WHERE OWNER_TEL = #{ownerTel}
+        )
     </select>
 
-    <select id="isCompanyNameDuplicate" parameterType="String" resultType="Integer">
-        SELECT
-            OWNER_COMPANY_NAME
-        FROM
-            TB_OWNER
-        WHERE OWNER_COMPANY_NAME = #{ownerCompanyName}
+    <select id="isCompanyNameDuplicate" parameterType="String" resultType="Boolean">
+        SELECT EXISTS(
+            SELECT
+                1
+            FROM
+                TB_OWNER
+            WHERE OWNER_COMPANY_NAME = #{ownerCompanyName}
+        )
     </select>
 
     <insert id="ownerRegister" parameterType="com.acorn.api.entity.owner.Owner" useGeneratedKeys="true" keyProperty="ownerId" >
