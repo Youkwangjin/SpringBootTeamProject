@@ -124,7 +124,7 @@ public class BoardServiceImpl implements BoardService {
             throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
         }
 
-        //boardRepository.updateBoardHits(boardId);
+        boardRepository.updateBoardHits(boardId);
 
         List<BoardFileDTO> boardFileDTOs = detailData.getBoardFilesList().stream()
                 .map(file -> BoardFileDTO.builder()

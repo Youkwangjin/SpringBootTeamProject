@@ -12,10 +12,6 @@
     <script src="/js/tinymce/tinymce.min.js"></script>
     <script src="/js/common/tinyMCEConfig.js"></script>
     <script src="/js/common/fileModule.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        });
-    </script>
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
@@ -54,9 +50,18 @@
         </div>
 
         <div class="button-container">
-            <input type="button" id="backListBtn" value="목록">
+            <input type="button" id="ListBtn" value="목록">
         </div>
     </div>
 </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let ListBtn = document.getElementById("ListBtn");
+
+        ListBtn.addEventListener("click", function () {
+            window.location.href = "/board/list";
+        });
+    });
+</script>
 </body>
 </html>

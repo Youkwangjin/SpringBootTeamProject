@@ -102,4 +102,12 @@
                  LEFT JOIN TB_BOARD_FILE F ON B.BOARD_ID = F.BOARD_FILE_BOARD_ID
         WHERE B.BOARD_ID = #{boardId}
     </select>
+
+    <update id="updateBoardHits" parameterType="integer">
+        UPDATE
+            TB_BOARD
+        SET
+            BOARD_HITS = BOARD_HITS + 1
+        WHERE BOARD_ID = #{boardId}
+    </update>
 </mapper>
