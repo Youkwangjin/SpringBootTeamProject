@@ -1,0 +1,72 @@
+.board-view-form {
+    width: 95%;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 10px;
+}
+
+.board-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.board-view-header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.board-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.board-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    padding: 20px 0;
+}
+
+.board-attachments {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 20px;
+}
+
+.board-attachments ul {
+    list-style: none;
+    padding: 0;
+}
+
+.board-attachments li {
+    margin-bottom: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-container input {
+    padding: 10px 20px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.button-container input:hover {
+    background-color: #0b5ed7;
+}
