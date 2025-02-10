@@ -2,6 +2,7 @@ package com.acorn.api.service.board.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.component.FileComponent;
 import com.acorn.api.dto.board.BoardDetailDTO;
 import com.acorn.api.dto.board.BoardFileDTO;
 import com.acorn.api.dto.board.BoardSaveDTO;
@@ -33,6 +34,7 @@ public class BoardServiceImpl implements BoardService {
     private String uploadDir;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
+    private final FileComponent fileComponent;
 
     @Override
     public List<BoardListDTO> getBoardListData(BoardListDTO boardListDTO) {
@@ -90,13 +92,13 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.boardSave(newBoardSaveData);
 
         if(boardSaveDTO.getBoardFiles() != null && !boardSaveDTO.getBoardFiles().isEmpty()) {
-            for(MultipartFile file : boardSaveDTO.getBoardFiles()) {
+            for(MultipartFile multipartFile : boardSaveDTO.getBoardFiles()) {
                 final Integer boardFileId = boardRepository.selectBoardFileIdKey();
-                final String originalFileName = FilenameUtils.getName(file.getOriginalFilename());
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
                 final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
                 final String filePath = uploadDir;
                 final String fileExtNm = FilenameUtils.getExtension(originalFileName);
-                final String fileSize = String.valueOf(file.getSize());
+                final String fileSize = String.valueOf(multipartFile.getSize());
 
                 BoardFile boardFile = BoardFile.builder()
                         .boardFileId(boardFileId)
@@ -108,6 +110,7 @@ public class BoardServiceImpl implements BoardService {
                         .boardId(boardId)
                         .build();
                 boardRepository.insertBoardFile(boardFile);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
     }
@@ -144,5 +147,4 @@ public class BoardServiceImpl implements BoardService {
                 .boardFiles(boardFileDTOs)
                 .build();
     }
-
 }
