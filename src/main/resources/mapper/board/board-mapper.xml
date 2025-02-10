@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Board">
-    <resultMap id="boardResultMap"                  type="board" autoMapping="false">
+    <resultMap id="boardResultMap"                  type="board">
         <result property="rowNum"                   column="ROW_NUM"/>
         <result property="boardId"                  column="BOARD_ID"/>
         <result property="boardTitle"               column="BOARD_TITLE"/>
@@ -19,17 +19,18 @@
         <collection property="boardFilesList" javaType="java.util.List" resultMap="boardFileResultMap" columnPrefix="F_"/>
     </resultMap>
 
-    <resultMap id="boardFileResultMap"              type="boardFile" autoMapping="true">
+    <resultMap id="boardFileResultMap"              type="boardFile">
         <result property="boardFileId"              column="BOARD_FILE_ID"/>
         <result property="boardId"                  column="BOARD_FILE_BOARD_ID"/>
         <result property="boardOriginalFileName"    column="BOARD_FILE_ORIGINAL_FILE_NAME"/>
         <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
         <result property="boardFilePath"            column="BOARD_FILE_PATH"/>
-        <result property="boardFileExtNm"           column="BOARD_FILE_TYPE"/>
+        <result property="boardFileExtNm"           column="BOARD_FILE_EXTNS_NM"/>
         <result property="boardFileSize"            column="BOARD_FILE_SIZE"/>
+        <result property="boardFileCreated"         column="BOARD_FILE_CREATED"/>
+        <result property="boardFileUpdated"         column="BOARD_FILE_UPDATED"/>
     </resultMap>
 
-    <!-- select key -->
     <select id="selectBoardIdKey" resultType="Integer">
         SELECT nextval(BOARD_SEQ)
     </select>
@@ -38,7 +39,6 @@
         SELECT nextval(BOARD_FILE_SEQ)
     </select>
 
-    <!-- 게시글 갯수 확인 -->
     <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
             COUNT(BOARD_ID)
@@ -60,7 +60,6 @@
         </where>
     </select>
 
-    <!-- 게시글 전체 조회 -->
     <select id="selectBoardListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="boardResultMap">
         SELECT
             ROW_NUMBER() OVER (ORDER BY BOARD_CREATED ASC) AS ROW_NUM,
@@ -95,7 +94,6 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
-    <!-- 게시글 작성 -->
     <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT, BOARD_USER_ID, BOARD_OWNER_ID)
         VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText}, #{boardUserId}, #{boardOwnerId})
@@ -103,11 +101,10 @@
 
     <!-- 게시글 첨부파일 저장 -->
     <insert id="insertBoardFile" parameterType="boardFile">
-        INSERT INTO TB_BOARD_FILE (BOARD_FILE_ID, BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_PATH, BOARD_FILE_TYPE, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
+        INSERT INTO TB_BOARD_FILE (BOARD_FILE_ID, BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_PATH, BOARD_FILE_EXTNS_NM, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
         VALUES (#{boardFileId}, #{boardOriginalFileName}, #{boardStoredFileName}, #{boardFilePath}, #{boardFileExtNm}, #{boardFileSize}, #{boardId})
     </insert>
 
-    <!-- 게시글 상세 조회 -->
     <select id="selectBoardDetailData" resultMap="boardResultMap" parameterType="Integer">
         SELECT
             B.BOARD_ID,
@@ -125,7 +122,7 @@
             F.BOARD_FILE_ORIGINAL_FILE_NAME,
             F.BOARD_FILE_STORED_FILE_NAME,
             F.BOARD_FILE_PATH,
-            F.BOARD_FILE_TYPE,
+            F.BOARD_FILE_EXTNS_NM,
             F.BOARD_FILE_SIZE,
             F.BOARD_FILE_CREATED,
             F.BOARD_FILE_UPDATED
