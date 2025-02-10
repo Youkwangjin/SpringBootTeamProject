@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.board.BoardFileRepository">
+    <resultMap id="boardFileResultMap"              type="com.acorn.api.entity.board.BoardFile">
+        <id property="boardFileId"                  column="BOARD_FILE_ID"/>
+        <id property="boardId"                      column="BOARD_FILE_BOARD_ID"/>
+        <result property="boardOriginalFileName"    column="BOARD_FILE_ORIGINAL_FILE_NAME"/>
+        <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
+        <result property="boardFilePath"            column="BOARD_FILE_PATH"/>
+        <result property="boardFileExtNm"           column="BOARD_FILE_EXTNS_NM"/>
+        <result property="boardFileSize"            column="BOARD_FILE_SIZE"/>
+        <result property="boardFileCreated"         column="BOARD_FILE_CREATED"/>
+        <result property="boardFileUpdated"         column="BOARD_FILE_UPDATED"/>
+    </resultMap>
+
+    <select id="selectBoardFileIdKey" resultType="Integer">
+        SELECT nextval(BOARD_FILE_SEQ)
+    </select>
+
+    <insert id="boardFileSave" parameterType="boardFile">
+        INSERT INTO TB_BOARD_FILE (BOARD_FILE_ID, BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_PATH, BOARD_FILE_EXTNS_NM, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
+        VALUES (#{boardFileId}, #{boardOriginalFileName}, #{boardStoredFileName}, #{boardFilePath}, #{boardFileExtNm}, #{boardFileSize}, #{boardId})
+    </insert>
+</mapper>
