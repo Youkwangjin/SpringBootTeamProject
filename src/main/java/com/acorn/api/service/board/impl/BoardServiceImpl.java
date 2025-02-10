@@ -10,6 +10,7 @@ import com.acorn.api.dto.board.BoardListDTO;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
 import com.acorn.api.exception.global.AcontainerException;
+import com.acorn.api.repository.board.BoardFileRepository;
 import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
@@ -34,6 +35,7 @@ public class BoardServiceImpl implements BoardService {
     private String uploadDir;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
+    private final BoardFileRepository boardFileRepository;
     private final FileComponent fileComponent;
 
     @Override
@@ -56,10 +58,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public String getAuthenticatedUserName() {
         Object principal = CommonSecurityUtil.getCurrentId();
-
         if (principal == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
+
         return CommonSecurityUtil.getAuthenticatedName();
     }
 
@@ -93,7 +95,7 @@ public class BoardServiceImpl implements BoardService {
 
         if(boardSaveDTO.getBoardFiles() != null && !boardSaveDTO.getBoardFiles().isEmpty()) {
             for(MultipartFile multipartFile : boardSaveDTO.getBoardFiles()) {
-                final Integer boardFileId = boardRepository.selectBoardFileIdKey();
+                final Integer boardFileId = boardFileRepository.selectBoardFileIdKey();
                 final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
                 final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
                 final String filePath = uploadDir;
@@ -109,7 +111,7 @@ public class BoardServiceImpl implements BoardService {
                         .boardFileSize(fileSize)
                         .boardId(boardId)
                         .build();
-                boardRepository.insertBoardFile(boardFile);
+                boardFileRepository.boardFileSave(boardFile);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }

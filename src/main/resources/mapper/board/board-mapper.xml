@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Board">
-    <resultMap id="boardResultMap"                  type="board">
-        <result property="rowNum"                   column="ROW_NUM"/>
-        <result property="boardId"                  column="BOARD_ID"/>
+<mapper namespace="com.acorn.api.repository.board.BoardRepository">
+    <resultMap id="boardResultMap"                  type="com.acorn.api.entity.board.Board">
+        <id property="rowNum"                       column="ROW_NUM"/>
+        <id property="boardId"                      column="BOARD_ID"/>
         <result property="boardTitle"               column="BOARD_TITLE"/>
         <result property="boardWriter"              column="BOARD_WRITER"/>
         <result property="boardPassword"            column="BOARD_PASSWORD"/>
@@ -16,27 +16,11 @@
         <result property="boardUpdated"             column="BOARD_UPDATED"/>
         <result property="boardUserId"              column="BOARD_USER_ID"/>
         <result property="boardOwnerId"             column="BOARD_OWNER_ID"/>
-        <collection property="boardFilesList" javaType="java.util.List" resultMap="boardFileResultMap" columnPrefix="F_"/>
-    </resultMap>
-
-    <resultMap id="boardFileResultMap"              type="boardFile">
-        <result property="boardFileId"              column="BOARD_FILE_ID"/>
-        <result property="boardId"                  column="BOARD_FILE_BOARD_ID"/>
-        <result property="boardOriginalFileName"    column="BOARD_FILE_ORIGINAL_FILE_NAME"/>
-        <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
-        <result property="boardFilePath"            column="BOARD_FILE_PATH"/>
-        <result property="boardFileExtNm"           column="BOARD_FILE_EXTNS_NM"/>
-        <result property="boardFileSize"            column="BOARD_FILE_SIZE"/>
-        <result property="boardFileCreated"         column="BOARD_FILE_CREATED"/>
-        <result property="boardFileUpdated"         column="BOARD_FILE_UPDATED"/>
+        <collection property="boardFilesList"       javaType="java.util.List" resultMap="com.acorn.api.repository.board.BoardFileRepository.boardFileResultMap" columnPrefix="F_"/>
     </resultMap>
 
     <select id="selectBoardIdKey" resultType="Integer">
         SELECT nextval(BOARD_SEQ)
-    </select>
-
-    <select id="selectBoardFileIdKey" resultType="Integer">
-        SELECT nextval(BOARD_FILE_SEQ)
     </select>
 
     <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
@@ -94,18 +78,12 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
-    <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
+    <insert id="boardSave" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT, BOARD_USER_ID, BOARD_OWNER_ID)
         VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText}, #{boardUserId}, #{boardOwnerId})
     </insert>
 
-    <!-- 게시글 첨부파일 저장 -->
-    <insert id="insertBoardFile" parameterType="boardFile">
-        INSERT INTO TB_BOARD_FILE (BOARD_FILE_ID, BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_PATH, BOARD_FILE_EXTNS_NM, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
-        VALUES (#{boardFileId}, #{boardOriginalFileName}, #{boardStoredFileName}, #{boardFilePath}, #{boardFileExtNm}, #{boardFileSize}, #{boardId})
-    </insert>
-
-    <select id="selectBoardDetailData" resultMap="boardResultMap" parameterType="Integer">
+    <select id="selectBoardDetailData" parameterType="Integer" resultMap="boardResultMap">
         SELECT
             B.BOARD_ID,
             B.BOARD_TITLE,

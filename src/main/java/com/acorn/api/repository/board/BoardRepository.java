@@ -2,48 +2,20 @@ package com.acorn.api.repository.board;
 
 import com.acorn.api.common.PaginationRequest;
 import com.acorn.api.entity.board.Board;
-import com.acorn.api.entity.board.BoardFile;
-import lombok.RequiredArgsConstructor;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Repository
-@RequiredArgsConstructor
-public class BoardRepository {
+@Mapper
+public interface BoardRepository {
+    Integer selectBoardIdKey();
 
-    private final SqlSessionTemplate sql;
+    Integer selectListCountByRequest(PaginationRequest pagination);
 
-    public Integer selectBoardIdKey() {
-        return sql.selectOne("Board.selectBoardIdKey");
-    }
+    List<Board> selectBoardListData(PaginationRequest pagination);
 
-    public Integer selectBoardFileIdKey() {
-        return sql.selectOne("Board.selectBoardFileIdKey");
-    }
+    void boardSave(Board board);
 
-    public int selectListCountByRequest(PaginationRequest pagination) {
-        return sql.selectOne("Board.selectListCountByRequest", pagination);
-    }
-
-    public List<Board> selectBoardListData(PaginationRequest pagination) {
-        return sql.selectList("Board.selectBoardListData", pagination);
-    }
-
-    public void boardSave(Board newBoardSaveData) {
-        sql.insert("Board.insertBoard", newBoardSaveData);
-    }
-
-    public void insertBoardFile(BoardFile boardFile) {
-        sql.insert("Board.insertBoardFile", boardFile);
-    }
-
-    public Board selectBoardDetailData(Integer boardId) {
-        return sql.selectOne("Board.selectBoardDetailData", boardId);
-    }
-
-    public void updateBoardHits(Integer boardId) {
-        sql.update("Board.updateBoardHits", boardId);
-    }
+    Board selectBoardDetailData(@Param("boardId") Integer boardId);
 }
