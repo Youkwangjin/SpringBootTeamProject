@@ -50,14 +50,8 @@
             BOARD_ID,
             BOARD_TITLE,
             BOARD_WRITER,
-            BOARD_PASSWORD,
-            BOARD_CONTENTS,
-            BOARD_CONTENTS_TEXT,
             BOARD_HITS,
-            BOARD_CREATED,
-            BOARD_UPDATED,
-            BOARD_USER_ID,
-            BOARD_OWNER_ID
+            BOARD_CREATED
         FROM TB_BOARD
         <where>
             <if test="searchType == 'boardTitle' and searchName != null and searchName.trim() !=''">
