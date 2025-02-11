@@ -43,8 +43,7 @@
             <label>첨부파일</label>
             <ul>
                 <li th:each="file : ${boardDetailData.boardFiles}">
-                    <a th:href="@{|/uploads/${file.boardStoredFileName}|}" th:text="${file.boardOriginalFileName}" download></a>
-                    <span th:text="|(${#numbers.formatInteger(file.boardFileSize / 1024, 1, 'COMMA')} KB)|"></span>
+                    <a th:text="${file.boardOriginalFileName}"></a>
                 </li>
             </ul>
         </div>
