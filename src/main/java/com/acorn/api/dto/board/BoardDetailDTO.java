@@ -20,6 +20,8 @@ public class BoardDetailDTO {
 
     private String boardContents;
 
+    private String boardContentsText;
+
     private Integer boardHits;
 
     private LocalDateTime boardCreated;

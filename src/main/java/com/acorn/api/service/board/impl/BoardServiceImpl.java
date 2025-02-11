@@ -144,6 +144,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardTitle(detailData.getBoardTitle())
                 .boardWriter(detailData.getBoardWriter())
                 .boardContents(detailData.getBoardContents())
+                .boardContentsText(detailData.getBoardContentsText())
                 .boardCreated(detailData.getBoardCreated())
                 .boardHits(detailData.getBoardHits() + 1)
                 .boardFiles(boardFileDTOs)
