@@ -16,7 +16,7 @@
         <result property="boardUpdated"             column="BOARD_UPDATED"/>
         <result property="boardUserId"              column="BOARD_USER_ID"/>
         <result property="boardOwnerId"             column="BOARD_OWNER_ID"/>
-        <collection property="boardFilesList"       javaType="java.util.List" resultMap="com.acorn.api.repository.board.BoardFileRepository.boardFileResultMap" columnPrefix="F_"/>
+        <collection property="boardFilesList"       javaType="java.util.List" resultMap="com.acorn.api.repository.board.BoardFileRepository.boardFileResultMap" />
     </resultMap>
 
     <select id="selectBoardIdKey" resultType="Integer">
@@ -88,13 +88,17 @@
             B.BOARD_USER_ID,
             B.BOARD_OWNER_ID,
             F.BOARD_FILE_ID,
+            F.BOARD_FILE_BOARD_ID,
             F.BOARD_FILE_ORIGINAL_FILE_NAME,
             F.BOARD_FILE_STORED_FILE_NAME,
             F.BOARD_FILE_PATH,
             F.BOARD_FILE_EXTNS_NM,
             F.BOARD_FILE_SIZE
-        FROM TB_BOARD B
-                 LEFT JOIN TB_BOARD_FILE F ON B.BOARD_ID = F.BOARD_FILE_BOARD_ID
+        FROM
+            TB_BOARD B
+        LEFT OUTER JOIN
+            TB_BOARD_FILE F
+        ON B.BOARD_ID = F.BOARD_FILE_BOARD_ID
         WHERE B.BOARD_ID = #{boardId}
     </select>
 

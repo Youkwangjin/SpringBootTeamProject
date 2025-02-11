@@ -26,5 +26,7 @@ public class BoardDetailDTO {
 
     private Integer boardOwnerId;
 
+    private boolean isAuthor;
+
     private List<BoardFileDTO> boardFiles;
 }

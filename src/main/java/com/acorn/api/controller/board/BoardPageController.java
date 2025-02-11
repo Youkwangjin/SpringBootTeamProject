@@ -38,4 +38,11 @@ public class BoardPageController {
         model.addAttribute("boardDetailData", detailData);
         return "board/board-detail";
     }
+
+    @GetMapping("/board/update/{boardId}")
+    public String boardUpdate(@PathVariable("boardId") Integer boardId, Model model) {
+        BoardDetailDTO detailData = boardService.getBoardDetailData(boardId);
+        model.addAttribute("boardDetailData", detailData);
+        return "board/board-update";
+    }
 }
