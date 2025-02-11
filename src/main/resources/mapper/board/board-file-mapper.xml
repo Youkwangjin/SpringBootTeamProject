@@ -19,7 +19,7 @@
         SELECT nextval(BOARD_FILE_SEQ)
     </select>
 
-    <insert id="boardFileSave" parameterType="boardFile">
+    <insert id="boardFileSave" parameterType="com.acorn.api.entity.board.BoardFile">
         INSERT INTO TB_BOARD_FILE (BOARD_FILE_ID, BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_PATH, BOARD_FILE_EXTNS_NM, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
         VALUES (#{boardFileId}, #{boardOriginalFileName}, #{boardStoredFileName}, #{boardFilePath}, #{boardFileExtNm}, #{boardFileSize}, #{boardId})
     </insert>

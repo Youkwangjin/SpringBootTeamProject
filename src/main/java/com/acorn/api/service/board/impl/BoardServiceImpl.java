@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,14 +45,23 @@ public class BoardServiceImpl implements BoardService {
         List<Board> boardListData = boardRepository.selectBoardListData(boardListDTO);
 
         return boardListData.stream()
-                .map(board -> BoardListDTO.builder()
-                        .rowNum(board.getRowNum())
-                        .boardId(board.getBoardId())
-                        .boardTitle(board.getBoardTitle())
-                        .boardWriter(board.getBoardWriter())
-                        .boardCreated(board.getBoardCreated())
-                        .boardHits(board.getBoardHits())
-                        .build())
+                .map(boardList -> {
+                    final Integer rowNum = boardList.getRowNum();
+                    final Integer boardId = boardList.getBoardId();
+                    final String boardTitle = boardList.getBoardTitle();
+                    final String boardWriter = boardList.getBoardWriter();
+                    final Integer boardHits = boardList.getBoardHits();
+                    final LocalDateTime boardCreated = boardList.getBoardCreated();
+
+                    return BoardListDTO.builder()
+                            .rowNum(rowNum)
+                            .boardId(boardId)
+                            .boardTitle(boardTitle)
+                            .boardWriter(boardWriter)
+                            .boardHits(boardHits)
+                            .boardCreated(boardCreated)
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -126,26 +136,44 @@ public class BoardServiceImpl implements BoardService {
 
         boardRepository.updateBoardHits(boardId);
 
-        List<BoardFileDTO> boardFileDTOs = detailData.getBoardFilesList().stream()
-                .map(file -> BoardFileDTO.builder()
-                        .boardFileId(file.getBoardFileId())
-                        .boardOriginalFileName(file.getBoardOriginalFileName())
-                        .boardStoredFileName(file.getBoardStoredFileName())
-                        .boardFilePath(file.getBoardFilePath())
-                        .boardFileExtNm(file.getBoardFileExtNm())
-                        .boardFileSize(file.getBoardFileSize())
-                        .boardFileCreated(file.getBoardFileCreated())
-                        .boardFileUpdated(file.getBoardFileUpdated())
-                        .build())
+        List<BoardFile> boardFileEntities = detailData.getBoardFilesList();
+        final List<BoardFileDTO> boardFileDTOs = boardFileEntities.stream()
+                .map(file -> {
+                    final Integer boardFileId = file.getBoardFileId();
+                    final String boardOriginalFileName = file.getBoardOriginalFileName();
+                    final String boardStoredFileName = file.getBoardStoredFileName();
+                    final String boardFilePath = file.getBoardFilePath();
+                    final String boardFileExtNm = file.getBoardFileExtNm();
+                    final String boardFileSize = file.getBoardFileSize();
+
+                    return BoardFileDTO.builder()
+                            .boardFileId(boardFileId)
+                            .boardOriginalFileName(boardOriginalFileName)
+                            .boardStoredFileName(boardStoredFileName)
+                            .boardFilePath(boardFilePath)
+                            .boardFileExtNm(boardFileExtNm)
+                            .boardFileSize(boardFileSize)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
+        final String boardTitle = detailData.getBoardTitle();
+        final String boardWriter = detailData.getBoardWriter();
+        final String boardContentsText = detailData.getBoardContentsText();
+        final Integer boardHits = detailData.getBoardHits();
+        final LocalDateTime boardCreated = detailData.getBoardCreated();
+        final Integer boardUserId = detailData.getBoardUserId();
+        final Integer boardOwnerId = detailData.getBoardOwnerId();
+
         return BoardDetailDTO.builder()
-                .boardId(detailData.getBoardId())
-                .boardTitle(detailData.getBoardTitle())
-                .boardWriter(detailData.getBoardWriter())
-                .boardContents(detailData.getBoardContents())
-                .boardCreated(detailData.getBoardCreated())
-                .boardHits(detailData.getBoardHits() + 1)
+                .boardId(boardId)
+                .boardTitle(boardTitle)
+                .boardWriter(boardWriter)
+                .boardContentsText(boardContentsText)
+                .boardHits(boardHits + 1)
+                .boardCreated(boardCreated)
+                .boardUserId(boardUserId)
+                .boardOwnerId(boardOwnerId)
                 .boardFiles(boardFileDTOs)
                 .build();
     }

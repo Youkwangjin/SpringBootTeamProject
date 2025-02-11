@@ -16,15 +16,11 @@ public class BoardDetailDTO {
 
     private String boardWriter;
 
-    private String boardPassword;
-
-    private String boardContents;
+    private String boardContentsText;
 
     private Integer boardHits;
 
     private LocalDateTime boardCreated;
-
-    private LocalDateTime boardUpdated;
 
     private Integer boardUserId;
 
