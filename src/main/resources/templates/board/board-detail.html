@@ -9,8 +9,6 @@
     <link rel="stylesheet" th:href="@{/css/board/board-detail.css}">
     <link href="/assets/img/favicon.png" rel="icon">
     <title>에이콘테이너 : 글 상세보기</title>
-    <script src="/js/tinymce/tinymce.min.js"></script>
-    <script src="/js/common/tinyMCEConfig.js"></script>
     <script src="/js/common/fileModule.js"></script>
 </head>
 <body>
@@ -28,6 +26,7 @@
     </div>
     <div class="board-view-form">
         <div class="board-view-header">
+            <input type="hidden" id="boardId" th:value="${boardDetailData.boardId}">
             <h1 th:text="${boardDetailData.boardTitle}"></h1>
             <div class="board-meta">
                 <span th:text="|작성자: ${boardDetailData.boardWriter}|"></span>
@@ -66,6 +65,12 @@
         listBtn.addEventListener("click", function () {
             window.location.href = "/board/list";
         });
+
+        updateBtn.addEventListener("click", function () {
+            let boardId = document.getElementById("boardId").value;
+            window.location.href = `/board/update/${boardId}`;
+        });
+
     });
 </script>
 </body>
