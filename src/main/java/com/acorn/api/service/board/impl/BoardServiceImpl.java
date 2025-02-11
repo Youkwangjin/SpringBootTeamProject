@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -134,6 +135,19 @@ public class BoardServiceImpl implements BoardService {
             throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
         }
 
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final String boardTitle = detailData.getBoardTitle();
+        final String boardWriter = detailData.getBoardWriter();
+        final String boardContentsText = detailData.getBoardContentsText();
+        final Integer boardHits = detailData.getBoardHits();
+        final LocalDateTime boardCreated = detailData.getBoardCreated();
+        final Integer boardUserId = detailData.getBoardUserId();
+        final Integer boardOwnerId = detailData.getBoardOwnerId();
+
+        boolean isAuthor = (currentUserId != null && Objects.equals(currentUserId, boardUserId)) ||
+                           (currentOwnerId != null && Objects.equals(currentOwnerId, boardOwnerId));
+
         boardRepository.updateBoardHits(boardId);
 
         List<BoardFile> boardFileEntities = detailData.getBoardFilesList();
@@ -157,14 +171,6 @@ public class BoardServiceImpl implements BoardService {
                 })
                 .collect(Collectors.toList());
 
-        final String boardTitle = detailData.getBoardTitle();
-        final String boardWriter = detailData.getBoardWriter();
-        final String boardContentsText = detailData.getBoardContentsText();
-        final Integer boardHits = detailData.getBoardHits();
-        final LocalDateTime boardCreated = detailData.getBoardCreated();
-        final Integer boardUserId = detailData.getBoardUserId();
-        final Integer boardOwnerId = detailData.getBoardOwnerId();
-
         return BoardDetailDTO.builder()
                 .boardId(boardId)
                 .boardTitle(boardTitle)
@@ -174,6 +180,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardCreated(boardCreated)
                 .boardUserId(boardUserId)
                 .boardOwnerId(boardOwnerId)
+                .isAuthor(isAuthor)
                 .boardFiles(boardFileDTOs)
                 .build();
     }
