@@ -24,15 +24,11 @@ public class BoardListDTO extends PaginationRequest {
 
     private String boardWriter;
 
-    private String boardContents;
-
     private String boardContentsText;
 
     private Integer boardHits;
 
     private LocalDateTime boardCreated;
-
-    private LocalDateTime boardUpdated;
 
     @Override
     public Integer getPageNo() {

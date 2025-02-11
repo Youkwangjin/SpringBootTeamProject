@@ -72,7 +72,7 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
-    <insert id="boardSave" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
+    <insert id="boardSave" parameterType="com.acorn.api.entity.board.Board" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT, BOARD_USER_ID, BOARD_OWNER_ID)
         VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText}, #{boardUserId}, #{boardOwnerId})
     </insert>
@@ -82,12 +82,9 @@
             B.BOARD_ID,
             B.BOARD_TITLE,
             B.BOARD_WRITER,
-            B.BOARD_PASSWORD,
-            B.BOARD_CONTENTS,
             B.BOARD_CONTENTS_TEXT,
             B.BOARD_HITS,
             B.BOARD_CREATED,
-            B.BOARD_UPDATED,
             B.BOARD_USER_ID,
             B.BOARD_OWNER_ID,
             F.BOARD_FILE_ID,
@@ -95,9 +92,7 @@
             F.BOARD_FILE_STORED_FILE_NAME,
             F.BOARD_FILE_PATH,
             F.BOARD_FILE_EXTNS_NM,
-            F.BOARD_FILE_SIZE,
-            F.BOARD_FILE_CREATED,
-            F.BOARD_FILE_UPDATED
+            F.BOARD_FILE_SIZE
         FROM TB_BOARD B
                  LEFT JOIN TB_BOARD_FILE F ON B.BOARD_ID = F.BOARD_FILE_BOARD_ID
         WHERE B.BOARD_ID = #{boardId}
