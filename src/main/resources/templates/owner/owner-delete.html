@@ -6,84 +6,6 @@
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/css/owner/owner-join.css">
     <link href="/assets/css/main.css" rel="stylesheet">
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let ownerPassword = document.getElementById("ownerPassword");
-
-            let resetButton = document.getElementById("resetBtn");
-            let submitButton = document.getElementById("ownerDeleteBtn");
-            resetButton.addEventListener("click", function () {
-                window.location.href = "/owner/mypage";
-            });
-
-            const csrfTokenElement = document.querySelector("input[name=_csrf]");
-            const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
-
-            document.getElementById("ownerDelete").addEventListener("submit", function (e) {
-                e.preventDefault();
-
-                if (!submitButton.disabled) {
-                    const ownerId = document.getElementById("ownerId").value;
-                    const passwordValue = ownerPassword.value.trim();
-
-                    if (passwordValue === "") {
-                        alert("비밀번호를 입력해주세요.");
-                        document.getElementById("ownerPassword").focus();
-                        return;
-                    }
-                    if (confirm("정말로 탈퇴하시겠습니까?")) {
-                        const ownerData = {
-                            ownerId: ownerId,
-                            ownerPassword: ownerPassword.value,
-                            _csrf: document.querySelector("[name=_csrf]").value
-                        };
-                        fetch(`/api/owner/delete/${ownerId}`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRF-TOKEN": csrfToken
-                            },
-                            credentials: "include",
-                            body: JSON.stringify(ownerData)
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    return response.json().then(errorData => {
-                                        throw new Error(errorData.errorMsg);
-                                    });
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                if (data.httpStatus === "OK") {
-                                    alert(data.resultMsg);
-                                    performLogout();
-                                } else {
-                                    throw new Error(data.errorMsg);
-                                }
-                            })
-                            .catch(error => {
-                                alert(error.message);
-                            });
-                    }
-                }
-            });
-
-            function performLogout() {
-                fetch("/api/logout", {
-                    method: "POST",
-                    credentials: "include"
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            window.location.href = "/";
-                        } else {
-                            alert("서버에 오류가 발생했습니다. 관리자에게 문의하세요.")
-                        }
-                    })
-            }
-        })
-    </script>
 </head>
 <body>
 <h3 style="text-align: center; line-height: 2;"><span th:text="${ownerData.ownerNm}"></span>님의 회원정보</h3>
@@ -140,5 +62,83 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let ownerPassword = document.getElementById("ownerPassword");
+
+        let resetButton = document.getElementById("resetBtn");
+        let submitButton = document.getElementById("ownerDeleteBtn");
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/owner/mypage";
+        });
+
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        document.getElementById("ownerDelete").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (!submitButton.disabled) {
+                const ownerId = document.getElementById("ownerId").value;
+                const passwordValue = ownerPassword.value.trim();
+
+                if (passwordValue === "") {
+                    alert("비밀번호를 입력해주세요.");
+                    document.getElementById("ownerPassword").focus();
+                    return;
+                }
+                if (confirm("정말로 탈퇴하시겠습니까?")) {
+                    const ownerData = {
+                        ownerId: ownerId,
+                        ownerPassword: ownerPassword.value,
+                        _csrf: document.querySelector("[name=_csrf]").value
+                    };
+                    fetch(`/api/owner/delete/${ownerId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken
+                        },
+                        credentials: "include",
+                        body: JSON.stringify(ownerData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(errorData => {
+                                    throw new Error(errorData.errorMsg);
+                                });
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.httpStatus === "OK") {
+                                alert(data.resultMsg);
+                                performLogout();
+                            } else {
+                                throw new Error(data.errorMsg);
+                            }
+                        })
+                        .catch(error => {
+                            alert(error.message);
+                        });
+                }
+            }
+        });
+
+        function performLogout() {
+            fetch("/api/logout", {
+                method: "POST",
+                credentials: "include"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/";
+                    } else {
+                        alert("서버에 오류가 발생했습니다. 관리자에게 문의하세요.")
+                    }
+                })
+        }
+    })
+</script>
 </body>
 </html>
