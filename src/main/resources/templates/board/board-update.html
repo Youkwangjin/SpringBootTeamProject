@@ -9,9 +9,6 @@
     <link rel="stylesheet" th:href="@{/css/board/board-write.css}">
     <link href="/assets/img/favicon.png" rel="icon">
     <title>에이콘테이너 : 글 수정하기</title>
-    <script src="/js/tinymce/tinymce.min.js"></script>
-    <script src="/js/common/tinyMCEConfig.js"></script>
-    <script src="/js/common/fileModule.js"></script>
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
@@ -55,7 +52,7 @@
                 <button type="button" id="fileChoiceBtn">파일 선택하기</button>
                 <input type="file" id="fileInput" name="boardFiles" multiple style="display: none;"/>
                 <div id="fileListArea">
-                    <ul>
+                    <ul style="list-style: none">
                         <li th:each="file : ${boardDetailData.boardFiles}">
                             <a th:text="${file.boardOriginalFileName}"></a>
                         </li>
@@ -70,5 +67,8 @@
         </form>
     </div>
 </main>
+<script src="/js/tinymce/tinymce.min.js"></script>
+<script src="/js/common/tinyMCEConfig.js"></script>
+<script src="/js/common/fileModule.js"></script>
 </body>
 </html>
