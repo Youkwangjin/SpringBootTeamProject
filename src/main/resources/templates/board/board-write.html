@@ -48,10 +48,9 @@
             </div>
 
             <div class="form-group">
-                <label for="fileInput">파일첨부</label>
-                <button type="button" id="fileChoiceBtn">파일 선택하기</button>
-                <input type="file" id="fileInput" name="boardFiles" multiple style="display: none;"/>
-                <div id="fileListArea">
+                <label>파일첨부</label>
+                <button type="button" onclick="file.add();">파일 선택하기</button>
+                <div id="fileList">
                 </div>
             </div>
 
@@ -67,9 +66,8 @@
 <script src="/js/common/fileModule.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let fileHandler = fileModule.init(document.getElementById("fileInput"));
         initBackListButton();
-        initSubmitHandler(fileHandler);
+        initSubmitHandler();
     });
 
     function initBackListButton() {
@@ -79,7 +77,7 @@
         });
     }
 
-    function initSubmitHandler(fileHandler) {
+    function initSubmitHandler() {
         const csrfTokenElement = document.querySelector('input[name="_csrf"]');
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
@@ -110,9 +108,11 @@
             formData.append("boardPassword", boardPassword);
             formData.append("boardContents", boardContents);
 
-            fileHandler.getFiles().forEach(file => {
-                formData.append("boardFiles", file);
-            });
+            let fileList = file.list();
+            for (let i = 0; i < fileList.length; i++) {
+                formData.append("boardFiles", fileList[i].file);
+            }
+
             fetch("/api/board/save", {
                 method: "POST",
                 headers: {
@@ -141,6 +141,42 @@
                 });
         });
     }
+
+    let file = fileModule({
+        count: 5,
+        exts: [],
+        callback: {
+            add: function(target) {
+                let elem = document.getElementById("fileList");
+                let fragment = document.createDocumentFragment();
+
+                target.fileList.forEach(function(file) {
+                    let li = document.createElement("li");
+                    li.classList.add("file-entry");
+
+                    let span = document.createElement("span");
+                    span.textContent = file.name;
+
+                    let button = document.createElement("button");
+                    button.textContent = "×";
+                    button.classList.add("delete-btn");
+
+                    button.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        target.del(file);
+                        li.remove();
+                    });
+
+                    li.appendChild(span);
+                    li.appendChild(button);
+                    fragment.appendChild(li);
+                });
+
+                elem.innerHTML = "";
+                elem.appendChild(fragment);
+            }
+        }
+    });
 </script>
 </body>
 </html>
