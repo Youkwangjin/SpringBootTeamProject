@@ -82,6 +82,8 @@
             B.BOARD_ID,
             B.BOARD_TITLE,
             B.BOARD_WRITER,
+            B.BOARD_PASSWORD,
+            B.BOARD_CONTENTS,
             B.BOARD_CONTENTS_TEXT,
             B.BOARD_HITS,
             B.BOARD_CREATED,

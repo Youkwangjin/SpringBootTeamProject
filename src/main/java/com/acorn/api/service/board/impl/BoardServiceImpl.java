@@ -4,10 +4,7 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.board.BoardDetailDTO;
-import com.acorn.api.dto.board.BoardFileDTO;
-import com.acorn.api.dto.board.BoardSaveDTO;
-import com.acorn.api.dto.board.BoardListDTO;
+import com.acorn.api.dto.board.*;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -141,14 +138,14 @@ public class BoardServiceImpl implements BoardService {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final String boardTitle = detailData.getBoardTitle();
         final String boardWriter = detailData.getBoardWriter();
+        final String boardContents = detailData.getBoardContents();
         final String boardContentsText = detailData.getBoardContentsText();
         final Integer boardHits = detailData.getBoardHits();
         final LocalDateTime boardCreated = detailData.getBoardCreated();
         final Integer boardUserId = detailData.getBoardUserId();
         final Integer boardOwnerId = detailData.getBoardOwnerId();
 
-        boolean isAuthor = (currentUserId != null && Objects.equals(currentUserId, boardUserId)) ||
-                           (currentOwnerId != null && Objects.equals(currentOwnerId, boardOwnerId));
+        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
 
         boardRepository.updateBoardHits(boardId);
 
@@ -177,6 +174,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardId(boardId)
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
+                .boardContents(boardContents)
                 .boardContentsText(boardContentsText)
                 .boardHits(boardHits + 1)
                 .boardCreated(boardCreated)
