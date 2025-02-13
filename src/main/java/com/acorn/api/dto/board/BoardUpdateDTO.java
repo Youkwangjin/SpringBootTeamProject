@@ -12,6 +12,8 @@ import java.util.List;
 @Builder
 public class BoardUpdateDTO {
 
+    private Integer boardId;
+
     @NotBlank
     @Size(max = 50)
     private String boardTitle;
@@ -25,6 +27,10 @@ public class BoardUpdateDTO {
 
     @NotBlank
     private String boardContents;
+
+    private Integer boardUserId;
+
+    private Integer boardOwnerId;
 
     private List<MultipartFile> boardFiles;
 }

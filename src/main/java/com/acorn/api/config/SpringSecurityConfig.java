@@ -137,7 +137,8 @@ public class SpringSecurityConfig {
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
-                                         "/api/board/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                                         "/api/board/save",
+                                         "/api/board/update/${boardId}").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
                         .anyRequest().permitAll()
                 );
