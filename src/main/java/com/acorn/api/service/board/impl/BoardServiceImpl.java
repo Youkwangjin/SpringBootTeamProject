@@ -2,11 +2,9 @@ package com.acorn.api.service.board.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.board.BoardDetailDTO;
-import com.acorn.api.dto.board.BoardFileDTO;
-import com.acorn.api.dto.board.BoardSaveDTO;
-import com.acorn.api.dto.board.BoardListDTO;
+import com.acorn.api.dto.board.*;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -16,6 +14,7 @@ import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -139,14 +138,14 @@ public class BoardServiceImpl implements BoardService {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final String boardTitle = detailData.getBoardTitle();
         final String boardWriter = detailData.getBoardWriter();
+        final String boardContents = detailData.getBoardContents();
         final String boardContentsText = detailData.getBoardContentsText();
         final Integer boardHits = detailData.getBoardHits();
         final LocalDateTime boardCreated = detailData.getBoardCreated();
         final Integer boardUserId = detailData.getBoardUserId();
         final Integer boardOwnerId = detailData.getBoardOwnerId();
 
-        boolean isAuthor = (currentUserId != null && Objects.equals(currentUserId, boardUserId)) ||
-                           (currentOwnerId != null && Objects.equals(currentOwnerId, boardOwnerId));
+        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
 
         boardRepository.updateBoardHits(boardId);
 
@@ -175,6 +174,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardId(boardId)
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
+                .boardContents(boardContents)
                 .boardContentsText(boardContentsText)
                 .boardHits(boardHits + 1)
                 .boardCreated(boardCreated)
@@ -183,5 +183,40 @@ public class BoardServiceImpl implements BoardService {
                 .isAuthor(isAuthor)
                 .boardFiles(boardFileDTOs)
                 .build();
+    }
+
+    @Override
+    public void boardDataUpdate(BoardUpdateDTO updateData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer boardId = updateData.getBoardId();
+        final String boardTitle = updateData.getBoardTitle();
+        final String boardWriter = updateData.getBoardWriter();
+        final String boardContents = updateData.getBoardContents();
+        final Integer boardUserId = updateData.getBoardUserId();
+        final Integer boardOwnerId = updateData.getBoardOwnerId();
+
+        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
+        if (!isAuthor) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Board detailData = boardRepository.selectBoardDetailData(boardId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+        if (StringUtils.isNotBlank(updateData.getBoardPassword()) && !passwordEncoder.matches(updateData.getBoardPassword(), detailData.getBoardPassword())) {
+            throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
+        }
+
+        Board newBoardUpdateData = Board.builder()
+                .boardId(boardId)
+                .boardTitle(boardTitle)
+                .boardWriter(boardWriter)
+                .boardContents(boardContents)
+                .boardContentsText(Jsoup.parse(boardContents).text())
+                .build();
+        boardRepository.boardUpdate(newBoardUpdateData);
     }
 }

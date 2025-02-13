@@ -16,6 +16,8 @@ public class BoardDetailDTO {
 
     private String boardWriter;
 
+    private String boardContents;
+
     private String boardContentsText;
 
     private Integer boardHits;

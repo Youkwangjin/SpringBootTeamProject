@@ -82,6 +82,8 @@
             B.BOARD_ID,
             B.BOARD_TITLE,
             B.BOARD_WRITER,
+            B.BOARD_PASSWORD,
+            B.BOARD_CONTENTS,
             B.BOARD_CONTENTS_TEXT,
             B.BOARD_HITS,
             B.BOARD_CREATED,
@@ -107,6 +109,16 @@
             TB_BOARD
         SET
             BOARD_HITS = BOARD_HITS + 1
+        WHERE BOARD_ID = #{boardId}
+    </update>
+
+    <update id="boardUpdate" parameterType="com.acorn.api.entity.board.Board">
+        UPDATE
+            TB_BOARD
+        SET
+            BOARD_TITLE = #{boardTitle},
+            BOARD_CONTENTS = #{boardContents},
+            BOARD_CONTENTS_TEXT = #{boardContentsText}
         WHERE BOARD_ID = #{boardId}
     </update>
 </mapper>
