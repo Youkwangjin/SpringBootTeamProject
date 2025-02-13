@@ -7,195 +7,6 @@
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/css/user/user-join.css">
-    <script src="/js/common/daum-postcode.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let userPassword = document.getElementById("userPassword");
-            let userNm = document.getElementById("userNm");
-            let userTel = document.getElementById("userTel");
-            let userAddr = document.getElementById("userAddress");
-
-            let nameResult = document.querySelector(".name-result");
-            let telResult = document.querySelector(".tel-result");
-
-            let resetButton = document.getElementById("resetBtn");
-            let submitButton = document.getElementById("userUpdateBtn");
-
-            let validStates = {
-                userDisplayName: true,
-                userTel: true
-            };
-
-            const initialName = userNm.value;
-
-            function checkFormValid() {
-                const allValid = Object.values(validStates).every(Boolean);
-                submitButton.disabled = !allValid;
-            }
-
-            userNm.addEventListener("input", (e) => {
-                validName(e.target, nameResult);
-            });
-
-            userTel.addEventListener("input", (e) => {
-                validTel(e.target, telResult);
-            });
-
-            resetButton.addEventListener("click", function () {
-                window.location.href = "/user/mypage";
-            });
-
-            function validName(nameInput, resultElement) {
-                const name = nameInput.value.trim();
-                if (name.length === 0) {
-                    resultElement.textContent = "이름을 입력해주세요.";
-                    resultElement.classList.remove("success");
-                    resultElement.classList.add("error");
-                    nameInput.focus();
-                    validStates.userDisplayName = false;
-                } else if (!validNameCheck(name)) {
-                    resultElement.textContent = "이름을 올바르게 입력해주세요.";
-                    resultElement.classList.remove("success");
-                    resultElement.classList.add("error");
-                    nameInput.focus();
-                    validStates.userDisplayName = false;
-                } else if (name === initialName) {
-                    resultElement.textContent = "현재 기존 회원님 이름입니다.";
-                    resultElement.classList.remove("error");
-                    resultElement.classList.add("success");
-                    validStates.userDisplayName = true;
-                } else {
-                    resultElement.textContent = "사용 가능한 이름입니다.";
-                    resultElement.classList.remove("error");
-                    resultElement.classList.add("success");
-                    validStates.userDisplayName = true;
-                }
-                checkFormValid();
-            }
-
-            function validNameCheck(name) {
-                let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
-                return namePattern.test(name.trim());
-            }
-
-            function validTel(telInput, resultElement) {
-                const tel = telInput.value.trim();
-                if (tel.length === 0) {
-                    resultElement.textContent = "전화번호를 입력해주세요.";
-                    resultElement.classList.remove("success");
-                    resultElement.classList.add("error");
-                    telInput.focus();
-                    validStates.userTel = false;
-                } else if (!validTelCheck(tel)) {
-                    resultElement.textContent = "번호를 올바르게 입력해주세요.";
-                    resultElement.classList.remove("success");
-                    resultElement.classList.add("error");
-                    telInput.focus();
-                    validStates.userTel = false;
-                } else {
-                    checkTelDuplication(telInput, resultElement);
-                }
-                checkFormValid();
-            }
-
-            function checkTelDuplication(telInput, resultElement) {
-                const userTel = telInput.value.trim();
-                fetch("/api/auth/user/userTelCheck?userTel=" + encodeURIComponent(userTel), {
-                    method: "GET",
-                    credentials: "include",
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw response;
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.httpStatus === "OK") {
-                            resultElement.textContent = data.resultMsg;
-                            resultElement.classList.add("success");
-                            resultElement.classList.remove("error");
-                            validStates.userTel = true;
-                            checkFormValid();
-                        }
-                    })
-                    .catch(errorResponse => {
-                        errorResponse.json().then(errorData => {
-                            resultElement.textContent = errorData.errorMsg;
-                            resultElement.classList.add("error");
-                            resultElement.classList.remove("success");
-                            validStates.userEmail = false;
-                            checkFormValid();
-                        });
-                    });
-            }
-
-            function validTelCheck(tel) {
-                let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
-                return telPattern.test(tel.trim());
-            }
-
-            const csrfTokenElement = document.querySelector("input[name=_csrf]");
-            const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
-
-            document.getElementById("userUpdate").addEventListener("submit", function (e) {
-                e.preventDefault();
-
-                if (!submitButton.disabled) {
-                    const userId = document.getElementById("userId").value;
-                    const passwordValue = userPassword.value.trim();
-
-                    if (passwordValue === "") {
-                        alert("비밀번호를 입력해주세요.");
-                        document.getElementById("userPassword").focus();
-                        return;
-                    }
-
-                    if (!confirm("변경 사항을 저장하시겠습니까?")) {
-                        alert("회원 정보 수정이 취소되었습니다.");
-                        return;
-                    }
-
-                    const userData = {
-                        userId: userId,
-                        userPassword: userPassword.value,
-                        userNm: userNm.value,
-                        userTel: userTel.value,
-                        userAddr: userAddr.value,
-                        _csrf: document.querySelector("[name=_csrf]").value
-                    };
-                    fetch(`/api/user/update/${userId}`, {
-                        method: "PATCH",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": csrfToken
-                        },
-                        credentials: "include",
-                        body: JSON.stringify(userData)
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(errorData => {
-                                    throw new Error(errorData.errorMsg);
-                                });
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.httpStatus === "OK") {
-                                alert(data.resultMsg);
-                                window.location.href = "/user/mypage";
-                            } else {
-                                throw new Error(data.errorMsg);
-                            }
-                        })
-                        .catch(error => {
-                            alert(error.message);
-                        });
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 <h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userNm}"></span>님의 회원정보</h3>
@@ -267,5 +78,194 @@
         </form>
     </div>
 </div>
+<script src="/js/common/daum-postcode.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let userPassword = document.getElementById("userPassword");
+        let userNm = document.getElementById("userNm");
+        let userTel = document.getElementById("userTel");
+        let userAddr = document.getElementById("userAddress");
+
+        let nameResult = document.querySelector(".name-result");
+        let telResult = document.querySelector(".tel-result");
+
+        let resetButton = document.getElementById("resetBtn");
+        let submitButton = document.getElementById("userUpdateBtn");
+
+        let validStates = {
+            userDisplayName: true,
+            userTel: true
+        };
+
+        const initialName = userNm.value;
+
+        function checkFormValid() {
+            const allValid = Object.values(validStates).every(Boolean);
+            submitButton.disabled = !allValid;
+        }
+
+        userNm.addEventListener("input", (e) => {
+            validName(e.target, nameResult);
+        });
+
+        userTel.addEventListener("input", (e) => {
+            validTel(e.target, telResult);
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/user/mypage";
+        });
+
+        function validName(nameInput, resultElement) {
+            const name = nameInput.value.trim();
+            if (name.length === 0) {
+                resultElement.textContent = "이름을 입력해주세요.";
+                resultElement.classList.remove("success");
+                resultElement.classList.add("error");
+                nameInput.focus();
+                validStates.userDisplayName = false;
+            } else if (!validNameCheck(name)) {
+                resultElement.textContent = "이름을 올바르게 입력해주세요.";
+                resultElement.classList.remove("success");
+                resultElement.classList.add("error");
+                nameInput.focus();
+                validStates.userDisplayName = false;
+            } else if (name === initialName) {
+                resultElement.textContent = "현재 기존 회원님 이름입니다.";
+                resultElement.classList.remove("error");
+                resultElement.classList.add("success");
+                validStates.userDisplayName = true;
+            } else {
+                resultElement.textContent = "사용 가능한 이름입니다.";
+                resultElement.classList.remove("error");
+                resultElement.classList.add("success");
+                validStates.userDisplayName = true;
+            }
+            checkFormValid();
+        }
+
+        function validNameCheck(name) {
+            let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
+            return namePattern.test(name.trim());
+        }
+
+        function validTel(telInput, resultElement) {
+            const tel = telInput.value.trim();
+            if (tel.length === 0) {
+                resultElement.textContent = "전화번호를 입력해주세요.";
+                resultElement.classList.remove("success");
+                resultElement.classList.add("error");
+                telInput.focus();
+                validStates.userTel = false;
+            } else if (!validTelCheck(tel)) {
+                resultElement.textContent = "번호를 올바르게 입력해주세요.";
+                resultElement.classList.remove("success");
+                resultElement.classList.add("error");
+                telInput.focus();
+                validStates.userTel = false;
+            } else {
+                checkTelDuplication(telInput, resultElement);
+            }
+            checkFormValid();
+        }
+
+        function checkTelDuplication(telInput, resultElement) {
+            const userTel = telInput.value.trim();
+            fetch("/api/auth/user/userTelCheck?userTel=" + encodeURIComponent(userTel), {
+                method: "GET",
+                credentials: "include",
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw response;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.httpStatus === "OK") {
+                        resultElement.textContent = data.resultMsg;
+                        resultElement.classList.add("success");
+                        resultElement.classList.remove("error");
+                        validStates.userTel = true;
+                        checkFormValid();
+                    }
+                })
+                .catch(errorResponse => {
+                    errorResponse.json().then(errorData => {
+                        resultElement.textContent = errorData.errorMsg;
+                        resultElement.classList.add("error");
+                        resultElement.classList.remove("success");
+                        validStates.userEmail = false;
+                        checkFormValid();
+                    });
+                });
+        }
+
+        function validTelCheck(tel) {
+            let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
+            return telPattern.test(tel.trim());
+        }
+
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        document.getElementById("userUpdate").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (!submitButton.disabled) {
+                const userId = document.getElementById("userId").value;
+                const passwordValue = userPassword.value.trim();
+
+                if (passwordValue === "") {
+                    alert("비밀번호를 입력해주세요.");
+                    document.getElementById("userPassword").focus();
+                    return;
+                }
+
+                if (!confirm("변경 사항을 저장하시겠습니까?")) {
+                    alert("회원 정보 수정이 취소되었습니다.");
+                    return;
+                }
+
+                const userData = {
+                    userId: userId,
+                    userPassword: userPassword.value,
+                    userNm: userNm.value,
+                    userTel: userTel.value,
+                    userAddr: userAddr.value,
+                    _csrf: document.querySelector("[name=_csrf]").value
+                };
+                fetch(`/api/user/update/${userId}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(userData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw new Error(errorData.errorMsg);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.httpStatus === "OK") {
+                            alert(data.resultMsg);
+                            window.location.href = "/user/mypage";
+                        } else {
+                            throw new Error(data.errorMsg);
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            }
+        });
+    });
+</script>
 </body>
 </html>

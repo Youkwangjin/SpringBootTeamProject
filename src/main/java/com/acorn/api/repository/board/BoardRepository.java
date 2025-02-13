@@ -18,4 +18,8 @@ public interface BoardRepository {
     void boardSave(Board board);
 
     Board selectBoardDetailData(@Param("boardId") Integer boardId);
+
+    void updateBoardHits(@Param("boardId")Integer boardId);
+
+    void boardUpdate(Board board);
 }

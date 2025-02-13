@@ -9,13 +9,6 @@
     <link rel="stylesheet" th:href="@{/css/board/board-detail.css}">
     <link href="/assets/img/favicon.png" rel="icon">
     <title>에이콘테이너 : 글 상세보기</title>
-    <script src="/js/tinymce/tinymce.min.js"></script>
-    <script src="/js/common/tinyMCEConfig.js"></script>
-    <script src="/js/common/fileModule.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        });
-    </script>
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
@@ -32,6 +25,7 @@
     </div>
     <div class="board-view-form">
         <div class="board-view-header">
+            <input type="hidden" id="boardId" th:value="${boardDetailData.boardId}">
             <h1 th:text="${boardDetailData.boardTitle}"></h1>
             <div class="board-meta">
                 <span th:text="|작성자: ${boardDetailData.boardWriter}|"></span>
@@ -40,23 +34,42 @@
         </div>
 
         <div class="board-content">
-            <p th:text="${boardDetailData.boardContents}"></p>
+            <p th:text="${boardDetailData.boardContentsText}"></p>
         </div>
 
         <div class="board-attachments">
             <label>첨부파일</label>
             <ul>
                 <li th:each="file : ${boardDetailData.boardFiles}">
-                    <a th:href="@{|/uploads/${file.boardStoredFileName}|}" th:text="${file.boardOriginalFileName}" download></a>
-                    <span th:text="|(${#numbers.formatInteger(file.boardFileSize / 1024, 1, 'COMMA')} KB)|"></span>
+                    <a th:text="${file.boardOriginalFileName}"></a>
                 </li>
             </ul>
         </div>
 
         <div class="button-container">
-            <input type="button" id="backListBtn" value="목록">
+            <input type="button" class="ListBtn" id="listBtn" value="목록">
+            <th:block th:if="${boardDetailData.isAuthor}">
+                <input type="button" class="updateBtn" id="updateBtn" value="수정">
+                <input type="button" class="deleteBtn" id="deleteBtn" value="삭제">
+            </th:block>
         </div>
     </div>
 </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let listBtn = document.getElementById("listBtn");
+        let updateBtn = document.getElementById("updateBtn");
+        let deleteBtn = document.getElementById("deleteBtn");
+
+        listBtn.addEventListener("click", function () {
+            window.location.href = "/board/list";
+        });
+
+        updateBtn.addEventListener("click", function () {
+            let boardId = document.getElementById("boardId").value;
+            window.location.href = `/board/update/${boardId}`;
+        });
+    });
+</script>
 </body>
 </html>

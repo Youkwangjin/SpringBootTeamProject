@@ -54,19 +54,44 @@
 
 .button-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    gap: 10px;
     margin-top: 20px;
+    padding-right: 10px;
 }
 
 .button-container input {
-    padding: 10px 20px;
-    background-color: #0d6efd;
-    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
     border: none;
     cursor: pointer;
     transition: background 0.3s ease;
+    border-radius: 5px;
 }
 
-.button-container input:hover {
+.ListBtn {
+    background-color: #343a40;
+    color: white;
+}
+
+.ListBtn:hover {
+    background-color: #23272b;
+}
+
+.updateBtn {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.updateBtn:hover {
     background-color: #0b5ed7;
+}
+
+.deleteBtn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.deleteBtn:hover {
+    background-color: #bb2d3b;
 }

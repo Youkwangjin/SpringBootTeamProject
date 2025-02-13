@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/board/board-write.css}">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <title>에이콘테이너 : 글 수정하기</title>
+</head>
+<body>
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_USER')">
+    <div th:replace="~{fragments/header-user :: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_OWNER')">
+    <div th:replace="~{fragments/header-owner :: header}"></div>
+</div>
+<main id="main">
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+    </div>
+    <div class="board-write-form">
+        <form id="updateForm">
+            <input type="hidden" id="boardId" th:value="${boardDetailData.boardId}">
+            <input type="hidden" id="boardUserId" th:value="${boardDetailData.boardUserId}">
+            <input type="hidden" id="boardOwnerId" th:value="${boardDetailData.boardOwnerId}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div class="form-group">
+                <label for="boardTitle">제목</label>
+                <input type="text" id="boardTitle" th:value="${boardDetailData.boardTitle}">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="boardWriter">작성자</label>
+                    <input type="text" id="boardWriter" th:value="${boardDetailData.boardWriter}" readonly>
+                </div>
+                <div class="form-group half">
+                    <label for="boardPassword">비밀번호</label>
+                    <input type="password" id="boardPassword">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="boardContents">내용</label>
+                <textarea id="boardContents" th:text="${boardDetailData.boardContents}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>파일첨부</label>
+                <button type="button" onclick="file.add();">파일 선택하기</button>
+                <div id="fileList">
+                </div>
+            </div>
+
+            <div class="form-group button-container">
+                <input type="button" id="backListBtn" value="뒤로가기">
+                <input type="submit" id="updateBtn" value="수정하기">
+            </div>
+        </form>
+    </div>
+</main>
+<script src="/js/tinymce/tinymce.min.js"></script>
+<script src="/js/common/tinyMCEConfig.js"></script>
+<script src="/js/common/fileModule.js"></script>
+<script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const boardId = document.getElementById("boardId").value;
+        initBackListButton();
+        initSubmitHandler();
+
+        function initBackListButton() {
+            const backListButton = document.getElementById("backListBtn");
+            backListButton.addEventListener("click", function () {
+                window.location.href = `/board/detail/${boardId}`;
+            });
+        }
+
+        function initSubmitHandler() {
+            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+            document.getElementById("updateForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                let boardTitle = document.getElementById("boardTitle").value.trim();
+                let boardWriter = document.getElementById("boardWriter").value.trim();
+                let boardPassword = document.getElementById("boardPassword").value.trim();
+                let boardContents = document.getElementById("boardContents").value.trim();
+
+                if (!boardTitle || !boardPassword || !boardContents) {
+                    alert("제목, 비밀번호, 내용 입력란은 필수 항목입니다.");
+                    return;
+                }
+                if (boardTitle.length > 50) {
+                    alert("제목은 최대 50자까지 입력 가능합니다.");
+                    return;
+                }
+                if (boardPassword.length < 6) {
+                    alert("비밀번호는 6글자 이상이어야 합니다.");
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("boardId", boardId);
+                formData.append("boardTitle", boardTitle);
+                formData.append("boardWriter", boardWriter);
+                formData.append("boardPassword", boardPassword);
+                formData.append("boardContents", boardContents);
+
+                let fileList = file.list();
+                for (let i = 0; i < fileList.length; i++) {
+                    formData.append("boardFiles", fileList[i].file);
+                }
+
+                fetch(`/api/board/update/${boardId}`, {
+                    method: "PATCH",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                    body: formData,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw new Error(errorData.errorMsg);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.httpStatus === "OK") {
+                            alert(data.resultMsg);
+                            window.location.href = "/board/list";
+                        } else {
+                            throw new Error(data.errorMsg);
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            });
+        }
+    });
+
+    let file = fileModule({
+        count: 5,
+        exts: [],
+        callback: {
+            add: function(target) {
+                let elem = document.getElementById("fileList");
+                let fragment = document.createDocumentFragment();
+
+                target.fileList.forEach(function(file) {
+                    let li = document.createElement("li");
+                    li.classList.add("file-entry");
+
+                    let span = document.createElement("span");
+                    span.textContent = file.name;
+
+                    let button = document.createElement("button");
+                    button.textContent = "×";
+                    button.classList.add("delete-btn");
+
+                    button.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        target.del(file);
+                        li.remove();
+                    });
+
+                    li.appendChild(span);
+                    li.appendChild(button);
+                    fragment.appendChild(li);
+                });
+
+                elem.innerHTML = "";
+                elem.appendChild(fragment);
+            }
+        }
+    });
+
+    /*<![CDATA[*/
+    let existingFiles = /*[[${boardDetailData.boardFiles}]]*/ [];
+    /*]]>*/
+
+    existingFiles.forEach(function(fileData) {
+        file.add({
+            file: null,
+            name: fileData.boardOriginalFileName,
+            size: fileData.boardFileSize,
+            fileId: fileData.boardFileId
+        });
+    });
+</script>
+</body>
+</html>
