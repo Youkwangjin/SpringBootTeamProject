@@ -19,8 +19,47 @@
         SELECT nextval(BOARD_FILE_SEQ)
     </select>
 
+    <select id="findByBoardId" resultType="com.acorn.api.entity.board.BoardFile" resultMap="boardFileResultMap">
+        SELECT
+            BOARD_FILE_ID,
+            BOARD_FILE_BOARD_ID,
+            BOARD_FILE_ORIGINAL_FILE_NAME,
+            BOARD_FILE_STORED_FILE_NAME,
+            BOARD_FILE_PATH,
+            BOARD_FILE_EXTNS_NM,
+            BOARD_FILE_SIZE,
+            BOARD_FILE_CREATED,
+            BOARD_FILE_UPDATED
+        FROM
+            TB_BOARD_FILE
+        WHERE BOARD_FILE_BOARD_ID = #{boardId}
+    </select>
+
+    <select id="findById" resultType="com.acorn.api.entity.board.BoardFile" resultMap="boardFileResultMap">
+        SELECT
+            BOARD_FILE_ID,
+            BOARD_FILE_BOARD_ID,
+            BOARD_FILE_ORIGINAL_FILE_NAME,
+            BOARD_FILE_STORED_FILE_NAME,
+            BOARD_FILE_PATH,
+            BOARD_FILE_EXTNS_NM,
+            BOARD_FILE_SIZE,
+            BOARD_FILE_CREATED,
+            BOARD_FILE_UPDATED
+        FROM
+            TB_BOARD_FILE
+        WHERE BOARD_FILE_ID = #{boardFileId}
+    </select>
+
     <insert id="boardFileSave" parameterType="com.acorn.api.entity.board.BoardFile">
         INSERT INTO TB_BOARD_FILE (BOARD_FILE_ID, BOARD_FILE_ORIGINAL_FILE_NAME, BOARD_FILE_STORED_FILE_NAME, BOARD_FILE_PATH, BOARD_FILE_EXTNS_NM, BOARD_FILE_SIZE, BOARD_FILE_BOARD_ID)
         VALUES (#{boardFileId}, #{boardOriginalFileName}, #{boardStoredFileName}, #{boardFilePath}, #{boardFileExtNm}, #{boardFileSize}, #{boardId})
     </insert>
+
+    <delete id="boardFileDelete" parameterType="com.acorn.api.entity.board.BoardFile">
+        DELETE
+        FROM
+            TB_BOARD_FILE
+        WHERE BOARD_FILE_ID = #{boardFileId}
+    </delete>
 </mapper>
