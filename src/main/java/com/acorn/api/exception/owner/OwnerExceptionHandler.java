@@ -3,26 +3,23 @@ package com.acorn.api.exception.owner;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
 import com.acorn.api.controller.owner.OwnerRegisterController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.acorn.api.controller.owner.OwnerUpdateController;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackageClasses  = OwnerRegisterController.class)
+@Slf4j
+@RestControllerAdvice(assignableTypes = {OwnerRegisterController.class, OwnerUpdateController.class})
 public class OwnerExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(OwnerExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-
-         log.info("  ========================  ExceptionHandler started  ========================  ");
+        log.info("  ========================  ExceptionHandler started  ========================  ");
 
         StringBuilder errorOwnerMsg = new StringBuilder();
-
         ApiValidationErrorCode ownerErrorCode = ApiValidationErrorCode.VALIDATION_ERROR;
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
@@ -38,7 +35,7 @@ public class OwnerExceptionHandler {
                 case "ownerName" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;
                 case "ownerTel" -> ApiValidationErrorCode.TELEPHONE_FORMAT_ERROR;
                 case "ownerCompanyName" -> ApiValidationErrorCode.COMPANY_NAME_ERROR;
-                default -> ownerErrorCode;
+                default -> ApiValidationErrorCode.VALIDATION_ERROR;
             };
         }
 

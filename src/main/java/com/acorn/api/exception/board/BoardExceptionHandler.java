@@ -3,27 +3,23 @@ package com.acorn.api.exception.board;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
 import com.acorn.api.controller.board.BoardSaveController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.acorn.api.controller.board.BoardUpdateController;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackageClasses = BoardSaveController.class)
+@Slf4j
+@RestControllerAdvice(assignableTypes = {BoardSaveController.class, BoardUpdateController.class})
 public class BoardExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(BoardExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-
         log.info("  ========================  Board Data ExceptionHandler Started  ========================  ");
 
         StringBuilder errorBoardMsg = new StringBuilder();
-
         ApiValidationErrorCode boardErrorCode = ApiValidationErrorCode.FIELD_BLANK_ERROR;
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
@@ -32,8 +28,11 @@ public class BoardExceptionHandler {
             }
             errorBoardMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
-            boardErrorCode = boardFieldErrorCode(fieldError);
-
+            boardErrorCode = switch (fieldError.getField()) {
+                case "boardTitle" -> ApiValidationErrorCode.TITLE_LENGTH_ERROR;
+                case "boardPassword" -> ApiValidationErrorCode.PASSWORD_LENGTH_ERROR;
+                default -> ApiValidationErrorCode.FIELD_BLANK_ERROR;
+            };
         }
 
         log.info("  ========================  Board Data Validation errors  ========================  : {}", errorBoardMsg);
@@ -44,28 +43,5 @@ public class BoardExceptionHandler {
                 boardErrorCode.getErrorMsg()
         );
         return ResponseEntity.status(boardErrorCode.getHttpStatus()).body(response);
-
-    }
-
-    private ApiValidationErrorCode boardFieldErrorCode(FieldError fieldError) {
-
-        String defaultMessage = fieldError.getDefaultMessage();
-
-        if (!StringUtils.hasText(defaultMessage) || "must not be blank".equals(defaultMessage)) {
-            return ApiValidationErrorCode.FIELD_BLANK_ERROR;
-        }
-
-        return switch (fieldError.getField()) {
-            case "boardTitle" -> ApiValidationErrorCode.TITLE_LENGTH_ERROR;
-            case "boardPassword" -> {
-                if (defaultMessage.contains("size must be between")) {
-                    yield ApiValidationErrorCode.PASSWORD_LENGTH_ERROR;
-                } else {
-                    yield ApiValidationErrorCode.FIELD_BLANK_ERROR;
-                }
-            }
-
-            default -> ApiValidationErrorCode.FIELD_BLANK_ERROR;
-        };
     }
 }
