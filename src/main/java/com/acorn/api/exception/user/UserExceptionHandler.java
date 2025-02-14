@@ -2,26 +2,24 @@ package com.acorn.api.exception.user;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.acorn.api.controller.user.UserRegisterController;
+import com.acorn.api.controller.user.UserUpdateController;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@Slf4j
+@RestControllerAdvice(assignableTypes = {UserRegisterController.class, UserUpdateController.class})
 public class UserExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(UserExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-
          log.info("  ========================  ExceptionHandler started  ========================  ");
 
         StringBuilder errorUserMsg = new StringBuilder();
-
         ApiValidationErrorCode userErrorCode = ApiValidationErrorCode.VALIDATION_ERROR;
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
@@ -35,7 +33,7 @@ public class UserExceptionHandler {
                 case "userPassword" -> ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR;
                 case "userNm" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;
                 case "userTel" -> ApiValidationErrorCode.TELEPHONE_FORMAT_ERROR;
-                default -> userErrorCode;
+                default -> ApiValidationErrorCode.VALIDATION_ERROR;
             };
         }
 
