@@ -32,7 +32,8 @@
             BOARD_FILE_UPDATED
         FROM
             TB_BOARD_FILE
-        WHERE BOARD_FILE_BOARD_ID = #{boardId}
+        WHERE
+            BOARD_FILE_BOARD_ID = #{boardId}
     </select>
 
     <select id="findById" resultType="com.acorn.api.entity.board.BoardFile" resultMap="boardFileResultMap">
@@ -48,7 +49,8 @@
             BOARD_FILE_UPDATED
         FROM
             TB_BOARD_FILE
-        WHERE BOARD_FILE_ID = #{boardFileId}
+        WHERE
+            BOARD_FILE_ID = #{boardFileId}
     </select>
 
     <insert id="boardFileSave" parameterType="com.acorn.api.entity.board.BoardFile">
@@ -60,6 +62,7 @@
         DELETE
         FROM
             TB_BOARD_FILE
-        WHERE BOARD_FILE_ID = #{boardFileId}
+        WHERE
+            BOARD_FILE_ID = #{boardFileId}
     </delete>
 </mapper>

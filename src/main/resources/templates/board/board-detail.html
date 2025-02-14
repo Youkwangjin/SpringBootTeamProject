@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -24,8 +25,12 @@
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
     </div>
     <div class="board-view-form">
+        <form id="detailForm">
         <div class="board-view-header">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <input type="hidden" id="boardId" th:value="${boardDetailData.boardId}">
+            <input type="hidden" id="boardUserId" th:value="${boardDetailData.boardUserId}">
+            <input type="hidden" id="boardOwnerId" th:value="${boardDetailData.boardOwnerId}">
             <h1 th:text="${boardDetailData.boardTitle}"></h1>
             <div class="board-meta">
                 <span th:text="|작성자: ${boardDetailData.boardWriter}|"></span>
@@ -53,6 +58,7 @@
                 <input type="button" class="deleteBtn" id="deleteBtn" value="삭제">
             </th:block>
         </div>
+        </form>
     </div>
 </main>
 <script>
@@ -60,14 +66,59 @@
         let listBtn = document.getElementById("listBtn");
         let updateBtn = document.getElementById("updateBtn");
         let deleteBtn = document.getElementById("deleteBtn");
+        const boardId = document.getElementById("boardId").value;
+
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
         listBtn.addEventListener("click", function () {
             window.location.href = "/board/list";
         });
 
         updateBtn.addEventListener("click", function () {
-            let boardId = document.getElementById("boardId").value;
             window.location.href = `/board/update/${boardId}`;
+        });
+
+        deleteBtn.addEventListener("click", function () {
+            if (!confirm("정말로 삭제하시겠습니까?")) {
+                return;
+            }
+
+            const boardData = {
+                boardId: boardId,
+                boardUserId: document.getElementById("boardUserId").value,
+                boardOwnerId: document.getElementById("boardOwnerId").value,
+                _csrf: csrfToken
+            };
+
+            fetch(`/api/board/delete/${boardId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
+                body: JSON.stringify(boardData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.errorMsg);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.httpStatus === "OK") {
+                        alert(data.resultMsg);
+                        window.location.href = "/board/list";
+                    } else {
+                        throw new Error(data.errorMsg);
+                    }
+                })
+                .catch(error => {
+                    alert("게시글 삭제 중 오류가 발생했습니다: " + error.message);
+                });
         });
     });
 </script>

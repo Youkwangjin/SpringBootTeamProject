@@ -22,4 +22,6 @@ public interface BoardRepository {
     void updateBoardHits(@Param("boardId")Integer boardId);
 
     void boardUpdate(Board board);
+
+    void boardDelete(Board board);
 }

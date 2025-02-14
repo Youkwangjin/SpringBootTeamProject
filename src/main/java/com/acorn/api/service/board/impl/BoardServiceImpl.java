@@ -268,4 +268,29 @@ public class BoardServiceImpl implements BoardService {
             }
         }
     }
+
+    @Override
+    @Transactional
+    public void boardDataDelete(BoardDeleteDTO deleteData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer boardId = deleteData.getBoardId();
+        final Integer boardUserId = deleteData.getBoardUserId();
+        final Integer boardOwnerId = deleteData.getBoardOwnerId();
+
+        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
+        if (!isAuthor) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Board detailData = boardRepository.selectBoardDetailData(boardId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+        Board boardDeleteData = Board.builder()
+                .boardId(boardId)
+                .build();
+        boardRepository.boardDelete(boardDeleteData);
+    }
 }
