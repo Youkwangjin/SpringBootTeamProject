@@ -1,5 +1,6 @@
 package com.acorn.api.code.response;
 
+import com.acorn.api.code.common.ApiHttpErrorCode;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,12 +32,12 @@ public class WebErrorResponse {
     }
 
     private String getErrorMessage(HttpStatus status) {
-        return switch (status) {
-            case UNAUTHORIZED -> "로그인 후 이용해주세요.";
-            case FORBIDDEN -> "접근 권한이 없습니다.";
-            case NOT_FOUND -> "요청하신 페이지를 찾을 수 없습니다.";
-            case INTERNAL_SERVER_ERROR -> "서버 오류가 발생했습니다.";
-            default -> "알 수 없는 오류가 발생했습니다.";
-        };
+        for (ApiHttpErrorCode errorCode : ApiHttpErrorCode.values()) {
+            if(errorCode.getHttpStatus() == status) {
+                return errorCode.getErrorMsg();
+            }
+        }
+
+        return status.getReasonPhrase();
     }
 }
