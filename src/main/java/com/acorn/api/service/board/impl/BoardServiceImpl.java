@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -186,6 +187,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public void boardDataUpdate(BoardUpdateDTO updateData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
@@ -218,5 +220,77 @@ public class BoardServiceImpl implements BoardService {
                 .boardContentsText(Jsoup.parse(boardContents).text())
                 .build();
         boardRepository.boardUpdate(newBoardUpdateData);
+
+        List<Integer> boardFileIds = updateData.getBoardFileIds();
+        if (boardFileIds == null) {
+            boardFileIds = new ArrayList<>();
+        }
+
+        List<BoardFile> existingFiles = boardFileRepository.findByBoardId(boardId);
+
+        List<Integer> deletedFileIds = new ArrayList<>();
+        for (BoardFile boardFile : existingFiles) {
+            if (!boardFileIds.contains(boardFile.getBoardFileId())) {
+                deletedFileIds.add(boardFile.getBoardFileId());
+            }
+        }
+
+        for (Integer boardFileId : deletedFileIds) {
+            BoardFile boardFile = boardFileRepository.findById(boardFileId);
+            if (boardFile == null) {
+                throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+            }
+
+            fileComponent.delete(boardFile.getBoardFilePath(), boardFile.getBoardStoredFileName());
+            boardFileRepository.boardFileDelete(boardFileId);
+        }
+
+        if(updateData.getBoardFiles() != null && !updateData.getBoardFiles().isEmpty()) {
+            for(MultipartFile multipartFile : updateData.getBoardFiles()) {
+                final Integer boardFileId = boardFileRepository.selectBoardFileIdKey();
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(multipartFile.getSize());
+
+                BoardFile boardFile = BoardFile.builder()
+                        .boardFileId(boardFileId)
+                        .boardOriginalFileName(originalFileName)
+                        .boardStoredFileName(storedFileName)
+                        .boardFilePath(filePath)
+                        .boardFileExtNm(fileExtNm)
+                        .boardFileSize(fileSize)
+                        .boardId(boardId)
+                        .build();
+                boardFileRepository.boardFileSave(boardFile);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void boardDataDelete(BoardDeleteDTO deleteData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer boardId = deleteData.getBoardId();
+        final Integer boardUserId = deleteData.getBoardUserId();
+        final Integer boardOwnerId = deleteData.getBoardOwnerId();
+
+        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
+        if (!isAuthor) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Board detailData = boardRepository.selectBoardDetailData(boardId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+        Board boardDeleteData = Board.builder()
+                .boardId(boardId)
+                .build();
+        boardRepository.boardDelete(boardDeleteData);
     }
 }
