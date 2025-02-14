@@ -114,7 +114,11 @@
 
                 let fileList = file.list();
                 for (let i = 0; i < fileList.length; i++) {
-                    formData.append("boardFiles", fileList[i].file);
+                    if (fileList[i].file) {
+                        formData.append("boardFiles", fileList[i].file);
+                    } else {
+                        formData.append("boardFileIds", fileList[i].fileId);
+                    }
                 }
 
                 fetch(`/api/board/update/${boardId}`, {

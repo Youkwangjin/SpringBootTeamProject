@@ -22,4 +22,16 @@ public class FileComponent {
             throw new AcontainerException(ApiErrorCode.FILE_PATH_ERROR);
         }
     }
+
+    public void delete(String directory, String fileName) {
+        final String filePath = directory + fileName;
+        File file = new File(filePath);
+        if (file.exists()) {
+            if (!file.delete()) {
+                throw new AcontainerException(ApiErrorCode.FILE_DELETE_ERROR);
+            }
+        } else {
+            throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+        }
+    }
 }

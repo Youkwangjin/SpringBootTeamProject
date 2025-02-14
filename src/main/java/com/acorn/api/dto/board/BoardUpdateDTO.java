@@ -33,4 +33,6 @@ public class BoardUpdateDTO {
     private Integer boardOwnerId;
 
     private List<MultipartFile> boardFiles;
+
+    private List<Integer> boardFileIds;
 }
