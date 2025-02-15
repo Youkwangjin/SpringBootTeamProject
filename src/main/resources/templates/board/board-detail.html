@@ -38,9 +38,7 @@
             </div>
         </div>
 
-        <div class="board-content">
-            <p th:text="${boardDetailData.boardContentsText}"></p>
-        </div>
+        <div class="board-content" th:utext="${boardDetailData.boardContents}"></div>
 
         <div class="board-attachments">
             <label>첨부파일</label>
