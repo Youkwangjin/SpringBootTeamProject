@@ -2,6 +2,7 @@ package com.acorn.api.exception.owner;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.controller.owner.OwnerDeleteController;
 import com.acorn.api.controller.owner.OwnerRegisterController;
 import com.acorn.api.controller.owner.OwnerUpdateController;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {OwnerRegisterController.class, OwnerUpdateController.class})
+@RestControllerAdvice(assignableTypes = {OwnerRegisterController.class, OwnerUpdateController.class, OwnerDeleteController.class})
 public class OwnerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
