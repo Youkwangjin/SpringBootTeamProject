@@ -12,7 +12,7 @@ public interface BoardService {
 
     String getAuthenticatedUserName();
 
-    void boardDataSave(BoardSaveDTO boardSaveDTO);
+    void boardDataSave(BoardSaveDTO saveData);
 
     BoardDetailDTO getBoardDetailData(Integer boardId);
 

@@ -41,9 +41,9 @@ public class BoardServiceImpl implements BoardService {
     private final FileComponent fileComponent;
 
     @Override
-    public List<BoardListDTO> getBoardListData(BoardListDTO boardListDTO) {
-        boardListDTO.setTotalCount(boardRepository.selectListCountByRequest(boardListDTO));
-        List<Board> boardListData = boardRepository.selectBoardListData(boardListDTO);
+    public List<BoardListDTO> getBoardListData(BoardListDTO ListData) {
+        ListData.setTotalCount(boardRepository.selectListCountByRequest(ListData));
+        List<Board> boardListData = boardRepository.selectBoardListData(ListData);
 
         return boardListData.stream()
                 .map(boardList -> {
@@ -78,9 +78,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void boardDataSave(BoardSaveDTO boardSaveDTO) {
-        Integer boardUserId = CommonSecurityUtil.getCurrentUserId();
-        Integer boardOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+    public void boardDataSave(BoardSaveDTO saveData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer boardId = boardRepository.selectBoardIdKey();
+        final String boardTitle = saveData.getBoardTitle();
+        final String boardWriter = saveData.getBoardWriter();
+        final String boardPassword = passwordEncoder.encode(saveData.getBoardPassword());
+        final String boardContents = saveData.getBoardContents();
+        final List<MultipartFile> boardFiles = saveData.getBoardFiles();
 
         if (boardUserId == null && boardOwnerId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -104,8 +110,8 @@ public class BoardServiceImpl implements BoardService {
                 .build();
         boardRepository.boardSave(newBoardSaveData);
 
-        if(boardSaveDTO.getBoardFiles() != null && !boardSaveDTO.getBoardFiles().isEmpty()) {
-            for(MultipartFile multipartFile : boardSaveDTO.getBoardFiles()) {
+        if(boardFiles!= null && !boardFiles.isEmpty()) {
+            for(MultipartFile multipartFile : boardFiles) {
                 final Integer boardFileId = boardFileRepository.selectBoardFileIdKey();
                 final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
                 final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
@@ -113,7 +119,7 @@ public class BoardServiceImpl implements BoardService {
                 final String fileExtNm = FilenameUtils.getExtension(originalFileName);
                 final String fileSize = String.valueOf(multipartFile.getSize());
 
-                BoardFile boardFile = BoardFile.builder()
+                BoardFile newBoardFile = BoardFile.builder()
                         .boardFileId(boardFileId)
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
@@ -122,7 +128,7 @@ public class BoardServiceImpl implements BoardService {
                         .boardFileSize(fileSize)
                         .boardId(boardId)
                         .build();
-                boardFileRepository.boardFileSave(boardFile);
+                boardFileRepository.boardFileSave(newBoardFile);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
