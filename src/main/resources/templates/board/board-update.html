@@ -70,6 +70,8 @@
 <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function () {
         const boardId = document.getElementById("boardId").value;
+        const boardUserId = document.getElementById("boardUserId").value;
+        const boardOwnerId = document.getElementById("boardOwnerId").value;
         initBackListButton();
         initSubmitHandler();
 
@@ -111,6 +113,8 @@
                 formData.append("boardWriter", boardWriter);
                 formData.append("boardPassword", boardPassword);
                 formData.append("boardContents", boardContents);
+                formData.append("boardUserId", boardUserId);
+                formData.append("boardOwnerId", boardOwnerId);
 
                 let fileList = file.list();
                 for (let i = 0; i < fileList.length; i++) {

@@ -115,7 +115,8 @@ public class SpringSecurityConfig {
                                          "/api/auth/owner/login").permitAll()
 
                         // Protected Common Pages
-                        .requestMatchers("/board/write").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                        .requestMatchers("/board/write",
+                                         "/board/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
                         // Protected User Common Pages
                         .requestMatchers("/user/mypage",
