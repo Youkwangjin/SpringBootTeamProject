@@ -2,6 +2,7 @@ package com.acorn.api.exception.user;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.controller.user.UserDeleteController;
 import com.acorn.api.controller.user.UserRegisterController;
 import com.acorn.api.controller.user.UserUpdateController;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {UserRegisterController.class, UserUpdateController.class})
+@RestControllerAdvice(assignableTypes = {UserRegisterController.class, UserUpdateController.class, UserDeleteController.class})
 public class UserExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
