@@ -30,16 +30,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void isEmailDuplicate(String userEmail) {
-        Integer emailCount = userRepository.isEmailDuplicate(userEmail);
-        if (emailCount != null) {
+        Boolean exists = userRepository.isEmailDuplicate(userEmail);
+        if (exists) {
             throw new AcontainerException(ApiValidationErrorCode.EMAIL_DUPLICATED_CONFLICT);
         }
     }
 
     @Override
     public void isTelPhoneDuplicate(String userTel) {
-        Integer telCount = userRepository.isTelDuplicate(userTel);
-        if (telCount != null) {
+        Boolean exists = userRepository.isTelDuplicate(userTel);
+        if (exists) {
             throw new AcontainerException(ApiValidationErrorCode.TELPHONE_DUPLICATED_CONFLICT);
         }
     }
@@ -69,15 +69,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getUserData() {
-        final Integer userId = CommonSecurityUtil.getCurrentUserId();
-        if (userId == null) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        if (currentUserId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
-        User userData = userRepository.selectAllUserData(userId);
+        User userData = userRepository.selectAllUserData(currentUserId);
         if (userData == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
+        final Integer userId = userData.getUserId();
         final String userEmail = userData.getUserEmail();
         final String userNm = userData.getUserNm();
         final String userTel = userData.getUserTel();
@@ -95,8 +96,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userDataUpdate(UserUpdateDTO userUpdateData) {
-        final Integer userId  = CommonSecurityUtil.getCurrentUserId();
-        if (Objects.isNull(userId) || !Objects.equals(userId, userUpdateData.getUserId())) {
+        final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
+        final Integer userId = userUpdateData.getUserId();
+        final String userPassword = userUpdateData.getUserPassword();
+        final String userNm = userUpdateData.getUserNm();
+        final String userAddr = userUpdateData.getUserAddr();
+        final String userTel = userUpdateData.getUserTel();
+
+        if (Objects.isNull(currentUserId) || !Objects.equals(currentUserId, userId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
@@ -104,13 +111,11 @@ public class UserServiceImpl implements UserService {
         if (existingUser == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
+        final String existingUserPassword = existingUser.getUserPassword();
 
-        if (StringUtils.isNotBlank(userUpdateData.getUserPassword()) && !passwordEncoder.matches(userUpdateData.getUserPassword(), existingUser.getUserPassword())) {
+        if (StringUtils.isNotBlank(userPassword) && !passwordEncoder.matches(userPassword, existingUserPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
-        final String userNm = userUpdateData.getUserNm();
-        final String userAddr = userUpdateData.getUserAddr();
-        final String userTel = userUpdateData.getUserTel();
 
         User updateUser = User.builder()
                 .userId(userId)
@@ -125,8 +130,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userDataDelete(UserDeleteDTO userDeleteData) {
-        final Integer userId  = CommonSecurityUtil.getCurrentUserId();
-        if (Objects.isNull(userId) || !Objects.equals(userId, userDeleteData.getUserId())) {
+        final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
+        final Integer userId = userDeleteData.getUserId();
+        final String userPassword = userDeleteData.getUserPassword();
+
+        if (Objects.isNull(currentUserId) || !Objects.equals(currentUserId, userId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
@@ -134,8 +142,9 @@ public class UserServiceImpl implements UserService {
         if (existingUser == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
+        final String existingUserPassword = existingUser.getUserPassword();
 
-        if (StringUtils.isNotBlank(userDeleteData.getUserPassword()) && !passwordEncoder.matches(userDeleteData.getUserPassword(), existingUser.getUserPassword())) {
+        if (StringUtils.isNotBlank(userPassword) && !passwordEncoder.matches(userPassword, existingUserPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
