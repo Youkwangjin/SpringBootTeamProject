@@ -36,24 +36,24 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public void isBusinessNumDuplicate(String ownerBusinessNum) {
-        Boolean businessNumCount = ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
-        if (businessNumCount) {
+        Boolean exists = ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
+        if (exists) {
             throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
         }
     }
 
     @Override
     public void isTelPhoneDuplicate(String ownerTel) {
-        Boolean telCount = ownerRepository.isTelDuplicate(ownerTel);
-        if (telCount) {
+        Boolean exists = ownerRepository.isTelDuplicate(ownerTel);
+        if (exists) {
             throw new AcontainerException(ApiValidationErrorCode.TELPHONE_DUPLICATED_CONFLICT);
         }
     }
 
     @Override
     public void isCompanyNameDuplicate(String ownerCompanyName) {
-        Boolean companyNameCount = ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
-        if (companyNameCount) {
+        Boolean exists = ownerRepository.isCompanyNameDuplicate(ownerCompanyName);
+        if (exists) {
             throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
         }
     }
@@ -63,7 +63,7 @@ public class OwnerServiceImpl implements OwnerService {
     public void ownerRegister(OwnerRegisterDTO ownerRegisterData) {
         final Integer ownerId = ownerRepository.selectOwnerIdKey();
         final String ownerEmail = ownerRegisterData.getOwnerEmail();
-        final String encodedPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
+        final String ownerPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
         final String ownerBusinessNum = ownerRegisterData.getOwnerBusinessNum();
         final String ownerNm = ownerRegisterData.getOwnerNm();
         final String ownerCompanyName = ownerRegisterData.getOwnerCompanyName();
@@ -74,7 +74,7 @@ public class OwnerServiceImpl implements OwnerService {
                 .ownerId(ownerId)
                 .ownerEmail(ownerEmail)
                 .ownerBusinessNum(ownerBusinessNum)
-                .ownerPassword(encodedPassword)
+                .ownerPassword(ownerPassword)
                 .ownerNm(ownerNm)
                 .ownerCompanyName(ownerCompanyName)
                 .ownerAddr(ownerAddr)
@@ -87,15 +87,16 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public OwnerResponseDTO getOwnerData() {
-        Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
-        if (ownerId == null) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        if (currentOwnerId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
-        Owner ownerData = ownerRepository.selectAllOwnerData(ownerId);
+        Owner ownerData = ownerRepository.selectAllOwnerData(currentOwnerId);
         if (ownerData == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
+        final Integer ownerId = ownerData.getOwnerId();
         final String ownerEmail = ownerData.getOwnerEmail();
         final String ownerBusinessNum = ownerData.getOwnerBusinessNum();
         final String ownerNm = ownerData.getOwnerNm();
@@ -117,8 +118,16 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     @Transactional
     public void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData) {
-        Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
-        if (ownerId == null || !ownerId.equals(ownerUpdateData.getOwnerId())) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer ownerId = ownerUpdateData.getOwnerId();
+        final String ownerPassword = ownerUpdateData.getOwnerPassword();
+        final String ownerEmail = ownerUpdateData.getOwnerEmail();
+        final String ownerNm = ownerUpdateData.getOwnerNm();
+        final String ownerTel = ownerUpdateData.getOwnerTel();
+        final String ownerCompanyName = ownerUpdateData.getOwnerCompanyName();
+        final String ownerAddr = ownerUpdateData.getOwnerAddr();
+
+        if (currentOwnerId == null || !currentOwnerId.equals(ownerId)) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
@@ -126,15 +135,11 @@ public class OwnerServiceImpl implements OwnerService {
         if (existingOwner == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
+        final String existingOwnerPassword = existingOwner.getOwnerPassword();
 
-        if (StringUtils.isNotBlank(ownerUpdateData.getOwnerPassword()) && !passwordEncoder.matches(ownerUpdateData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+        if (StringUtils.isNotBlank(ownerPassword) && !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
-        final String ownerEmail = ownerUpdateData.getOwnerEmail();
-        final String ownerNm = ownerUpdateData.getOwnerNm();
-        final String ownerTel = ownerUpdateData.getOwnerTel();
-        final String ownerCompanyName = ownerUpdateData.getOwnerCompanyName();
-        final String ownerAddr = ownerUpdateData.getOwnerAddr();
 
         Owner updateOwner = Owner.builder()
                 .ownerId(ownerId)
@@ -151,8 +156,11 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     @Transactional
     public void ownerDataDelete(OwnerDeleteDTO ownerDeleteData) {
-        Integer ownerId = CommonSecurityUtil.getCurrentOwnerId();
-        if (ownerId == null || !ownerId.equals(ownerDeleteData.getOwnerId())) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer ownerId = ownerDeleteData.getOwnerId();
+        final String ownerPassword = ownerDeleteData.getOwnerPassword();
+
+        if (currentOwnerId == null || !currentOwnerId.equals(ownerId)) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
@@ -160,8 +168,9 @@ public class OwnerServiceImpl implements OwnerService {
         if (existingOwner == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
+        final String existingOwnerPassword = existingOwner.getOwnerPassword();
 
-        if (StringUtils.isNotBlank(ownerDeleteData.getOwnerPassword()) && !passwordEncoder.matches(ownerDeleteData.getOwnerPassword(), existingOwner.getOwnerPassword())) {
+        if (StringUtils.isNotBlank(ownerPassword) && !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
