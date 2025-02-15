@@ -9,9 +9,9 @@ public interface UserRepository {
 
     Integer selectUserIdKey();
 
-    Integer isEmailDuplicate(@Param("userEmail") String userEmail);
+    Boolean isEmailDuplicate(@Param("userEmail") String userEmail);
 
-    Integer isTelDuplicate(@Param("userTel") String userTel);
+    Boolean isTelDuplicate(@Param("userTel") String userTel);
 
     void userRegister(User user);
 

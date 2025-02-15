@@ -17,20 +17,24 @@
         SELECT nextval(USER_SEQ)
     </select>
 
-    <select id="isEmailDuplicate" parameterType="String" resultType="Integer">
-        SELECT
-            COUNT(*)
-        FROM
-            TB_USER
-        WHERE USER_EMAIL = #{userEmail}
+    <select id="isEmailDuplicate" parameterType="String" resultType="Boolean">
+        SELECT EXISTS (
+            SELECT
+                1
+            FROM
+                TB_USER
+            WHERE USER_EMAIL = #{userEmail}
+        )
     </select>
 
-    <select id="isTelDuplicate" parameterType="String" resultType="Integer">
-        SELECT
-            COUNT(*)
-        FROM
-            TB_USER
-        WHERE USER_TEL = #{userTel}
+    <select id="isTelDuplicate" parameterType="String" resultType="Boolean">
+        SELECT EXISTS (
+            SELECT
+                1
+            FROM
+                TB_USER
+            WHERE USER_TEL = #{userTel}
+        )
     </select>
 
     <insert id="userRegister" parameterType="com.acorn.api.entity.user.User" useGeneratedKeys="true" keyProperty="userId" >
