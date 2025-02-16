@@ -41,9 +41,9 @@ public class BoardServiceImpl implements BoardService {
     private final FileComponent fileComponent;
 
     @Override
-    public List<BoardListDTO> getBoardListData(BoardListDTO boardListDTO) {
-        boardListDTO.setTotalCount(boardRepository.selectListCountByRequest(boardListDTO));
-        List<Board> boardListData = boardRepository.selectBoardListData(boardListDTO);
+    public List<BoardListDTO> getBoardListData(BoardListDTO ListData) {
+        ListData.setTotalCount(boardRepository.selectListCountByRequest(ListData));
+        List<Board> boardListData = boardRepository.selectBoardListData(ListData);
 
         return boardListData.stream()
                 .map(boardList -> {
@@ -78,34 +78,34 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void boardDataSave(BoardSaveDTO boardSaveDTO) {
-        Integer boardUserId = CommonSecurityUtil.getCurrentUserId();
-        Integer boardOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+    public void boardDataSave(BoardSaveDTO saveData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer boardId = boardRepository.selectBoardIdKey();
+        final String boardTitle = saveData.getBoardTitle();
+        final String boardWriter = saveData.getBoardWriter();
+        final String boardPassword = passwordEncoder.encode(saveData.getBoardPassword());
+        final String boardContents = saveData.getBoardContents();
+        final List<MultipartFile> boardFiles = saveData.getBoardFiles();
 
-        if (boardUserId == null && boardOwnerId == null) {
+        if (currentUserId == null && currentOwnerId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
-
-        final Integer boardId = boardRepository.selectBoardIdKey();
-        final String boardTitle = boardSaveDTO.getBoardTitle();
-        final String boardWriter = boardSaveDTO.getBoardWriter();
-        final String encodedBoardPassword = passwordEncoder.encode(boardSaveDTO.getBoardPassword());
-        final String boardContents = boardSaveDTO.getBoardContents();
 
         Board newBoardSaveData = Board.builder()
                 .boardId(boardId)
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
-                .boardPassword(encodedBoardPassword)
+                .boardPassword(boardPassword)
                 .boardContents(boardContents)
                 .boardContentsText(Jsoup.parse(boardContents).text())
-                .boardUserId(boardUserId)
-                .boardOwnerId(boardOwnerId)
+                .boardUserId(currentUserId)
+                .boardOwnerId(currentOwnerId)
                 .build();
         boardRepository.boardSave(newBoardSaveData);
 
-        if(boardSaveDTO.getBoardFiles() != null && !boardSaveDTO.getBoardFiles().isEmpty()) {
-            for(MultipartFile multipartFile : boardSaveDTO.getBoardFiles()) {
+        if(boardFiles!= null && !boardFiles.isEmpty()) {
+            for(MultipartFile multipartFile : boardFiles) {
                 final Integer boardFileId = boardFileRepository.selectBoardFileIdKey();
                 final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
                 final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
@@ -113,7 +113,7 @@ public class BoardServiceImpl implements BoardService {
                 final String fileExtNm = FilenameUtils.getExtension(originalFileName);
                 final String fileSize = String.valueOf(multipartFile.getSize());
 
-                BoardFile boardFile = BoardFile.builder()
+                BoardFile newBoardFile = BoardFile.builder()
                         .boardFileId(boardFileId)
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
@@ -122,7 +122,7 @@ public class BoardServiceImpl implements BoardService {
                         .boardFileSize(fileSize)
                         .boardId(boardId)
                         .build();
-                boardFileRepository.boardFileSave(boardFile);
+                boardFileRepository.boardFileSave(newBoardFile);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
@@ -146,7 +146,7 @@ public class BoardServiceImpl implements BoardService {
         final Integer boardUserId = detailData.getBoardUserId();
         final Integer boardOwnerId = detailData.getBoardOwnerId();
 
-        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
+        boolean isAuthor = hasEditPermission(currentUserId, currentOwnerId, boardUserId, boardOwnerId);
 
         boardRepository.updateBoardHits(boardId);
 
@@ -193,22 +193,27 @@ public class BoardServiceImpl implements BoardService {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer boardId = updateData.getBoardId();
         final String boardTitle = updateData.getBoardTitle();
+        final String boardPassword = updateData.getBoardPassword();
         final String boardWriter = updateData.getBoardWriter();
         final String boardContents = updateData.getBoardContents();
         final Integer boardUserId = updateData.getBoardUserId();
         final Integer boardOwnerId = updateData.getBoardOwnerId();
 
-        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
-        if (!isAuthor) {
+        if (!hasEditPermission(currentUserId, currentOwnerId, boardUserId, boardOwnerId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (boardUserId == null && boardOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         Board detailData = boardRepository.selectBoardDetailData(boardId);
         if (detailData == null) {
             throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
         }
+        final String existingBoardPassword = detailData.getBoardPassword();
 
-        if (StringUtils.isNotBlank(updateData.getBoardPassword()) && !passwordEncoder.matches(updateData.getBoardPassword(), detailData.getBoardPassword())) {
+        if (StringUtils.isNotBlank(boardPassword) && !passwordEncoder.matches(boardPassword, existingBoardPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
@@ -254,7 +259,7 @@ public class BoardServiceImpl implements BoardService {
                 final String fileExtNm = FilenameUtils.getExtension(originalFileName);
                 final String fileSize = String.valueOf(multipartFile.getSize());
 
-                BoardFile boardFile = BoardFile.builder()
+                BoardFile newBoardFile = BoardFile.builder()
                         .boardFileId(boardFileId)
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
@@ -263,7 +268,7 @@ public class BoardServiceImpl implements BoardService {
                         .boardFileSize(fileSize)
                         .boardId(boardId)
                         .build();
-                boardFileRepository.boardFileSave(boardFile);
+                boardFileRepository.boardFileSave(newBoardFile);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
@@ -278,7 +283,7 @@ public class BoardServiceImpl implements BoardService {
         final Integer boardUserId = deleteData.getBoardUserId();
         final Integer boardOwnerId = deleteData.getBoardOwnerId();
 
-        boolean isAuthor = Objects.equals(currentUserId, boardUserId) || Objects.equals(currentOwnerId, boardOwnerId);
+        boolean isAuthor = hasEditPermission(currentUserId, currentOwnerId, boardUserId, boardOwnerId);
         if (!isAuthor) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
@@ -292,5 +297,10 @@ public class BoardServiceImpl implements BoardService {
                 .boardId(boardId)
                 .build();
         boardRepository.boardDelete(boardDeleteData);
+    }
+
+    private boolean hasEditPermission(Integer currentUserId, Integer currentOwnerId, Integer boardUserId, Integer boardOwnerId) {
+        return (currentUserId != null && Objects.equals(currentUserId, boardUserId)) ||
+                (currentOwnerId != null && Objects.equals(currentOwnerId, boardOwnerId));
     }
 }

@@ -38,9 +38,7 @@
             </div>
         </div>
 
-        <div class="board-content">
-            <p th:text="${boardDetailData.boardContentsText}"></p>
-        </div>
+        <div class="board-content" th:utext="${boardDetailData.boardContents}"></div>
 
         <div class="board-attachments">
             <label>첨부파일</label>
@@ -117,7 +115,7 @@
                     }
                 })
                 .catch(error => {
-                    alert("게시글 삭제 중 오류가 발생했습니다: " + error.message);
+                    alert(error.message);
                 });
         });
     });
