@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.container.ContainerRepository">
+    <resultMap id="containerResultMap"              type="com.acorn.api.entity.container.Container">
+        <id property="rowNum"                       column="ROW_NUM"/>
+        <id property="containerId"                  column="CONTAINER_ID"/>
+        <result property="containerName"            column="CONTAINER_NAME"/>
+        <result property="containerAddr"            column="CONTAINER_ADDRESS"/>
+        <result property="containerLatitude"        column="CONTAINER_LATITUDE"/>
+        <result property="containerLongitude"       column="CONTAINER_LONGITUDE"/>
+        <result property="containerContents"        column="CONTAINER_CONTENTS"/>
+        <result property="containerContentsText"    column="CONTAINER_CONTENTS_TEXT"/>
+        <result property="containerSize"            column="CONTAINER_SIZE"/>
+        <result property="containerPrice"           column="CONTAINER_PRICE"/>
+        <result property="containerStatus"          column="CONTAINER_STATUS"/>
+        <result property="containerApprovalStatus"  column="CONTAINER_APPROVAL_STATUS"/>
+        <result property="containerCreated"         column="CONTAINER_CREATED"/>
+        <result property="containerUpdated"         column="CONTAINER_UPDATED"/>
+    </resultMap>
+
+    <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(CONTAINER_ID)
+        FROM
+            TB_CONTAINER
+        <where>
+            <if test="searchType == 'containerName' and searchName != null and serchName.trim() != ''">
+                CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'containerStatus' and searchName != null and serchName.trim() != ''">
+                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'userName' and searchName != null and serchName.trim() != ''">
+                USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectContainerListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="containerResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY C.CONTAINER_CREATED ASC) AS ROW_NUM,
+            C.CONTAINER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_SIZE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_CREATED
+        FROM
+            TB_CONTAINER C
+        <where>
+            <if test="searchType == 'containerName' and searchName != null and serchName.trim() != ''">
+                CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'containerStatus' and searchName != null and serchName.trim() != ''">
+                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'userName' and searchName != null and serchName.trim() != ''">
+                USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+        </where>
+        ORDER BY CONTAINER_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
+    </select>
+</mapper>
