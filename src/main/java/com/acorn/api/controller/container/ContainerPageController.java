@@ -22,4 +22,9 @@ public class ContainerPageController {
         model.addAttribute("request", listData);
         return "container/container-list";
     }
+
+    @GetMapping("/container/register")
+    public String registerPage(Model model) {
+        return "container/container-register";
+    }
 }
