@@ -29,6 +29,8 @@
 </div>
 <div class="text-container">
     <form id="containerRegister">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" th:value="${ownerId}" id="ownerId">
         <h3>창고이름</h3>
         <div class="postcode-row">
             <label for="containerName">
@@ -39,7 +41,7 @@
         <h3>소유자 & 창고 크기</h3>
         <div class="owner-size-row">
             <label>
-                <input type="text" class="text-field-postcode" placeholder="소유자">
+                <input type="text" th:value="${ownerName}"  class="text-field-postcode" placeholder="소유자" readonly>
             </label>
             <label>
                 <input type="text" class="text-field-postcode" placeholder="창고 크기">
