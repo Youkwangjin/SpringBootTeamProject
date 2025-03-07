@@ -16,7 +16,7 @@ public class ContainerListDTO extends PaginationRequest {
 
     private String searchType;
 
-    private String serachName;
+    private String searchName;
 
     private Integer containerId;
 
