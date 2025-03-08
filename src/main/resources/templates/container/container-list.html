@@ -32,9 +32,9 @@
         <div class="custom-search-bar">
             <label for="searchType" class="visually-hidden">검색 유형</label>
             <select id="searchType" name="searchType">
-                <option value="containerName">창고 이름</option>
-                <option value="containerSize">창고 크기</option>
-                <option value="containerStatus">창고 상태</option>
+                <option value="containerName" th:selected="${request =='containerName'}">창고 이름</option>
+                <option value="containerStatus" th:selected="${request == 'containerStatus'}">창고 상태</option>
+                <option value="userName" th:selected="${request =='userName'}">임대인</option>
             </select>
 
             <label for="searchName" class="visually-hidden">검색어 입력</label>

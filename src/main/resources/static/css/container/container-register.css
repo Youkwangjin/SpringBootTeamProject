@@ -172,3 +172,40 @@ body {
 .file-list li .delete-btn:hover {
     color: #cc0000;
 }
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.custom-btn {
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: none;
+    width: 150px;
+    text-align: center;
+}
+
+.black-btn {
+    background-color: #333;
+    color: white;
+}
+
+.black-btn:hover {
+    background-color: #000;
+}
+
+.orange-btn {
+    background-color: #ff8800;
+    color: white;
+}
+
+.orange-btn:hover {
+    background-color: #cc7000;
+}

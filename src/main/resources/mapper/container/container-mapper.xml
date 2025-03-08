@@ -26,13 +26,13 @@
         FROM
             TB_CONTAINER
         <where>
-            <if test="searchType == 'containerName' and searchName != null and serchName.trim() != ''">
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
-            <if test="searchType == 'containerStatus' and searchName != null and serchName.trim() != ''">
+            <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
             </if>
-            <if test="searchType == 'userName' and searchName != null and serchName.trim() != ''">
+            <if test="searchType == 'userName' and searchName != null and searchName.trim() != ''">
                 USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
         </where>
@@ -49,13 +49,13 @@
         FROM
             TB_CONTAINER C
         <where>
-            <if test="searchType == 'containerName' and searchName != null and serchName.trim() != ''">
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
-            <if test="searchType == 'containerStatus' and searchName != null and serchName.trim() != ''">
+            <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
             </if>
-            <if test="searchType == 'userName' and searchName != null and serchName.trim() != ''">
+            <if test="searchType == 'userName' and searchName != null and searchName.trim() != ''">
                 USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
         </where>
