@@ -41,16 +41,16 @@
         <h3>소유자 & 창고 크기</h3>
         <div class="owner-size-row">
             <label>
-                <input type="text" th:value="${ownerName}"  class="text-field-postcode" placeholder="소유자" readonly>
+                <input type="text" th:value="${ownerName}" id="ownerName" class="text-field-postcode" placeholder="소유자" readonly>
             </label>
             <label>
-                <input type="text" class="text-field-postcode" placeholder="창고 크기">
+                <input type="text" class="text-field-postcode" id="containerSize" placeholder="숫자로만 입력해주세요.">
             </label>
         </div>
 
         <h3>창고 가격</h3>
         <label>
-            <input type="text" class="text-field-postcode" placeholder="가격을 입력하세요.">
+            <input type="text" class="text-field-postcode" id="containerPrice" placeholder="숫자로만 입력해주세요.">
         </label>
 
         <h3>주소</h3>
@@ -88,15 +88,15 @@
 
         <h3>위도/경도</h3>
         <div class="latitude-row">
-            <label for="latitude">
-                <input type="text" id="latitude" class="text-field-postcode" placeholder="위도 (Latitude)" readonly>
+            <label for="containerLatitude">
+                <input type="text" id="containerLatitude" class="text-field-postcode" placeholder="위도 (Latitude)" >
             </label>
             <input type="button" onclick="getCoordinatesFromAddress()" class="button-postcode" value="위도/경도 자동 입력">
         </div>
 
         <div class="longitude-row">
-            <label for="longitude">
-                <input type="text" id="longitude" class="text-field-postcode" placeholder="경도 (Longitude)" readonly>
+            <label for="containerLongitude">
+                <input type="text" id="containerLongitude" class="text-field-postcode" placeholder="경도 (Longitude)" >
             </label>
         </div>
 
@@ -110,6 +110,11 @@
             <button type="button" id="fileUploadBtn" onclick="file.add();">파일 선택하기</button>
             <ul id="fileList" class="file-list"></ul>
         </div>
+
+        <div class="button-group">
+            <button type="button" id="backListBtn" class="custom-btn black-btn">목록</button>
+            <button type="submit" id="registerBtn" class="custom-btn orange-btn">등록하기</button>
+        </div>
     </form>
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -120,6 +125,104 @@
 <script src="/js/common/tinyMCEConfig.js"></script>
 <script src="/js/common/fileModule.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        initBackListButton();
+        initSubmitHandler();
+    });
+
+    function initBackListButton() {
+        const backListButton = document.getElementById("backListBtn");
+        backListButton.addEventListener("click", function () {
+            window.location.href = "/container/list";
+        });
+    }
+
+    function initSubmitHandler() {
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        document.getElementById("containerRegister").addEventListener("submit" , function (event) {
+            event.preventDefault();
+
+            let missingFields = [];
+
+            let ownerId = document.getElementById("ownerId").value.trim();
+            let containerName = document.getElementById("containerName").value.trim();
+            let ownerName = document.getElementById("ownerName").value.trim();
+            let containerSize = document.getElementById("containerSize").value.trim();
+            let containerPrice = document.getElementById("containerPrice").value.trim();
+            let containerAddr = document.getElementById("userAddress").value.trim();
+            let containerLatitude = document.getElementById("containerLatitude").value.trim();
+            let containerLongitude = document.getElementById("containerLongitude").value.trim();
+            let containerContents = tinymce.get("boardContents").getContent().trim();
+
+            if (!containerName) missingFields.push("창고 이름");
+            if (!containerSize) missingFields.push("창고 크기");
+            if (!containerPrice) missingFields.push("창고 가격");
+            if (!containerAddr) missingFields.push("창고 주소");
+            if (!containerLatitude) missingFields.push("위도");
+            if (!containerLongitude) missingFields.push("경도");
+            if (!containerContents) missingFields.push("내용");
+
+            if (missingFields.length > 0) {
+                alert("다음 필수 입력 항목을 입력해주세요:\n\n" + missingFields.join("\n"));
+                return;
+            }
+
+            if (isNaN(containerSize) || isNaN(containerPrice)) {
+                alert("창고 크기와 가격은 숫자만 입력할 수 있습니다.");
+                return;
+            }
+
+            if (!validateCoordinates(containerLatitude, containerLongitude)) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("ownerId", ownerId);
+            formData.append("containerName", containerName);
+            formData.append("ownerName", ownerName);
+            formData.append("containerSize", containerSize);
+            formData.append("containerPrice", containerPrice);
+            formData.append("containerAddr", containerAddr);
+            formData.append("containerLatitude", containerLatitude);
+            formData.append("containerLongitude", containerLongitude);
+            formData.append("containerContents", containerContents);
+
+            let fileList = file.list();
+            for (let i = 0; i < fileList.length; i++) {
+                formData.append("containerFiles", fileList[i].file);
+            }
+
+            fetch("/api/container/register", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: formData,
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.errorMsg);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.httpStatus === "OK") {
+                        alert(data.resultMsg);
+                        window.location.href = "/container/list";
+                    } else {
+                        throw new Error(data.errorMsg);
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        });
+    }
+
     let file = fileModule({
         count: 5,
         exts: [],
