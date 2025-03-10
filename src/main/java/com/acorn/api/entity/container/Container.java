@@ -1,5 +1,7 @@
 package com.acorn.api.entity.container;
 
+import com.acorn.api.entity.owner.Owner;
+import com.acorn.api.entity.user.User;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -45,4 +47,12 @@ public class Container {
     private LocalDateTime containerCreated;
 
     private LocalDateTime containerUpdated;
+
+    private Integer containerUserId;
+
+    private Integer containerOwnerId;
+
+    private User user;
+
+    private Owner owner;
 }

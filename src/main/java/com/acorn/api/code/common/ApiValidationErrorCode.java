@@ -14,10 +14,17 @@ public enum ApiValidationErrorCode {
     BUSINESS_NUMBER_ERROR(HttpStatus.BAD_REQUEST,     "BNE", "사업자 번호 형식이 유효하지 않습니다."),
     NAME_FORMAT_ERROR(HttpStatus.BAD_REQUEST,         "NFE", "이름 형식이 유효하지 않습니다."),
     TELEPHONE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,    "TFE", "전화번호 형식이 유효하지 않습니다."),
+    ADDRESS_FORMAT_ERROR(HttpStatus.BAD_REQUEST,      "AFE", "주소 형식이 유효하지 않습니다."),
     COMPANY_NAME_ERROR(HttpStatus.CONFLICT,           "CNE", "이미 사용 중인 회사명입니다."),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST,          "VE",  "기타 형식이 유효하지 않습니다."),
     TITLE_LENGTH_ERROR(HttpStatus.BAD_REQUEST,        "TLE", "제목은 50글자 미만이어야 합니다."),
     FIELD_BLANK_ERROR(HttpStatus.BAD_REQUEST,         "FBE", "필수 입력 항목이 비어 있습니다."),
+    CONTAINER_NAME_ERROR(HttpStatus.BAD_REQUEST,      "CNE", "창고명 형식이 유효하지 않습니다."),
+    SIZE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,         "SFE", "크기 형식이 유효하지 않습니다."),
+    PRICE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,        "PFE", "가격 형식이 유효하지 않습니다."),
+    LATITUDE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,     "LFE", "위도 형식이 유효하지 않습니다."),
+    LONGITUDE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,    "LFE", "경도 형식이 유효하지 않습니다."),
+    FILE_SIZE_ERROR(HttpStatus.BAD_REQUEST,           "FSE", "첨부 가능한 파일 갯수를 초과하였습니다."),
     PASSWORD_LENGTH_ERROR(HttpStatus.BAD_REQUEST,     "PLE", "비밀번호는 6글자 이상이어야 합니다.");
 
     private final HttpStatus httpStatus;
