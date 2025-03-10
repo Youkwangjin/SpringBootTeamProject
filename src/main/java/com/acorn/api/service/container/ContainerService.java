@@ -1,6 +1,7 @@
 package com.acorn.api.service.container;
 
 import com.acorn.api.dto.container.ContainerListDTO;
+import com.acorn.api.dto.container.ContainerRegisterDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,4 +10,6 @@ import java.util.List;
 public interface ContainerService {
 
     List<ContainerListDTO> getContainerListData(ContainerListDTO listData);
+
+    void containerRegister(ContainerRegisterDTO registerData);
 }

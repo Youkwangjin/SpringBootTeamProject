@@ -9,7 +9,11 @@ import java.util.List;
 @Mapper
 public interface ContainerRepository {
 
+    Integer selectContainerIdKey();
+
     Integer selectListCountByRequest(PaginationRequest pagination);
 
     List<Container> selectContainerListData(PaginationRequest pagination);
+
+    void containerRegister(Container container);
 }
