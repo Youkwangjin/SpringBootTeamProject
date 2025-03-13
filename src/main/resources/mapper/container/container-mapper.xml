@@ -53,9 +53,19 @@
             C.CONTAINER_NAME,
             C.CONTAINER_SIZE,
             C.CONTAINER_STATUS,
-            C.CONTAINER_CREATED
+            C.CONTAINER_APPROVAL_STATUS,
+            C.CONTAINER_CREATED,
+            U.USER_NM,
+            O.OWNER_ID,
+            O.OWNER_NM
         FROM
             TB_CONTAINER C
+        LEFT JOIN
+                TB_USER U
+        ON C.CONTAINER_USER_ID = U.USER_ID
+        LEFT JOIN
+                TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')

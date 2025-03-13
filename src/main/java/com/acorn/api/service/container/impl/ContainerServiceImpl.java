@@ -38,6 +38,7 @@ public class ContainerServiceImpl implements ContainerService {
                     final String containerName = containerList.getContainerName();
                     final Integer containerSize = containerList.getContainerSize();
                     final Integer containerStatus = containerList.getContainerStatus();
+                    final Integer containerApprovalStatus = containerList.getContainerApprovalStatus();
                     final LocalDateTime containerCreated = containerList.getContainerCreated();
 
                     return ContainerListDTO.builder()
@@ -46,6 +47,7 @@ public class ContainerServiceImpl implements ContainerService {
                             .containerName(containerName)
                             .containerSize(containerSize)
                             .containerStatus(containerStatus)
+                            .containerApprovalStatus(containerApprovalStatus)
                             .containerCreated(containerCreated)
                             .build();
                 })
