@@ -2,8 +2,6 @@ package com.acorn.api.entity.container;
 
 import com.acorn.api.entity.owner.Owner;
 import com.acorn.api.entity.user.User;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Container {
 
@@ -26,10 +24,8 @@ public class Container {
 
     private String containerAddr;
 
-    @JsonSerialize(using = ToStringSerializer.class)
     private BigDecimal containerLatitude;
 
-    @JsonSerialize(using = ToStringSerializer.class)
     private BigDecimal containerLongitude;
 
     private String containerContents;

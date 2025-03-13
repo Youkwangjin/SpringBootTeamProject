@@ -1,5 +1,7 @@
 package com.acorn.api.controller.container;
 
+import com.acorn.api.code.common.ApiSuccessCode;
+import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.container.ContainerRegisterDTO;
 import com.acorn.api.service.container.ContainerService;
@@ -23,6 +25,6 @@ public class ContainerRegisterController {
 
         containerService.containerRegister(registerData);
 
-        return null;
+        return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_REGISTER_SUCCESS);
     }
 }

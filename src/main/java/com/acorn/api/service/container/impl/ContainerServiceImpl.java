@@ -1,5 +1,6 @@
 package com.acorn.api.service.container.impl;
 
+import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.dto.container.ContainerListDTO;
 import com.acorn.api.dto.container.ContainerRegisterDTO;
@@ -37,6 +38,7 @@ public class ContainerServiceImpl implements ContainerService {
                     final String containerName = containerList.getContainerName();
                     final Integer containerSize = containerList.getContainerSize();
                     final Integer containerStatus = containerList.getContainerStatus();
+                    final Integer containerApprovalStatus = containerList.getContainerApprovalStatus();
                     final LocalDateTime containerCreated = containerList.getContainerCreated();
 
                     return ContainerListDTO.builder()
@@ -45,6 +47,7 @@ public class ContainerServiceImpl implements ContainerService {
                             .containerName(containerName)
                             .containerSize(containerSize)
                             .containerStatus(containerStatus)
+                            .containerApprovalStatus(containerApprovalStatus)
                             .containerCreated(containerCreated)
                             .build();
                 })
@@ -57,12 +60,14 @@ public class ContainerServiceImpl implements ContainerService {
         final Integer containerOwnerId = registerData.getContainerOwnerId();
         final Integer containerId = containerRepository.selectContainerIdKey();
         final String containerName = registerData.getContainerName();
-        final Integer containerSize = registerData.getContainerSize();
-        final Integer containerPrice = registerData.getContainerPrice();
         final String containerAddr = registerData.getContainerAddr();
         final BigDecimal containerLatitude = registerData.getContainerLatitude();
         final BigDecimal containerLongitude = registerData.getContainerLongitude();
         final String containerContents = registerData.getContainerContents();
+        final Integer containerSize = registerData.getContainerSize();
+        final Integer containerPrice = registerData.getContainerPrice();
+        final Integer containerStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+        final Integer containerApprovalStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode();
         final List<MultipartFile> containerFiles = registerData.getContainerFiles();
 
         if (currentOwnerId == null && containerOwnerId == null) {
@@ -83,6 +88,8 @@ public class ContainerServiceImpl implements ContainerService {
                 .containerLongitude(containerLongitude)
                 .containerContents(containerContents)
                 .containerContentsText(Jsoup.parse(containerContents).text())
+                .containerStatus(containerStatus)
+                .containerApprovalStatus(containerApprovalStatus)
                 .containerOwnerId(containerOwnerId)
                 .build();
         containerRepository.containerRegister(newContainerRegisterData);

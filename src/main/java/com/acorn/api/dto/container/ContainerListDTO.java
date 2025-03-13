@@ -26,6 +26,8 @@ public class ContainerListDTO extends PaginationRequest {
 
     private Integer containerStatus;
 
+    private Integer containerApprovalStatus;
+
     private LocalDateTime containerCreated;
 
     @Override
