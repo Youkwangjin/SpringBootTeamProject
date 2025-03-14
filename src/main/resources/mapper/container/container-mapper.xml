@@ -18,10 +18,8 @@
         <result property="containerApprovalStatus"  column="CONTAINER_APPROVAL_STATUS"/>
         <result property="containerCreated"         column="CONTAINER_CREATED"/>
         <result property="containerUpdated"         column="CONTAINER_UPDATED"/>
-        <result property="containerUserId"          column="CONTAINER_USER_ID"/>
         <result property="containerOwnerId"         column="CONTAINER_OWNER_ID"/>
-        <collection property="user"                 javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap" />
-        <collection property="owner"                javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap" />
+        <collection property="owner"                javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap"/>
     </resultMap>
 
     <select id="selectContainerIdKey" resultType="java.lang.Integer">
@@ -55,16 +53,12 @@
             C.CONTAINER_STATUS,
             C.CONTAINER_APPROVAL_STATUS,
             C.CONTAINER_CREATED,
-            U.USER_NM,
             O.OWNER_ID,
             O.OWNER_NM
         FROM
             TB_CONTAINER C
-        LEFT JOIN
-                TB_USER U
-        ON C.CONTAINER_USER_ID = U.USER_ID
-        LEFT JOIN
-                TB_OWNER O
+        INNER JOIN
+            TB_OWNER O
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
@@ -72,9 +66,6 @@
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
-            </if>
-            <if test="searchType == 'userName' and searchName != null and searchName.trim() != ''">
-                USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
