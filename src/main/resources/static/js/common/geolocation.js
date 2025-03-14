@@ -10,15 +10,18 @@ function getCoordinatesFromAddress() {
         return;
     }
 
-    geocoder.geocode({ 'address': address }, function (results, status) {
-        if (status === 'OK') {
+    geocoder.geocode({ "address": address }, function (results, status) {
+        if (status === "OK") {
             let containerLatitude = results[0].geometry.location.lat();
             let containerLongitude = results[0].geometry.location.lng();
+
+            containerLatitude = Number(containerLatitude.toFixed(7));
+            containerLongitude = Number(containerLongitude.toFixed(7));
 
             document.getElementById("containerLatitude").value = containerLatitude;
             document.getElementById("containerLongitude").value = containerLongitude;
         } else {
-            alert('주소를 찾을 수 없습니다.');
+            alert("주소를 찾을 수 없습니다.");
         }
     });
 }
@@ -32,19 +35,8 @@ function validateCoordinates(latitude, longitude) {
         return false;
     }
 
-    const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-    if (koreanRegex.test(latitude) || koreanRegex.test(longitude)) {
-        alert("위도와 경도에는 한글을 입력할 수 없습니다.");
-        return false;
-    }
-
-    let latDecimals = latitude.toString().split(".")[1]?.length || 0;
-    let lngDecimals = longitude.toString().split(".")[1]?.length || 0;
-
-    if (latDecimals > 7 || lngDecimals > 7) {
-        alert("위도와 경도는 소수점 7자리까지만 입력 가능합니다.");
-        return false;
-    }
+    latitude = Number(latitude.toFixed(7));
+    longitude = Number(longitude.toFixed(7));
 
     if (latitude < -90 || latitude > 90) {
         alert("위도 값이 잘못되었습니다.");
