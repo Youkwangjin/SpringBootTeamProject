@@ -70,6 +70,13 @@ body {
     font-size: 14px;
 }
 
+.size-input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
 .button-postcode {
     padding: 10px 15px;
     border: none;
