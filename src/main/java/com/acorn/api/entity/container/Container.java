@@ -32,7 +32,7 @@ public class Container {
 
     private String containerContentsText;
 
-    private Integer containerSize;
+    private BigDecimal containerSize;
 
     private Integer containerPrice;
 

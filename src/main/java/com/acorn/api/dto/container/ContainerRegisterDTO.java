@@ -31,11 +31,13 @@ public class ContainerRegisterDTO {
     private String containerContents;
 
     @NotNull
-    @Min(value = 1)
-    private Integer containerSize;
+    @Digits(integer = 6, fraction = 2)
+    @DecimalMin(value = "0.1")
+    @DecimalMax(value = "100000.00")
+    private BigDecimal containerSize;
 
     @NotNull
-    @Min(value = 0)
+    @Min(value = 1)
     private Integer containerPrice;
 
     @NotNull

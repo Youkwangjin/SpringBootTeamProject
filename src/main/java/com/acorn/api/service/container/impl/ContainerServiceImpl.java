@@ -36,7 +36,7 @@ public class ContainerServiceImpl implements ContainerService {
                     final Integer rowNum = containerList.getRowNum();
                     final Integer containerId = containerList.getContainerId();
                     final String containerName = containerList.getContainerName();
-                    final Integer containerSize = containerList.getContainerSize();
+                    final BigDecimal containerSize = containerList.getContainerSize();
                     final Integer containerStatus = containerList.getContainerStatus();
                     final Integer containerApprovalStatus = containerList.getContainerApprovalStatus();
                     final LocalDateTime containerCreated = containerList.getContainerCreated();
@@ -64,7 +64,7 @@ public class ContainerServiceImpl implements ContainerService {
         final BigDecimal containerLatitude = registerData.getContainerLatitude();
         final BigDecimal containerLongitude = registerData.getContainerLongitude();
         final String containerContents = registerData.getContainerContents();
-        final Integer containerSize = registerData.getContainerSize();
+        final BigDecimal containerSize = registerData.getContainerSize();
         final Integer containerPrice = registerData.getContainerPrice();
         final Integer containerStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
         final Integer containerApprovalStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode();
