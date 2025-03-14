@@ -18,7 +18,13 @@
         <result property="containerApprovalStatus"  column="CONTAINER_APPROVAL_STATUS"/>
         <result property="containerCreated"         column="CONTAINER_CREATED"/>
         <result property="containerUpdated"         column="CONTAINER_UPDATED"/>
+        <result property="containerOwnerId"         column="CONTAINER_OWNER_ID"/>
+        <collection property="owner"                javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap"/>
     </resultMap>
+
+    <select id="selectContainerIdKey" resultType="java.lang.Integer">
+        SELECT nextval(CONTAINER_SEQ)
+    </select>
 
     <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
@@ -45,9 +51,15 @@
             C.CONTAINER_NAME,
             C.CONTAINER_SIZE,
             C.CONTAINER_STATUS,
-            C.CONTAINER_CREATED
+            C.CONTAINER_APPROVAL_STATUS,
+            C.CONTAINER_CREATED,
+            O.OWNER_ID,
+            O.OWNER_NM
         FROM
             TB_CONTAINER C
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
@@ -55,11 +67,38 @@
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
             </if>
-            <if test="searchType == 'userName' and searchName != null and searchName.trim() != ''">
-                USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
-            </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
         LIMIT ${startRowNum}, ${pageSize}
     </select>
+
+    <insert id="containerRegister" parameterType="com.acorn.api.entity.container.Container" useGeneratedKeys="true" keyProperty="containerId">
+        INSERT INTO TB_CONTAINER (
+            CONTAINER_ID,
+            CONTAINER_NAME,
+            CONTAINER_ADDRESS,
+            CONTAINER_LATITUDE,
+            CONTAINER_LONGITUDE,
+            CONTAINER_CONTENTS,
+            CONTAINER_CONTENTS_TEXT,
+            CONTAINER_SIZE,
+            CONTAINER_PRICE,
+            CONTAINER_STATUS,
+            CONTAINER_APPROVAL_STATUS,
+            CONTAINER_OWNER_ID
+        ) VALUES (
+            #{containerId},
+            #{containerName},
+            #{containerAddr},
+            #{containerLatitude},
+            #{containerLongitude},
+            #{containerContents},
+            #{containerContentsText},
+            #{containerSize},
+            #{containerPrice},
+            #{containerStatus},
+            #{containerApprovalStatus},
+            #{containerOwnerId}
+        )
+    </insert>
 </mapper>

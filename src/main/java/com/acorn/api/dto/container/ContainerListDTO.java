@@ -4,6 +4,7 @@ import com.acorn.api.common.PaginationRequest;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,9 +23,11 @@ public class ContainerListDTO extends PaginationRequest {
 
     private String containerName;
 
-    private Integer containerSize;
+    private BigDecimal containerSize;
 
     private Integer containerStatus;
+
+    private Integer containerApprovalStatus;
 
     private LocalDateTime containerCreated;
 

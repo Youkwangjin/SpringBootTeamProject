@@ -34,7 +34,6 @@
             <select id="searchType" name="searchType">
                 <option value="containerName" th:selected="${request =='containerName'}">창고 이름</option>
                 <option value="containerStatus" th:selected="${request == 'containerStatus'}">창고 상태</option>
-                <option value="userName" th:selected="${request =='userName'}">임대인</option>
             </select>
 
             <label for="searchName" class="visually-hidden">검색어 입력</label>
@@ -44,6 +43,9 @@
         </div>
 
         <div class="table-responsive">
+            <div class="text-end mb-3">
+                <a href="/container/register" class="btn btn-primary">창고 등록하기</a>
+            </div>
             <table class="table table-bordered text-center">
                 <thead class="table-primary">
                 <tr>
@@ -51,6 +53,7 @@
                     <th>창고 이름</th>
                     <th>창고 크기</th>
                     <th>창고 상태</th>
+                    <th>승인 상태</th>
                     <th>임대인</th>
                 </tr>
                 </thead>
@@ -62,16 +65,21 @@
                     </td>
                     <td th:text="${container.containerSize} + '㎡'"></td>
                     <td>
-                        <span th:if="${container.containerStatus == 0}" class="text-success">사용 가능</span>
-                        <span th:if="${container.containerStatus == 1}" class="text-warning">예약 중</span>
-                        <span th:if="${container.containerStatus == 2}" class="text-danger">사용 불가</span>
+                        <span th:if="${container.containerStatus == 0}" class="text-success">사용 대기</span>
+                        <span th:if="${container.containerStatus == 1}" class="text-warning">사용 가능</span>
+                        <span th:if="${container.containerStatus == 2}" class="text-danger">사용 중</span>
+                        <span th:if="${container.containerStatus == 3}" class="text-danger">사용 불가능</span>
+                    </td>
+                    <td>
+                        <span th:if="${container.containerApprovalStatus == 0}" class="text-success">승인 대기</span>
+                        <span th:if="${container.containerApprovalStatus == 1}" class="text-warning">승인 완료</span>
+                        <span th:if="${container.containerApprovalStatus == 2}" class="text-danger">승인 거절</span>
                     </td>
                     <td></td>
                 </tr>
                 <tr th:if="${containerData.size() == 0}">
-                    <td colspan="5" class="text-muted py-3">
+                    <td colspan="6" class="text-muted py-3">
                         <p class="mt-2">등록된 창고가 없습니다. 새 창고를 추가해보세요!</p>
-                        <a href="/container/register" class="btn btn-primary">창고 등록하기</a>
                     </td>
                 </tr>
                 </tbody>
