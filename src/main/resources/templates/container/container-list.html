@@ -39,7 +39,8 @@
             <label for="searchName" class="visually-hidden">검색어 입력</label>
             <input type="text" id="searchName" name="searchName" placeholder="검색어를 입력하세요.">
 
-            <button id="searchButton" type="submit">검색</button>
+            <button id="searchButton" type="button">검색</button>
+            <button id="resetBtn" type="button">초기화</button>
         </div>
 
         <div class="table-responsive">
@@ -110,5 +111,25 @@
         </div>
     </form>
 </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let searchButton = document.getElementById("searchButton");
+        let resetButton = document.getElementById("resetBtn");
+
+        searchButton.addEventListener("click", function (event) {
+          event.preventDefault();
+
+          const pageNo = document.getElementById("pageNo").value;
+          const searchType = document.getElementById("searchType").value;
+          const searchName = document.getElementById("searchName").value;
+
+          window.location.href = `/container/list?pageNo=${pageNo}&searchType=${searchType}&searchName=${searchName}`;
+        });
+
+        resetButton.addEventListener("click", function () {
+           window.location.href = "/container/list";
+        });
+    });
+</script>
 </body>
 </html>
