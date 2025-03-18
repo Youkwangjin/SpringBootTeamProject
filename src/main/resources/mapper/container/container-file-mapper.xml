@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.container.ContainerFileRepository">
+    <resultMap id="containerFileResultMap"              type="com.acorn.api.entity.container.ContainerFile">
+        <id property="containerFileId"                  column="CONTAINER_FILE_ID"/>
+        <id property="containerId"                      column="CONTAINER_FILE_CONTAINER_ID"/>
+        <result property="containerOriginalFileName"    column="CONTAINER_FILE_ORIGINAL_FILE_NAME"/>
+        <result property="containerStoredFileName"      column="CONTAINER_FILE_STORED_FILE_NAME"/>
+        <result property="containerFilePath"            column="CONTAINER_FILE_PATH"/>
+        <result property="containerFileExtNm"           column="CONTAINER_FILE_EXTNS_NM"/>
+        <result property="containerFileSize"            column="CONTAINER_FILE_SIZE"/>
+        <result property="containerFileCreated"         column="CONTAINER_FILE_CREATED"/>
+        <result property="containerFileUpdated"         column="CONTAINER_FILE_UPDATED"/>
+    </resultMap>
+
+    <select id="selectContainerFileIdKey" resultType="java.lang.Integer">
+        SELECT nextval(CONTAINER_FILE_SEQ)
+    </select>
+
+    <insert id="containerFileSave">
+        INSERT INTO TB_CONTAINER_FILE (
+            CONTAINER_FILE_ID,
+            CONTAINER_FILE_ORIGINAL_FILE_NAME,
+            CONTAINER_FILE_STORED_FILE_NAME,
+            CONTAINER_FILE_PATH,
+            CONTAINER_FILE_EXTNS_NM,
+            CONTAINER_FILE_SIZE,
+            CONTAINER_FILE_CONTAINER_ID
+        ) VALUES (
+            #{containerFileId},
+            #{containerOriginalFileName},
+            #{containerStoredFileName},
+            #{containerFilePath},
+            #{containerFileExtNm},
+            #{containerFileSize},
+            #{containerId}
+        )
+    </insert>
+</mapper>

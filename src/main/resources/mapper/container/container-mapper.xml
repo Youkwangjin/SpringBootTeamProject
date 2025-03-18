@@ -20,6 +20,7 @@
         <result property="containerUpdated"         column="CONTAINER_UPDATED"/>
         <result property="containerOwnerId"         column="CONTAINER_OWNER_ID"/>
         <collection property="owner"                javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap"/>
+        <collection property="containerFiles"       javaType="java.util.List" resultMap="com.acorn.api.repository.container.ContainerFileRepository.containerFileResultMap"/>
     </resultMap>
 
     <select id="selectContainerIdKey" resultType="java.lang.Integer">

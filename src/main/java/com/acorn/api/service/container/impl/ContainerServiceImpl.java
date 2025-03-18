@@ -2,15 +2,20 @@ package com.acorn.api.service.container.impl;
 
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.component.FileComponent;
 import com.acorn.api.dto.container.ContainerListDTO;
 import com.acorn.api.dto.container.ContainerRegisterDTO;
 import com.acorn.api.entity.container.Container;
+import com.acorn.api.entity.container.ContainerFile;
 import com.acorn.api.exception.global.AcontainerException;
+import com.acorn.api.repository.container.ContainerFileRepository;
 import com.acorn.api.repository.container.ContainerRepository;
 import com.acorn.api.service.container.ContainerService;
 import com.acorn.api.utils.CommonSecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,13 +23,18 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
 
+    @Value("${file.upload.path.board}")
+    private String uploadDir;
     private final ContainerRepository containerRepository;
+    private final ContainerFileRepository containerFileRepository;
+    private final FileComponent fileComponent;
 
     @Override
     public List<ContainerListDTO> getContainerListData(ContainerListDTO listData) {
@@ -93,5 +103,28 @@ public class ContainerServiceImpl implements ContainerService {
                 .containerOwnerId(containerOwnerId)
                 .build();
         containerRepository.containerRegister(newContainerRegisterData);
+
+        if (containerFiles != null && !containerFiles.isEmpty()) {
+            for (MultipartFile multipartFile : containerFiles) {
+                final Integer containerFileId = containerFileRepository.selectContainerFileIdKey();
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", containerId, containerFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(multipartFile.getSize());
+
+                ContainerFile newContainerFile = ContainerFile.builder()
+                        .containerFileId(containerFileId)
+                        .containerOriginalFileName(originalFileName)
+                        .containerStoredFileName(storedFileName)
+                        .containerFilePath(filePath)
+                        .containerFileExtNm(fileExtNm)
+                        .containerFileSize(fileSize)
+                        .containerId(containerId)
+                        .build();
+                containerFileRepository.containerFileSave(newContainerFile);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
+            }
+        }
     }
 }

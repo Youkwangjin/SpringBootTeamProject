@@ -1,7 +1,6 @@
 package com.acorn.api.entity.container;
 
 import com.acorn.api.entity.owner.Owner;
-import com.acorn.api.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -44,11 +44,9 @@ public class Container {
 
     private LocalDateTime containerUpdated;
 
-    private Integer containerUserId;
-
     private Integer containerOwnerId;
 
-    private User user;
-
     private Owner owner;
+
+    private List<ContainerFile> containerFiles;
 }
