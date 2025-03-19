@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
 
-    @Value("${file.upload.path.board}")
+    @Value("${file.upload.path.container}")
     private String uploadDir;
     private final ContainerRepository containerRepository;
     private final ContainerFileRepository containerFileRepository;
