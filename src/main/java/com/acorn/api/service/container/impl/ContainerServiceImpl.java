@@ -1,8 +1,11 @@
 package com.acorn.api.service.container.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.component.FileComponent;
+import com.acorn.api.dto.container.ContainerDetailDTO;
+import com.acorn.api.dto.container.ContainerFileDTO;
 import com.acorn.api.dto.container.ContainerListDTO;
 import com.acorn.api.dto.container.ContainerRegisterDTO;
 import com.acorn.api.entity.container.Container;
@@ -126,5 +129,66 @@ public class ContainerServiceImpl implements ContainerService {
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
+    }
+
+    @Override
+    public ContainerDetailDTO getContainerData(Integer containerId) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        if (currentOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container containerDetailData = containerRepository.selectContainerDetailData(containerId);
+        if (containerDetailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        final Integer containerOwnerId = containerDetailData.getContainerOwnerId();
+        final String containerName = containerDetailData.getContainerName();
+        final String ownerName = containerDetailData.getOwner().getOwnerNm();
+        final BigDecimal containerSize = containerDetailData.getContainerSize();
+        final Integer containerPrice = containerDetailData.getContainerPrice();
+        final String containerAddr = containerDetailData.getContainerAddr();
+        final BigDecimal containerLatitude = containerDetailData.getContainerLatitude();
+        final BigDecimal containerLongitude = containerDetailData.getContainerLongitude();
+        final String containerContents = containerDetailData.getContainerContents();
+
+        List<ContainerFile> containerFiles = containerDetailData.getContainerFiles();
+        final List<ContainerFileDTO> containerFileDTOS = containerFiles.stream()
+                .map( file -> {
+                    final Integer containerFileId = file.getContainerFileId();
+                    final String containerOriginalFileName = file.getContainerOriginalFileName();
+                    final String containerStoredFileName = file.getContainerStoredFileName();
+                    final String containerFilePath = file.getContainerFilePath();
+                    final String containerFileExtNm = file.getContainerFileExtNm();
+                    final String containerFileSize = file.getContainerFileSize();
+
+                    return ContainerFileDTO.builder()
+                            .containerFileId(containerFileId)
+                            .containerOriginalFileName(containerOriginalFileName)
+                            .containerStoredFileName(containerStoredFileName)
+                            .containerFilePath(containerFilePath)
+                            .containerFileExtNm(containerFileExtNm)
+                            .containerFileSize(containerFileSize)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        return ContainerDetailDTO.builder()
+                .containerId(containerId)
+                .containerName(containerName)
+                .ownerName(ownerName)
+                .containerSize(containerSize)
+                .containerPrice(containerPrice)
+                .containerAddr(containerAddr)
+                .containerLatitude(containerLatitude)
+                .containerLongitude(containerLongitude)
+                .containerContents(containerContents)
+                .containerFiles(containerFileDTOS)
+                .build();
     }
 }

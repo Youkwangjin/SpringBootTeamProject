@@ -128,7 +128,8 @@ public class SpringSecurityConfig {
                                          "/owner/update/profile",
                                          "/owner/delete/profile",
                                          "/container/list/**",
-                                         "/container/register").hasAuthority("ROLE_OWNER")
+                                         "/container/register",
+                                         "/container/detail/**").hasAuthority("ROLE_OWNER")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
