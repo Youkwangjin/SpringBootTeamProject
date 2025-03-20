@@ -94,9 +94,7 @@ public class SpringSecurityConfig {
                                          "/owner/join",
                                          "/owner/login",
                                          "/board/list/**",
-                                         "/board/detail/**",
-                                         "/container/list/**",
-                                         "/container/register").permitAll()
+                                         "/board/detail/**").permitAll()
 
                         // Public Common API
                         .requestMatchers("/api/logout",
@@ -128,7 +126,10 @@ public class SpringSecurityConfig {
                         // Protected Owner Common Pages
                         .requestMatchers("/owner/mypage",
                                          "/owner/update/profile",
-                                         "/owner/delete/profile").hasAuthority("ROLE_OWNER")
+                                         "/owner/delete/profile",
+                                         "/container/list/**",
+                                         "/container/register",
+                                         "/container/detail/**").hasAuthority("ROLE_OWNER")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",

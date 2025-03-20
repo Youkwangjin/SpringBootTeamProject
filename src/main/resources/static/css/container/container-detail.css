@@ -1,0 +1,33 @@
+.red-btn {
+    background-color: #ff0000;
+    color: white;
+}
+
+.blue-btn {
+    background-color: #0a58ca;
+    color: white;
+}
+
+.container-content {
+    width: 740px;
+    min-height: 300px;
+    max-width: 1000px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 16px;
+    line-height: 1.8;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    white-space: normal;
+}
+
+.container-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 5px;
+}
