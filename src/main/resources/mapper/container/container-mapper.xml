@@ -20,6 +20,7 @@
         <result property="containerUpdated"         column="CONTAINER_UPDATED"/>
         <result property="containerOwnerId"         column="CONTAINER_OWNER_ID"/>
         <collection property="owner"                javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap"/>
+        <collection property="containerFiles"       javaType="java.util.List" resultMap="com.acorn.api.repository.container.ContainerFileRepository.containerFileResultMap"/>
     </resultMap>
 
     <select id="selectContainerIdKey" resultType="java.lang.Integer">
@@ -70,6 +71,38 @@
         </where>
         ORDER BY CONTAINER_CREATED DESC
         LIMIT ${startRowNum}, ${pageSize}
+    </select>
+
+    <select id="selectContainerDetailData" parameterType="Integer" resultMap="containerResultMap">
+        SELECT
+            C.CONTAINER_ID,
+            C.CONTAINER_OWNER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_LATITUDE,
+            C.CONTAINER_LONGITUDE,
+            C.CONTAINER_CONTENTS,
+            C.CONTAINER_CONTENTS_TEXT,
+            C.CONTAINER_SIZE,
+            C.CONTAINER_PRICE,
+            F.CONTAINER_FILE_ID,
+            F.CONTAINER_FILE_CONTAINER_ID,
+            F.CONTAINER_FILE_ORIGINAL_FILE_NAME,
+            F.CONTAINER_FILE_STORED_FILE_NAME,
+            F.CONTAINER_FILE_PATH,
+            F.CONTAINER_FILE_EXTNS_NM,
+            F.CONTAINER_FILE_SIZE,
+            O.OWNER_NM
+        FROM
+            TB_CONTAINER C
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        LEFT OUTER JOIN
+            TB_CONTAINER_FILE F
+        ON C.CONTAINER_ID = F.CONTAINER_FILE_CONTAINER_ID
+        WHERE
+            C.CONTAINER_ID = #{containerId}
     </select>
 
     <insert id="containerRegister" parameterType="com.acorn.api.entity.container.Container" useGeneratedKeys="true" keyProperty="containerId">
