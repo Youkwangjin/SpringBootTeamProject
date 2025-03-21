@@ -65,6 +65,8 @@
         let updateBtn = document.getElementById("updateBtn");
         let deleteBtn = document.getElementById("deleteBtn");
         const boardId = document.getElementById("boardId").value;
+        const boardUserId = document.getElementById("boardUserId").value;
+        const boardOwnerId = document.getElementById("boardOwnerId").value;
 
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
@@ -84,8 +86,8 @@
 
             const boardData = {
                 boardId: boardId,
-                boardUserId: document.getElementById("boardUserId").value,
-                boardOwnerId: document.getElementById("boardOwnerId").value,
+                boardUserId: boardUserId,
+                boardOwnerId: boardOwnerId,
                 _csrf: csrfToken
             };
 
