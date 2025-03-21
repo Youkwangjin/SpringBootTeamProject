@@ -301,6 +301,6 @@ public class BoardServiceImpl implements BoardService {
 
     private boolean hasEditPermission(Integer currentUserId, Integer currentOwnerId, Integer boardUserId, Integer boardOwnerId) {
         return (currentUserId != null && Objects.equals(currentUserId, boardUserId)) ||
-                (currentOwnerId != null && Objects.equals(currentOwnerId, boardOwnerId));
+               (currentOwnerId != null && Objects.equals(currentOwnerId, boardOwnerId));
     }
 }
