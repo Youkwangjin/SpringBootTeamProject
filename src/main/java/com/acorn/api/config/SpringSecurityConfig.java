@@ -129,15 +129,18 @@ public class SpringSecurityConfig {
                                          "/owner/delete/profile",
                                          "/container/list/**",
                                          "/container/register",
-                                         "/container/detail/**").hasAuthority("ROLE_OWNER")
+                                         "/container/detail/**",
+                                         "/container/update/**").hasAuthority("ROLE_OWNER")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
                                          "/api/user/delete/{userId}").hasAuthority("ROLE_USER")
 
                         // Protected Owner API
-                        .requestMatchers("/api/owner/update/{ownerUUId}",
-                                         "/api/owner/delete/{ownerUUId}").hasAuthority("ROLE_OWNER")
+                        .requestMatchers("/api/owner/update/{ownerId}",
+                                         "/api/owner/delete/{ownerId}",
+                                         "/api/container/register",
+                                         "/api/container/update/{containerId}").hasAuthority("ROLE_OWNER")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",

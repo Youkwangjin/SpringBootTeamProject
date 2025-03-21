@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>에이콘테이너 : 창고등록</title>
+    <title>에이콘테이너 : 창고상세</title>
     <link rel="stylesheet" type="text/css" href="/css/container/container-register.css">
     <link rel="stylesheet" type="text/css" href="/css/container/container-detail.css">
     <link href="/assets/img/favicon.png" rel="icon">
@@ -31,7 +31,7 @@
 <div class="text-container">
     <form id="containerRegister">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <input type="hidden" name="containerId" th:value="${containerDetailData.containerId}"/>
+        <input type="hidden" id="containerId" name="containerId" th:value="${containerDetailData.containerId}"/>
         <input type="hidden" name="containerOwnerId" th:value="${containerDetailData.ownerId}"/>
 
         <h3>창고 이름</h3>
@@ -97,9 +97,15 @@
 <script>
     document.addEventListener("DOMContentLoaded" ,function () {
        let backBtn = document.getElementById("backBtn");
+       let updateBtn = document.getElementById("updateBtn");
+       const containerId = document.getElementById("containerId").value;
 
        backBtn.addEventListener("click" ,function () {
           window.location.href = "/container/list";
+       });
+
+       updateBtn.addEventListener("click", function () {
+           window.location.href = `/container/update/${containerId}`;
        });
     });
 </script>
