@@ -98,7 +98,7 @@
     document.addEventListener("DOMContentLoaded" ,function () {
        let backBtn = document.getElementById("backBtn");
        let updateBtn = document.getElementById("updateBtn");
-       const containerId = document.getElementById("containerId");
+       const containerId = document.getElementById("containerId").value;
 
        backBtn.addEventListener("click" ,function () {
           window.location.href = "/container/list";

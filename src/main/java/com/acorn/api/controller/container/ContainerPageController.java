@@ -42,4 +42,11 @@ public class ContainerPageController {
         model.addAttribute("containerDetailData", containerDetailData);
         return "container/container-detail";
     }
+
+    @GetMapping("/container/update/{containerId}")
+    public String updatePage(@PathVariable("containerId") Integer containerId, Model model) {
+        ContainerDetailDTO containerDetailData = containerService.getContainerData(containerId);
+        model.addAttribute("containerDetailData", containerDetailData);
+        return "container/container-update";
+    }
 }
