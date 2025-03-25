@@ -28,10 +28,10 @@
     <div th:replace="~{fragments/header-owner :: header}"></div>
 </div>
 <div class="text-container">
-    <form id="containerRegister">
+    <form id="containerUpdateForm">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input type="hidden" id="containerId" name="containerId" th:value="${containerDetailData.containerId}"/>
-        <input type="hidden" name="containerOwnerId" th:value="${containerDetailData.ownerId}"/>
+        <input type="hidden" id="containerOwnerId" name="containerOwnerId" th:value="${containerDetailData.ownerId}"/>
         <h3>창고이름</h3>
         <div class="postcode-row">
             <label for="containerName">
@@ -113,8 +113,8 @@
         </div>
 
         <div class="button-group">
-            <button type="button" id="backListBtn" class="custom-btn black-btn">목록</button>
-            <button type="submit" id="registerBtn" class="custom-btn orange-btn">등록하기</button>
+            <button type="button" id="backListBtn" class="custom-btn black-btn">뒤로가기</button>
+            <button type="submit" id="updateBtn" class="custom-btn orange-btn">수정하기</button>
         </div>
     </form>
 </div>
@@ -127,108 +127,112 @@
 <script src="/js/common/fileModule.js"></script>
 <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function () {
+        const containerId = document.getElementById("containerId").value;
         initBackListButton();
         initSubmitHandler();
-    });
 
-    function initBackListButton() {
-        const backListButton = document.getElementById("backListBtn");
-        backListButton.addEventListener("click", function () {
-            window.location.href = "/container/list";
-        });
-    }
+        function initBackListButton() {
+            const backListButton = document.getElementById("backListBtn");
+            backListButton.addEventListener("click", function () {
+                window.location.href = `/container/detail/${containerId}`;
+            });
+        }
 
-    function initSubmitHandler() {
-        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+        function initSubmitHandler() {
+            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-        document.getElementById("containerRegister").addEventListener("submit" , function (event) {
-            event.preventDefault();
+            document.getElementById("containerUpdateForm").addEventListener("submit" , function (event) {
+                event.preventDefault();
 
-            let missingFields = [];
+                let missingFields = [];
 
-            let containerId = document.getElementById("containerId").value;
-            let containerOwnerId = document.getElementById("containerOwnerId").value.trim();
-            let containerName = document.getElementById("containerName").value.trim();
-            let ownerName = document.getElementById("ownerName").value.trim();
-            let containerSize = document.getElementById("containerSize").value.trim();
-            let containerPrice = document.getElementById("containerPrice").value.trim();
-            let containerAddr = document.getElementById("userAddress").value.trim();
-            let containerLatitude = document.getElementById("containerLatitude").value.trim();
-            let containerLongitude = document.getElementById("containerLongitude").value.trim();
-            let containerContents = tinymce.get("boardContents").getContent().trim();
+                let containerOwnerId = document.getElementById("containerOwnerId").value;
+                let containerName = document.getElementById("containerName").value.trim();
+                let ownerName = document.getElementById("ownerName").value.trim();
+                let containerSize = document.getElementById("containerSize").value.trim();
+                let containerPrice = document.getElementById("containerPrice").value.trim();
+                let containerAddr = document.getElementById("userAddress").value.trim();
+                let containerLatitude = document.getElementById("containerLatitude").value.trim();
+                let containerLongitude = document.getElementById("containerLongitude").value.trim();
+                let containerContents = tinymce.get("boardContents").getContent().trim();
 
-            if (!containerName) missingFields.push("창고 이름");
-            if (!containerSize) missingFields.push("창고 크기");
-            if (!containerPrice) missingFields.push("창고 가격");
-            if (!containerAddr) missingFields.push("창고 주소");
-            if (!containerLatitude) missingFields.push("위도");
-            if (!containerLongitude) missingFields.push("경도");
-            if (!containerContents) missingFields.push("내용");
+                if (!containerName) missingFields.push("창고 이름");
+                if (!containerSize) missingFields.push("창고 크기");
+                if (!containerPrice) missingFields.push("창고 가격");
+                if (!containerAddr) missingFields.push("창고 주소");
+                if (!containerLatitude) missingFields.push("위도");
+                if (!containerLongitude) missingFields.push("경도");
+                if (!containerContents) missingFields.push("내용");
 
-            if (missingFields.length > 0) {
-                alert("다음 필수 입력 항목을 입력해주세요:\n\n" + missingFields.join("\n"));
-                return;
-            }
-
-            if (isNaN(containerSize) || isNaN(containerPrice)) {
-                alert("창고 크기와 가격은 숫자만 입력할 수 있습니다.");
-                return;
-            }
-
-            if (!validateCoordinates(containerLatitude, containerLongitude)) {
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("containerId", containerId);
-            formData.append("containerOwnerId", containerOwnerId);
-            formData.append("containerName", containerName);
-            formData.append("ownerName", ownerName);
-            formData.append("containerSize", containerSize);
-            formData.append("containerPrice", containerPrice);
-            formData.append("containerAddr", containerAddr);
-            formData.append("containerLatitude", containerLatitude);
-            formData.append("containerLongitude", containerLongitude);
-            formData.append("containerContents", containerContents);
-
-            let fileList = file.list();
-            for (let i = 0; i < fileList.length; i++) {
-                if (fileList[i].file) {
-                    formData.append("containerFiles", fileList[i].file);
-                } else {
-                    formData.append("containerFileIds", fileList[i].fileId);
+                if (missingFields.length > 0) {
+                    alert("다음 필수 입력 항목을 입력해주세요:\n\n" + missingFields.join("\n"));
+                    return;
                 }
-            }
 
-            fetch("/api/container/update", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-                body: formData,
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.errorMsg);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        alert(data.resultMsg);
-                        window.location.href = "/container/list";
+                if (isNaN(containerSize) || isNaN(containerPrice)) {
+                    alert("창고 크기와 가격은 숫자만 입력할 수 있습니다.");
+                    return;
+                }
+
+                if (!validateCoordinates(containerLatitude, containerLongitude)) {
+                    return;
+                }
+
+                if (!confirm("창고 정보를 수정하시겠습니까?")) {
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("containerId", containerId);
+                formData.append("containerOwnerId", containerOwnerId);
+                formData.append("containerName", containerName);
+                formData.append("ownerName", ownerName);
+                formData.append("containerSize", containerSize);
+                formData.append("containerPrice", containerPrice);
+                formData.append("containerAddr", containerAddr);
+                formData.append("containerLatitude", containerLatitude);
+                formData.append("containerLongitude", containerLongitude);
+                formData.append("containerContents", containerContents);
+
+                let fileList = file.list();
+                for (let i = 0; i < fileList.length; i++) {
+                    if (fileList[i].file) {
+                        formData.append("containerFiles", fileList[i].file);
                     } else {
-                        throw new Error(data.errorMsg);
+                        formData.append("containerFileIds", fileList[i].fileId);
                     }
+                }
+
+                fetch(`/api/container/update/${containerId}`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                    body: formData,
                 })
-                .catch(error => {
-                    alert(error.message);
-                });
-        });
-    }
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw new Error(errorData.errorMsg);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.httpStatus === "OK") {
+                            alert(data.resultMsg);
+                            window.location.href = "/container/list";
+                        } else {
+                            throw new Error(data.errorMsg);
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            });
+        }
+    });
 
     let file = fileModule({
         count: 5,
