@@ -4,10 +4,7 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.container.ContainerDetailDTO;
-import com.acorn.api.dto.container.ContainerFileDTO;
-import com.acorn.api.dto.container.ContainerListDTO;
-import com.acorn.api.dto.container.ContainerRegisterDTO;
+import com.acorn.api.dto.container.*;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.container.ContainerFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -20,6 +17,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -68,6 +66,7 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
+    @Transactional
     public void containerRegister(ContainerRegisterDTO registerData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer containerOwnerId = registerData.getContainerOwnerId();
@@ -180,6 +179,7 @@ public class ContainerServiceImpl implements ContainerService {
 
         return ContainerDetailDTO.builder()
                 .containerId(containerId)
+                .ownerId(containerOwnerId)
                 .containerName(containerName)
                 .ownerName(ownerName)
                 .containerSize(containerSize)
@@ -190,5 +190,58 @@ public class ContainerServiceImpl implements ContainerService {
                 .containerContents(containerContents)
                 .containerFiles(containerFileDTOS)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void containerUpdate(ContainerUpdateDTO updateData) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer containerOwnerId = updateData.getContainerOwnerId();
+        final Integer containerId = updateData.getContainerId();
+        final String containerName = updateData.getContainerName();
+        final BigDecimal containerSize = updateData.getContainerSize();
+        final Integer containerPrice = updateData.getContainerPrice();
+        final String containerAddr = updateData.getContainerAddr();
+        final BigDecimal containerLatitude = updateData.getContainerLatitude();
+        final BigDecimal containerLongitude = updateData.getContainerLongitude();
+        final String containerContents = updateData.getContainerContents();
+        final String containerContentsText = Jsoup.parse(containerContents).text();
+
+        if (currentOwnerId == null || containerOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container exsitedContainer = containerRepository.selectContainerDetailData(containerId);
+        if (exsitedContainer == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        final Integer exsitedContainerApprovalStatus = exsitedContainer.getContainerApprovalStatus();
+        final Integer exsitedContainerStatus = exsitedContainer.getContainerStatus();
+
+        if (!Objects.equals(exsitedContainerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_PENDING);
+        }
+
+        if (!Objects.equals(exsitedContainerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_PENDING);
+        }
+
+        Container newContainerUpdateData = Container.builder()
+                .containerId(containerId)
+                .containerName(containerName)
+                .containerSize(containerSize)
+                .containerPrice(containerPrice)
+                .containerAddr(containerAddr)
+                .containerLatitude(containerLatitude)
+                .containerLongitude(containerLongitude)
+                .containerContents(containerContents)
+                .containerContentsText(containerContentsText)
+                .build();
+        containerRepository.containerUpdate(newContainerUpdateData);
     }
 }

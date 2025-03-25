@@ -19,4 +19,6 @@ public interface ContainerRepository {
     void containerRegister(Container container);
 
     Container selectContainerDetailData(@Param("containerId") Integer containerId);
+
+    void containerUpdate(Container container);
 }

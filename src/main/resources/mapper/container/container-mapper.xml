@@ -85,6 +85,8 @@
             C.CONTAINER_CONTENTS_TEXT,
             C.CONTAINER_SIZE,
             C.CONTAINER_PRICE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_APPROVAL_STATUS,
             F.CONTAINER_FILE_ID,
             F.CONTAINER_FILE_CONTAINER_ID,
             F.CONTAINER_FILE_ORIGINAL_FILE_NAME,
@@ -134,4 +136,20 @@
             #{containerOwnerId}
         )
     </insert>
+
+    <update id="containerUpdate" parameterType="com.acorn.api.entity.container.Container">
+        UPDATE
+            TB_CONTAINER
+        SET
+            CONTAINER_NAME = #{containerName},
+            CONTAINER_SIZE = #{containerSize},
+            CONTAINER_PRICE = #{containerPrice},
+            CONTAINER_ADDRESS = #{containerAddr},
+            CONTAINER_LATITUDE = #{containerLatitude},
+            CONTAINER_LONGITUDE = #{containerLongitude},
+            CONTAINER_CONTENTS = #{containerContents},
+            CONTAINER_CONTENTS_TEXT = #{containerContentsText}
+        WHERE
+            CONTAINER_ID = #{containerId}
+    </update>
 </mapper>
