@@ -178,6 +178,10 @@
                 return;
             }
 
+            if (!confirm("창고 정보를 등록하시겠습니까?")) {
+                return;
+            }
+
             const formData = new FormData();
             formData.append("containerOwnerId", containerOwnerId);
             formData.append("containerName", containerName);

@@ -152,4 +152,12 @@
         WHERE
             CONTAINER_ID = #{containerId}
     </update>
+
+    <delete id="containerDelete" parameterType="com.acorn.api.entity.container.Container">
+        DELETE
+        FROM
+            TB_CONTAINER
+        WHERE
+            CONTAINER_ID = #{containerId}
+    </delete>
 </mapper>

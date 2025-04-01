@@ -140,7 +140,8 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/owner/update/{ownerId}",
                                          "/api/owner/delete/{ownerId}",
                                          "/api/container/register",
-                                         "/api/container/update/{containerId}").hasAuthority("ROLE_OWNER")
+                                         "/api/container/update/{containerId}",
+                                         "/api/container/delete/{containerId}").hasAuthority("ROLE_OWNER")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
