@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -19,7 +19,7 @@ public class ContainerUpdateController {
 
     private final ContainerService containerService;
 
-    @PostMapping("/api/container/update/{containerId}")
+    @PatchMapping("/api/container/update/{containerId}")
     public ResponseEntity<ApiSuccessResponse<Object>> containerUpdate(@Valid ContainerUpdateDTO updateData) {
         log.info(" *****************************    Container Update START    *****************************");
 

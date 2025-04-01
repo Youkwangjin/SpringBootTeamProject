@@ -1,7 +1,7 @@
 package com.acorn.api.dto.container;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class ContainerUpdateDTO {
 
     @NotNull
@@ -48,4 +48,6 @@ public class ContainerUpdateDTO {
 
     @Size(max = 5)
     private List<MultipartFile> containerFiles;
+
+    private List<Integer> containerFileIds;
 }
