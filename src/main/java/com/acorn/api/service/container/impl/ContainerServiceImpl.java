@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -243,5 +244,52 @@ public class ContainerServiceImpl implements ContainerService {
                 .containerContentsText(containerContentsText)
                 .build();
         containerRepository.containerUpdate(newContainerUpdateData);
+
+        List<Integer> containaerFileIds = updateData.getContainerFileIds();
+        if (containaerFileIds == null) {
+            containaerFileIds = new ArrayList<>();
+        }
+
+        List<ContainerFile> existingFiles = containerFileRepository.selectFilesByContainerId(containerId);
+
+        List<Integer> deletedFileIds = new ArrayList<>();
+        for (ContainerFile containerFile : existingFiles) {
+            if (!containaerFileIds.contains(containerFile.getContainerFileId())) {
+                deletedFileIds.add(containerFile.getContainerFileId());
+            }
+        }
+
+        for (Integer containerFileId : deletedFileIds) {
+            ContainerFile containerFile = containerFileRepository.selectFilesByContainerFileId(containerFileId);
+            if (containerFile == null) {
+                throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+            }
+
+            fileComponent.delete(containerFile.getContainerFilePath(), containerFile.getContainerStoredFileName());
+            containerFileRepository.containerFileDelete(containerFileId);
+        }
+
+        if (updateData.getContainerFiles() != null && !updateData.getContainerFiles().isEmpty()) {
+            for (MultipartFile multipartFile : updateData.getContainerFiles()) {
+                final Integer containerFileId = containerFileRepository.selectContainerFileIdKey();
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", containerId, containerFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(multipartFile.getSize());
+
+                ContainerFile newContainerFile = ContainerFile.builder()
+                        .containerFileId(containerFileId)
+                        .containerOriginalFileName(originalFileName)
+                        .containerStoredFileName(storedFileName)
+                        .containerFilePath(filePath)
+                        .containerFileExtNm(fileExtNm)
+                        .containerFileSize(fileSize)
+                        .containerId(containerId)
+                        .build();
+                containerFileRepository.containerFileSave(newContainerFile);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
+            }
+        }
     }
 }
