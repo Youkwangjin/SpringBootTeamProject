@@ -292,4 +292,42 @@ public class ContainerServiceImpl implements ContainerService {
             }
         }
     }
+
+    @Override
+    @Transactional
+    public void containerDelete(ContainerDeleteDTO deleteData) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer containerId = deleteData.getContainerId();
+        final Integer ownerId = deleteData.getOwnerId();
+
+        if (currentOwnerId == null || ownerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(currentOwnerId, ownerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container exsitedContainer = containerRepository.selectContainerDetailData(containerId);
+        if (exsitedContainer == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        final Integer exsitedContainerApprovalStatus = exsitedContainer.getContainerApprovalStatus();
+        final Integer exsitedContainerStatus = exsitedContainer.getContainerStatus();
+
+        if (!Objects.equals(exsitedContainerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_PENDING);
+        }
+
+        if (!Objects.equals(exsitedContainerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_PENDING);
+        }
+
+        Container deleteContainerData = Container.builder()
+                .containerId(containerId)
+                .build();
+
+        containerRepository.containerDelete(deleteContainerData);
+    }
 }

@@ -12,6 +12,7 @@ public enum ApiSuccessCode {
     BOARD_DELETE_SUCCESS(HttpStatus.OK,       "BDS", "게시글이 성공적으로 삭제되었습니다."),
     CONTAINER_REGISTER_SUCCESS(HttpStatus.OK, "CRS", "창고정보가 성공적으로 등록되었습니다."),
     CONTAINER_UPDATE_SUCCESS(HttpStatus.OK,   "CUS", "창고정보가 성공적으로 수정되었습니다."),
+    CONTAINER_DELETE_SUCCESS(HttpStatus.OK,   "CDS", "창고정보가 성공적으로 삭제되었습니다."),
     INFO_UPDATE_SUCCESS(HttpStatus.OK,        "IUS", "회원정보가 성공적으로 수정되었습니다."),
     INFO_DELETE_SUCCESS(HttpStatus.OK,        "IDS", "그동안 이용해 주셔서 감사합니다.");
 
