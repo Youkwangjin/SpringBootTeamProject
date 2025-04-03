@@ -40,6 +40,11 @@ public class ContainerServiceImpl implements ContainerService {
 
     @Override
     public List<ContainerListDTO> getContainerListData(ContainerListDTO listData) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        if (currentOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+        listData.setContainerOwnerId(currentOwnerId);
         listData.setTotalCount(containerRepository.selectListCountByRequest(listData));
         List<Container> containerListData = containerRepository.selectContainerListData(listData);
 
@@ -153,6 +158,10 @@ public class ContainerServiceImpl implements ContainerService {
         final BigDecimal containerLongitude = containerDetailData.getContainerLongitude();
         final String containerContents = containerDetailData.getContainerContents();
 
+        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
         List<ContainerFile> containerFiles = containerDetailData.getContainerFiles();
         final List<ContainerFileDTO> containerFileDTOS = containerFiles.stream()
                 .map( file -> {
@@ -173,10 +182,6 @@ public class ContainerServiceImpl implements ContainerService {
                             .build();
                 })
                 .collect(Collectors.toList());
-
-        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
 
         return ContainerDetailDTO.builder()
                 .containerId(containerId)
