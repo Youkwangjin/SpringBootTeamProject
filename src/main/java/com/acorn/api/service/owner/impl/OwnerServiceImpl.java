@@ -38,7 +38,7 @@ public class OwnerServiceImpl implements OwnerService {
     public void isBusinessNumDuplicate(String ownerBusinessNum) {
         Boolean exists = ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
         if (exists) {
-            throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
+            throw new AcontainerException(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT);
         }
     }
 
