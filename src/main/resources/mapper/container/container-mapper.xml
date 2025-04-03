@@ -33,6 +33,7 @@
         FROM
             TB_CONTAINER
         <where>
+            CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
@@ -62,6 +63,7 @@
             TB_OWNER O
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>

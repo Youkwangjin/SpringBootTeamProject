@@ -3,11 +3,13 @@ package com.acorn.api.dto.container;
 import com.acorn.api.common.PaginationRequest;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
 public class ContainerListDTO extends PaginationRequest {
 
@@ -20,6 +22,8 @@ public class ContainerListDTO extends PaginationRequest {
     private String searchName;
 
     private Integer containerId;
+
+    private Integer containerOwnerId;
 
     private String containerName;
 
