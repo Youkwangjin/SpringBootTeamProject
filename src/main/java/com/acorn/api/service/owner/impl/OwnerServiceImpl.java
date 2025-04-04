@@ -3,12 +3,16 @@ package com.acorn.api.service.owner.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
+import com.acorn.api.code.container.ContainerStatus;
+import com.acorn.api.code.owner.ApiOwnerErrorCode;
 import com.acorn.api.dto.owner.OwnerDeleteDTO;
 import com.acorn.api.dto.owner.OwnerRegisterDTO;
 import com.acorn.api.dto.owner.OwnerResponseDTO;
 import com.acorn.api.dto.owner.OwnerUpdateDTO;
+import com.acorn.api.entity.container.Container;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.entity.owner.Owner;
+import com.acorn.api.repository.container.ContainerRepository;
 import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.role.OwnerRole;
 import com.acorn.api.service.owner.OwnerService;
@@ -19,12 +23,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class OwnerServiceImpl implements OwnerService {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final OwnerRepository ownerRepository;
+    private final ContainerRepository containerRepository;
 
     @Override
     public void isOwnerEmailDuplicate(String ownerEmail) {
@@ -38,7 +46,7 @@ public class OwnerServiceImpl implements OwnerService {
     public void isBusinessNumDuplicate(String ownerBusinessNum) {
         Boolean exists = ownerRepository.isBusinessNumDuplicate(ownerBusinessNum);
         if (exists) {
-            throw new AcontainerException(ApiValidationErrorCode.COMPANY_NAME_ERROR);
+            throw new AcontainerException(ApiValidationErrorCode.BUSINESS_NUMBER_CONFLICT);
         }
     }
 
@@ -172,6 +180,15 @@ public class OwnerServiceImpl implements OwnerService {
 
         if (StringUtils.isNotBlank(ownerPassword) && !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
+        }
+
+        List<Container> containerData = containerRepository.selectContainerAllData(ownerId);
+        for (Container container : containerData) {
+            final Integer containerStatus = container.getContainerStatus();
+
+            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_DELETION_ERROR);
+            }
         }
 
         Owner deleteOwner = Owner.builder()

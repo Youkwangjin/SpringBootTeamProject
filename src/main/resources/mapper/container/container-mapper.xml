@@ -33,6 +33,7 @@
         FROM
             TB_CONTAINER
         <where>
+            CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
@@ -62,6 +63,7 @@
             TB_OWNER O
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
                 CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
@@ -85,6 +87,8 @@
             C.CONTAINER_CONTENTS_TEXT,
             C.CONTAINER_SIZE,
             C.CONTAINER_PRICE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_APPROVAL_STATUS,
             F.CONTAINER_FILE_ID,
             F.CONTAINER_FILE_CONTAINER_ID,
             F.CONTAINER_FILE_ORIGINAL_FILE_NAME,
@@ -103,6 +107,26 @@
         ON C.CONTAINER_ID = F.CONTAINER_FILE_CONTAINER_ID
         WHERE
             C.CONTAINER_ID = #{containerId}
+    </select>
+
+    <select id="selectContainerAllData" parameterType="Integer" resultMap="containerResultMap">
+        SELECT
+            C.CONTAINER_ID,
+            C.CONTAINER_OWNER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_LATITUDE,
+            C.CONTAINER_LONGITUDE,
+            C.CONTAINER_CONTENTS,
+            C.CONTAINER_CONTENTS_TEXT,
+            C.CONTAINER_SIZE,
+            C.CONTAINER_PRICE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_APPROVAL_STATUS
+        FROM
+            TB_CONTAINER C
+        WHERE
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
     </select>
 
     <insert id="containerRegister" parameterType="com.acorn.api.entity.container.Container" useGeneratedKeys="true" keyProperty="containerId">
@@ -134,4 +158,28 @@
             #{containerOwnerId}
         )
     </insert>
+
+    <update id="containerUpdate" parameterType="com.acorn.api.entity.container.Container">
+        UPDATE
+            TB_CONTAINER
+        SET
+            CONTAINER_NAME = #{containerName},
+            CONTAINER_SIZE = #{containerSize},
+            CONTAINER_PRICE = #{containerPrice},
+            CONTAINER_ADDRESS = #{containerAddr},
+            CONTAINER_LATITUDE = #{containerLatitude},
+            CONTAINER_LONGITUDE = #{containerLongitude},
+            CONTAINER_CONTENTS = #{containerContents},
+            CONTAINER_CONTENTS_TEXT = #{containerContentsText}
+        WHERE
+            CONTAINER_ID = #{containerId}
+    </update>
+
+    <delete id="containerDelete" parameterType="com.acorn.api.entity.container.Container">
+        DELETE
+        FROM
+            TB_CONTAINER
+        WHERE
+            CONTAINER_ID = #{containerId}
+    </delete>
 </mapper>
