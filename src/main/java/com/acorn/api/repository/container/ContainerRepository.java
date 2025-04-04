@@ -16,6 +16,8 @@ public interface ContainerRepository {
 
     List<Container> selectContainerListData(PaginationRequest pagination);
 
+    List<Container> selectContainerAllData(@Param("containerOwnerId") Integer ownerId);
+
     void containerRegister(Container container);
 
     Container selectContainerDetailData(@Param("containerId") Integer containerId);

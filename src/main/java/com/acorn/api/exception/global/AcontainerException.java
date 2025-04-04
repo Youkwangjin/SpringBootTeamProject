@@ -3,6 +3,7 @@ package com.acorn.api.exception.global;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
+import com.acorn.api.code.owner.ApiOwnerErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -34,5 +35,12 @@ public class AcontainerException extends RuntimeException {
         this.httpStatus = errorCode.getHttpStatus();
         this.errorDivisionCode = errorCode.getErrorDivisionCode();
         this.errorMsg = errorCode.getErrorMsg();
+    }
+
+    public AcontainerException(ApiOwnerErrorCode errorCode) {
+        super(errorCode.getOwnerErrorMsg());
+        this.httpStatus = errorCode.getHttpStatus();
+        this.errorDivisionCode = errorCode.getOwnerErrorDivisionCode();
+        this.errorMsg = errorCode.getOwnerErrorMsg();
     }
 }
