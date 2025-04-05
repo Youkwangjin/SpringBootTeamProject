@@ -244,8 +244,10 @@ public class BoardServiceImpl implements BoardService {
             if (boardFile == null) {
                 throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
             }
+            final String filePath = boardFile.getBoardFilePath();
+            final String storedFileName = boardFile.getBoardStoredFileName();
 
-            fileComponent.delete(boardFile.getBoardFilePath(), boardFile.getBoardStoredFileName());
+            fileComponent.delete(filePath, storedFileName);
             boardFileRepository.boardFileDelete(boardFileId);
         }
 
