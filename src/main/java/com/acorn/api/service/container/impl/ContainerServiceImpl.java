@@ -269,8 +269,10 @@ public class ContainerServiceImpl implements ContainerService {
             if (containerFile == null) {
                 throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
             }
+            final String filePath = containerFile.getContainerFilePath();
+            final String storedFileName = containerFile.getContainerStoredFileName();
 
-            fileComponent.delete(containerFile.getContainerFilePath(), containerFile.getContainerStoredFileName());
+            fileComponent.delete(filePath, storedFileName);
             containerFileRepository.containerFileDelete(containerFileId);
         }
 
