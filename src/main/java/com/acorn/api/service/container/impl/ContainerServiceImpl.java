@@ -329,6 +329,18 @@ public class ContainerServiceImpl implements ContainerService {
             throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_PENDING);
         }
 
+        List<ContainerFile> existingFiles = containerFileRepository.selectFilesByContainerId(containerId);
+        if (existingFiles != null && !existingFiles.isEmpty()) {
+            for (ContainerFile containerFile : existingFiles) {
+                final Integer containerFileId = containerFile.getContainerFileId();
+                final String storedFileName = containerFile.getContainerStoredFileName();
+                final String filePath = containerFile.getContainerFilePath();
+
+                fileComponent.delete(filePath, storedFileName);
+                containerFileRepository.containerFileDelete(containerFileId);
+            }
+        }
+
         Container deleteContainerData = Container.builder()
                 .containerId(containerId)
                 .build();
