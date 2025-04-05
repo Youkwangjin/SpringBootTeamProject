@@ -12,9 +12,9 @@ public interface BoardFileRepository {
 
     void boardFileSave(BoardFile boardFile);
 
-    List<BoardFile> findByBoardId(@Param("boardId") Integer boardId);
+    List<BoardFile> selectFilesByBoardId(@Param("boardId") Integer boardId);
 
-    BoardFile findById(@Param("boardFileId") Integer boardFileId);
+    BoardFile selectFilesByBoardFileId(@Param("boardFileId") Integer boardFileId);
 
     void boardFileDelete(@Param("boardFileId") Integer boardFileId);
 }
