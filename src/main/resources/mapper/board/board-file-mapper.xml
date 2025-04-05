@@ -19,7 +19,7 @@
         SELECT nextval(BOARD_FILE_SEQ)
     </select>
 
-    <select id="findByBoardId" resultType="com.acorn.api.entity.board.BoardFile" resultMap="boardFileResultMap">
+    <select id="selectFilesByBoardId" resultType="com.acorn.api.entity.board.BoardFile" resultMap="boardFileResultMap">
         SELECT
             BOARD_FILE_ID,
             BOARD_FILE_BOARD_ID,
@@ -36,7 +36,7 @@
             BOARD_FILE_BOARD_ID = #{boardId}
     </select>
 
-    <select id="findById" resultType="com.acorn.api.entity.board.BoardFile" resultMap="boardFileResultMap">
+    <select id="selectFilesByBoardFileId" resultType="com.acorn.api.entity.board.BoardFile" resultMap="boardFileResultMap">
         SELECT
             BOARD_FILE_ID,
             BOARD_FILE_BOARD_ID,

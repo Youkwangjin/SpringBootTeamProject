@@ -231,8 +231,7 @@ public class BoardServiceImpl implements BoardService {
             boardFileIds = new ArrayList<>();
         }
 
-        List<BoardFile> existingFiles = boardFileRepository.findByBoardId(boardId);
-
+        List<BoardFile> existingFiles = boardFileRepository.selectFilesByBoardId(boardId);
         List<Integer> deletedFileIds = new ArrayList<>();
         for (BoardFile boardFile : existingFiles) {
             if (!boardFileIds.contains(boardFile.getBoardFileId())) {
@@ -241,7 +240,7 @@ public class BoardServiceImpl implements BoardService {
         }
 
         for (Integer boardFileId : deletedFileIds) {
-            BoardFile boardFile = boardFileRepository.findById(boardFileId);
+            BoardFile boardFile = boardFileRepository.selectFilesByBoardFileId(boardFileId);
             if (boardFile == null) {
                 throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
             }
