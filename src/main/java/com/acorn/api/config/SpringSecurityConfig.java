@@ -1,5 +1,8 @@
 package com.acorn.api.config;
 
+import com.acorn.api.security.admin.CustomAdminJsonAuthenticationFilter;
+import com.acorn.api.security.admin.CustomAdminLoginFailureHandler;
+import com.acorn.api.security.admin.CustomAdminLoginSuccessHandler;
 import com.acorn.api.security.common.*;
 import com.acorn.api.security.owner.CustomOwnerJsonAuthenticationFilter;
 import com.acorn.api.security.owner.CustomOwnerLoginFailureHandler;
@@ -33,11 +36,14 @@ public class SpringSecurityConfig {
     private final CustomUserLoginFailureHandler customUserLoginFailureHandler;
     private final CustomOwnerLoginSuccessHandler customOwnerLoginSuccessHandler;
     private final CustomOwnerLoginFailureHandler customOwnerLoginFailureHandler;
+    private final CustomAdminLoginSuccessHandler customAdminLoginSuccessHandler;
+    private final CustomAdminLoginFailureHandler customAdminLoginFailureHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final UserDetailsService userService;
     private final UserDetailsService ownerService;
+    private final UserDetailsService adminService;
 
     public SpringSecurityConfig(ObjectMapper objectMapper,
                                 BCryptPasswordEncoder passwordEncoder,
@@ -45,11 +51,14 @@ public class SpringSecurityConfig {
                                 CustomUserLoginFailureHandler customUserLoginFailureHandler,
                                 CustomOwnerLoginSuccessHandler customOwnerLoginSuccessHandler,
                                 CustomOwnerLoginFailureHandler customOwnerLoginFailureHandler,
+                                CustomAdminLoginSuccessHandler customAdminLoginSuccessHandler,
+                                CustomAdminLoginFailureHandler customAdminLoginFailureHandler,
                                 CustomLogoutSuccessHandler customLogoutSuccessHandler,
                                 CustomAccessDeniedHandler customAccessDeniedHandler,
                                 CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
                                 @Qualifier("userDetailsServiceImpl") UserDetailsService userService,
-                                @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService) {
+                                @Qualifier("ownerDetailsServiceImpl") UserDetailsService ownerService,
+                                @Qualifier("adminDetailsServiceImpl") UserDetailsService adminService) {
 
         this.objectMapper = objectMapper;
         this.passwordEncoder = passwordEncoder;
@@ -57,11 +66,14 @@ public class SpringSecurityConfig {
         this.customUserLoginFailureHandler = customUserLoginFailureHandler;
         this.customOwnerLoginSuccessHandler = customOwnerLoginSuccessHandler;
         this.customOwnerLoginFailureHandler = customOwnerLoginFailureHandler;
+        this.customAdminLoginSuccessHandler = customAdminLoginSuccessHandler;
+        this.customAdminLoginFailureHandler = customAdminLoginFailureHandler;
         this.customLogoutSuccessHandler = customLogoutSuccessHandler;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
         this.userService = userService;
         this.ownerService = ownerService;
+        this.adminService = adminService;
     }
 
     @Bean
@@ -133,6 +145,9 @@ public class SpringSecurityConfig {
                                          "/container/detail/**",
                                          "/container/update/**").hasAuthority("ROLE_OWNER")
 
+                        // Protected Admin Common Pages
+                        .requestMatchers("/admin/mypage").hasAuthority("ROLE_ADMIN")
+
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
                                          "/api/user/delete/{userId}").hasAuthority("ROLE_USER")
@@ -143,6 +158,9 @@ public class SpringSecurityConfig {
                                          "/api/container/register",
                                          "/api/container/update/{containerId}",
                                          "/api/container/delete/{containerId}").hasAuthority("ROLE_OWNER")
+
+                        // Protected Admin API
+                        .requestMatchers("/api/auth/admin/login").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
@@ -167,7 +185,8 @@ public class SpringSecurityConfig {
 
         http
                 .addFilterBefore(userJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(ownerJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(ownerJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(adminJsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -187,6 +206,13 @@ public class SpringSecurityConfig {
     }
 
     @Bean
+    public CustomAdminJsonAuthenticationFilter adminJsonUsernamePasswordAuthenticationFilter() {
+        CustomAdminJsonAuthenticationFilter customAdminJsonAuthenticationFilter = new CustomAdminJsonAuthenticationFilter(objectMapper, customAdminLoginSuccessHandler, customAdminLoginFailureHandler);
+        customAdminJsonAuthenticationFilter.setAuthenticationManager(adminAuthenticationManager());
+        return customAdminJsonAuthenticationFilter;
+    }
+
+    @Bean
     @Primary
     public AuthenticationManager userAuthenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -200,8 +226,20 @@ public class SpringSecurityConfig {
     @Bean
     public AuthenticationManager ownerAuthenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
         provider.setUserDetailsService(ownerService);
         provider.setPasswordEncoder(passwordEncoder);
+
+        return new ProviderManager(provider);
+    }
+
+    @Bean
+    public AuthenticationManager adminAuthenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+        provider.setUserDetailsService(adminService);
+        provider.setPasswordEncoder(passwordEncoder);
+
         return new ProviderManager(provider);
     }
 }
