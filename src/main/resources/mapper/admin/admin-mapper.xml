@@ -18,4 +18,12 @@
             TB_ADMIN
         WHERE ADMIN_EMAIL = #{adminEmail}
     </select>
+
+    <select id="selectAllAdminData" parameterType="Integer" resultMap="adminResultMap">
+        SELECT
+            *
+        FROM
+            TB_ADMIN
+        WHERE ADMIN_ID = #{adminId}
+    </select>
 </mapper>
