@@ -9,4 +9,5 @@ public interface AdminRepository {
 
     Admin findByAdminEmail(@Param("adminEmail") String adminEmail);
 
+    Admin selectAllAdminData(@Param("adminId") Integer adminId);
 }
