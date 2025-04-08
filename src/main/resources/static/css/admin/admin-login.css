@@ -69,8 +69,8 @@ body::before {
     color: #999;
 }
 
-.int-area input:focus + label,
-.int-area input:valid + label {
+.int-area input:not(:placeholder-shown) + label,
+.int-area input:focus + label {
     top: 0;
     font-size: 13px;
     color: #166cea;

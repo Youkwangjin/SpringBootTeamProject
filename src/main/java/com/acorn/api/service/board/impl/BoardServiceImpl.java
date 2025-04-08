@@ -231,8 +231,7 @@ public class BoardServiceImpl implements BoardService {
             boardFileIds = new ArrayList<>();
         }
 
-        List<BoardFile> existingFiles = boardFileRepository.findByBoardId(boardId);
-
+        List<BoardFile> existingFiles = boardFileRepository.selectFilesByBoardId(boardId);
         List<Integer> deletedFileIds = new ArrayList<>();
         for (BoardFile boardFile : existingFiles) {
             if (!boardFileIds.contains(boardFile.getBoardFileId())) {
@@ -241,12 +240,14 @@ public class BoardServiceImpl implements BoardService {
         }
 
         for (Integer boardFileId : deletedFileIds) {
-            BoardFile boardFile = boardFileRepository.findById(boardFileId);
+            BoardFile boardFile = boardFileRepository.selectFilesByBoardFileId(boardFileId);
             if (boardFile == null) {
                 throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
             }
+            final String filePath = boardFile.getBoardFilePath();
+            final String storedFileName = boardFile.getBoardStoredFileName();
 
-            fileComponent.delete(boardFile.getBoardFilePath(), boardFile.getBoardStoredFileName());
+            fileComponent.delete(filePath, storedFileName);
             boardFileRepository.boardFileDelete(boardFileId);
         }
 
@@ -291,6 +292,18 @@ public class BoardServiceImpl implements BoardService {
         Board detailData = boardRepository.selectBoardDetailData(boardId);
         if (detailData == null) {
             throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+        List<BoardFile> existingFiles = boardFileRepository.selectFilesByBoardId(boardId);
+        if (existingFiles != null && !existingFiles.isEmpty()) {
+            for (BoardFile boardFile : existingFiles) {
+                final Integer boardFileId = boardFile.getBoardFileId();
+                final String storedFileName = boardFile.getBoardStoredFileName();
+                final String filePath = boardFile.getBoardFilePath();
+
+                fileComponent.delete(filePath, storedFileName);
+                boardFileRepository.boardFileDelete(boardFileId);
+            }
         }
 
         Board boardDeleteData = Board.builder()

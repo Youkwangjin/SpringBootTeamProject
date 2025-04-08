@@ -269,8 +269,10 @@ public class ContainerServiceImpl implements ContainerService {
             if (containerFile == null) {
                 throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
             }
+            final String filePath = containerFile.getContainerFilePath();
+            final String storedFileName = containerFile.getContainerStoredFileName();
 
-            fileComponent.delete(containerFile.getContainerFilePath(), containerFile.getContainerStoredFileName());
+            fileComponent.delete(filePath, storedFileName);
             containerFileRepository.containerFileDelete(containerFileId);
         }
 
@@ -327,6 +329,18 @@ public class ContainerServiceImpl implements ContainerService {
 
         if (!Objects.equals(exsitedContainerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
             throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_PENDING);
+        }
+
+        List<ContainerFile> existingFiles = containerFileRepository.selectFilesByContainerId(containerId);
+        if (existingFiles != null && !existingFiles.isEmpty()) {
+            for (ContainerFile containerFile : existingFiles) {
+                final Integer containerFileId = containerFile.getContainerFileId();
+                final String storedFileName = containerFile.getContainerStoredFileName();
+                final String filePath = containerFile.getContainerFilePath();
+
+                fileComponent.delete(filePath, storedFileName);
+                containerFileRepository.containerFileDelete(containerFileId);
+            }
         }
 
         Container deleteContainerData = Container.builder()

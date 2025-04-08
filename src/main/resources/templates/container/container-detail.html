@@ -141,7 +141,7 @@
                    return response.json();
                })
                .then(data => {
-                   if (date.httpStatus === "OK") {
+                   if (data.httpStatus === "OK") {
                        alert(data.resultMsg);
                        window.location.href = "/container/list";
                    } else {
