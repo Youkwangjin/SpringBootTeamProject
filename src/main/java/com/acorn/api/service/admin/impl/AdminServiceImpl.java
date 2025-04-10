@@ -3,19 +3,27 @@ package com.acorn.api.service.admin.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.dto.admin.AdminResponseDTO;
+import com.acorn.api.dto.container.ContainerListDTO;
 import com.acorn.api.entity.admin.Admin;
+import com.acorn.api.entity.container.Container;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.admin.AdminRepository;
+import com.acorn.api.repository.container.ContainerRepository;
 import com.acorn.api.service.admin.AdminService;
 import com.acorn.api.utils.AdminSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
+    private final ContainerRepository containerRepository;
 
     @Override
     public AdminResponseDTO getAdminData() {
@@ -40,5 +48,33 @@ public class AdminServiceImpl implements AdminService {
                 .adminPassword(adminPassword)
                 .adminNm(adminNm)
                 .build();
+    }
+
+    @Override
+    public List<ContainerListDTO> getContainerList(ContainerListDTO listData) {
+        listData.setTotalCount(containerRepository.selectAdminListCountByRequest(listData));
+        List<Container> containerListData = containerRepository.selectAdminContainerListData(listData);
+
+        return containerListData.stream()
+                .map(containerList -> {
+                    final Integer rowNum = containerList.getRowNum();
+                    final Integer containerId = containerList.getContainerId();
+                    final String containerAddr = containerList.getContainerAddr();
+                    final String companyName = containerList.getOwner().getOwnerCompanyName();
+                    final BigDecimal containerSize = containerList.getContainerSize();
+                    final Integer containerStatus = containerList.getContainerStatus();
+                    final Integer containerApprovalStatus = containerList.getContainerApprovalStatus();
+
+                    return ContainerListDTO.builder()
+                            .rowNum(rowNum)
+                            .containerId(containerId)
+                            .containerAddr(containerAddr)
+                            .companyName(companyName)
+                            .containerSize(containerSize)
+                            .containerStatus(containerStatus)
+                            .containerApprovalStatus(containerApprovalStatus)
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 }

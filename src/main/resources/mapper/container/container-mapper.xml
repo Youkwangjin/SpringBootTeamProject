@@ -46,6 +46,24 @@
         </where>
     </select>
 
+    <select id="selectAdminListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(CONTAINER_ID)
+        FROM
+            TB_CONTAINER
+        <where>
+            <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
+                CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
+                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
+                CONTAINER_APPROVAL_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+        </where>
+    </select>
+
     <select id="selectContainerListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="containerResultMap">
         SELECT
             ROW_NUMBER() OVER (ORDER BY C.CONTAINER_CREATED ASC) AS ROW_NUM,
@@ -69,6 +87,36 @@
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+        </where>
+        ORDER BY CONTAINER_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
+    </select>
+
+    <select id="selectAdminContainerListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="containerResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY C.CONTAINER_CREATED ASC) AS ROW_NUM,
+            C.CONTAINER_ID,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_SIZE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_APPROVAL_STATUS,
+            C.CONTAINER_CREATED,
+            O.OWNER_COMPANY_NAME
+        FROM
+            TB_CONTAINER C
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        <where>
+            <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
+                CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
+                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
+                CONTAINER_APPROVAL_STATUS LIKE CONCAT ('%', #{searchName}, '%')
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
