@@ -35,13 +35,13 @@
         <where>
             CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
-                CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'userName' and searchName != null and searchName.trim() != ''">
-                USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+                AND USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
         </where>
     </select>
@@ -81,12 +81,12 @@
             TB_OWNER O
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
-            C.CONTAINER_OWNER_ID = #{containerOwnerId}
+            CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
-                CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
