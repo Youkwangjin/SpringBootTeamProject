@@ -16,7 +16,7 @@ public enum ContainerStatus {
     private final int code;
     private final String description;
 
-    ContainerStatus(int code, String description) {
+    ContainerStatus(final int code, final String description) {
         this.code = code;
         this.description = description;
     }
