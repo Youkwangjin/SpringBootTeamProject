@@ -27,6 +27,10 @@ public class ContainerListDTO extends PaginationRequest {
 
     private String containerName;
 
+    private String containerAddr;
+
+    private String companyName;
+
     private BigDecimal containerSize;
 
     private Integer containerStatus;

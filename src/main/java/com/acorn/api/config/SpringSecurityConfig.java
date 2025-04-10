@@ -146,7 +146,8 @@ public class SpringSecurityConfig {
                                          "/container/update/**").hasAuthority("ROLE_OWNER")
 
                         // Protected Admin Common Pages
-                        .requestMatchers("/admin/mypage").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/admin/mypage",
+                                         "/admin/container/list/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
