@@ -14,7 +14,11 @@ public interface ContainerRepository {
 
     Integer selectListCountByRequest(PaginationRequest pagination);
 
+    Integer selectAdminListCountByRequest(PaginationRequest pagination);
+
     List<Container> selectContainerListData(PaginationRequest pagination);
+
+    List<Container> selectAdminContainerListData(PaginationRequest pagination);
 
     List<Container> selectContainerAllData(@Param("containerOwnerId") Integer ownerId);
 
