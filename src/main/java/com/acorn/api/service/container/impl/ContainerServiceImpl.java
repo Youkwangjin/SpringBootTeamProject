@@ -84,7 +84,7 @@ public class ContainerServiceImpl implements ContainerService {
         final String containerContents = registerData.getContainerContents();
         final BigDecimal containerSize = registerData.getContainerSize();
         final Integer containerPrice = registerData.getContainerPrice();
-        final Integer containerStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+        final Integer containerStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
         final Integer containerApprovalStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode();
         final List<MultipartFile> containerFiles = registerData.getContainerFiles();
 
