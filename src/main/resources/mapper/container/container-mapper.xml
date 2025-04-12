@@ -38,10 +38,10 @@
                 AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                AND CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_STATUS = #{searchName}
             </if>
-            <if test="searchType == 'userName' and searchName != null and searchName.trim() != ''">
-                AND USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+            <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
     </select>
@@ -86,7 +86,10 @@
                 AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                AND CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
