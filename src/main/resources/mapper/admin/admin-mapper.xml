@@ -19,7 +19,7 @@
         WHERE ADMIN_EMAIL = #{adminEmail}
     </select>
 
-    <select id="selectAllAdminData" parameterType="Integer" resultMap="adminResultMap">
+    <select id="selectAdminById" parameterType="Integer" resultMap="adminResultMap">
         SELECT
             *
         FROM

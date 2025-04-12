@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>에이콘테이너 : 관리자용 창고 정보 상세</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/css/admin/admin-container-detail.css" rel="stylesheet">
+</head>
+<body>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+    <div th:replace="~{fragments/header-admin :: header}"></div>
+</div>
+<form id="containerDetailForm">
+    <div class="container-box">
+        <h3>창고 상세</h3>
+        <table>
+            <tr>
+                <th>창고 번호</th>
+                <td th:text="${containerDetail.container.containerId}"></td>
+            </tr>
+            <tr>
+                <th>창고 이름</th>
+                <td th:text="${containerDetail.container.containerName}"></td>
+            </tr>
+            <tr>
+                <th>회사명</th>
+                <td th:text="${containerDetail.owner.ownerCompanyName}"></td>
+            </tr>
+            <tr>
+                <th>사업자번호</th>
+                <td th:text="${containerDetail.owner.ownerBusinessNum}"></td>
+            </tr>
+            <tr>
+                <th>공급자 이름</th>
+                <td th:text="${containerDetail.owner.ownerNm}"></td>
+            </tr>
+            <tr>
+                <th>공급자 전화번호</th>
+                <td th:text="${containerDetail.owner.ownerTel}"></td>
+            </tr>
+            <tr>
+                <th>승인 상태</th>
+                <td th:text="${containerDetail.container.containerApprovalStatus == 0 ? '승인대기'
+            : (containerDetail.container.containerApprovalStatus == 1 ? '검토 중'
+            : (containerDetail.container.containerApprovalStatus == 2 ? '승인 완료'
+            : (containerDetail.container.containerApprovalStatus == 3 ? '승인 거절' : '알수없음')))}"></td>
+            </tr>
+            <tr>
+                <th>사용 상태</th>
+                <td th:text="${containerDetail.container.containerStatus == 0 ? '사용대기'
+            : (containerDetail.container.containerStatus == 1 ? '사용가능'
+            : (containerDetail.container.containerStatus == 2 ? '사용중'
+            : (containerDetail.container.containerStatus == 3 ? '사용불가' : '알수없음')))}"></td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td th:text="${containerDetail.container.containerAddr}"></td>
+            </tr>
+            <tr>
+                <th>면적</th>
+                <td th:text="${containerDetail.container.containerSize} + ' m²'"></td>
+            </tr>
+            <tr>
+                <th>가격</th>
+                <td th:text="${#numbers.formatInteger(containerDetail.container.containerPrice, 3, 'COMMA')} + ' 원'"></td>
+            </tr>
+        </table>
+        <div class="btn-wrap">
+            <button type="button" id="btnList" class="btn btn-list">목록</button>
+            <th:block th:if="${containerDetail.container.containerApprovalStatus == 0}">
+                <button type="button" id="btnReview" class="btn btn-review">검토중</button>
+            </th:block>
+            <th:block th:if="${containerDetail.container.containerApprovalStatus == 1}">
+                <button type="button" id="btnApprove" class="btn btn-approve">승인</button>
+                <button type="button" id="btnDeny" class="btn btn-deny">거부</button>
+            </th:block>
+        </div>
+    </div>
+</form>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -13,7 +13,9 @@
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="~{fragments/header-admin :: header}"></div>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+    <div th:replace="~{fragments/header-admin :: header}"></div>
+</div>
 <div class="custom-gap-top"></div>
 <form id="containerListForm" method="get">
     <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>

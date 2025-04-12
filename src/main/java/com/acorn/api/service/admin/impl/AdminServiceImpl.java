@@ -2,8 +2,11 @@ package com.acorn.api.service.admin.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
 import com.acorn.api.dto.admin.AdminResponseDTO;
+import com.acorn.api.dto.container.ContainerDetailDTO;
 import com.acorn.api.dto.container.ContainerListDTO;
+import com.acorn.api.dto.owner.OwnerResponseDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.exception.global.AcontainerException;
@@ -32,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
         }
 
-        Admin adminData = adminRepository.selectAllAdminData(currentAdminId);
+        Admin adminData = adminRepository.selectAdminById(currentAdminId);
         if (adminData == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
@@ -76,5 +79,55 @@ public class AdminServiceImpl implements AdminService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public AdminContainerDetailResponseDTO getContainerData(Integer containerId) {
+        Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        Admin adminData = adminRepository.selectAdminById(currentAdminId);
+        if (adminData == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container containerData = containerRepository.selectAdminContainerDetailData(containerId);
+        if (containerData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        final String containerName = containerData.getContainerName();
+        final BigDecimal containerSize = containerData.getContainerSize();
+        final Integer containerPrice = containerData.getContainerPrice();
+        final String containerAddr = containerData.getContainerAddr();
+        final String containerContents = containerData.getContainerContents();
+        final Integer containerStatus = containerData.getContainerStatus();
+        final Integer containerApprovalStatus = containerData.getContainerApprovalStatus();
+
+        final String businessNum = containerData.getOwner().getOwnerBusinessNum();
+        final String ownerNm = containerData.getOwner().getOwnerNm();
+        final String companyName = containerData.getOwner().getOwnerCompanyName();
+        final String ownerTel = containerData.getOwner().getOwnerTel();
+
+        final ContainerDetailDTO containerDTO = ContainerDetailDTO.builder()
+                .containerId(containerId)
+                .containerName(containerName)
+                .containerSize(containerSize)
+                .containerPrice(containerPrice)
+                .containerAddr(containerAddr)
+                .containerStatus(containerStatus)
+                .containerApprovalStatus(containerApprovalStatus)
+                .containerContents(containerContents)
+                .build();
+
+        final OwnerResponseDTO ownerDTO = OwnerResponseDTO.builder()
+                .ownerBusinessNum(businessNum)
+                .ownerNm(ownerNm)
+                .ownerCompanyName(companyName)
+                .ownerTel(ownerTel)
+                .build();
+
+        return AdminContainerDetailResponseDTO.builder()
+                .container(containerDTO)
+                .owner(ownerDTO)
+                .build();
     }
 }

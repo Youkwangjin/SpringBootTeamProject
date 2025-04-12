@@ -1,5 +1,6 @@
 package com.acorn.api.controller.admin;
 
+import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
 import com.acorn.api.dto.admin.AdminResponseDTO;
 import com.acorn.api.dto.container.ContainerListDTO;
 import com.acorn.api.service.admin.AdminService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -34,5 +36,12 @@ public class AdminPageController {
         model.addAttribute("containerList", containerListData);
         model.addAttribute("request", listData);
         return "admin/admin-container-list";
+    }
+
+    @GetMapping("/admin/container/detail/{containerId}")
+    public String containerDetailPage(@PathVariable("containerId") Integer containerId, Model model) {
+        AdminContainerDetailResponseDTO containerDetailData = adminService.getContainerData(containerId);
+        model.addAttribute("containerDetail", containerDetailData);
+        return "admin/admin-container-detail";
     }
 }
