@@ -132,15 +132,23 @@
 
         const setSearchInputVisibility = () => {
             searchName.style.display = "none";
+            searchName.name = "";
+
             statusValue.style.display = "none";
+            statusValue.name = "";
+
             approvalValue.style.display = "none";
+            approvalValue.name = "";
 
             if (searchType.value === "containerStatus") {
                 statusValue.style.display = "inline-block";
+                statusValue.name = "searchName";
             } else if (searchType.value === "containerApprovalStatus") {
                 approvalValue.style.display = "inline-block";
+                approvalValue.name = "searchName";
             } else {
                 searchName.style.display = "inline-block";
+                searchName.name = "searchName";
             }
         }
 
