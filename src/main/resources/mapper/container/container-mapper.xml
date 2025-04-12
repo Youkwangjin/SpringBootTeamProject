@@ -38,28 +38,34 @@
                 AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                AND CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_STATUS = #{searchName}
             </if>
-            <if test="searchType == 'userName' and searchName != null and searchName.trim() != ''">
-                AND USER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+            <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
     </select>
 
     <select id="selectAdminListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
-            COUNT(CONTAINER_ID)
+            COUNT(C.CONTAINER_ID)
         FROM
-            TB_CONTAINER
+            TB_CONTAINER C
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
-                CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+                C.CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'companyName' and searchName != null and searchName.trim() != ''">
+                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_STATUS = #{searchName}
             </if>
             <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_APPROVAL_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
     </select>
@@ -86,7 +92,10 @@
                 AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                AND CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
@@ -110,13 +119,16 @@
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
-                CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+                C.CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'companyName' and searchName != null and searchName.trim() != ''">
+                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_STATUS = #{searchName}
             </if>
             <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_APPROVAL_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
@@ -153,6 +165,43 @@
         LEFT OUTER JOIN
             TB_CONTAINER_FILE F
         ON C.CONTAINER_ID = F.CONTAINER_FILE_CONTAINER_ID
+        WHERE
+            C.CONTAINER_ID = #{containerId}
+    </select>
+
+    <select id="selectAdminContainerDetailData" parameterType="Integer" resultMap="containerResultMap">
+        SELECT
+            C.CONTAINER_ID,
+            C.CONTAINER_OWNER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_LATITUDE,
+            C.CONTAINER_LONGITUDE,
+            C.CONTAINER_CONTENTS,
+            C.CONTAINER_CONTENTS_TEXT,
+            C.CONTAINER_SIZE,
+            C.CONTAINER_PRICE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_APPROVAL_STATUS,
+            F.CONTAINER_FILE_ID,
+            F.CONTAINER_FILE_CONTAINER_ID,
+            F.CONTAINER_FILE_ORIGINAL_FILE_NAME,
+            F.CONTAINER_FILE_STORED_FILE_NAME,
+            F.CONTAINER_FILE_PATH,
+            F.CONTAINER_FILE_EXTNS_NM,
+            F.CONTAINER_FILE_SIZE,
+            O.BUSINESS_NUMBER,
+            O.OWNER_NM,
+            O.OWNER_TEL,
+            O.OWNER_COMPANY_NAME
+        FROM
+            TB_CONTAINER C
+                INNER JOIN
+            TB_OWNER O
+            ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+                LEFT OUTER JOIN
+            TB_CONTAINER_FILE F
+            ON C.CONTAINER_ID = F.CONTAINER_FILE_CONTAINER_ID
         WHERE
             C.CONTAINER_ID = #{containerId}
     </select>

@@ -34,5 +34,7 @@ public class ContainerDetailDTO {
 
     private Integer containerStatus;
 
+    private Integer containerApprovalStatus;
+
     private List<ContainerFileDTO> containerFiles;
 }
