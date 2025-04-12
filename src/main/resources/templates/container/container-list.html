@@ -27,21 +27,30 @@
         <div class="text-center mb-4">
             <h2>보유 창고 정보</h2>
         </div>
-
         <div class="custom-search-bar">
             <label for="searchType" class="visually-hidden">검색 유형</label>
             <select id="searchType" name="searchType">
-                <option value="containerName" th:selected="${request =='containerName'}">창고 이름</option>
-                <option value="containerStatus" th:selected="${request == 'containerStatus'}">창고 상태</option>
+                <option value="containerName" th:selected="${request.searchType == 'containerName'}">창고 이름</option>
+                <option value="containerStatus" th:selected="${request.searchType == 'containerStatus'}">창고 상태</option>
+                <option value="containerApprovalStatus" th:selected="${request.searchType == 'containerApprovalStatus'}">승인 상태</option>
             </select>
-
             <label for="searchName" class="visually-hidden">검색어 입력</label>
-            <input type="text" id="searchName" name="searchName" placeholder="검색어를 입력하세요.">
-
+            <input type="text" id="searchName" name="searchName" placeholder="검색어를 입력하세요." th:value="${request.searchName}">
+            <select id="statusValue" name="searchName" style="display: none;" aria-label="창고 상태">
+                <option value="0" th:selected="${request.searchName == '0'}">사용 대기</option>
+                <option value="1" th:selected="${request.searchName == '1'}">사용 가능</option>
+                <option value="2" th:selected="${request.searchName == '2'}">사용 중</option>
+                <option value="3" th:selected="${request.searchName == '3'}">사용 불가능</option>
+            </select>
+            <select id="approvalValue" name="searchName" style="display: none;" aria-label="승인 상태">
+                <option value="0" th:selected="${request.searchName == '0'}">승인 대기</option>
+                <option value="1" th:selected="${request.searchName == '1'}">검토 중</option>
+                <option value="2" th:selected="${request.searchName == '2'}">승인 완료</option>
+                <option value="3" th:selected="${request.searchName == '3'}">승인 거절</option>
+            </select>
             <button id="searchButton" type="button">검색</button>
             <button id="resetBtn" type="button">초기화</button>
         </div>
-
         <div class="table-responsive">
             <div class="text-end mb-3">
                 <a href="/container/register" class="btn btn-primary">창고 등록하기</a>
@@ -72,8 +81,9 @@
                     </td>
                     <td>
                         <span th:if="${container.containerApprovalStatus == 0}" class="text-success">승인 대기</span>
-                        <span th:if="${container.containerApprovalStatus == 1}" class="text-warning">승인 완료</span>
-                        <span th:if="${container.containerApprovalStatus == 2}" class="text-danger">승인 거절</span>
+                        <span th:if="${container.containerApprovalStatus == 1}" class="text-warning">검토 중</span>
+                        <span th:if="${container.containerApprovalStatus == 2}" class="text-warning">승인 완료</span>
+                        <span th:if="${container.containerApprovalStatus == 3}" class="text-danger">승인 거절</span>
                     </td>
                     <td></td>
                 </tr>
@@ -112,21 +122,49 @@
 </main>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let searchButton = document.getElementById("searchButton");
-        let resetButton = document.getElementById("resetBtn");
+        const searchButton = document.getElementById("searchButton");
+        const resetButton = document.getElementById("resetBtn");
+        const pageNo = document.getElementById("pageNo").value;
+        const searchType = document.getElementById("searchType");
+        const searchName = document.getElementById("searchName");
+        const statusValue = document.getElementById("statusValue");
+        const approvalValue = document.getElementById("approvalValue");
+
+        const setSearchInputVisibility = () => {
+            searchName.style.display = "none";
+            statusValue.style.display = "none";
+            approvalValue.style.display = "none";
+
+            if (searchType.value === "containerStatus") {
+                statusValue.style.display = "inline-block";
+            } else if (searchType.value === "containerApprovalStatus") {
+                approvalValue.style.display = "inline-block";
+            } else {
+                searchName.style.display = "inline-block";
+            }
+        }
+
+        setSearchInputVisibility();
+        searchType.addEventListener("change", setSearchInputVisibility);
 
         searchButton.addEventListener("click", function (event) {
-          event.preventDefault();
+            event.preventDefault();
 
-          const pageNo = document.getElementById("pageNo").value;
-          const searchType = document.getElementById("searchType").value;
-          const searchName = document.getElementById("searchName").value;
+            let searchValue;
 
-          window.location.href = `/container/list?pageNo=${pageNo}&searchType=${searchType}&searchName=${searchName}`;
+            if (searchType.value === "containerStatus") {
+                searchValue = statusValue.value;
+            } else if (searchType.value === "containerApprovalStatus") {
+                searchValue = approvalValue.value;
+            } else {
+                searchValue = searchName.value.trim();
+            }
+
+            window.location.href = `/container/list?pageNo=${pageNo}&searchType=${searchType.value}&searchName=${searchValue}`;
         });
 
         resetButton.addEventListener("click", function () {
-           window.location.href = "/container/list";
+            window.location.href = "/container/list";
         });
     });
 </script>
