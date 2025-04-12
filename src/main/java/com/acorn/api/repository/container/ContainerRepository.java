@@ -26,6 +26,8 @@ public interface ContainerRepository {
 
     Container selectContainerDetailData(@Param("containerId") Integer containerId);
 
+    Container selectAdminContainerDetailData(@Param("containerId") Integer containerId);
+
     void containerUpdate(Container container);
 
     void containerDelete(Container container);
