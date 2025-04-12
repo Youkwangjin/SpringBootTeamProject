@@ -75,6 +75,55 @@ html, body {
     margin-left: 5%;
 }
 
+.custom-search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto;
+    width: 90%;
+    flex-wrap: wrap;
+}
+
+.custom-search-bar select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+.custom-search-bar input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    width: 500px;
+    min-width: 200px;
+}
+
+.custom-search-bar button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.custom-search-bar button:hover {
+    background-color: #555;
+}
+
+.custom-search-bar select:focus,
+.custom-search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
 .custom-pagination {
     display: flex;
     justify-content: center;

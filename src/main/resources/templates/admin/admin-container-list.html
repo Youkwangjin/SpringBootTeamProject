@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>AcornContainer</title>
-    <link rel="stylesheet" type="text/css" href="/css/admin/admin.css">
+    <title>에이콘테이너 : 관리자용 창고 정보 목록</title>
+    <link rel="stylesheet" type="text/css" href="/css/admin/admin-container-list.css">
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -15,68 +15,154 @@
 <body>
 <div th:replace="~{fragments/header-admin :: header}"></div>
 <div class="custom-gap-top"></div>
-<div class="text-header">
-    <h2 class="align">창고 관리</h2>
-</div>
-<div class="table-container">
-    <div class="table-row header-row">
-        <div class="table-header-cell">번호</div>
-        <div class="table-header-cell">주소</div>
-        <div class="table-header-cell">회사명</div>
-        <div class="table-header-cell">면적</div>
-        <div class="table-header-cell">창고 상태</div>
-        <div class="table-header-cell">승인 상태</div>
+<form id="containerListForm" method="get">
+    <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
+    <div class="text-header">
+        <h2 class="align">창고 관리</h2>
     </div>
-    <div class="table-body">
-        <th:block th:if="${#lists.isEmpty(containerList)}">
-            <div class="table-row">
-                <div class="table-cell" colspan="5">
-                    등록된 창고가 없습니다.
-                </div>
-            </div>
-        </th:block>
-        <th:block th:each="container : ${containerList}">
-            <div class="table-row" th:attr="onclick=|location.href='/admin/container/detail/${container.containerId}'|" style="cursor: pointer;">
-                <div class="table-cell" th:text="${container.rowNum}"></div>
-                <div class="table-cell" th:text="${container.containerAddr}"></div>
-                <div class="table-cell" th:text="${container.companyName}"></div>
-                <div class="table-cell" th:text="${container.containerSize + ' m²'}"></div>
-                <div class="table-cell"
-                     th:text="${container.containerStatus == 0 ? '사용가능'
-                    : (container.containerStatus == 1 ? '사용중'
-                    : (container.containerStatus == 2 ? '사용불가' : '알수없음'))}">
-                </div>
-                <div class="table-cell"
-                     th:text="${container.containerApprovalStatus == 0 ? '승인대기'
-                    : (container.containerApprovalStatus == 1 ? '승인완료'
-                    : (container.containerApprovalStatus == 2 ? '승인거절' : '알수없음'))}">
-                </div>
-            </div>
-        </th:block>
+    <div class="custom-search-bar">
+        <label for="searchType" class="visually-hidden">검색 유형</label>
+        <select id="searchType" name="searchType">
+            <option value="containerAddr" th:selected="${request.searchType == 'containerAddr'}">주소</option>
+            <option value="companyName" th:selected="${request.searchType == 'companyName'}">회사명</option>
+            <option value="containerStatus" th:selected="${request.searchType == 'containerStatus'}">창고 상태</option>
+            <option value="containerApprovalStatus" th:selected="${request.searchType == 'containerApprovalStatus'}">승인 상태</option>
+        </select>
+        <label for="searchName" class="visually-hidden">검색어 입력</label>
+        <input type="text" id="searchName" name="searchName" placeholder="검색어를 입력하세요." th:value="${request.searchName}">
+        <select id="statusValue" name="searchName" style="display: none;" aria-label="창고 상태">
+            <option value="0" th:selected="${request.searchName == '0'}">사용 대기</option>
+            <option value="1" th:selected="${request.searchName == '1'}">사용 가능</option>
+            <option value="2" th:selected="${request.searchName == '2'}">사용 중</option>
+            <option value="3" th:selected="${request.searchName == '3'}">사용 불가능</option>
+        </select>
+        <select id="approvalValue" name="searchName" style="display: none;" aria-label="승인 상태">
+            <option value="0" th:selected="${request.searchName == '0'}">승인 대기</option>
+            <option value="1" th:selected="${request.searchName == '1'}">검토 중</option>
+            <option value="2" th:selected="${request.searchName == '2'}">승인 완료</option>
+            <option value="3" th:selected="${request.searchName == '3'}">승인 거절</option>
+        </select>
+        <button id="searchButton" type="button">검색</button>
+        <button id="resetBtn" type="button">초기화</button>
     </div>
-</div>
-<div class="custom-pagination">
-    <th:block th:if="${request.totalCount > 0}">
-        <ul>
-            <li th:if="${request.startPageNo > 1}">
-                <a th:href="@{/container/list(pageNo=${request.firstPageNo})}">&laquo;</a>
-            </li>
-            <li th:if="${request.pageNo > request.startPageNo}">
-                <a th:href="@{/container/list(pageNo=${request.prevPageNo})}">&lt;</a>
-            </li>
-            <th:block th:each="i : ${#numbers.sequence(request.startPageNo, request.endPageNo)}">
-                <li th:classappend="${i == request.pageNo} ? 'active'">
-                    <a th:href="@{/container/list(pageNo=${i})}" th:text="${i}"></a>
-                </li>
+    <div class="table-container">
+        <div class="table-row header-row">
+            <div class="table-header-cell">번호</div>
+            <div class="table-header-cell">주소</div>
+            <div class="table-header-cell">회사명</div>
+            <div class="table-header-cell">면적</div>
+            <div class="table-header-cell">창고 상태</div>
+            <div class="table-header-cell">승인 상태</div>
+        </div>
+        <div class="table-body">
+            <th:block th:if="${#lists.isEmpty(containerList)}">
+                <div class="table-row">
+                    <div class="table-cell" colspan="5">
+                        등록된 창고가 없습니다.
+                    </div>
+                </div>
             </th:block>
-            <li th:if="${request.pageNo < request.endPageNo}">
-                <a th:href="@{/container/list(pageNo=${request.nextPageNo})}">&gt;</a>
-            </li>
-            <li th:if="${request.endPageNo < request.finalPageNo}">
-                <a th:href="@{/container/list(pageNo=${request.finalPageNo})}">&raquo;</a>
-            </li>
-        </ul>
-    </th:block>
-</div>
+            <th:block th:each="container : ${containerList}">
+                <div class="table-row" th:attr="onclick=|location.href='/admin/container/detail/${container.containerId}'|" style="cursor: pointer;">
+                    <div class="table-cell" th:text="${container.rowNum}"></div>
+                    <div class="table-cell" th:text="${container.containerAddr}"></div>
+                    <div class="table-cell" th:text="${container.companyName}"></div>
+                    <div class="table-cell" th:text="${container.containerSize + ' m²'}"></div>
+                    <div class="table-cell"
+                         th:text="${container.containerStatus == 0 ? '사용대기'
+                                    : (container.containerStatus == 1 ? '사용가능'
+                                    : (container.containerStatus == 2 ? '사용중'
+                                    : (container.containerStatus == 3 ? '사용불가' : '알수없음')))}">
+                    </div>
+                    <div class="table-cell"
+                         th:text="${container.containerApprovalStatus == 0 ? '승인대기'
+                                    : (container.containerApprovalStatus == 1 ? '검토중'
+                                    : (container.containerApprovalStatus == 2 ? '승인완료'
+                                    : (container.containerApprovalStatus == 3 ? '승인거절' : '알수없음')))}">
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <div class="custom-pagination">
+        <th:block th:if="${request.totalCount > 0}">
+            <ul>
+                <li th:if="${request.startPageNo > 1}">
+                    <a th:href="@{/container/list(pageNo=${request.firstPageNo})}">&laquo;</a>
+                </li>
+                <li th:if="${request.pageNo > request.startPageNo}">
+                    <a th:href="@{/container/list(pageNo=${request.prevPageNo})}">&lt;</a>
+                </li>
+                <th:block th:each="i : ${#numbers.sequence(request.startPageNo, request.endPageNo)}">
+                    <li th:classappend="${i == request.pageNo} ? 'active'">
+                        <a th:href="@{/container/list(pageNo=${i})}" th:text="${i}"></a>
+                    </li>
+                </th:block>
+                <li th:if="${request.pageNo < request.endPageNo}">
+                    <a th:href="@{/container/list(pageNo=${request.nextPageNo})}">&gt;</a>
+                </li>
+                <li th:if="${request.endPageNo < request.finalPageNo}">
+                    <a th:href="@{/container/list(pageNo=${request.finalPageNo})}">&raquo;</a>
+                </li>
+            </ul>
+        </th:block>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchButton = document.getElementById("searchButton");
+            const resetButton = document.getElementById("resetBtn");
+            const pageNo = document.getElementById("pageNo").value;
+            const searchType = document.getElementById("searchType");
+            const searchName = document.getElementById("searchName");
+            const statusValue = document.getElementById("statusValue");
+            const approvalValue = document.getElementById("approvalValue");
+
+            const setSearchInputVisibility = () => {
+                searchName.style.display = "none";
+                searchName.name = "";
+
+                statusValue.style.display = "none";
+                statusValue.name = "";
+
+                approvalValue.style.display = "none";
+                approvalValue.name = "";
+
+                if (searchType.value === "containerStatus") {
+                    statusValue.style.display = "inline-block";
+                    statusValue.name = "searchName";
+                } else if (searchType.value === "containerApprovalStatus") {
+                    approvalValue.style.display = "inline-block";
+                    approvalValue.name = "searchName";
+                } else {
+                    searchName.style.display = "inline-block";
+                    searchName.name = "searchName";
+                }
+            }
+
+            setSearchInputVisibility();
+            searchType.addEventListener("change", setSearchInputVisibility);
+
+            searchButton.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                let searchValue;
+
+                if (searchType.value === "containerStatus") {
+                    searchValue = statusValue.value;
+                } else if (searchType.value === "containerApprovalStatus") {
+                    searchValue = approvalValue.value;
+                } else {
+                    searchValue = searchName.value.trim();
+                }
+
+                window.location.href = `/admin/container/list?pageNo=${pageNo}&searchType=${searchType.value}&searchName=${searchValue}`;
+            });
+
+            resetButton.addEventListener("click", function () {
+                window.location.href = "/admin/container/list";
+            });
+        });
+    </script>
+</form>
 </body>
 </html>

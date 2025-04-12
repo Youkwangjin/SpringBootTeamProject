@@ -48,18 +48,24 @@
 
     <select id="selectAdminListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
-            COUNT(CONTAINER_ID)
+            COUNT(C.CONTAINER_ID)
         FROM
-            TB_CONTAINER
+            TB_CONTAINER C
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
-                CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+                C.CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'companyName' and searchName != null and searchName.trim() != ''">
+                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_STATUS = #{searchName}
             </if>
             <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_APPROVAL_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
     </select>
@@ -113,13 +119,16 @@
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
-                CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+                C.CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'companyName' and searchName != null and searchName.trim() != ''">
+                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', #{searchName}, '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_STATUS = #{searchName}
             </if>
             <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
-                CONTAINER_APPROVAL_STATUS LIKE CONCAT ('%', #{searchName}, '%')
+                AND C.CONTAINER_APPROVAL_STATUS = #{searchName}
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
