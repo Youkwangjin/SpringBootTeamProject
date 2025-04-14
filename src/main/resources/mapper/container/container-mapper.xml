@@ -282,6 +282,16 @@
             CONTAINER_ID = #{containerId}
     </update>
 
+    <update id="updateContainerApprovalAndStatus" parameterType="com.acorn.api.entity.container.Container">
+        UPDATE
+            TB_CONTAINER
+        SET
+            CONTAINER_STATUS = #{containerStatus},
+            CONTAINER_APPROVAL_STATUS = #{containerApprovalStatus}
+        WHERE
+            CONTAINER_ID = #{containerId}
+    </update>
+
     <delete id="containerDelete" parameterType="com.acorn.api.entity.container.Container">
         DELETE
         FROM

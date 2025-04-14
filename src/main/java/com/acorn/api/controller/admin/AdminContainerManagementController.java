@@ -27,4 +27,13 @@ public class AdminContainerManagementController {
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_REVIEW_SUCCESS);
     }
+
+    @PostMapping("/api/admin/container/approvalRequest/{containerId}")
+    public ResponseEntity<ApiSuccessResponse<Object>> approvalRequest(@RequestBody ContainerManagementRequestDTO requestData) {
+        log.info(" ************** [AdminContainerManagement] Approval request started **************");
+
+        adminService.processApprovalRequest(requestData);
+
+        return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_APPROVAL_SUCCESS);
+    }
 }

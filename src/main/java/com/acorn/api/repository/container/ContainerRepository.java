@@ -33,4 +33,6 @@ public interface ContainerRepository {
     void containerDelete(Container container);
 
     void updateContainerStatusToReview(Container container);
+
+    void updateContainerApprovalAndStatus(Container container);
 }

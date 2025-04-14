@@ -18,4 +18,6 @@ public interface AdminService {
     AdminContainerDetailResponseDTO getContainerData(Integer containerId);
 
     void processReviewRequest(ContainerManagementRequestDTO requestData);
+
+    void processApprovalRequest(ContainerManagementRequestDTO requestData);
 }

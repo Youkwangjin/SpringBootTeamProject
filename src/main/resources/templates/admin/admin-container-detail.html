@@ -79,8 +79,11 @@
                 <button type="button" id="reviewBtn" class="btn btn-review">검토하기</button>
             </th:block>
             <th:block th:if="${containerDetail.container.containerApprovalStatus == 1}">
-                <button type="button" id="btnApprove" class="btn btn-approve">승인</button>
-                <button type="button" id="btnDeny" class="btn btn-deny">거부</button>
+                <button type="button" id="approveBtn" class="btn btn-approve">승인</button>
+                <button type="button" id="rejectBtn" class="btn btn-deny">거부</button>
+            </th:block>
+            <th:block th:if="${containerDetail.container.containerApprovalStatus == 2}">
+                <button type="button" id="cancelApprovalBtn" class="btn btn-deny">승인 취소</button>
             </th:block>
         </div>
     </div>
@@ -89,6 +92,7 @@
     document.addEventListener("DOMContentLoaded", function () {
        let backBtn = document.getElementById("backBtn");
        let reviewBtn = document.getElementById("reviewBtn");
+       let approveBtn = document.getElementById("approveBtn");
        const ownerId = document.getElementById("ownerId").value;
        const containerId = document.getElementById("containerId").value;
 
@@ -99,46 +103,92 @@
           window.location.href = "/admin/container/list";
        });
 
-        reviewBtn.addEventListener("click", function () {
-            if (!confirm("해당 창고를 검토 상태로 변경하시겠습니까?")) {
-                return;
-            }
+       if (reviewBtn) {
+           reviewBtn.addEventListener("click", function () {
+               if (!confirm("해당 창고를 검토 상태로 변경하시겠습니까?")) {
+                   return;
+               }
 
-            const reviewRequest = {
-                containerId: containerId,
-                ownerId: ownerId,
-                _csrf: csrfToken
-            };
+               const reviewRequest = {
+                   containerId: containerId,
+                   ownerId: ownerId,
+                   _csrf: csrfToken
+               };
 
-            fetch(`/api/admin/container/reviewRequest/${containerId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken
-                },
-                credentials: "include",
-                body: JSON.stringify(reviewRequest)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.errorMsg);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        alert(data.resultMsg);
-                        window.location.href = "/admin/container/list";
-                    } else {
-                        throw new Error(data.errorMsg);
-                    }
-                })
-                .catch(error => {
-                    alert(error.message);
-                });
-        });
+               fetch(`/api/admin/container/reviewRequest/${containerId}`, {
+                   method: "POST",
+                   headers: {
+                       "Content-Type": "application/json",
+                       "X-CSRF-TOKEN": csrfToken
+                   },
+                   credentials: "include",
+                   body: JSON.stringify(reviewRequest)
+               })
+                   .then(response => {
+                       if (!response.ok) {
+                           return response.json().then(errorData => {
+                               throw new Error(errorData.errorMsg);
+                           });
+                       }
+                       return response.json();
+                   })
+                   .then(data => {
+                       if (data.httpStatus === "OK") {
+                           alert(data.resultMsg);
+                           window.location.href = "/admin/container/list";
+                       } else {
+                           throw new Error(data.errorMsg);
+                       }
+                   })
+                   .catch(error => {
+                       alert(error.message);
+                   });
+           });
+       }
+
+       if (approveBtn) {
+           approveBtn.addEventListener("click", function () {
+               if (!confirm("해당 창고를 승인 상태로 변경하시겠습니까?")) {
+                   return;
+               }
+
+               const approvalRequest = {
+                   containerId: containerId,
+                   ownerId: ownerId,
+                   _csrf: csrfToken
+               };
+
+               fetch(`/api/admin/container/approvalRequest/${containerId}`, {
+                   method: "POST",
+                   headers: {
+                       "Content-Type": "application/json",
+                       "X-CSRF-TOKEN": csrfToken
+                   },
+                   credentials: "include",
+                   body: JSON.stringify(approvalRequest)
+               })
+                   .then(response => {
+                       if (!response.ok) {
+                           return response.json().then(errorData => {
+                               throw new Error(errorData.errorMsg);
+                           });
+                       }
+                       return response.json();
+                   })
+                   .then(data => {
+                       if (data.httpStatus === "OK") {
+                           alert(data.resultMsg);
+                           window.location.href = "/admin/container/list";
+                       } else {
+                           throw new Error(data.errorMsg);
+                       }
+                   })
+                   .catch(error => {
+                       alert(error.message);
+                   });
+           });
+       }
+
     });
 </script>
 </body>

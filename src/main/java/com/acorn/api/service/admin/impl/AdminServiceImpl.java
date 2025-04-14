@@ -20,9 +20,11 @@ import com.acorn.api.service.admin.AdminService;
 import com.acorn.api.utils.AdminSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -165,5 +167,59 @@ public class AdminServiceImpl implements AdminService {
                 .build();
 
         containerRepository.updateContainerStatusToReview(updateData);
+    }
+
+    @Override
+    @Transactional
+    public void processApprovalRequest(ContainerManagementRequestDTO requestData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer requestContainerId = requestData.getContainerId();
+        final Integer requestOwnerId = requestData.getOwnerId();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container containerData = containerRepository.selectAdminContainerDetailData(requestContainerId);
+        if (containerData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        final Integer currentOwnerId = containerData.getOwner().getOwnerId();
+        if (!Objects.equals(requestOwnerId, currentOwnerId)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_OWNER_MISMATCH);
+        }
+
+        Owner ownerData = ownerRepository.selectAllOwnerData(requestOwnerId);
+        if (ownerData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
+        final Integer approvedStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_APPROVED.getCode();
+        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+        final Integer availableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
+        final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
+        final Integer currentContainerStatus = containerData.getContainerStatus();
+
+        if (Objects.equals(approvedStatus, currentContainerApprovalStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_ALREADY_APPROVED);
+        }
+
+        if (!Objects.equals(reviewStatus, currentContainerApprovalStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_REVIEW);
+        }
+
+        if (!Objects.equals(pendingStatus, currentContainerStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_APPROVAL_PENDING);
+        }
+
+        Container updateApprovalStatus = Container.builder()
+                .containerId(requestContainerId)
+                .containerStatus(availableStatus)
+                .containerApprovalStatus(approvedStatus)
+                .build();
+
+        containerRepository.updateContainerApprovalAndStatus(updateApprovalStatus);
     }
 }
