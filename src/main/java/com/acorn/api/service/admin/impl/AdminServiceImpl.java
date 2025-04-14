@@ -145,7 +145,6 @@ public class AdminServiceImpl implements AdminService {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestContainerId = requestData.getContainerId();
         final Integer requestOwnerId = requestData.getOwnerId();
-        final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
 
         if (currentAdminId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -156,17 +155,35 @@ public class AdminServiceImpl implements AdminService {
             throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
         }
 
+        final Integer currentOwnerId = containerData.getOwner().getOwnerId();
+        if (!Objects.equals(requestOwnerId, currentOwnerId)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_OWNER_MISMATCH);
+        }
+
         Owner ownerData = ownerRepository.selectAllOwnerData(requestOwnerId);
         if (ownerData == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
 
-        Container updateData = Container.builder()
+        final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
+        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+        final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
+        final Integer currentContainerStatus = containerData.getContainerStatus();
+
+        if (Objects.equals(reviewStatus, currentContainerApprovalStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_ALREADY_REVIEW);
+        }
+
+        if (!Objects.equals(pendingStatus, currentContainerStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_APPROVAL_PENDING);
+        }
+
+        Container updateApprovalStatus = Container.builder()
                 .containerId(requestContainerId)
                 .containerApprovalStatus(reviewStatus)
                 .build();
 
-        containerRepository.updateContainerStatusToReview(updateData);
+        containerRepository.updateContainerApproval(updateApprovalStatus);
     }
 
     @Override
@@ -214,12 +231,12 @@ public class AdminServiceImpl implements AdminService {
             throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_APPROVAL_PENDING);
         }
 
-        Container updateApprovalStatus = Container.builder()
+        Container updateStatus = Container.builder()
                 .containerId(requestContainerId)
                 .containerStatus(availableStatus)
                 .containerApprovalStatus(approvedStatus)
                 .build();
 
-        containerRepository.updateContainerApprovalAndStatus(updateApprovalStatus);
+        containerRepository.updateContainerApprovalAndStatus(updateStatus);
     }
 }

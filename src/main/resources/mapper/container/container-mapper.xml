@@ -273,7 +273,7 @@
             CONTAINER_ID = #{containerId}
     </update>
 
-    <update id="updateContainerStatusToReview" parameterType="com.acorn.api.entity.container.Container">
+    <update id="updateContainerApproval" parameterType="com.acorn.api.entity.container.Container">
         UPDATE
             TB_CONTAINER
         SET
