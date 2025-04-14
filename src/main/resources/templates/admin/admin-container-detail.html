@@ -16,6 +16,9 @@
     <div th:replace="~{fragments/header-admin :: header}"></div>
 </div>
 <form id="containerDetailForm">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" id="ownerId" th:value="${containerDetail.owner.ownerId}">
+    <input type="hidden" id="containerId" th:value="${containerDetail.container.containerId}">
     <div class="container-box">
         <h3>창고 상세</h3>
         <table>
@@ -71,9 +74,9 @@
             </tr>
         </table>
         <div class="btn-wrap">
-            <button type="button" id="btnList" class="btn btn-list">목록</button>
+            <button type="button" id="backBtn" class="btn btn-list">목록</button>
             <th:block th:if="${containerDetail.container.containerApprovalStatus == 0}">
-                <button type="button" id="btnReview" class="btn btn-review">검토중</button>
+                <button type="button" id="reviewBtn" class="btn btn-review">검토하기</button>
             </th:block>
             <th:block th:if="${containerDetail.container.containerApprovalStatus == 1}">
                 <button type="button" id="btnApprove" class="btn btn-approve">승인</button>
@@ -82,5 +85,61 @@
         </div>
     </div>
 </form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+       let backBtn = document.getElementById("backBtn");
+       let reviewBtn = document.getElementById("reviewBtn");
+       const ownerId = document.getElementById("ownerId").value;
+       const containerId = document.getElementById("containerId").value;
+
+       const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+       const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+       backBtn.addEventListener("click", function () {
+          window.location.href = "/admin/container/list";
+       });
+
+        reviewBtn.addEventListener("click", function () {
+            if (!confirm("해당 창고를 검토 상태로 변경하시겠습니까?")) {
+                return;
+            }
+
+            const reviewRequest = {
+                containerId: containerId,
+                ownerId: ownerId,
+                _csrf: csrfToken
+            };
+
+            fetch(`/api/admin/container/reviewRequest/${containerId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
+                body: JSON.stringify(reviewRequest)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.errorMsg);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.httpStatus === "OK") {
+                        alert(data.resultMsg);
+                        window.location.href = "/admin/container/list";
+                    } else {
+                        throw new Error(data.errorMsg);
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        });
+    });
+</script>
 </body>
 </html>

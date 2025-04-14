@@ -162,7 +162,8 @@ public class SpringSecurityConfig {
                                          "/api/container/delete/{containerId}").hasAuthority("ROLE_OWNER")
 
                         // Protected Admin API
-                        .requestMatchers("/api/auth/admin/login").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/auth/admin/login",
+                                         "/api/admin/container/reviewRequest/{containerId}").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",

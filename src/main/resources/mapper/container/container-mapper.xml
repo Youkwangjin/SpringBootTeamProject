@@ -190,6 +190,7 @@
             F.CONTAINER_FILE_PATH,
             F.CONTAINER_FILE_EXTNS_NM,
             F.CONTAINER_FILE_SIZE,
+            O.OWNER_ID,
             O.BUSINESS_NUMBER,
             O.OWNER_NM,
             O.OWNER_TEL,
@@ -268,6 +269,15 @@
             CONTAINER_LONGITUDE = #{containerLongitude},
             CONTAINER_CONTENTS = #{containerContents},
             CONTAINER_CONTENTS_TEXT = #{containerContentsText}
+        WHERE
+            CONTAINER_ID = #{containerId}
+    </update>
+
+    <update id="updateContainerStatusToReview" parameterType="com.acorn.api.entity.container.Container">
+        UPDATE
+            TB_CONTAINER
+        SET
+            CONTAINER_APPROVAL_STATUS = #{containerApprovalStatus}
         WHERE
             CONTAINER_ID = #{containerId}
     </update>

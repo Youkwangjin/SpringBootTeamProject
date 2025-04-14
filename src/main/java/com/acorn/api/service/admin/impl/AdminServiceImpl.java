@@ -2,16 +2,20 @@ package com.acorn.api.service.admin.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
 import com.acorn.api.dto.admin.AdminResponseDTO;
+import com.acorn.api.dto.admin.ContainerManagementRequestDTO;
 import com.acorn.api.dto.container.ContainerDetailDTO;
 import com.acorn.api.dto.container.ContainerListDTO;
 import com.acorn.api.dto.owner.OwnerResponseDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.container.Container;
+import com.acorn.api.entity.owner.Owner;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.admin.AdminRepository;
 import com.acorn.api.repository.container.ContainerRepository;
+import com.acorn.api.repository.owner.OwnerRepository;
 import com.acorn.api.service.admin.AdminService;
 import com.acorn.api.utils.AdminSecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
     private final ContainerRepository containerRepository;
+    private final OwnerRepository ownerRepository;
 
     @Override
     public AdminResponseDTO getAdminData() {
@@ -102,6 +107,7 @@ public class AdminServiceImpl implements AdminService {
         final Integer containerStatus = containerData.getContainerStatus();
         final Integer containerApprovalStatus = containerData.getContainerApprovalStatus();
 
+        final Integer ownerId = containerData.getOwner().getOwnerId();
         final String businessNum = containerData.getOwner().getOwnerBusinessNum();
         final String ownerNm = containerData.getOwner().getOwnerNm();
         final String companyName = containerData.getOwner().getOwnerCompanyName();
@@ -119,6 +125,7 @@ public class AdminServiceImpl implements AdminService {
                 .build();
 
         final OwnerResponseDTO ownerDTO = OwnerResponseDTO.builder()
+                .ownerId(ownerId)
                 .ownerBusinessNum(businessNum)
                 .ownerNm(ownerNm)
                 .ownerCompanyName(companyName)
@@ -129,5 +136,34 @@ public class AdminServiceImpl implements AdminService {
                 .container(containerDTO)
                 .owner(ownerDTO)
                 .build();
+    }
+
+    @Override
+    public void processReviewRequest(ContainerManagementRequestDTO requestData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer requestContainerId = requestData.getContainerId();
+        final Integer requestOwnerId = requestData.getOwnerId();
+        final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container containerData = containerRepository.selectAdminContainerDetailData(requestContainerId);
+        if (containerData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        Owner ownerData = ownerRepository.selectAllOwnerData(requestOwnerId);
+        if (ownerData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        Container updateData = Container.builder()
+                .containerId(requestContainerId)
+                .containerApprovalStatus(reviewStatus)
+                .build();
+
+        containerRepository.updateContainerStatusToReview(updateData);
     }
 }
