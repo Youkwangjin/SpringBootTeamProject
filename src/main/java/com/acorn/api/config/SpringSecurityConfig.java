@@ -164,7 +164,8 @@ public class SpringSecurityConfig {
                         // Protected Admin API
                         .requestMatchers("/api/auth/admin/login",
                                          "/api/admin/container/reviewRequest/{containerId}",
-                                         "/api/admin/container/approvalRequest/${containerId}").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/container/approvalRequest/${containerId}",
+                                         "/api/admin/container/rejectRequest/{containerId}").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",

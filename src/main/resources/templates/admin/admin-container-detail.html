@@ -50,8 +50,8 @@
                 <th>승인 상태</th>
                 <td th:text="${containerDetail.container.containerApprovalStatus == 0 ? '승인대기'
             : (containerDetail.container.containerApprovalStatus == 1 ? '검토 중'
-            : (containerDetail.container.containerApprovalStatus == 2 ? '승인 완료'
-            : (containerDetail.container.containerApprovalStatus == 3 ? '승인 거절' : '알수없음')))}"></td>
+            : (containerDetail.container.containerApprovalStatus == 2 ? '승인완료'
+            : (containerDetail.container.containerApprovalStatus == 3 ? '승인거절' : '알수없음')))}"></td>
             </tr>
             <tr>
                 <th>사용 상태</th>
@@ -85,6 +85,9 @@
             <th:block th:if="${containerDetail.container.containerApprovalStatus == 2}">
                 <button type="button" id="cancelApprovalBtn" class="btn btn-deny">승인 취소</button>
             </th:block>
+            <th:block th:if="${containerDetail.container.containerApprovalStatus == 3}">
+                <button type="button" id="cancelRejectBtn" class="btn btn-deny">승인거부 취소</button>
+            </th:block>
         </div>
     </div>
 </form>
@@ -93,6 +96,7 @@
        let backBtn = document.getElementById("backBtn");
        let reviewBtn = document.getElementById("reviewBtn");
        let approveBtn = document.getElementById("approveBtn");
+       let rejectBtn = document.getElementById("rejectBtn");
        const ownerId = document.getElementById("ownerId").value;
        const containerId = document.getElementById("containerId").value;
 
@@ -189,6 +193,48 @@
            });
        }
 
+       if (rejectBtn) {
+           rejectBtn.addEventListener("click", function () {
+               if (!confirm("해당 창고를 승인거부 상태로 변경하시겠습니까?")) {
+                   return;
+               }
+
+               const rejectRequest = {
+                   containerId: containerId,
+                   ownerId: ownerId,
+                   _csrf: csrfToken
+               };
+
+               fetch(`/api/admin/container/rejectRequest/${containerId}`, {
+                   method: "POST",
+                   headers: {
+                       "Content-Type": "application/json",
+                       "X-CSRF-TOKEN": csrfToken
+                   },
+                   credentials: "include",
+                   body: JSON.stringify(rejectRequest)
+               })
+                   .then(response => {
+                       if (!response.ok) {
+                           return response.json().then(errorData => {
+                               throw new Error(errorData.errorMsg);
+                           });
+                       }
+                       return response.json();
+                   })
+                   .then(data => {
+                       if (data.httpStatus === "OK") {
+                           alert(data.resultMsg);
+                           window.location.href = "/admin/container/list";
+                       } else {
+                           throw new Error(data.errorMsg);
+                       }
+                   })
+                   .catch(error => {
+                       alert(error.message);
+                   });
+           });
+       }
     });
 </script>
 </body>

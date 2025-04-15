@@ -20,4 +20,6 @@ public interface AdminService {
     void processReviewRequest(ContainerManagementRequestDTO requestData);
 
     void processApprovalRequest(ContainerManagementRequestDTO requestData);
+
+    void processRejectRequest(ContainerManagementRequestDTO requestData);
 }

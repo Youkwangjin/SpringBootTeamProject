@@ -36,4 +36,13 @@ public class AdminContainerManagementController {
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_APPROVAL_SUCCESS);
     }
+
+    @PostMapping("/api/admin/container/rejectRequest/{containerId}")
+    public ResponseEntity<ApiSuccessResponse<Object>> rejectRequest(@RequestBody ContainerManagementRequestDTO requestData) {
+        log.info(" ************** [AdminContainerManagement] Reject request started **************");
+
+        adminService.processRejectRequest(requestData);
+
+        return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_REJECT_SUCCESS);
+    }
 }
