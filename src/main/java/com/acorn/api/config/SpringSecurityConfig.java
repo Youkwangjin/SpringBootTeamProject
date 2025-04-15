@@ -165,7 +165,8 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/auth/admin/login",
                                          "/api/admin/container/reviewRequest/{containerId}",
                                          "/api/admin/container/approvalRequest/${containerId}",
-                                         "/api/admin/container/rejectRequest/{containerId}").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/container/rejectRequest/{containerId}",
+                                         "/api/admin/container/cancelApproval/${containerId}").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",

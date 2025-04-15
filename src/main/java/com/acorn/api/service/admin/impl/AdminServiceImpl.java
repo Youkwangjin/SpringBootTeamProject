@@ -293,4 +293,54 @@ public class AdminServiceImpl implements AdminService {
 
         containerRepository.updateContainerApprovalAndStatus(updateStatus);
     }
+
+    @Override
+    @Transactional
+    public void processCancelApproval(ContainerManagementRequestDTO requestData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer requestContainerId = requestData.getContainerId();
+        final Integer requestOwnerId = requestData.getOwnerId();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container containerData = containerRepository.selectAdminContainerDetailData(requestContainerId);
+        if (containerData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        final Integer currentOwnerId = containerData.getOwner().getOwnerId();
+        if (!Objects.equals(requestOwnerId, currentOwnerId)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_OWNER_MISMATCH);
+        }
+
+        Owner ownerData = ownerRepository.selectAllOwnerData(requestOwnerId);
+        if (ownerData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        final Integer approvedStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_APPROVED.getCode();
+        final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
+        final Integer availableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
+        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+        final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
+        final Integer currentContainerStatus = containerData.getContainerStatus();
+
+        if (!Objects.equals(availableStatus, currentContainerStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_AVAILABLE_CANCEL);
+        }
+
+        if (!Objects.equals(approvedStatus, currentContainerApprovalStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_APPROVED);
+        }
+
+        Container updateStatus = Container.builder()
+                .containerId(requestContainerId)
+                .containerStatus(pendingStatus)
+                .containerApprovalStatus(reviewStatus)
+                .build();
+
+        containerRepository.updateContainerApprovalAndStatus(updateStatus);
+    }
 }

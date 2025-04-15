@@ -97,6 +97,7 @@
        let reviewBtn = document.getElementById("reviewBtn");
        let approveBtn = document.getElementById("approveBtn");
        let rejectBtn = document.getElementById("rejectBtn");
+       let cancelApprovalBtn = document.getElementById("cancelApprovalBtn");
        const ownerId = document.getElementById("ownerId").value;
        const containerId = document.getElementById("containerId").value;
 
@@ -213,6 +214,49 @@
                    },
                    credentials: "include",
                    body: JSON.stringify(rejectRequest)
+               })
+                   .then(response => {
+                       if (!response.ok) {
+                           return response.json().then(errorData => {
+                               throw new Error(errorData.errorMsg);
+                           });
+                       }
+                       return response.json();
+                   })
+                   .then(data => {
+                       if (data.httpStatus === "OK") {
+                           alert(data.resultMsg);
+                           window.location.href = "/admin/container/list";
+                       } else {
+                           throw new Error(data.errorMsg);
+                       }
+                   })
+                   .catch(error => {
+                       alert(error.message);
+                   });
+           });
+       }
+
+       if (cancelApprovalBtn) {
+           cancelApprovalBtn.addEventListener("click", function () {
+               if (!confirm("해당 창고의 승인 상태를 취소하시겠습니까?")) {
+                   return;
+               }
+
+               const cancelApprovalRequest = {
+                   containerId: containerId,
+                   ownerId: ownerId,
+                   _csrf: csrfToken
+               };
+
+               fetch(`/api/admin/container/cancelApproval/${containerId}`, {
+                   method: "POST",
+                   headers: {
+                       "Content-Type": "application/json",
+                       "X-CSRF-TOKEN": csrfToken
+                   },
+                   credentials: "include",
+                   body: JSON.stringify(cancelApprovalRequest)
                })
                    .then(response => {
                        if (!response.ok) {

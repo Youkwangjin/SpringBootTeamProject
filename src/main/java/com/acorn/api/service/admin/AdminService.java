@@ -22,4 +22,6 @@ public interface AdminService {
     void processApprovalRequest(ContainerManagementRequestDTO requestData);
 
     void processRejectRequest(ContainerManagementRequestDTO requestData);
+
+    void processCancelApproval(ContainerManagementRequestDTO requestData);
 }
