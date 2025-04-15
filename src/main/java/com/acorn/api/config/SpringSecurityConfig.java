@@ -164,15 +164,16 @@ public class SpringSecurityConfig {
                         // Protected Admin API
                         .requestMatchers("/api/auth/admin/login",
                                          "/api/admin/container/reviewRequest/{containerId}",
-                                         "/api/admin/container/approvalRequest/${containerId}",
+                                         "/api/admin/container/approvalRequest/{containerId}",
                                          "/api/admin/container/rejectRequest/{containerId}",
-                                         "/api/admin/container/cancelApproval/${containerId}").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/container/cancelApproval/{containerId}",
+                                         "/api/admin/container/cancelReject/{containerId}").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
                                          "/api/board/save",
-                                         "/api/board/update/${boardId}",
-                                         "/api/board/delete/${boardId}").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                                         "/api/board/update/{boardId}",
+                                         "/api/board/delete/{boardId}").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
                         .anyRequest().permitAll()
                 );

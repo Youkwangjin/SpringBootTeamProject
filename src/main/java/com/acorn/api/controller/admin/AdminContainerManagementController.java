@@ -54,4 +54,13 @@ public class AdminContainerManagementController {
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_REVIEW_SUCCESS);
     }
+
+    @PostMapping("/api/admin/container/cancelReject/{containerId}")
+    public ResponseEntity<ApiSuccessResponse<Object>> cancelReject(@RequestBody ContainerManagementRequestDTO requestData) {
+        log.info(" ************** [AdminContainerManagement] Reject Cancel request started **************");
+
+        adminService.processCancelReject(requestData);
+
+        return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_REVIEW_SUCCESS);
+    }
 }
