@@ -14,7 +14,6 @@ body {
     height: 100vh;
     background: url("../../assets/img/login/admin-loginImg.jpg") no-repeat center;
     background-size: cover;
-
 }
 
 body::before {
