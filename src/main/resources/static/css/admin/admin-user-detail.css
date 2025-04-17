@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Noto Sans KR', sans-serif;
+    height: 100%;
+    background: url("../../assets/img/login/user-loginImg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+body > * {
+    position: relative;
+    z-index: 2;
+}
+
+.user-detail-container {
+    width: 800px;
+    margin: 140px auto 60px;
+    padding: 40px 50px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.user-detail-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.user-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-detail-table th,
+.user-detail-table td {
+    padding: 14px 10px;
+    font-size: 16px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-detail-table th {
+    width: 30%;
+    color: #555;
+    background-color: #f9f9f9;
+}
+
+.btn-wrap {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-detail {
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+.btn-edit {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-edit:hover {
+    background-color: #0b5ed7;
+}
+
+.btn-disable {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-disable:hover {
+    background-color: #bb2d3b;
+}

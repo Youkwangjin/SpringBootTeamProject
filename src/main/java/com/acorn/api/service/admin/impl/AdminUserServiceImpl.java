@@ -1,9 +1,16 @@
 package com.acorn.api.service.admin.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
+import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.dto.admin.AdminUserListDTO;
+import com.acorn.api.dto.user.UserResponseDTO;
+import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.user.User;
+import com.acorn.api.exception.global.AcontainerException;
+import com.acorn.api.repository.admin.AdminRepository;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.service.admin.AdminUserService;
+import com.acorn.api.utils.AdminSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminUserServiceImpl implements AdminUserService {
 
+    private final AdminRepository adminRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -40,5 +48,38 @@ public class AdminUserServiceImpl implements AdminUserService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponseDTO getUserData(Integer userId) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        Admin adminData = adminRepository.selectAdminById(currentAdminId);
+        if (adminData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        User userData = userRepository.selectAllUserData(userId);
+        if (userData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        final String userEmail = userData.getUserEmail();
+        final String userNm = userData.getUserNm();
+        final String userTel = userData.getUserTel();
+        final LocalDateTime userCreated = userData.getUserCreated();
+        final LocalDateTime userUpdated = userData.getUserUpdated();
+
+        return UserResponseDTO.builder()
+                .userId(userId)
+                .userEmail(userEmail)
+                .userNm(userNm)
+                .userTel(userTel)
+                .userCreated(userCreated)
+                .userUpdated(userUpdated)
+                .build();
     }
 }
