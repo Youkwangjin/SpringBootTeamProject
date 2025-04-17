@@ -1,5 +1,6 @@
 package com.acorn.api.code.response;
 
+import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,11 @@ public class WebErrorResponse {
     }
 
     private String getErrorMessage(HttpStatus status) {
+        for (ApiErrorCode errorCode : ApiErrorCode.values()) {
+            if (errorCode.getHttpStatus() == status) {
+                return errorCode.getErrorMsg();
+            }
+        }
         for (ApiHttpErrorCode errorCode : ApiHttpErrorCode.values()) {
             if(errorCode.getHttpStatus() == status) {
                 return errorCode.getErrorMsg();

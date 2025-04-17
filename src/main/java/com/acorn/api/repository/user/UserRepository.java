@@ -1,8 +1,11 @@
 package com.acorn.api.repository.user;
 
+import com.acorn.api.common.PaginationRequest;
 import com.acorn.api.entity.user.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface UserRepository {
@@ -22,4 +25,8 @@ public interface UserRepository {
     void userUpdate(User User);
 
     void userDelete(User user);
+
+    Integer selectUserListCountByRequest(PaginationRequest pagination);
+
+    List<User> selectAdminUserListData(PaginationRequest pagination);
 }
