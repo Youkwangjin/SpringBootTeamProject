@@ -1,44 +1,45 @@
-html, body {
+* {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    box-sizing: border-box;
+}
+
+html, body {
     font-family: 'Noto Sans KR', sans-serif;
     background: rgba(0, 0, 0, 0.1) url("../../assets/img/login/admin-loginImg.jpg") no-repeat center;
     background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow-x: hidden;
 }
 
-body::before {
-    content: "";
+header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1;
+    height: 80px;
+    z-index: 10;
 }
 
-body > * {
+main {
+    padding-top: 100px;
     position: relative;
     z-index: 2;
+    display: flex;
+    justify-content: center;
 }
 
 .user-box {
     width: 800px;
     max-width: 1000px;
     padding: 40px 50px;
+    margin: 120px auto 40px auto;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    margin: 120px auto 40px auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    z-index: 1;
 }
 
 h3 {
@@ -50,7 +51,6 @@ h3 {
 
 table {
     width: 100%;
-    flex-grow: 1;
     border-collapse: collapse;
 }
 
@@ -94,7 +94,6 @@ input[type="text"]:focus {
     font-size: 14px;
     background-color: #fff;
     color: #333;
-    box-sizing: border-box;
 }
 
 .button-postcode {
