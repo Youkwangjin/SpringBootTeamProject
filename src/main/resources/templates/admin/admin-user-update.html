@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>에이콘테이너 : 사용자 정보 수정</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/css/main.css" rel="stylesheet">
+  <link href="/css/admin/admin-user-update.css" rel="stylesheet">
+</head>
+<body>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+  <div th:replace="~{fragments/header-admin :: header}"></div>
+</div>
+  <form id="userEditForm">
+    <div class="user-box">
+      <h3>사용자 상세</h3>
+      <table>
+        <tr>
+          <th><label for="userEmail">이메일</label></th>
+          <td><input type="text" id="userEmail" name="userEmail" th:value="${userDetailData.userEmail}" required /></td>
+        </tr>
+        <tr>
+          <th><label for="userTel">전화번호</label></th>
+          <td><input type="text" id="userTel" name="userTel" th:value="${userDetailData.userTel}" required /></td>
+        </tr>
+        <tr>
+          <th><label for="userNm">이름</label></th>
+          <td><input type="text" id="userNm" name="userNm" th:value="${userDetailData.userNm}" required /></td>
+        </tr>
+        <tr>
+          <th><label for="user_postcode">주소</label></th>
+          <td>
+            <label for="user_postcode">
+              <input type="text" id="user_postcode" class="text-field-postcode" placeholder="우편번호">
+            </label>
+
+            <input type="button" onclick="user_execDaumPostcode()" class="button-postcode" value="우편번호 찾기"><br>
+            <label for="user_roadAddress">
+              <input type="text" id="user_roadAddress" class="text-field-postcode" placeholder="도로명주소">
+            </label>
+
+            <label for="user_jibunAddress">
+              <input type="text" id="user_jibunAddress" class="text-field-postcode" placeholder="지번주소">
+            </label>
+
+            <span id="guide" style="color:#999;display:none"></span>
+            <label for="user_detailAddress">
+              <input type="text" id="user_detailAddress" class="text-field-postcode" placeholder="상세주소">
+            </label>
+
+            <label for="user_extraAddress">
+              <input type="text" id="user_extraAddress" class="text-field-postcode" placeholder="참고항목">
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="userAddress">입력한 주소</label></th>
+          <td>
+            <input type="text" name="userAddr" id="userAddress" class="text-field" th:value="${userDetailData.userAddr}" placeholder="입력한 주소" />
+          </td>
+        </tr>
+      </table>
+      <div class="btn-wrap">
+        <button type="button" id="backBtn" class="btn btn-list">목록</button>
+        <button type="button" id="saveBtn" class="btn btn-save">저장</button>
+      </div>
+    </div>
+  </form>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/js/common/daum-postcode.js"></script>
+</body>
+</html>

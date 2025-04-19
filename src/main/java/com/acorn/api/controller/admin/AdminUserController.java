@@ -31,4 +31,11 @@ public class AdminUserController {
         model.addAttribute("userDetailData", userDetailData);
         return "admin/admin-user-detail";
     }
+
+    @GetMapping("/admin/user/update/{userId}")
+    public String userUpdatePage(@PathVariable("userId") Integer userId, Model model) {
+        UserResponseDTO userDetailData = adminUserService.getUserData(userId);
+        model.addAttribute("userDetailData", userDetailData);
+        return "admin/admin-user-update";
+    }
 }

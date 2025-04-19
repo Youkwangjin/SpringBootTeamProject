@@ -70,6 +70,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         final String userEmail = userData.getUserEmail();
         final String userNm = userData.getUserNm();
         final String userTel = userData.getUserTel();
+        final String userAddr = userData.getUserAddr();
         final LocalDateTime userCreated = userData.getUserCreated();
         final LocalDateTime userUpdated = userData.getUserUpdated();
 
@@ -78,6 +79,7 @@ public class AdminUserServiceImpl implements AdminUserService {
                 .userEmail(userEmail)
                 .userNm(userNm)
                 .userTel(userTel)
+                .userAddr(userAddr)
                 .userCreated(userCreated)
                 .userUpdated(userUpdated)
                 .build();
