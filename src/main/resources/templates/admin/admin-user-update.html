@@ -16,12 +16,18 @@
   <div th:replace="~{fragments/header-admin :: header}"></div>
 </div>
   <form id="userEditForm">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" id="userId" th:value="${userDetailData.userId}">
     <div class="user-box">
       <h3>사용자 상세</h3>
       <table>
         <tr>
           <th><label for="userEmail">이메일</label></th>
-          <td><input type="text" id="userEmail" name="userEmail" th:value="${userDetailData.userEmail}" required /></td>
+          <td>
+            <input type="text" id="userEmail" name="userEmail" th:value="${userDetailData.userEmail}" required />
+            <br>
+            <span class="email-result"></span>
+          </td>
         </tr>
         <tr>
           <th><label for="userTel">전화번호</label></th>
@@ -65,12 +71,107 @@
         </tr>
       </table>
       <div class="btn-wrap">
-        <button type="button" id="backBtn" class="btn btn-list">목록</button>
+        <button type="button" id="backBtn" class="btn btn-list">이전</button>
         <button type="button" id="saveBtn" class="btn btn-save">저장</button>
       </div>
     </div>
   </form>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/common/daum-postcode.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const userId = document.getElementById("userId").value;
+    const userEmail = document.getElementById("userEmail");
+    const initialEmail = userEmail.value;
+    const saveBtn = document.getElementById("saveBtn");
+    const backBtn = document.getElementById("backBtn");
+
+    const emailResult = document.querySelector(".email-result");
+
+    let validStates = {
+      userEmail: true,
+    };
+
+    function checkFormValid() {
+      const allValid = Object.values(validStates).every(Boolean);
+      saveBtn.disabled = !allValid;
+    }
+
+    userEmail.addEventListener("input", (e) => {
+      validEmail(e.target, emailResult);
+    });
+
+    function validEmail(emailInput, resultElement) {
+      const email = emailInput.value.trim();
+      if (email.length === 0) {
+        resultElement.textContent = "이메일을 입력해주세요.";
+        resultElement.classList.remove("success");
+        resultElement.classList.add("error");
+        validStates.userEmail = false;
+      } else if (!validEmailCheck(email)) {
+        resultElement.textContent = "이메일 형식으로 입력해주세요.";
+        resultElement.classList.remove("success");
+        resultElement.classList.add("error");
+        validStates.userEmail = false;
+      } else if (email === initialEmail) {
+        resultElement.textContent = "현재 기존 사용자의 이메일입니다.";
+        resultElement.classList.add("success");
+        resultElement.classList.remove("error");
+        validStates.userEmail = true;
+      } else {
+        checkEmailDuplication(emailInput, resultElement);
+      }
+      checkFormValid();
+    }
+
+    function checkEmailDuplication(emailInput, resultElement) {
+      const userEmail = emailInput.value.trim();
+      fetch("/api/auth/user/emailCheck?userEmail=" + encodeURIComponent(userEmail), {
+        method: "GET",
+        credentials: "include",
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw response;
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.httpStatus === "OK") {
+            resultElement.textContent = data.resultMsg;
+            resultElement.classList.add("success");
+            resultElement.classList.remove("error");
+            validStates.userEmail = true;
+            checkFormValid();
+          }
+        })
+        .catch(errorResponse => {
+          errorResponse.json().then(errorData => {
+            resultElement.textContent = errorData.errorMsg;
+            resultElement.classList.add("error");
+            resultElement.classList.remove("success");
+            validStates.userEmail = false;
+            checkFormValid();
+          });
+        });
+    }
+
+    function validEmailCheck(email) {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      return emailPattern.test(email);
+    }
+
+    saveBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      if (!confirm("사용자 정보를 수정하시겠습니까?")) {
+        return;
+      }
+    });
+
+    backBtn.addEventListener("click", function () {
+      window.location.href = `/admin/user/detail/${userId}`;
+    });
+  });
+</script>
 </body>
 </html>
