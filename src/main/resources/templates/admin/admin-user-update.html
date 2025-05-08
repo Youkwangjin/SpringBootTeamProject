@@ -82,7 +82,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     const userId = document.getElementById("userId").value;
     const userEmail = document.getElementById("userEmail");
-    const initialEmail = userEmail.value;
     const saveBtn = document.getElementById("saveBtn");
     const backBtn = document.getElementById("backBtn");
 
@@ -113,7 +112,7 @@
         resultElement.classList.remove("success");
         resultElement.classList.add("error");
         validStates.userEmail = false;
-      } else if (email === initialEmail) {
+      } else if (email === userEmail.value) {
         resultElement.textContent = "현재 기존 사용자의 이메일입니다.";
         resultElement.classList.add("success");
         resultElement.classList.remove("error");
