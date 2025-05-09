@@ -107,6 +107,18 @@
         WHERE USER_ID = #{userId}
     </update>
 
+    <update id="adminUserUpdate" parameterType="com.acorn.api.entity.user.User">
+        UPDATE
+            TB_USER
+        SET
+            USER_EMAIL = #{userEmail},
+            USER_NM = #{userNm},
+            USER_TEL = #{userTel},
+            USER_ADDRESS = #{userAddr},
+            USER_UPDATED = NOW()
+        WHERE USER_ID = #{userId}
+    </update>
+
     <delete id="userDelete" parameterType="com.acorn.api.entity.user.User">
         DELETE
         FROM

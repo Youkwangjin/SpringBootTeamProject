@@ -3,6 +3,7 @@ package com.acorn.api.service.admin.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.dto.admin.AdminUserListDTO;
+import com.acorn.api.dto.admin.UserManagementRequestDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.user.User;
@@ -83,5 +84,39 @@ public class AdminUserServiceImpl implements AdminUserService {
                 .userCreated(userCreated)
                 .userUpdated(userUpdated)
                 .build();
+    }
+
+    @Override
+    public void adminUpdateUser(UserManagementRequestDTO requestData) {
+        final Integer userId = requestData.getUserId();
+        final String userEmail = requestData.getUserEmail();
+        final String userNm = requestData.getUserNm();
+        final String userTel = requestData.getUserTel();
+        final String userAddr = requestData.getUserAddr();
+
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        Admin adminData = adminRepository.selectAdminById(currentAdminId);
+        if (adminData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        User userData = userRepository.selectAllUserData(userId);
+        if (userData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        User updateUserData = User.builder()
+                .userId(userId)
+                .userEmail(userEmail)
+                .userNm(userNm)
+                .userTel(userTel)
+                .userAddr(userAddr)
+                .build();
+
+        userRepository.adminUserUpdate(updateUserData);
     }
 }

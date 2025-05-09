@@ -170,7 +170,8 @@ public class SpringSecurityConfig {
                                          "/api/admin/container/approvalRequest/{containerId}",
                                          "/api/admin/container/rejectRequest/{containerId}",
                                          "/api/admin/container/cancelApproval/{containerId}",
-                                         "/api/admin/container/cancelReject/{containerId}").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/container/cancelReject/{containerId}",
+                                         "/api/admin/user/update/{userId}").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
