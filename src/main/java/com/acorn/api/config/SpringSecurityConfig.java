@@ -148,7 +148,10 @@ public class SpringSecurityConfig {
                         // Protected Admin Common Pages
                         .requestMatchers("/admin/mypage",
                                          "/admin/container/list/**",
-                                         "/admin/container/detail/**").hasAuthority("ROLE_ADMIN")
+                                         "/admin/container/detail/**",
+                                         "/admin/user/list/**",
+                                         "/admin/user/detail/**",
+                                         "/admin/user/update/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
@@ -162,13 +165,19 @@ public class SpringSecurityConfig {
                                          "/api/container/delete/{containerId}").hasAuthority("ROLE_OWNER")
 
                         // Protected Admin API
-                        .requestMatchers("/api/auth/admin/login").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/auth/admin/login",
+                                         "/api/admin/container/reviewRequest/{containerId}",
+                                         "/api/admin/container/approvalRequest/{containerId}",
+                                         "/api/admin/container/rejectRequest/{containerId}",
+                                         "/api/admin/container/cancelApproval/{containerId}",
+                                         "/api/admin/container/cancelReject/{containerId}",
+                                         "/api/admin/user/update/{userId}").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
                                          "/api/board/save",
-                                         "/api/board/update/${boardId}",
-                                         "/api/board/delete/${boardId}").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                                         "/api/board/update/{boardId}",
+                                         "/api/board/delete/{boardId}").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
 
                         .anyRequest().permitAll()
                 );

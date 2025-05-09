@@ -4,13 +4,16 @@
 
 <mapper namespace="com.acorn.api.repository.user.UserRepository">
     <resultMap id="userResultMap"           type="com.acorn.api.entity.user.User">
-        <result property="userId"           column="USER_ID"/>
+        <id property="rowNum"               column="ROW_NUM"/>
+        <id property="userId"               column="USER_ID"/>
         <result property="userEmail"        column="USER_EMAIL"/>
         <result property="userPassword"     column="USER_PASSWORD"/>
         <result property="userNm"           column="USER_NM"/>
         <result property="userTel"          column="USER_TEL"/>
         <result property="userAddr"         column="USER_ADDRESS"/>
         <result property="userRole"         column="USER_ROLE"/>
+        <result property="userCreated"      column="USER_CREATED"/>
+        <result property="userUpdated"      column="USER_UPDATED"/>
     </resultMap>
 
     <select id="selectUserIdKey"  resultType="Integer">
@@ -58,10 +61,57 @@
         WHERE USER_ID = #{userId}
     </select>
 
+    <select id="selectUserListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(USER_ID)
+        FROM
+            TB_USER
+        <where>
+            <if test="searchType == 'userEmail' and searchName != null and searchName.trim() != ''">
+                USER_EMAIL LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'userNm' and searchName != null and searchName.trim() != ''">
+                AND USER_NM LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAdminUserListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="userResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY USER_CREATED ASC) AS ROW_NUM,
+            USER_ID,
+            USER_EMAIL,
+            USER_NM,
+            USER_TEL,
+            USER_CREATED
+        FROM
+            TB_USER
+        <where>
+            <if test="searchType == 'userEmail' and searchName != null and searchName.trim() != ''">
+                USER_EMAIL LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+            <if test="searchType == 'userNm' and searchName != null and searchName.trim() != ''">
+                AND USER_NM LIKE CONCAT ('%', #{searchName}, '%')
+            </if>
+        </where>
+    </select>
+
     <update id="userUpdate" parameterType="com.acorn.api.entity.user.User">
         UPDATE
             TB_USER
         SET
+            USER_NM = #{userNm},
+            USER_TEL = #{userTel},
+            USER_ADDRESS = #{userAddr},
+            USER_UPDATED = NOW()
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="adminUserUpdate" parameterType="com.acorn.api.entity.user.User">
+        UPDATE
+            TB_USER
+        SET
+            USER_EMAIL = #{userEmail},
             USER_NM = #{userNm},
             USER_TEL = #{userTel},
             USER_ADDRESS = #{userAddr},

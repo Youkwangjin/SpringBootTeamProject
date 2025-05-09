@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 public class OwnerResponseDTO {
 
-    private int ownerId;
+    private Integer ownerId;
 
     private String ownerEmail;
 

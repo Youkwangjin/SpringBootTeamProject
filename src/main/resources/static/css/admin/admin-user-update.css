@@ -1,0 +1,170 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: rgba(0, 0, 0, 0.1) url("../../assets/img/login/admin-loginImg.jpg") no-repeat center;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 10;
+}
+
+main {
+    padding-top: 100px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.user-box {
+    width: 800px;
+    max-width: 1000px;
+    padding: 40px 50px;
+    margin: 120px auto 40px auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 1;
+}
+
+h3 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid #e1e1e1;
+    font-size: 14px;
+}
+
+th {
+    background-color: #f5f5f5;
+    color: #555;
+    width: 20%;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus {
+    border-color: #198754;
+    outline: none;
+    box-shadow: 0 0 4px rgba(25, 135, 84, 0.4);
+}
+
+.text-field-postcode {
+    width: 100%;
+    padding: 8px 12px;
+    margin-top: 4px;
+    margin-bottom: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+}
+
+.button-postcode {
+    margin-top: 6px;
+    padding: 9px 12px;
+    border-radius: 4px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 6px;
+}
+
+.button-postcode:hover {
+    background-color: #5a6268;
+}
+
+.btn-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 24px;
+    font-size: 15px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-list {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-list:hover {
+    background-color: #5a6268;
+}
+
+.btn-save {
+    background-color: #198754;
+    color: #fff;
+}
+
+.btn-save:hover {
+    background-color: #157347;
+}
+
+.btn-save:disabled {
+    background-color: #b0b0b0;
+    color: #ffffff;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.result {
+    display: none;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.error {
+    color: red;
+    display: block;
+}
+
+.success {
+    color: blue;
+    display: block;
+}

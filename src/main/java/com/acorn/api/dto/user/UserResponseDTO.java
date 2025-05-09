@@ -3,6 +3,8 @@ package com.acorn.api.dto.user;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 public class UserResponseDTO {
@@ -16,4 +18,8 @@ public class UserResponseDTO {
     private String userTel;
 
     private String userAddr;
+
+    private LocalDateTime userCreated;
+
+    private LocalDateTime userUpdated;
 }
