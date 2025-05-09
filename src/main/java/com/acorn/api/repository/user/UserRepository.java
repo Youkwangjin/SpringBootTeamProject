@@ -24,6 +24,8 @@ public interface UserRepository {
 
     void userUpdate(User User);
 
+    void adminUserUpdate(User user);
+
     void userDelete(User user);
 
     Integer selectUserListCountByRequest(PaginationRequest pagination);
