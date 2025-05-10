@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ApiErrorCode {
     USER_FOUND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "UFE", "존재하지 않는 사용자 입니다."),
+    RESERVATION_STATUS_ACTIVE(HttpStatus.FORBIDDEN, "RSA", "예약 중인 사용자는 정보수정이 불가능 합니다."),
 
     BOARD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "BNF", "게시글이 존재하지 않습니다."),
 
