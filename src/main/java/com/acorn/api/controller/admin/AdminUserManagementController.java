@@ -5,6 +5,7 @@ import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.admin.UserManagementRequestDTO;
 import com.acorn.api.service.admin.AdminUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class AdminUserManagementController {
     private final AdminUserService adminUserService;
 
     @PatchMapping("/api/admin/user/update/{userId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> userUpdate(@RequestBody UserManagementRequestDTO requestData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> userUpdate(@Valid @RequestBody UserManagementRequestDTO requestData) {
         log.info(" ************** [AdminUserManagement] Update request started **************");
 
         adminUserService.adminUpdateUser(requestData);
