@@ -2,13 +2,16 @@ package com.acorn.api.service.admin.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.code.reservation.ReservationStatus;
 import com.acorn.api.dto.admin.AdminUserListDTO;
 import com.acorn.api.dto.admin.UserManagementRequestDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.entity.admin.Admin;
+import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.entity.user.User;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.admin.AdminRepository;
+import com.acorn.api.repository.reservation.ReservationRepository;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.service.admin.AdminUserService;
 import com.acorn.api.utils.AdminSecurityUtil;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +29,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
+    private final ReservationRepository reservationRepository;
 
     @Override
     public List<AdminUserListDTO> getUserList(AdminUserListDTO listData) {
@@ -107,6 +112,15 @@ public class AdminUserServiceImpl implements AdminUserService {
         User userData = userRepository.selectAllUserData(userId);
         if (userData == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        List<Reservation> ReservationData = reservationRepository.selectReservationByUserId(userId);
+        for (Reservation reservation : ReservationData) {
+            final Integer reservationStatus = reservation.getReservationStatus();
+
+            if (Objects.equals(reservationStatus, ReservationStatus.RESERVATION_STATUS_ACTIVE.getCode())) {
+                throw new AcontainerException(ApiErrorCode.RESERVATION_STATUS_ACTIVE);
+            }
         }
 
         User updateUserData = User.builder()
