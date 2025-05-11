@@ -46,15 +46,19 @@
     <div class="btn-wrap">
       <button type="button" class="btn-detail btn-back" id="backBtn">목록</button>
       <button type="button" class="btn-detail btn-edit" id="updateBtn">수정</button>
-      <button type="button" class="btn-detail btn-disable">삭제</button>
+      <button type="button" class="btn-detail btn-disable" id="deleteBtn">삭제</button>
     </div>
   </form>
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const userId = document.getElementById("userId").value;
-    let backBtn = document.getElementById("backBtn");
-    let updateBtn = document.getElementById("updateBtn");
+    const backBtn = document.getElementById("backBtn");
+    const updateBtn = document.getElementById("updateBtn");
+    const deleteBtn = document.getElementById("deleteBtn");
+
+    const csrfTokenElement = document.querySelector("input[name=_csrf]");
+    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
     backBtn.addEventListener("click", function () {
       window.location.href = "/admin/user/list";
@@ -62,6 +66,70 @@
 
     updateBtn.addEventListener("click", function () {
       window.location.href = `/admin/user/update/${userId}`;
+    });
+
+    deleteBtn.addEventListener("click", function () {
+      if (!confirm("해당 사용자를 회원 탈퇴 처리하시겠습니까?")) {
+        return;
+      }
+
+      const adminPassword = prompt("관리자 비밀번호를 입력해주세요.");
+      if (!adminPassword) {
+        alert("비밀번호 입력이 취소되었습니다.");
+        return;
+      }
+
+      fetch("/api/admin/password/confirm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrfToken
+        },
+        credentials: "include",
+        body: JSON.stringify({ adminPassword: adminPassword })
+      })
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(errorData => {
+              throw new Error(errorData.errorMsg);
+            });
+          }
+          return response.json();
+        })
+        .then(() => {
+          const userData = {
+            userId: userId,
+            _csrf: csrfToken
+          };
+
+          fetch(`/api/admin/user/delete/${userId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": csrfToken
+            },
+            credentials: "include",
+            body: JSON.stringify(userData)
+          })
+            .then(response => {
+              if (!response.ok) {
+                return response.json().then(errorData => {
+                  throw new Error(errorData.errorMsg);
+                });
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data.httpStatus === "OK") {
+                alert(data.resultMsg);
+                window.location.href = "/admin/user/list";
+              } else {
+                throw new Error(data.errorMsg || "알 수 없는 오류가 발생했습니다.");
+              }
+            })
+            .catch(error => alert(error.message));
+        })
+        .catch(error => alert(error.message));
     });
   });
 </script>

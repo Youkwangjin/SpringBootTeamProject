@@ -1,6 +1,7 @@
 package com.acorn.api.service.admin;
 
 import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
+import com.acorn.api.dto.admin.AdminLoginDTO;
 import com.acorn.api.dto.admin.AdminResponseDTO;
 import com.acorn.api.dto.admin.ContainerManagementRequestDTO;
 import com.acorn.api.dto.container.ContainerListDTO;
@@ -26,4 +27,6 @@ public interface AdminService {
     void processCancelApproval(ContainerManagementRequestDTO requestData);
 
     void processCancelReject(ContainerManagementRequestDTO requestData);
+
+    void verifyAdminPassword(AdminLoginDTO requestData);
 }

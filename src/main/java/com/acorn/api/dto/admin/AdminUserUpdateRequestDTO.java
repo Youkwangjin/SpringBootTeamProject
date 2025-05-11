@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserManagementRequestDTO {
+public class AdminUserUpdateRequestDTO {
 
     @NotNull
     @Positive
