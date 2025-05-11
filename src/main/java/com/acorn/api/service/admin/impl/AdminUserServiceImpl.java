@@ -3,8 +3,9 @@ package com.acorn.api.service.admin.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.reservation.ReservationStatus;
+import com.acorn.api.dto.admin.AdminUserDeleteRequestDTO;
 import com.acorn.api.dto.admin.AdminUserListDTO;
-import com.acorn.api.dto.admin.UserManagementRequestDTO;
+import com.acorn.api.dto.admin.AdminUserUpdateRequestDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.reservation.Reservation;
@@ -92,7 +93,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public void adminUpdateUser(UserManagementRequestDTO requestData) {
+    public void adminUpdateUser(AdminUserUpdateRequestDTO requestData) {
         final Integer userId = requestData.getUserId();
         final String userEmail = requestData.getUserEmail();
         final String userNm = requestData.getUserNm();
@@ -132,5 +133,39 @@ public class AdminUserServiceImpl implements AdminUserService {
                 .build();
 
         userRepository.adminUserUpdate(updateUserData);
+    }
+
+    @Override
+    public void adminDeleteUser(AdminUserDeleteRequestDTO requestData) {
+        final Integer userId = requestData.getUserId();
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        Admin adminData = adminRepository.selectAdminById(currentAdminId);
+        if (adminData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        User userData = userRepository.selectAllUserData(userId);
+        if (userData == null) {
+            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        List<Reservation> ReservationData = reservationRepository.selectReservationByUserId(userId);
+        for (Reservation reservation : ReservationData) {
+            final Integer reservationStatus = reservation.getReservationStatus();
+
+            if (Objects.equals(reservationStatus, ReservationStatus.RESERVATION_STATUS_ACTIVE.getCode())) {
+                throw new AcontainerException(ApiErrorCode.RESERVATION_STATUS_ACTIVE);
+            }
+        }
+
+        User deleteUserData = User.builder()
+                .userId(userId)
+                .build();
+
+        userRepository.userDelete(deleteUserData);
     }
 }
