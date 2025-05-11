@@ -4,7 +4,6 @@ import com.acorn.api.dto.admin.AdminUserDeleteRequestDTO;
 import com.acorn.api.dto.admin.AdminUserListDTO;
 import com.acorn.api.dto.admin.AdminUserUpdateRequestDTO;
 import com.acorn.api.dto.user.UserResponseDTO;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
