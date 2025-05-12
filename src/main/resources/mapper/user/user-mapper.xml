@@ -61,17 +61,17 @@
         WHERE USER_ID = #{userId}
     </select>
 
-    <select id="selectUserListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+    <select id="selectAdminUserListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
             COUNT(USER_ID)
         FROM
             TB_USER
         <where>
             <if test="searchType == 'userEmail' and searchName != null and searchName.trim() != ''">
-                USER_EMAIL LIKE CONCAT ('%', #{searchName}, '%')
+                USER_EMAIL LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'userNm' and searchName != null and searchName.trim() != ''">
-                AND USER_NM LIKE CONCAT ('%', #{searchName}, '%')
+                AND USER_NM LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
         </where>
     </select>
@@ -88,10 +88,10 @@
             TB_USER
         <where>
             <if test="searchType == 'userEmail' and searchName != null and searchName.trim() != ''">
-                USER_EMAIL LIKE CONCAT ('%', #{searchName}, '%')
+                USER_EMAIL LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'userNm' and searchName != null and searchName.trim() != ''">
-                AND USER_NM LIKE CONCAT ('%', #{searchName}, '%')
+                AND USER_NM LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
         </where>
     </select>
