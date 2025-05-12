@@ -114,13 +114,13 @@
             TB_OWNER
         <where>
             <if test="searchType == 'ownerBusinessNum' and searchName != null and searchName.trim() != ''">
-                TRIM(BUSINESS_NUMBER) LIKE CONCAT('%', TRIM(#{searchName}), '%')
+                BUSINESS_NUMBER LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'ownerNm' and searchName != null and searchName.trim() != ''">
-                AND TRIM(OWNER_NM) LIKE CONCAT('%', TRIM(#{searchName}), '%')
+                AND OWNER_NM LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'ownerCompanyName' and searchName != null and searchName.trim() != ''">
-                AND TRIM(OWNER_COMPANY_NAME) LIKE CONCAT('%', TRIM(#{searchName}), '%')
+                AND OWNER_COMPANY_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
         </where>
     </select>
