@@ -4,7 +4,8 @@
 
 <mapper namespace="com.acorn.api.repository.owner.OwnerRepository">
     <resultMap id="ownerResultMap"             type="com.acorn.api.entity.owner.Owner">
-        <result property="ownerId"             column="OWNER_ID"/>
+        <id property="rowNum"                  column="ROW_NUM"/>
+        <id property="ownerId"                 column="OWNER_ID"/>
         <result property="ownerEmail"          column="OWNER_EMAIL"/>
         <result property="ownerBusinessNum"    column="BUSINESS_NUMBER"/>
         <result property="ownerPassword"       column="OWNER_PASSWORD"/>
@@ -13,6 +14,8 @@
         <result property="ownerCompanyName"    column="OWNER_COMPANY_NAME"/>
         <result property="ownerAddr"           column="OWNER_ADDRESS"/>
         <result property="ownerRole"           column="OWNER_ROLE"/>
+        <result property="ownerCreated"        column="OWNER_CREATED"/>
+        <result property="ownerUpdated"        column="OWNER_UPDATED"/>
     </resultMap>
 
     <select id="selectOwnerIdKey"  resultType="Integer">
@@ -78,6 +81,48 @@
         FROM
             TB_OWNER
         WHERE OWNER_ID = #{ownerId}
+    </select>
+
+    <select id="selectAdminOwnerListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(OWNER_ID)
+        FROM
+            TB_OWNER
+        <where>
+            <if test="searchType == 'ownerBusinessNum' and searchName != null and searchName.trim() != ''">
+                BUSINESS_NUMBER LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'ownerNm' and searchName != null and searchName.trim() != ''">
+                AND OWNER_NM LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'ownerCompanyName' and searchName != null and searchName.trim() != ''">
+                AND OWNER_COMPANY_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAdminOwnerListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="ownerResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY OWNER_CREATED ASC) AS ROW_NUM,
+            OWNER_ID,
+            BUSINESS_NUMBER,
+            OWNER_NM,
+            OWNER_TEL,
+            OWNER_COMPANY_NAME,
+            OWNER_CREATED
+        FROM
+            TB_OWNER
+        <where>
+            <if test="searchType == 'ownerBusinessNum' and searchName != null and searchName.trim() != ''">
+                TRIM(BUSINESS_NUMBER) LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'ownerNm' and searchName != null and searchName.trim() != ''">
+                AND TRIM(OWNER_NM) LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'ownerCompanyName' and searchName != null and searchName.trim() != ''">
+                AND TRIM(OWNER_COMPANY_NAME) LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+        </where>
     </select>
 
     <update id="ownerUpdate" parameterType="com.acorn.api.entity.owner.Owner">
