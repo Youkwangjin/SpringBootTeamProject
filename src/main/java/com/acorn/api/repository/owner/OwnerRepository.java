@@ -1,8 +1,11 @@
 package com.acorn.api.repository.owner;
 
+import com.acorn.api.common.PaginationRequest;
 import com.acorn.api.entity.owner.Owner;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface OwnerRepository {
@@ -26,4 +29,8 @@ public interface OwnerRepository {
     void ownerUpdate(Owner owner);
 
     void ownerDelete(Owner owner);
+
+    Integer selectAdminOwnerListCountByRequest(PaginationRequest pagination);
+
+    List<Owner> selectAdminOwnerListData(PaginationRequest pagination);
 }

@@ -151,7 +151,9 @@ public class SpringSecurityConfig {
                                          "/admin/container/detail/**",
                                          "/admin/user/list/**",
                                          "/admin/user/detail/**",
-                                         "/admin/user/update/**").hasAuthority("ROLE_ADMIN")
+                                         "/admin/user/update/**",
+                                         "/admin/owner/list/**",
+                                         "/admin/owner/detail/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",

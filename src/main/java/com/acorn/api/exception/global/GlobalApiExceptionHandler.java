@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -64,5 +65,18 @@ public class GlobalApiExceptionHandler {
                 .build();
 
         return ResponseEntity.status(ApiHttpErrorCode.FORBIDDEN_ERROR.getHttpStatus()).body(response);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiErrorResponse> handleMethodNotAllowedException(HttpRequestMethodNotSupportedException ex) {
+        log.error(" =========================== MethodNotAllowedException: {} =========================== ", ex.getMessage());
+
+        ApiErrorResponse response = ApiErrorResponse.builder()
+                .httpStatus(ApiHttpErrorCode.METHOD_NOT_ALLOWED_ERROR.getHttpStatus())
+                .errorDivisionCode(ApiHttpErrorCode.METHOD_NOT_ALLOWED_ERROR.getErrorDivisionCode())
+                .errorMsg(ApiHttpErrorCode.METHOD_NOT_ALLOWED_ERROR.getErrorMsg())
+                .build();
+
+        return ResponseEntity.status(ApiHttpErrorCode.METHOD_NOT_ALLOWED_ERROR.getHttpStatus()).body(response);
     }
 }

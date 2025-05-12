@@ -34,7 +34,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public List<AdminUserListDTO> getUserList(AdminUserListDTO listData) {
-        listData.setTotalCount(userRepository.selectUserListCountByRequest(listData));
+        listData.setTotalCount(userRepository.selectAdminUserListCountByRequest(listData));
         List<User> userListData = userRepository.selectAdminUserListData(listData);
         return userListData.stream()
                 .map(userList -> {

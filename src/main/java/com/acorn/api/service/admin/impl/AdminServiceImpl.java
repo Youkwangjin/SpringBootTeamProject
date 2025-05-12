@@ -43,12 +43,12 @@ public class AdminServiceImpl implements AdminService {
     public AdminResponseDTO getAdminData() {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {
-            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
         Admin adminData = adminRepository.selectAdminById(currentAdminId);
         if (adminData == null) {
-            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+            throw new AcontainerException(ApiAdminErrorCode.ADMIN_FOUND_ERROR);
         }
 
         final Integer adminId = adminData.getAdminId();
