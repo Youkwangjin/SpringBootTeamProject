@@ -153,7 +153,8 @@ public class SpringSecurityConfig {
                                          "/admin/user/detail/**",
                                          "/admin/user/update/**",
                                          "/admin/owner/list/**",
-                                         "/admin/owner/detail/**").hasAuthority("ROLE_ADMIN")
+                                         "/admin/owner/detail/**",
+                                         "/admin/owner/update/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
@@ -175,6 +176,7 @@ public class SpringSecurityConfig {
                                          "/api/admin/container/cancelReject/{containerId}",
                                          "/api/admin/user/update/{userId}",
                                          "/api/admin/user/delete/{userId}",
+                                         "/api/admin/owner/update/{ownerId}",
                                          "/api/admin/password/confirm").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api

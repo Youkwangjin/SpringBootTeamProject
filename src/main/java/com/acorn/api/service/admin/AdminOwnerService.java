@@ -1,7 +1,9 @@
 package com.acorn.api.service.admin;
 
 import com.acorn.api.dto.admin.AdminOwnerListDTO;
+import com.acorn.api.dto.admin.AdminOwnerUpdateRequestDTO;
 import com.acorn.api.dto.owner.OwnerResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,4 +14,6 @@ public interface AdminOwnerService {
     List<AdminOwnerListDTO> getOwnerList(AdminOwnerListDTO listData);
 
     OwnerResponseDTO getOwnerData(Integer ownerId);
+
+    void adminOwnerUpdate(@Valid AdminOwnerUpdateRequestDTO requestData);
 }

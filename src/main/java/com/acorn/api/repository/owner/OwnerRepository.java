@@ -28,6 +28,8 @@ public interface OwnerRepository {
 
     void ownerUpdate(Owner owner);
 
+    void adminOwnerUpdate(Owner owner);
+
     void ownerDelete(Owner owner);
 
     Integer selectAdminOwnerListCountByRequest(PaginationRequest pagination);

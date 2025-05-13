@@ -138,6 +138,20 @@
         WHERE OWNER_ID = #{ownerId}
     </update>
 
+    <update id="adminOwnerUpdate" parameterType="com.acorn.api.entity.owner.Owner">
+        UPDATE
+            TB_OWNER
+        SET
+            OWNER_EMAIL = #{ownerEmail},
+            BUSINESS_NUMBER = #{ownerBusinessNum},
+            OWNER_NM = #{ownerNm},
+            OWNER_TEL = #{ownerTel},
+            OWNER_COMPANY_NAME = #{ownerCompanyName},
+            OWNER_ADDRESS = #{ownerAddr},
+            OWNER_UPDATED = NOW()
+        WHERE OWNER_ID = #{ownerId}
+    </update>
+
     <delete id="ownerDelete" parameterType="com.acorn.api.entity.owner.Owner">
         DELETE
         FROM
