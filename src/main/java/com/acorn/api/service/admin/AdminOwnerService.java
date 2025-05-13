@@ -1,5 +1,6 @@
 package com.acorn.api.service.admin;
 
+import com.acorn.api.dto.admin.AdminOwnerDeleteRequestDTO;
 import com.acorn.api.dto.admin.AdminOwnerListDTO;
 import com.acorn.api.dto.admin.AdminOwnerUpdateRequestDTO;
 import com.acorn.api.dto.owner.OwnerResponseDTO;
@@ -16,4 +17,6 @@ public interface AdminOwnerService {
     OwnerResponseDTO getOwnerData(Integer ownerId);
 
     void adminOwnerUpdate(@Valid AdminOwnerUpdateRequestDTO requestData);
+
+    void adminOwnerDelete(@Valid AdminOwnerDeleteRequestDTO requestData);
 }

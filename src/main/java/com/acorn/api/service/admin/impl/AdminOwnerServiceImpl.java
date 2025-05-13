@@ -5,6 +5,7 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.owner.ApiOwnerErrorCode;
+import com.acorn.api.dto.admin.AdminOwnerDeleteRequestDTO;
 import com.acorn.api.dto.admin.AdminOwnerListDTO;
 import com.acorn.api.dto.admin.AdminOwnerUpdateRequestDTO;
 import com.acorn.api.dto.owner.OwnerResponseDTO;
@@ -143,5 +144,40 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
                 .build();
 
         ownerRepository.adminOwnerUpdate(updateOwner);
+    }
+
+    @Override
+    @Transactional
+    public void adminOwnerDelete(AdminOwnerDeleteRequestDTO requestData) {
+        final Integer ownerId = requestData.getOwnerId();
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        Admin adminData = adminRepository.selectAdminById(currentAdminId);
+        if (adminData == null) {
+            throw new AcontainerException(ApiAdminErrorCode.ADMIN_FOUND_ERROR);
+        }
+
+        Owner ownerData = ownerRepository.selectAllOwnerData(ownerId);
+        if (ownerData == null) {
+            throw new AcontainerException(ApiErrorCode.OWNER_FOUND_ERROR);
+        }
+
+        List<Container> containerData = containerRepository.selectContainerAllData(ownerId);
+        for (Container container : containerData) {
+            final Integer containerStatus = container.getContainerStatus();
+
+            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_UPDATE_ERROR);
+            }
+        }
+
+        Owner deleteOwner = Owner.builder()
+                .ownerId(ownerId)
+                .build();
+
+        ownerRepository.ownerDelete(deleteOwner);
     }
 }

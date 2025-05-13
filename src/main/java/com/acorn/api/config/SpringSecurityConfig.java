@@ -177,6 +177,7 @@ public class SpringSecurityConfig {
                                          "/api/admin/user/update/{userId}",
                                          "/api/admin/user/delete/{userId}",
                                          "/api/admin/owner/update/{ownerId}",
+                                         "/api/admin/owner/delete/{ownerId}",
                                          "/api/admin/password/confirm").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
