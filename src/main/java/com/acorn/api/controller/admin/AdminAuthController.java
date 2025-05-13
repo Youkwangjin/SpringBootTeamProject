@@ -25,6 +25,6 @@ public class AdminAuthController {
 
         adminService.verifyAdminPassword(requestData);
 
-        return ApiResponseBuilder.success(ApiSuccessCode.ADMIN_DELETE_SUCCESS);
+        return ApiResponseBuilder.success(ApiSuccessCode.ADMIN_PASSWORD_SUCCESS);
     }
 }
