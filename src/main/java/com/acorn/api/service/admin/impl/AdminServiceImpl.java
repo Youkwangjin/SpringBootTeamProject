@@ -145,6 +145,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public void processReviewRequest(ContainerManagementRequestDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestContainerId = requestData.getContainerId();

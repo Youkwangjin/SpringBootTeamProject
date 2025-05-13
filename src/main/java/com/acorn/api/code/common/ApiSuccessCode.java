@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ApiSuccessCode {
     REGISTER_SUCCESS(HttpStatus.CREATED,      "RIS", "회원가입이 정상적으로 완료되었습니다."),
     LOGIN_SUCCESS(HttpStatus.OK,              "LIS", "로그인이 정상적으로 완료되었습니다."),
+    ADMIN_PASSWORD_SUCCESS(HttpStatus.OK,     "APS", "비밀번호가 검증되었습니다."),
     BOARD_SAVE_SUCCESS(HttpStatus.OK,         "BSS", "게시글이 성공적으로 등록되었습니다."),
     BOARD_UPDATE_SUCCESS(HttpStatus.OK,       "BUS", "게시글이 성공적으로 수정되었습니다."),
     BOARD_DELETE_SUCCESS(HttpStatus.OK,       "BDS", "게시글이 성공적으로 삭제되었습니다."),

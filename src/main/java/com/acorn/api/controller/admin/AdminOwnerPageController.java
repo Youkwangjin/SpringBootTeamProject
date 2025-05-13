@@ -31,4 +31,11 @@ public class AdminOwnerPageController {
         model.addAttribute("ownerDetailData", ownerDetailData);
         return "admin/admin-owner-detail";
     }
+
+    @GetMapping("/admin/owner/update/{ownerId}")
+    public String ownerUpdatePage(@PathVariable("ownerId") Integer ownerId, Model model) {
+        OwnerResponseDTO ownerDetailData = adminOwnerService.getOwnerData(ownerId);
+        model.addAttribute("ownerDetailData", ownerDetailData);
+        return "admin/admin-owner-update";
+    }
 }
