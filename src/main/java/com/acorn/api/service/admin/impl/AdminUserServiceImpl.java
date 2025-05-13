@@ -18,6 +18,7 @@ import com.acorn.api.service.admin.AdminUserService;
 import com.acorn.api.utils.AdminSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -93,6 +94,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
+    @Transactional
     public void adminUpdateUser(AdminUserUpdateRequestDTO requestData) {
         final Integer userId = requestData.getUserId();
         final String userEmail = requestData.getUserEmail();
@@ -136,6 +138,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
+    @Transactional
     public void adminDeleteUser(AdminUserDeleteRequestDTO requestData) {
         final Integer userId = requestData.getUserId();
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
