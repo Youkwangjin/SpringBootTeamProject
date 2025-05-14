@@ -82,8 +82,7 @@ public class SpringSecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new CustomCsrfTokenRepository())
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/api/logout", "POST"),
-                                                 new AntPathRequestMatcher("/session/expired"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/session/expired"))
                 );
 
         http

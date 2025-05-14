@@ -18,6 +18,7 @@
 </div>
 <div class="custom-gap-top"></div>
 <form id="userListForm" method="get">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
     <div class="text-header">
         <h2 class="align">사용자 관리</h2>
@@ -60,26 +61,27 @@
         <th:block th:if="${request.totalCount > 0}">
             <ul>
                 <li th:if="${request.startPageNo > 1}">
-                    <a th:href="@{/container/list(pageNo=${request.firstPageNo})}">&laquo;</a>
+                    <a th:href="@{/admin/user/list(pageNo=${request.firstPageNo})}">&laquo;</a>
                 </li>
                 <li th:if="${request.pageNo > request.startPageNo}">
-                    <a th:href="@{/container/list(pageNo=${request.prevPageNo})}">&lt;</a>
+                    <a th:href="@{/admin/user/list(pageNo=${request.prevPageNo})}">&lt;</a>
                 </li>
                 <th:block th:each="i : ${#numbers.sequence(request.startPageNo, request.endPageNo)}">
                     <li th:classappend="${i == request.pageNo} ? 'active'">
-                        <a th:href="@{/container/list(pageNo=${i})}" th:text="${i}"></a>
+                        <a th:href="@{/admin/user/list(pageNo=${i})}" th:text="${i}"></a>
                     </li>
                 </th:block>
                 <li th:if="${request.pageNo < request.endPageNo}">
-                    <a th:href="@{/container/list(pageNo=${request.nextPageNo})}">&gt;</a>
+                    <a th:href="@{/admin/user/list(pageNo=${request.nextPageNo})}">&gt;</a>
                 </li>
                 <li th:if="${request.endPageNo < request.finalPageNo}">
-                    <a th:href="@{/container/list(pageNo=${request.finalPageNo})}">&raquo;</a>
+                    <a th:href="@{/admin/user/list(pageNo=${request.finalPageNo})}">&raquo;</a>
                 </li>
             </ul>
         </th:block>
     </div>
 </form>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const searchButton = document.getElementById("searchButton");
