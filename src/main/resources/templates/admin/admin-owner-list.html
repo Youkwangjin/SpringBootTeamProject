@@ -18,6 +18,7 @@
 </div>
 <div class="custom-gap-top"></div>
 <form id="ownerListForm" method="get">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
     <div class="text-header">
         <h2 class="align">공급자 관리</h2>
@@ -81,6 +82,7 @@
         </th:block>
     </div>
 </form>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const searchButton = document.getElementById("searchButton");
