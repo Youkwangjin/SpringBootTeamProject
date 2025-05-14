@@ -15,6 +15,8 @@ public enum ApiErrorCode {
     CONTAINER_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "CUF", "창고 정보 수정에 실패하였습니다."),
     CONTAINER_OWNER_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, "COM", "해당 창고의 소유자 정보가 일치하지 않습니다."),
 
+    CONTAINER_REVIEW_NOT_AVAILABLE(HttpStatus.INTERNAL_SERVER_ERROR, "CRA", "사용불가 상태에서만 검토할 수 있습니다."),
+
     CONTAINER_APPROVAL_NOT_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CAP", "승인 대기 상태에서만 수정 및 삭제가 가능합니다."),
     CONTAINER_STATUS_NOT_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CSP", "사용 대기 상태에서만 수정 및 삭제가 가능합니다."),
     CONTAINER_STATUS_NOT_APPROVAL_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CAP", "사용 대기 상태에서만 승인 처리가 가능합니다."),
