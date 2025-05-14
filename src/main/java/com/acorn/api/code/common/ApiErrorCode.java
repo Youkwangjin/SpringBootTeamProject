@@ -19,6 +19,7 @@ public enum ApiErrorCode {
 
     CONTAINER_APPROVAL_NOT_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CAP", "승인 대기 상태에서만 수정 및 삭제가 가능합니다."),
     CONTAINER_STATUS_NOT_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CSP", "사용 대기 상태에서만 수정 및 삭제가 가능합니다."),
+    CONTAINER_STATUS_NOT_UNAVAILABLE_FOR_APPROVAL(HttpStatus.INTERNAL_SERVER_ERROR, "CNA", "사용 불가 상태에서만 승인 처리가 가능합니다."),
     CONTAINER_STATUS_NOT_APPROVAL_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CAP", "사용 대기 상태에서만 승인 처리가 가능합니다."),
     CONTAINER_STATUS_NOT_REJECT_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CRP", "사용 대기 상태에서만 승인거부 처리가 가능합니다."),
     CONTAINER_STATUS_NOT_UNAVAILABLE(HttpStatus.INTERNAL_SERVER_ERROR, "CSU", "사용불가 상태에서만 원복이 가능합니다."),
