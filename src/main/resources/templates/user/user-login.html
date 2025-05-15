@@ -39,9 +39,9 @@
         <a href="/user/join">회원가입</a>
     </div>
 </section>
+<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
@@ -56,27 +56,31 @@
                 return;
             }
 
+            const userData = {
+                userEmail: userEmail,
+                userPassword: userPassword,
+                _csrf: csrfToken
+            };
+
             fetch("/api/auth/user/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": csrfToken,
                 },
-                body: JSON.stringify({
-                    userEmail: userEmail,
-                    userPassword: userPassword
-                })
-            }).then(response => response.json())
-                .then(data => {
-                    if (data.httpStatus === "OK") {
+                credentials: "include",
+                body: JSON.stringify(userData)
+            })
+                .then(async response => {
+                    if (response.status === 200) {
                         window.location.href = "/user/mypage";
-                    } else {
-                        alert(data.errorMsg);
+                    } else if (response.status === 401) {
+                        alert(MSG.USER_AUTHENTICATION_FAILED);
                     }
                 })
-                .catch(error => {
-                    alert(error.errorMsg);
-                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
         });
     });
 </script>
