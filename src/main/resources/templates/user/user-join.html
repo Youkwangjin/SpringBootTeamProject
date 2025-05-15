@@ -84,25 +84,29 @@
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/common/daum-postcode.js"></script>
+<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let userEmail = document.getElementById("userEmail");
-        let userPassword = document.getElementById("userPassword");
-        let userRePassword = document.getElementById("userRePassword");
-        let userNm = document.getElementById("userNm");
-        let userTel = document.getElementById("userTel");
-        let userAddr = document.getElementById("userAddress");
+        const userEmail = document.getElementById("userEmail");
+        const userPassword = document.getElementById("userPassword");
+        const userRePassword = document.getElementById("userRePassword");
+        const userNm = document.getElementById("userNm");
+        const userTel = document.getElementById("userTel");
+        const userAddr = document.getElementById("userAddress");
 
-        let emailResult = document.querySelector(".email-result");
-        let passwordResult = document.querySelector(".password-result");
-        let rePasswordResult = document.querySelector(".rePassword-result");
-        let nameResult = document.querySelector(".name-result");
-        let telResult = document.querySelector(".tel-result");
+        const emailResult = document.querySelector(".email-result");
+        const passwordResult = document.querySelector(".password-result");
+        const rePasswordResult = document.querySelector(".rePassword-result");
+        const nameResult = document.querySelector(".name-result");
+        const telResult = document.querySelector(".tel-result");
 
-        let resetButton = document.getElementById("resetBtn");
-        let submitButton = document.getElementById("registerBtn");
+        const resetButton = document.getElementById("resetBtn");
+        const submitButton = document.getElementById("registerBtn");
 
-        let validStates = {
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        const validStates = {
             userEmail: false,
             userPassword: false,
             userRePassword: false,
@@ -115,20 +119,20 @@
             submitButton.disabled = !allValid;
         }
 
-        userEmail.addEventListener("change", (e) => {
-            validEmail(e.target, emailResult);
+        userEmail.addEventListener("input", () => {
+            validEmail(userEmail, emailResult);
         });
 
-        userPassword.addEventListener("input", (e) => {
-            validPassword(e.target, passwordResult);
+        userPassword.addEventListener("input", () => {
+            validPassword(userPassword, passwordResult);
         });
 
-        userRePassword.addEventListener("change", (e) => {
-            validRePassword(e.target, userPassword.value, rePasswordResult);
+        userRePassword.addEventListener("input", () => {
+            validRePassword(userRePassword, userPassword.value, rePasswordResult);
         });
 
-        userNm.addEventListener("input", (e) => {
-            validName(e.target, nameResult);
+        userNm.addEventListener("input", () => {
+            validName(userNm, nameResult);
         });
 
         userTel.addEventListener("input", (e) => {
@@ -139,60 +143,45 @@
             window.location.href = "/user/login";
         });
 
-        document.getElementById("userEmail").addEventListener("blur", function () {
-            validEmail(this, document.querySelector(".email-result"));
-        });
-
-        function validEmail(emailInput, resultElement) {
-            const email = emailInput.value.trim();
-            if (email.length === 0) {
-                resultElement.textContent = "이메일을 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                emailInput.focus();
+        function validEmail(userEmail, resultElement) {
+            const emailStr = userEmail.value.trim();
+            if (emailStr.length === 0) {
+                setValidationMessage(resultElement, MSG.EMAIL_EMPTY, false);
+                userEmail.focus();
                 validStates.userEmail = false;
-            } else if (!validEmailCheck(email)) {
-                resultElement.textContent = "이메일 형식으로 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                emailInput.focus();
+            } else if (!validEmailCheck(emailStr)) {
+                setValidationMessage(resultElement, MSG.EMAIL_INVALID, false);
+                userEmail.focus();
                 validStates.userEmail = false;
             } else {
-                checkEmailDuplication(emailInput, resultElement);
+                checkEmailDuplication(emailStr, resultElement);
             }
             checkFormValid();
         }
 
-        function checkEmailDuplication(emailInput, resultElement) {
-            const userEmail = emailInput.value.trim();
-            fetch("/api/auth/user/emailCheck?userEmail=" + encodeURIComponent(userEmail), {
+
+        function checkEmailDuplication(emailStr, resultElement) {
+            fetch(`/api/auth/user/emailCheck?userEmail=${encodeURIComponent(emailStr)}`, {
                 method: "GET",
-                credentials: "include",
+                credentials: "include"
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = "사용 가능한 이메일입니다.";
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.EMAIL_OK, true);
                         validStates.userEmail = true;
-                        checkFormValid();
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.EMAIL_IN_USE, false);
+                        validStates.userEmail = false;
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.userEmail = false;
                     }
                 })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.userEmail = false;
-                        checkFormValid();
-                    });
-                });
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.userEmail = false;
+                })
+                .finally(checkFormValid);
         }
 
         function validEmailCheck(email) {
@@ -200,26 +189,23 @@
             return emailPattern.test(email.trim());
         }
 
-        function validPassword(passwordInput, resultElement) {
-            const password = passwordInput.value.trim();
-            if (password.length === 0) {
-                resultElement.textContent = "비밀번호를 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                passwordInput.focus();
+        function validPassword(userPassword, resultElement) {
+            const passwordStr = userPassword.value.trim();
+            if (passwordStr.length === 0) {
+                setValidationMessage(resultElement, MSG.PASSWORD_EMPTY, false);
+                userPassword.focus();
                 validStates.userPassword = false;
-            } else if (!validPasswordCheck(password)) {
-                resultElement.textContent = "비밀번호는 10자 이상이며, 특수문자를 포함해야 합니다.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                passwordInput.focus();
+
+            } else if (!validPasswordCheck(passwordStr)) {
+                setValidationMessage(resultElement, MSG.PASSWORD_INVALID, false);
+                userPassword.focus();
                 validStates.userPassword = false;
+
             } else {
-                resultElement.textContent = "사용 가능한 비밀번호입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
+                setValidationMessage(resultElement, MSG.PASSWORD_OK, true);
                 validStates.userPassword = true;
             }
+
             checkFormValid();
         }
 
@@ -228,45 +214,42 @@
             return passwordPattern.test(password.trim());
         }
 
-        function validRePassword(rePasswordInput, originalPassword, resultElement) {
-            if (rePasswordInput.value !== originalPassword) {
-                resultElement.textContent = "비밀번호가 일치하지 않습니다.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                rePasswordInput.focus();
+        function validRePassword(rePassword, originalPassword, resultElement) {
+            const rePasswordStr = rePassword.value.trim();
+
+            if (rePasswordStr.length === 0) {
+                setValidationMessage(resultElement, MSG.PASSWORD_EMPTY, false);
                 validStates.userRePassword = false;
-            } else if (rePasswordInput.value === "") {
-                resultElement.textContent = "";
-                resultElement.classList.remove("success", "error");
+            } else if (rePasswordStr !== originalPassword) {
+                setValidationMessage(resultElement, MSG.REPASSWORD_MISMATCH, false);
+                rePassword.focus();
+                validStates.userRePassword = false;
             } else {
-                resultElement.textContent = "비밀번호가 일치합니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
+                setValidationMessage(resultElement, MSG.REPASSWORD_OK, true);
                 validStates.userRePassword = true;
             }
+
             checkFormValid();
         }
 
-        function validName(nameInput, resultElement) {
-            const name = nameInput.value.trim();
-            if (name.length === 0) {
-                resultElement.textContent = "이름을 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
+        function validName(userNm, resultElement) {
+            const nameStr = userNm.value.trim();
+
+            if (nameStr.length === 0) {
+                setValidationMessage(resultElement, MSG.NAME_EMPTY, false);
+                userNm.focus();
                 validStates.userNm = false;
-            } else if (!validNameCheck(name)) {
-                resultElement.textContent = "이름을 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
+
+            } else if (!validNameCheck(nameStr)) {
+                setValidationMessage(resultElement, MSG.NAME_INVALID, false);
+                userNm.focus();
                 validStates.userNm = false;
+
             } else {
-                resultElement.textContent = "사용 가능한 이름입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
+                setValidationMessage(resultElement, MSG.NAME_OK, true);
                 validStates.userNm = true;
             }
+
             checkFormValid();
         }
 
@@ -275,56 +258,49 @@
             return namePattern.test(name.trim());
         }
 
-        function validTel(telInput, resultElement) {
-            const tel = telInput.value.trim();
-            if (tel.length === 0) {
-                resultElement.textContent = "전화번호를 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
+        function validTel(userTel, resultElement) {
+            const telStr = userTel.value.trim();
+
+            if (telStr.length === 0) {
+                setValidationMessage(resultElement, MSG.TEL_EMPTY, false);
+                userTel.focus();
                 validStates.userTel = false;
-            } else if (!validTelCheck(tel)) {
-                resultElement.textContent = "번호를 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
+
+            } else if (!validTelCheck(telStr)) {
+                setValidationMessage(resultElement, MSG.TEL_INVALID, false);
+                userTel.focus();
                 validStates.userTel = false;
+
             } else {
-                checkTelDuplication(telInput, resultElement);
+                checkTelDuplication(telStr, resultElement);
+                return;
             }
+
             checkFormValid();
         }
 
-        function checkTelDuplication(telInput, resultElement) {
-            const userTel = telInput.value.trim();
-            fetch("/api/auth/user/userTelCheck?userTel=" + encodeURIComponent(userTel), {
+        function checkTelDuplication(telStr, resultElement) {
+            fetch(`/api/auth/user/userTelCheck?userTel=${encodeURIComponent(telStr)}`, {
                 method: "GET",
                 credentials: "include",
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = data.resultMsg;
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.TEL_OK, true);
                         validStates.userTel = true;
-                        checkFormValid();
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.TEL_IN_USE, false);
+                        validStates.userTel = false;
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.userTel = false;
                     }
                 })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.userTel = false;
-                        checkFormValid();
-                    });
-                });
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.userTel = false;
+                })
+                .finally(checkFormValid);
         }
 
         function validTelCheck(tel) {
@@ -332,20 +308,25 @@
             return telPattern.test(tel.trim());
         }
 
-        const csrfTokenElement = document.querySelector("input[name=_csrf]");
-        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+        function setValidationMessage(element, message, isValid) {
+            element.textContent = message;
+            element.classList.toggle("success", isValid);
+            element.classList.toggle("error", !isValid);
+        }
 
         document.getElementById("userRegister").addEventListener("submit", function (e) {
             e.preventDefault();
+
             if (!submitButton.disabled) {
                 const userData = {
-                    userEmail: userEmail.value,
-                    userPassword: userPassword.value,
-                    userNm: userNm.value,
-                    userTel: userTel.value,
-                    userAddr: userAddr.value,
-                    _csrf: document.querySelector("[name=_csrf]").value
+                    userEmail: userEmail.value.trim(),
+                    userPassword: userPassword.value.trim(),
+                    userNm: userNm.value.trim(),
+                    userTel: userTel.value.trim(),
+                    userAddr: userAddr.value.trim(),
+                    _csrf: csrfToken
                 };
+
                 fetch("/api/auth/user/register", {
                     method: "POST",
                     headers: {
@@ -355,24 +336,16 @@
                     credentials: "include",
                     body: JSON.stringify(userData)
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(errorData => {
-                                throw new Error(errorData.errorMsg);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.httpStatus === "CREATED") {
-                            alert(data.resultMsg);
+                    .then(async response => {
+                        if (response.status === 201) {
+                            alert(MSG.REGISTER_SUCCESS);
                             window.location.href = "/user/login";
                         } else {
-                            throw new Error(data.errorMsg);
+                            alert(MSG.ERROR);
                         }
                     })
-                    .catch(error => {
-                        alert(error.message);
+                    .catch(() => {
+                        alert(MSG.ERROR);
                     });
             }
         });
