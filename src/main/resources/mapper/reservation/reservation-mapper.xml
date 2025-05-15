@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.reservation.ReservationRepository">
+    <resultMap id="reservationResultMap"            type="com.acorn.api.entity.reservation.Reservation">
+        <id property="reservationId"                column="RESERVATION_ID"/>
+        <result property="reservationStatus"        column="RESERVATION_STATUS"/>
+        <result property="reservationStartDate"     column="RESERVATION_START_DATE"/>
+        <result property="reservationEndDate"       column="RESERVATION_END_DATE"/>
+        <result property="reservationCreated"       column="RESERVATION_CREATED"/>
+        <result property="reservationUpdated"       column="RESERVATION_UPDATED"/>
+        <association property="user"                javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap"/>
+        <association property="container"           javaType="com.acorn.api.entity.container.Container" resultMap="com.acorn.api.repository.container.ContainerRepository.containerResultMap"/>
+    </resultMap>
+
+    <select id="selectReservationByUserId" parameterType="Integer" resultMap="reservationResultMap">
+        SELECT
+            U.USER_ID,
+            R.RESERVATION_USER_ID,
+            R.RESERVATION_STATUS
+        FROM
+            TB_USER U
+                INNER JOIN
+            TB_RESERVATION R
+            ON U.USER_ID = R.RESERVATION_USER_ID
+        WHERE U.USER_ID = #{userId}
+    </select>
+</mapper>

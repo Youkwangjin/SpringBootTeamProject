@@ -2,6 +2,7 @@ package com.acorn.api.exception.user;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.controller.admin.AdminUserManagementController;
 import com.acorn.api.controller.user.UserDeleteController;
 import com.acorn.api.controller.user.UserRegisterController;
 import com.acorn.api.controller.user.UserUpdateController;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {UserRegisterController.class, UserUpdateController.class, UserDeleteController.class})
+@RestControllerAdvice(assignableTypes = {UserRegisterController.class, UserUpdateController.class, UserDeleteController.class, AdminUserManagementController.class})
 public class UserExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -30,6 +31,7 @@ public class UserExceptionHandler {
             errorUserMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             userErrorCode = switch (fieldError.getField()) {
+                case "userId" -> ApiValidationErrorCode.USER_ID_ERROR;
                 case "userEmail" -> ApiValidationErrorCode.EMAIL_FORMAT_ERROR;
                 case "userPassword" -> ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR;
                 case "userNm" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;

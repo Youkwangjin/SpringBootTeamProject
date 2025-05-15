@@ -82,8 +82,7 @@ public class SpringSecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(new CustomCsrfTokenRepository())
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/api/logout", "POST"),
-                                                 new AntPathRequestMatcher("/session/expired"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/session/expired"))
                 );
 
         http
@@ -151,7 +150,10 @@ public class SpringSecurityConfig {
                                          "/admin/container/detail/**",
                                          "/admin/user/list/**",
                                          "/admin/user/detail/**",
-                                         "/admin/user/update/**").hasAuthority("ROLE_ADMIN")
+                                         "/admin/user/update/**",
+                                         "/admin/owner/list/**",
+                                         "/admin/owner/detail/**",
+                                         "/admin/owner/update/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
@@ -171,7 +173,11 @@ public class SpringSecurityConfig {
                                          "/api/admin/container/rejectRequest/{containerId}",
                                          "/api/admin/container/cancelApproval/{containerId}",
                                          "/api/admin/container/cancelReject/{containerId}",
-                                         "/api/admin/user/update/{userId}").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/user/update/{userId}",
+                                         "/api/admin/user/delete/{userId}",
+                                         "/api/admin/owner/update/{ownerId}",
+                                         "/api/admin/owner/delete/{ownerId}",
+                                         "/api/admin/password/confirm").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class AdminUserController {
+public class AdminUserPageController {
 
     private final AdminUserService adminUserService;
 

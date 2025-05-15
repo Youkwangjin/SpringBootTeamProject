@@ -3,11 +3,15 @@ package com.acorn.api.entity.owner;
 import com.acorn.api.role.OwnerRole;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Owner {
+
+    private Integer rowNum;
 
     private Integer ownerId;
 
@@ -26,4 +30,8 @@ public class Owner {
     private String ownerAddr;
 
     private OwnerRole ownerRole;
+
+    private LocalDateTime ownerCreated;
+
+    private LocalDateTime ownerUpdated;
 }

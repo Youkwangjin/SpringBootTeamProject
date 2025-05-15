@@ -3,6 +3,8 @@ package com.acorn.api.dto.owner;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 public class OwnerResponseDTO {
@@ -20,4 +22,8 @@ public class OwnerResponseDTO {
     private String ownerCompanyName;
 
     private String ownerAddr;
+
+    private LocalDateTime ownerCreated;
+
+    private LocalDateTime ownerUpdated;
 }

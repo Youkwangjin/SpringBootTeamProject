@@ -28,7 +28,7 @@ public interface UserRepository {
 
     void userDelete(User user);
 
-    Integer selectUserListCountByRequest(PaginationRequest pagination);
+    Integer selectAdminUserListCountByRequest(PaginationRequest pagination);
 
     List<User> selectAdminUserListData(PaginationRequest pagination);
 }

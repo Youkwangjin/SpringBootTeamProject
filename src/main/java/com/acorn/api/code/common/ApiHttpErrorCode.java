@@ -9,6 +9,7 @@ public enum ApiHttpErrorCode {
     UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED,             "UNE", "로그인 후 이용 가능합니다."),
     FORBIDDEN_ERROR(HttpStatus.FORBIDDEN,                   "FBE", "접근 권한이 없습니다."),
     NOT_FOUND_ERROR(HttpStatus.NOT_FOUND,                   "NFE", "요청하신 리소스를 찾을 수 없습니다."),
+    METHOD_NOT_ALLOWED_ERROR(HttpStatus.METHOD_NOT_ALLOWED, "MNE", "허용되지 않은 요청 메서드입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "ISE", "서버 내부 오류가 발생하였습니다. 관리자에게 문의하세요.");
 
     private final HttpStatus httpStatus;

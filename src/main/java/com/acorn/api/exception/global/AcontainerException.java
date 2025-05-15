@@ -1,5 +1,6 @@
 package com.acorn.api.exception.global;
 
+import com.acorn.api.code.admin.ApiAdminErrorCode;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
@@ -42,5 +43,12 @@ public class AcontainerException extends RuntimeException {
         this.httpStatus = errorCode.getHttpStatus();
         this.errorDivisionCode = errorCode.getOwnerErrorDivisionCode();
         this.errorMsg = errorCode.getOwnerErrorMsg();
+    }
+
+    public AcontainerException(ApiAdminErrorCode errorCode) {
+        super(errorCode.getAdminErrorMsg());
+        this.httpStatus = errorCode.getHttpStatus();
+        this.errorDivisionCode = errorCode.getAdminErrorDivisionCode();
+        this.errorMsg = errorCode.getAdminErrorMsg();
     }
 }

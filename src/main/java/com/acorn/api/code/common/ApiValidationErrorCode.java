@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ApiValidationErrorCode {
+    USER_ID_ERROR(HttpStatus.BAD_REQUEST,             "UIE", "사용자 고유번호가 유효하지 않은 값입니다."),
     BUSINESS_NUMBER_CONFLICT(HttpStatus.CONFLICT,     "BNC", "이미 사용 중인 사업자 번호입니다."),
     EMAIL_DUPLICATED_CONFLICT(HttpStatus.CONFLICT,    "EDC", "이미 사용 중인 이메일입니다."),
     TELPHONE_DUPLICATED_CONFLICT(HttpStatus.CONFLICT, "TDC", "이미 사용 중인 전화번호입니다."),
