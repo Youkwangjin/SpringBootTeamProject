@@ -33,13 +33,14 @@ public class WebErrorResponse {
     }
 
     private String getErrorMessage(HttpStatus status) {
-        for (ApiErrorCode errorCode : ApiErrorCode.values()) {
-            if (errorCode.getHttpStatus() == status) {
+        for (ApiHttpErrorCode errorCode : ApiHttpErrorCode.values()) {
+            if(errorCode.getHttpStatus() == status) {
                 return errorCode.getErrorMsg();
             }
         }
-        for (ApiHttpErrorCode errorCode : ApiHttpErrorCode.values()) {
-            if(errorCode.getHttpStatus() == status) {
+
+        for (ApiErrorCode errorCode : ApiErrorCode.values()) {
+            if (errorCode.getHttpStatus() == status) {
                 return errorCode.getErrorMsg();
             }
         }

@@ -167,11 +167,11 @@ public class AdminServiceImpl implements AdminService {
 
         Owner ownerData = ownerRepository.selectAllOwnerData(requestOwnerId);
         if (ownerData == null) {
-            throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+            throw new AcontainerException(ApiErrorCode.OWNER_FOUND_ERROR);
         }
 
         final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
-        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+        final Integer unavailableStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
         final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
         final Integer currentContainerStatus = containerData.getContainerStatus();
 
@@ -179,8 +179,8 @@ public class AdminServiceImpl implements AdminService {
             throw new AcontainerException(ApiErrorCode.CONTAINER_ALREADY_REVIEW);
         }
 
-        if (!Objects.equals(pendingStatus, currentContainerStatus)) {
-            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_APPROVAL_PENDING);
+        if (!Objects.equals(unavailableStatus, currentContainerStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_REVIEW_NOT_AVAILABLE);
         }
 
         Container updateApprovalStatus = Container.builder()
@@ -219,8 +219,8 @@ public class AdminServiceImpl implements AdminService {
 
         final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
         final Integer approvedStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_APPROVED.getCode();
-        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
         final Integer availableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
+        final Integer unavailableStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
         final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
         final Integer currentContainerStatus = containerData.getContainerStatus();
 
@@ -232,8 +232,8 @@ public class AdminServiceImpl implements AdminService {
             throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_REVIEW);
         }
 
-        if (!Objects.equals(pendingStatus, currentContainerStatus)) {
-            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_APPROVAL_PENDING);
+        if (!Objects.equals(unavailableStatus, currentContainerStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_UNAVAILABLE_FOR_APPROVAL);
         }
 
         Container updateStatus = Container.builder()
@@ -273,7 +273,6 @@ public class AdminServiceImpl implements AdminService {
 
         final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
         final Integer rejectedStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_REJECTED.getCode();
-        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
         final Integer unavailableStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
         final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
         final Integer currentContainerStatus = containerData.getContainerStatus();
@@ -286,8 +285,8 @@ public class AdminServiceImpl implements AdminService {
             throw new AcontainerException(ApiErrorCode.CONTAINER_REJECT_NOT_REVIEW);
         }
 
-        if (!Objects.equals(pendingStatus, currentContainerStatus)) {
-            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_REJECT_PENDING);
+        if (!Objects.equals(unavailableStatus, currentContainerStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_UNAVAILABLE_FOR_REJECT);
         }
 
         Container updateStatus = Container.builder()
@@ -328,7 +327,7 @@ public class AdminServiceImpl implements AdminService {
         final Integer approvedStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_APPROVED.getCode();
         final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
         final Integer availableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
-        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+        final Integer unavailableStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
         final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
         final Integer currentContainerStatus = containerData.getContainerStatus();
 
@@ -342,7 +341,7 @@ public class AdminServiceImpl implements AdminService {
 
         Container updateStatus = Container.builder()
                 .containerId(requestContainerId)
-                .containerStatus(pendingStatus)
+                .containerStatus(unavailableStatus)
                 .containerApprovalStatus(reviewStatus)
                 .build();
 
@@ -377,7 +376,6 @@ public class AdminServiceImpl implements AdminService {
 
         final Integer reviewStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_IN_REVIEW.getCode();
         final Integer rejectedStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_REJECTED.getCode();
-        final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
         final Integer unavailableStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
         final Integer currentContainerApprovalStatus = containerData.getContainerApprovalStatus();
         final Integer currentContainerStatus = containerData.getContainerStatus();
@@ -392,7 +390,7 @@ public class AdminServiceImpl implements AdminService {
 
         Container updateStatus = Container.builder()
                 .containerId(requestContainerId)
-                .containerStatus(pendingStatus)
+                .containerStatus(unavailableStatus)
                 .containerApprovalStatus(reviewStatus)
                 .build();
 
