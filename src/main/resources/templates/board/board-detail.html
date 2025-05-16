@@ -37,9 +37,7 @@
                 <span th:text="|조회수: ${boardDetailData.boardHits}|"></span>
             </div>
         </div>
-
         <div class="board-content" th:utext="${boardDetailData.boardContents}"></div>
-
         <div class="board-attachments">
             <label>첨부파일</label>
             <ul>
@@ -48,7 +46,6 @@
                 </li>
             </ul>
         </div>
-
         <div class="button-container">
             <input type="button" class="ListBtn" id="listBtn" value="목록">
             <th:block th:if="${boardDetailData.isAuthor}">
@@ -59,14 +56,17 @@
         </form>
     </div>
 </main>
+<script src="/js/common/messages.js"></script>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let listBtn = document.getElementById("listBtn");
-        let updateBtn = document.getElementById("updateBtn");
-        let deleteBtn = document.getElementById("deleteBtn");
         const boardId = document.getElementById("boardId").value;
         const boardUserId = document.getElementById("boardUserId").value;
         const boardOwnerId = document.getElementById("boardOwnerId").value;
+
+        const listBtn = document.getElementById("listBtn");
+        const updateBtn = document.getElementById("updateBtn");
+        const deleteBtn = document.getElementById("deleteBtn");
 
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
@@ -100,24 +100,18 @@
                 credentials: "include",
                 body: JSON.stringify(boardData)
             })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.errorMsg);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        alert(data.resultMsg);
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.BOARD_DELETE_SUCCESS);
                         window.location.href = "/board/list";
                     } else {
-                        throw new Error(data.errorMsg);
+                        alert(responseData.errorMsg);
                     }
                 })
-                .catch(error => {
-                    alert(error.message);
+                .catch(() => {
+                    alert(MSG.ERROR);
                 });
         });
     });

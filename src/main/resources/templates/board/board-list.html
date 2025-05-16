@@ -23,6 +23,7 @@
 </div>
 <main id="main">
 <form id="boardListForm" method="get">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}" />
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
     </div>
@@ -35,7 +36,6 @@
                         <span>에이콘테이너의 새로운 소식들을 한곳에서 확인하세요</span><br/><br/>
                     </td>
                 </tr>
-                <!-- board search area -->
                 <tr>
                     <td colspan="5">
                         <div id="board-search" class="search-bar-container">
@@ -50,7 +50,7 @@
                                             <option value="boardTitleContents" th:selected="${request == 'boardTitleContents'}">제목+내용</option>
                                         </select>
                                         <label for="search" class="blind">공지사항 내용 검색</label>
-                                        <input id="search" type="search" name="searchName" placeholder="검색어를 입력해주세요.">
+                                        <input id="search" type="search" name="searchName" placeholder="검색어를 입력해주세요." th:value="${request.searchName}">
                                         <button id="searchBoard" type="button" class="btn btn-dark">검색</button>
                                         <button id="resetBtn" type="button" class="btn resetBtn-dark">초기화</button>
                                     </div>
@@ -59,7 +59,6 @@
                         </div>
                     </td>
                 </tr>
-                <!-- board list area -->
                 <div id="board-list">
                     <div class="container">
                         <table class="board-table">
@@ -120,6 +119,7 @@
     </section>
 </form>
 </main>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let searchButton = document.getElementById("searchBoard");
