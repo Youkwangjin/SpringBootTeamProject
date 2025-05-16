@@ -82,9 +82,9 @@
         </form>
     </div>
 </div>
+<script src="/js/common/messages.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/common/daum-postcode.js"></script>
-<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const userEmail = document.getElementById("userEmail");
@@ -119,46 +119,31 @@
             submitButton.disabled = !allValid;
         }
 
-        userEmail.addEventListener("input", () => {
-            validEmail(userEmail, emailResult);
-        });
-
-        userPassword.addEventListener("input", () => {
-            validPassword(userPassword, passwordResult);
-        });
-
-        userRePassword.addEventListener("input", () => {
-            validRePassword(userRePassword, userPassword.value, rePasswordResult);
-        });
-
-        userNm.addEventListener("input", () => {
-            validName(userNm, nameResult);
-        });
-
-        userTel.addEventListener("input", (e) => {
-            validTel(e.target, telResult);
-        });
-
-        resetButton.addEventListener("click", function () {
-            window.location.href = "/user/login";
-        });
-
-        function validEmail(userEmail, resultElement) {
-            const emailStr = userEmail.value.trim();
-            if (emailStr.length === 0) {
-                setValidationMessage(resultElement, MSG.EMAIL_EMPTY, false);
-                userEmail.focus();
-                validStates.userEmail = false;
-            } else if (!validEmailCheck(emailStr)) {
-                setValidationMessage(resultElement, MSG.EMAIL_INVALID, false);
-                userEmail.focus();
-                validStates.userEmail = false;
-            } else {
-                checkEmailDuplication(emailStr, resultElement);
-            }
-            checkFormValid();
+        function validEmailCheck(email) {
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailPattern.test(email.trim());
         }
 
+        function validPasswordCheck(password) {
+            let passwordPattern = /^(?=.*[!@#$%^&*()_+{}":;'<>?,./]).{10,}$/;
+            return passwordPattern.test(password.trim());
+        }
+
+        function validNameCheck(name) {
+            let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
+            return namePattern.test(name.trim());
+        }
+
+        function validTelCheck(tel) {
+            let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
+            return telPattern.test(tel.trim());
+        }
+
+        function setValidationMessage(element, message, isValid) {
+            element.textContent = message;
+            element.classList.toggle("success", isValid);
+            element.classList.toggle("error", !isValid);
+        }
 
         function checkEmailDuplication(emailStr, resultElement) {
             fetch(`/api/auth/user/emailCheck?userEmail=${encodeURIComponent(emailStr)}`, {
@@ -169,9 +154,11 @@
                     if (response.status === 200) {
                         setValidationMessage(resultElement, MSG.EMAIL_OK, true);
                         validStates.userEmail = true;
+
                     } else if (response.status === 409) {
                         setValidationMessage(resultElement, MSG.EMAIL_IN_USE, false);
                         validStates.userEmail = false;
+
                     } else {
                         setValidationMessage(resultElement, MSG.ERROR, false);
                         validStates.userEmail = false;
@@ -184,9 +171,48 @@
                 .finally(checkFormValid);
         }
 
-        function validEmailCheck(email) {
-            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return emailPattern.test(email.trim());
+        function checkTelDuplication(telStr, resultElement) {
+            fetch(`/api/auth/user/userTelCheck?userTel=${encodeURIComponent(telStr)}`, {
+                method: "GET",
+                credentials: "include",
+            })
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.TEL_OK, true);
+                        validStates.userTel = true;
+
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.TEL_IN_USE, false);
+                        validStates.userTel = false;
+
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.userTel = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.userTel = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function validEmail(userEmail, resultElement) {
+            const emailStr = userEmail.value.trim();
+            if (emailStr.length === 0) {
+                setValidationMessage(resultElement, MSG.EMAIL_EMPTY, false);
+                userEmail.focus();
+                validStates.userEmail = false;
+
+            } else if (!validEmailCheck(emailStr)) {
+                setValidationMessage(resultElement, MSG.EMAIL_INVALID, false);
+                userEmail.focus();
+                validStates.userEmail = false;
+
+            } else {
+                checkEmailDuplication(emailStr, resultElement);
+            }
+            checkFormValid();
         }
 
         function validPassword(userPassword, resultElement) {
@@ -209,21 +235,18 @@
             checkFormValid();
         }
 
-        function validPasswordCheck(password) {
-            let passwordPattern = /^(?=.*[!@#$%^&*()_+{}":;'<>?,./]).{10,}$/;
-            return passwordPattern.test(password.trim());
-        }
-
         function validRePassword(rePassword, originalPassword, resultElement) {
             const rePasswordStr = rePassword.value.trim();
 
             if (rePasswordStr.length === 0) {
                 setValidationMessage(resultElement, MSG.PASSWORD_EMPTY, false);
                 validStates.userRePassword = false;
+
             } else if (rePasswordStr !== originalPassword) {
                 setValidationMessage(resultElement, MSG.REPASSWORD_MISMATCH, false);
                 rePassword.focus();
                 validStates.userRePassword = false;
+
             } else {
                 setValidationMessage(resultElement, MSG.REPASSWORD_OK, true);
                 validStates.userRePassword = true;
@@ -253,11 +276,6 @@
             checkFormValid();
         }
 
-        function validNameCheck(name) {
-            let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
-            return namePattern.test(name.trim());
-        }
-
         function validTel(userTel, resultElement) {
             const telStr = userTel.value.trim();
 
@@ -279,40 +297,29 @@
             checkFormValid();
         }
 
-        function checkTelDuplication(telStr, resultElement) {
-            fetch(`/api/auth/user/userTelCheck?userTel=${encodeURIComponent(telStr)}`, {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(async (response) => {
-                    if (response.status === 200) {
-                        setValidationMessage(resultElement, MSG.TEL_OK, true);
-                        validStates.userTel = true;
-                    } else if (response.status === 409) {
-                        setValidationMessage(resultElement, MSG.TEL_IN_USE, false);
-                        validStates.userTel = false;
-                    } else {
-                        setValidationMessage(resultElement, MSG.ERROR, false);
-                        validStates.userTel = false;
-                    }
-                })
-                .catch(() => {
-                    setValidationMessage(resultElement, MSG.ERROR, false);
-                    validStates.userTel = false;
-                })
-                .finally(checkFormValid);
-        }
+        userEmail.addEventListener("input", () => {
+            validEmail(userEmail, emailResult);
+        });
 
-        function validTelCheck(tel) {
-            let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
-            return telPattern.test(tel.trim());
-        }
+        userPassword.addEventListener("input", () => {
+            validPassword(userPassword, passwordResult);
+        });
 
-        function setValidationMessage(element, message, isValid) {
-            element.textContent = message;
-            element.classList.toggle("success", isValid);
-            element.classList.toggle("error", !isValid);
-        }
+        userRePassword.addEventListener("input", () => {
+            validRePassword(userRePassword, userPassword.value, rePasswordResult);
+        });
+
+        userNm.addEventListener("input", () => {
+            validName(userNm, nameResult);
+        });
+
+        userTel.addEventListener("input", () => {
+            validTel(userTel, telResult);
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/user/login";
+        });
 
         document.getElementById("userRegister").addEventListener("submit", function (e) {
             e.preventDefault();
