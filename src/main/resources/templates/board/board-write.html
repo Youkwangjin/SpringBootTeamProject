@@ -30,7 +30,6 @@
                 <label for="boardTitle">제목</label>
                 <input type="text" id="boardTitle">
             </div>
-
             <div class="form-row">
                 <div class="form-group half">
                     <label for="boardWriter">작성자</label>
@@ -41,19 +40,16 @@
                     <input type="password" id="boardPassword">
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="boardContents">내용</label>
                 <textarea id="boardContents"></textarea>
             </div>
-
             <div class="form-group">
                 <label>파일첨부</label>
                 <button type="button" onclick="file.add();">파일 선택하기</button>
                 <div id="fileList">
                 </div>
             </div>
-
             <div class="form-group button-container">
                 <input type="button" id="backListBtn" value="목록">
                 <input type="submit" id="writeBtn" value="작성하기">
@@ -64,30 +60,26 @@
 <script src="/js/tinymce/tinymce.min.js"></script>
 <script src="/js/common/tinyMCEConfig.js"></script>
 <script src="/js/common/fileModule.js"></script>
+<script src="/js/common/messages.js"></script>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        initBackListButton();
-        initSubmitHandler();
-    });
-
-    function initBackListButton() {
         const backListButton = document.getElementById("backListBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
         backListButton.addEventListener("click", function () {
             window.location.href = "/board/list";
         });
-    }
-
-    function initSubmitHandler() {
-        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
         document.getElementById("writeForm").addEventListener("submit", function (event) {
             event.preventDefault();
 
-            let boardTitle = document.getElementById("boardTitle").value.trim();
-            let boardWriter = document.getElementById("boardWriter").value.trim();
-            let boardPassword = document.getElementById("boardPassword").value.trim();
-            let boardContents = document.getElementById("boardContents").value.trim();
+            const boardTitle = document.getElementById("boardTitle").value.trim();
+            const boardWriter = document.getElementById("boardWriter").value.trim();
+            const boardPassword = document.getElementById("boardPassword").value.trim();
+            const boardContents = document.getElementById("boardContents").value.trim();
 
             if (!boardTitle || !boardPassword || !boardContents) {
                 alert("제목, 비밀번호, 내용 입력란은 필수 항목입니다.");
@@ -118,29 +110,24 @@
                 headers: {
                     "X-CSRF-TOKEN": csrfToken,
                 },
-                body: formData,
+                credentials: "include",
+                body: formData
             })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.errorMsg);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        alert(data.resultMsg);
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.BOARD_SAVE_SUCCESS);
                         window.location.href = "/board/list";
                     } else {
-                        throw new Error(data.errorMsg);
+                        alert(responseData.errorMsg);
                     }
                 })
-                .catch(error => {
-                    alert(error.message);
+                .catch(() => {
+                    alert(MSG.ERROR);
                 });
         });
-    }
+    });
 
     let file = fileModule({
         count: 5,

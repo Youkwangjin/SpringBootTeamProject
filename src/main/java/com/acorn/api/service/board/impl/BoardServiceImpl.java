@@ -77,58 +77,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @Transactional
-    public void boardDataSave(BoardSaveDTO saveData) {
-        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
-        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
-        final Integer boardId = boardRepository.selectBoardIdKey();
-        final String boardTitle = saveData.getBoardTitle();
-        final String boardWriter = saveData.getBoardWriter();
-        final String boardPassword = passwordEncoder.encode(saveData.getBoardPassword());
-        final String boardContents = saveData.getBoardContents();
-        final List<MultipartFile> boardFiles = saveData.getBoardFiles();
-
-        if (currentUserId == null && currentOwnerId == null) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
-
-        Board newBoardSaveData = Board.builder()
-                .boardId(boardId)
-                .boardTitle(boardTitle)
-                .boardWriter(boardWriter)
-                .boardPassword(boardPassword)
-                .boardContents(boardContents)
-                .boardContentsText(Jsoup.parse(boardContents).text())
-                .boardUserId(currentUserId)
-                .boardOwnerId(currentOwnerId)
-                .build();
-        boardRepository.boardSave(newBoardSaveData);
-
-        if(boardFiles!= null && !boardFiles.isEmpty()) {
-            for(MultipartFile multipartFile : boardFiles) {
-                final Integer boardFileId = boardFileRepository.selectBoardFileIdKey();
-                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
-                final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
-                final String filePath = uploadDir;
-                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
-                final String fileSize = String.valueOf(multipartFile.getSize());
-
-                BoardFile newBoardFile = BoardFile.builder()
-                        .boardFileId(boardFileId)
-                        .boardOriginalFileName(originalFileName)
-                        .boardStoredFileName(storedFileName)
-                        .boardFilePath(filePath)
-                        .boardFileExtNm(fileExtNm)
-                        .boardFileSize(fileSize)
-                        .boardId(boardId)
-                        .build();
-                boardFileRepository.boardFileSave(newBoardFile);
-                fileComponent.upload(filePath, storedFileName, multipartFile);
-            }
-        }
-    }
-
-    @Override
     public BoardDetailDTO getBoardDetailData(Integer boardId) {
         Board detailData = boardRepository.selectBoardDetailData(boardId);
         if (detailData == null) {
@@ -188,6 +136,59 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
+    public void boardDataSave(BoardSaveDTO saveData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer boardId = boardRepository.selectBoardIdKey();
+        final String boardTitle = saveData.getBoardTitle();
+        final String boardWriter = saveData.getBoardWriter();
+        final String boardPassword = passwordEncoder.encode(saveData.getBoardPassword());
+        final String boardContents = saveData.getBoardContents();
+        final String boardContentsText = Jsoup.parse(boardContents).text();
+        final List<MultipartFile> boardFiles = saveData.getBoardFiles();
+
+        if (currentUserId == null && currentOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Board newBoardSaveData = Board.builder()
+                .boardId(boardId)
+                .boardTitle(boardTitle)
+                .boardWriter(boardWriter)
+                .boardPassword(boardPassword)
+                .boardContents(boardContents)
+                .boardContentsText(boardContentsText)
+                .boardUserId(currentUserId)
+                .boardOwnerId(currentOwnerId)
+                .build();
+        boardRepository.boardSave(newBoardSaveData);
+
+        if(boardFiles!= null && !boardFiles.isEmpty()) {
+            for(MultipartFile multipartFile : boardFiles) {
+                final Integer boardFileId = boardFileRepository.selectBoardFileIdKey();
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(multipartFile.getSize());
+
+                BoardFile newBoardFile = BoardFile.builder()
+                        .boardFileId(boardFileId)
+                        .boardOriginalFileName(originalFileName)
+                        .boardStoredFileName(storedFileName)
+                        .boardFilePath(filePath)
+                        .boardFileExtNm(fileExtNm)
+                        .boardFileSize(fileSize)
+                        .boardId(boardId)
+                        .build();
+                boardFileRepository.boardFileSave(newBoardFile);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
     public void boardDataUpdate(BoardUpdateDTO updateData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
@@ -196,6 +197,7 @@ public class BoardServiceImpl implements BoardService {
         final String boardPassword = updateData.getBoardPassword();
         final String boardWriter = updateData.getBoardWriter();
         final String boardContents = updateData.getBoardContents();
+        final String boardContentsText = Jsoup.parse(boardContents).text();
         final Integer boardUserId = updateData.getBoardUserId();
         final Integer boardOwnerId = updateData.getBoardOwnerId();
 
@@ -222,7 +224,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
                 .boardContents(boardContents)
-                .boardContentsText(Jsoup.parse(boardContents).text())
+                .boardContentsText(boardContentsText)
                 .build();
         boardRepository.boardUpdate(newBoardUpdateData);
 

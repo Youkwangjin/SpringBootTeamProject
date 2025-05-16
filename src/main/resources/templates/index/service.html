@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -11,29 +11,29 @@
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
-
 <body>
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_USER')">
+    <div th:replace="~{fragments/header-user :: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_OWNER')">
+    <div th:replace="~{fragments/header-owner :: header}"></div>
+</div>
 <main id="main">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
         <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-
             <h2 style="font-family: 'Noto Sans KR',serif; font-weight: 700;">서비스 소개</h2>
-            <ol>
-                <li><a href="/">Home</a></li>
-                <li>서비스소개</li>
-            </ol>
-
         </div>
     </div>
     <section id="about" class="about">
         <div class="container" data-aos="fade-up">
-
             <div class="row position-relative">
                 <div class="col-lg-7 about-img" style="background-image: url(/assets/img/about.jpg);"></div>
                 <div class="col-lg-7">
-                    <h2>Acontainer
-                        <span style="color: #ffc732;">.</span>
-                    </h2>
+                    <h2>Acontainer<span style="color: #ffc732;"></span></h2>
                     <div class="our-story">
                         <h4>Est 2023</h4>
                         <h3>쉽고 간편하게 보관하세요</h3>
@@ -53,14 +53,11 @@
     </section>
     <section id="team" class="team">
         <div id="team-container" class="container" data-aos="fade-up">
-
             <div class="section-header">
                 <h2>서비스 이용 안내</h2><br/>
                 <h5 style="font-family: 'Noto Sans KR',serif;">창고 대여가 처음이라도 어렵지 않아요</h5>
             </div>
-
             <div class="row gy-5">
-
                 <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
                     <div class="member-img">
                         <img src="/assets/img/team/team-1.jpg" class="img-fluid" alt="">
@@ -70,7 +67,6 @@
                         <p>짐을 맡길 지역을 검색하세요</p>
                     </div>
                 </div>
-
                 <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="200">
                     <div class="member-img">
                         <img src="/assets/img/team/team-2.jpg" class="img-fluid" alt="">
@@ -80,7 +76,6 @@
                         <p>짐에 맞는 창고를 선택하세요</p>
                     </div>
                 </div>
-
                 <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="300">
                     <div class="member-img">
                         <img src="/assets/img/team/team-3.jpg" class="img-fluid" alt="">
@@ -90,7 +85,6 @@
                         <p>사용할 일정을 선택하세요</p>
                     </div>
                 </div>
-
                 <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="400">
                     <div class="member-img">
                         <img src="/assets/img/team/team-4.jpg" class="img-fluid" alt="">
@@ -100,7 +94,6 @@
                         <p>위치와 일정 등 예약 내역을 확인하세요</p>
                     </div>
                 </div>
-
                 <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="500">
                     <div class="member-img">
                         <img src="/assets/img/team/team-5.jpg" class="img-fluid" alt="">
@@ -110,7 +103,6 @@
                         <p>금액을 확인한 후 결제하세요</p>
                     </div>
                 </div>
-
                 <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="600">
                     <div class="member-img">
                         <img src="/assets/img/team/team-6.jpg" class="img-fluid" alt="">
@@ -125,9 +117,7 @@
     </section>
 </main>
 <div th:replace="~{fragments/footer :: footer}"></div>
-
-<a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
-        class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 <div id="preloader"></div>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/vendor/aos/aos.js"></script>
@@ -137,5 +127,6 @@
 <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
 <script src="/assets/vendor/php-email-form/validate.js"></script>
 <script src="/assets/js/main.js"></script>
+<script src="/js/common/logout.js"></script>
 </body>
 </html>
