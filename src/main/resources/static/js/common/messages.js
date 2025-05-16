@@ -13,6 +13,7 @@ const MSG = {
 
     NAME_EMPTY:                "이름을 입력해주세요.",
     NAME_INVALID:              "이름을 올바르게 입력해주세요.",
+    NAME_IN_USE:               "이미 사용 중인 이름입니다.",
     NAME_OK:                   "사용 가능한 이름입니다.",
 
     TEL_EMPTY:                 "전화번호를 입력해주세요.",

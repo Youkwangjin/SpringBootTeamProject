@@ -2,7 +2,6 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <title>에이콘테이너 : 회원수정</title>
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
@@ -30,8 +29,7 @@
 
             <h3>이름</h3>
             <label for="userNm">
-                <input type="text" name="userNm" id="userNm" class="text-field"
-                       th:value="${userData.userNm}" placeholder="이름">
+                <input type="text" name="userNm" id="userNm" class="text-field" th:value="${userData.userNm}" placeholder="이름">
             </label><br/>
             <span class="name-result"></span>
 
@@ -69,8 +67,7 @@
             <br/>
             <h3>입력한 주소</h3>
             <label for="userAddress">
-                <input type="text" name="userAddress" id="userAddress" class="text-field"
-                       th:value="${userData.userAddr}">
+                <input type="text" name="userAddress" id="userAddress" class="text-field" th:value="${userData.userAddr}">
             </label>
 
             <input type="submit" class="submit-btn" id="userUpdateBtn" value="수정하기">
@@ -78,70 +75,36 @@
         </form>
     </div>
 </div>
+<script src="/js/common/messages.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/common/daum-postcode.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let userPassword = document.getElementById("userPassword");
-        let userNm = document.getElementById("userNm");
-        let userTel = document.getElementById("userTel");
-        let userAddr = document.getElementById("userAddress");
-
-        let nameResult = document.querySelector(".name-result");
-        let telResult = document.querySelector(".tel-result");
-
-        let resetButton = document.getElementById("resetBtn");
-        let submitButton = document.getElementById("userUpdateBtn");
-
-        let validStates = {
-            userDisplayName: true,
-            userTel: true
-        };
+        const userPassword = document.getElementById("userPassword");
+        const userNm = document.getElementById("userNm");
+        const userTel = document.getElementById("userTel");
+        const userAddr = document.getElementById("userAddress");
 
         const initialName = userNm.value;
+        const initialTel = userTel.value;
+
+        const nameResult = document.querySelector(".name-result");
+        const telResult = document.querySelector(".tel-result");
+
+        const resetButton = document.getElementById("resetBtn");
+        const submitButton = document.getElementById("userUpdateBtn");
+
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        const validStates = {
+            userNm: true,
+            userTel: true
+        };
 
         function checkFormValid() {
             const allValid = Object.values(validStates).every(Boolean);
             submitButton.disabled = !allValid;
-        }
-
-        userNm.addEventListener("input", (e) => {
-            validName(e.target, nameResult);
-        });
-
-        userTel.addEventListener("input", (e) => {
-            validTel(e.target, telResult);
-        });
-
-        resetButton.addEventListener("click", function () {
-            window.location.href = "/user/mypage";
-        });
-
-        function validName(nameInput, resultElement) {
-            const name = nameInput.value.trim();
-            if (name.length === 0) {
-                resultElement.textContent = "이름을 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
-                validStates.userDisplayName = false;
-            } else if (!validNameCheck(name)) {
-                resultElement.textContent = "이름을 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
-                validStates.userDisplayName = false;
-            } else if (name === initialName) {
-                resultElement.textContent = "현재 기존 회원님 이름입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
-                validStates.userDisplayName = true;
-            } else {
-                resultElement.textContent = "사용 가능한 이름입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
-                validStates.userDisplayName = true;
-            }
-            checkFormValid();
         }
 
         function validNameCheck(name) {
@@ -149,65 +112,103 @@
             return namePattern.test(name.trim());
         }
 
-        function validTel(telInput, resultElement) {
-            const tel = telInput.value.trim();
-            if (tel.length === 0) {
-                resultElement.textContent = "전화번호를 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
-                validStates.userTel = false;
-            } else if (!validTelCheck(tel)) {
-                resultElement.textContent = "번호를 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
-                validStates.userTel = false;
-            } else {
-                checkTelDuplication(telInput, resultElement);
-            }
-            checkFormValid();
-        }
-
-        function checkTelDuplication(telInput, resultElement) {
-            const userTel = telInput.value.trim();
-            fetch("/api/auth/user/userTelCheck?userTel=" + encodeURIComponent(userTel), {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = data.resultMsg;
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
-                        validStates.userTel = true;
-                        checkFormValid();
-                    }
-                })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.userEmail = false;
-                        checkFormValid();
-                    });
-                });
-        }
-
         function validTelCheck(tel) {
             let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
             return telPattern.test(tel.trim());
         }
 
-        const csrfTokenElement = document.querySelector("input[name=_csrf]");
-        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+        function setValidationMessage(element, message, isValid) {
+            element.textContent = message;
+            element.classList.toggle("success", isValid);
+            element.classList.toggle("error", !isValid);
+        }
+
+        function checkTelDuplication(telStr, resultElement) {
+            fetch(`/api/auth/user/userTelCheck?userTel=${encodeURIComponent(telStr)}`, {
+                method: "GET",
+                credentials: "include",
+            })
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.TEL_OK, true);
+                        validStates.userTel = true;
+
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.TEL_IN_USE, false);
+                        validStates.userTel = false;
+
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.userTel = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.userTel = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function validName(userNm, resultElement) {
+            const nameStr = userNm.value.trim();
+
+            if (nameStr.length === 0) {
+                setValidationMessage(resultElement, MSG.NAME_EMPTY, false);
+                userNm.focus();
+                validStates.userNm = false;
+
+            } else if (!validNameCheck(nameStr)) {
+                setValidationMessage(resultElement, MSG.NAME_INVALID, false);
+                userNm.focus();
+                validStates.userNm = false;
+
+            } else if (nameStr === initialName) {
+                setValidationMessage(resultElement, MSG.NAME_IN_USE, true);
+                validStates.userNm = true;
+            } else {
+                setValidationMessage(resultElement, MSG.NAME_OK, true);
+                validStates.userNm = true;
+            }
+
+            checkFormValid();
+        }
+
+        function validTel(userTel, resultElement) {
+            const telStr = userTel.value.trim();
+
+            if (telStr.length === 0) {
+                setValidationMessage(resultElement, MSG.TEL_EMPTY, false);
+                userTel.focus();
+                validStates.userTel = false;
+
+            } else if (!validTelCheck(telStr)) {
+                setValidationMessage(resultElement, MSG.TEL_INVALID, false);
+                userTel.focus();
+                validStates.userTel = false;
+
+            } else if (telStr === initialTel) {
+                setValidationMessage(resultElement, MSG.TEL_IN_USE, true);
+                validStates.userTel = true;
+
+            } else {
+                checkTelDuplication(telStr, resultElement);
+                return;
+            }
+
+            checkFormValid();
+        }
+
+        userNm.addEventListener("input", () => {
+            validName(userNm, nameResult);
+        });
+
+        userTel.addEventListener("input", () => {
+            validTel(userTel, telResult);
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/user/mypage";
+        });
 
         document.getElementById("userUpdate").addEventListener("submit", function (e) {
             e.preventDefault();
@@ -229,12 +230,13 @@
 
                 const userData = {
                     userId: userId,
-                    userPassword: userPassword.value,
-                    userNm: userNm.value,
-                    userTel: userTel.value,
-                    userAddr: userAddr.value,
-                    _csrf: document.querySelector("[name=_csrf]").value
+                    userPassword: userPassword.value.trim(),
+                    userNm: userNm.value.trim(),
+                    userTel: userTel.value.trim(),
+                    userAddr: userAddr.value.trim(),
+                    _csrf: csrfToken
                 };
+
                 fetch(`/api/user/update/${userId}`, {
                     method: "PATCH",
                     headers: {
@@ -244,24 +246,18 @@
                     credentials: "include",
                     body: JSON.stringify(userData)
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(errorData => {
-                                throw new Error(errorData.errorMsg);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.httpStatus === "OK") {
-                            alert(data.resultMsg);
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.INFO_UPDATE_SUCCESS);
                             window.location.href = "/user/mypage";
                         } else {
-                            throw new Error(data.errorMsg);
+                            alert(responseData.errorMsg);
                         }
                     })
-                    .catch(error => {
-                        alert(error.message);
+                    .catch(() => {
+                        alert(MSG.ERROR);
                     });
             }
         });
