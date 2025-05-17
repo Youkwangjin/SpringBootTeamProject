@@ -277,6 +277,7 @@
 
         function validEmail(ownerEmail, resultElement) {
             const emailStr = ownerEmail.value.trim();
+
             if (emailStr.length === 0) {
                 setValidationMessage(resultElement, MSG.EMAIL_EMPTY, false);
                 ownerEmail.focus();
