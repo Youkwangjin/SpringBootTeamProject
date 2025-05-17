@@ -53,6 +53,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const userId = document.getElementById("userId").value;
+        const userPassword = document.getElementById("userPassword");
 
         const resetButton = document.getElementById("resetBtn");
         const submitButton = document.getElementById("userDeleteBtn");
@@ -67,21 +68,22 @@
         document.getElementById("userDelete").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            const userPassword = document.getElementById("userPassword").value.trim();
-
             if (!submitButton.disabled) {
-                if (userPassword === "") {
+                const passwordValue = userPassword.value.trim();
+
+                if (passwordValue === "") {
                     alert("비밀번호를 입력해주세요.");
-                    document.getElementById("userPassword").focus();
+                    userPassword.focus();
                     return;
                 }
 
                 if (confirm("정말로 탈퇴하시겠습니까?")) {
                     const userData = {
                         userId: userId,
-                        userPassword: userPassword,
+                        userPassword: passwordValue,
                         _csrf: csrfToken
                     };
+
                     fetch(`/api/user/delete/${userId}`, {
                         method: "POST",
                         headers: {

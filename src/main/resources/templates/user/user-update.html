@@ -80,6 +80,7 @@
 <script src="/js/common/daum-postcode.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const userId = document.getElementById("userId").value;
         const userPassword = document.getElementById("userPassword");
         const userNm = document.getElementById("userNm");
         const userTel = document.getElementById("userTel");
@@ -214,12 +215,11 @@
             e.preventDefault();
 
             if (!submitButton.disabled) {
-                const userId = document.getElementById("userId").value;
                 const passwordValue = userPassword.value.trim();
 
                 if (passwordValue === "") {
                     alert("비밀번호를 입력해주세요.");
-                    document.getElementById("userPassword").focus();
+                    userPassword.focus();
                     return;
                 }
 
@@ -230,7 +230,7 @@
 
                 const userData = {
                     userId: userId,
-                    userPassword: userPassword.value.trim(),
+                    userPassword: passwordValue,
                     userNm: userNm.value.trim(),
                     userTel: userTel.value.trim(),
                     userAddr: userAddr.value.trim(),
