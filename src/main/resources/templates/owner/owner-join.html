@@ -17,15 +17,13 @@
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <h3>이메일</h3>
             <label for="ownerEmail">
-                <input type="text" name="ownerEmail" id="ownerEmail" class="text-field"
-                       placeholder="이메일 ex) abc1234@naver.com">
+                <input type="text" name="ownerEmail" id="ownerEmail" class="text-field" placeholder="이메일 ex) abc1234@naver.com">
             </label><br/>
             <span class="email-result"></span>
 
             <h3>비밀번호</h3>
             <label for="ownerPassword">
-                <input type="password" name="ownerPassword" id="ownerPassword" class="text-field"
-                       placeholder="비밀번호">
+                <input type="password" name="ownerPassword" id="ownerPassword" class="text-field" placeholder="비밀번호">
             </label><br/>
             <span class="password-result"></span>
 
@@ -37,8 +35,7 @@
 
             <h3>사업자 번호</h3>
             <label for="ownerBusinessNum">
-                <input type="text" name="ownerBusinessNum" id="ownerBusinessNum" class="text-field"
-                       placeholder="사업자 번호 ex) 111-11-11111">
+                <input type="text" name="ownerBusinessNum" id="ownerBusinessNum" class="text-field" placeholder="사업자 번호 ex) 111-11-11111">
             </label><br/>
             <span class="businessNum-result"></span>
 
@@ -50,15 +47,13 @@
 
             <h3>전화번호</h3>
             <label for="ownerTel">
-                <input type="tel" name="ownerTel" id="ownerTel" class="text-field"
-                       placeholder="-를 제외한 숫자만 입력 바랍니다.">
+                <input type="tel" name="ownerTel" id="ownerTel" class="text-field" placeholder="-를 제외한 숫자만 입력 바랍니다.">
             </label><br/>
             <span class="tel-result"></span>
 
             <h3>회사명</h3>
             <label for="ownerCompanyName">
-                <input type="text" name="ownerCompanyName" id="ownerCompanyName" class="text-field"
-                       placeholder="회사명을 입력해주세요.">
+                <input type="text" name="ownerCompanyName" id="ownerCompanyName" class="text-field" placeholder="회사명을 입력해주세요.">
             </label><br/>
             <span class="companyName-result"></span>
 
@@ -89,8 +84,7 @@
 
             <h3>입력한 주소</h3>
             <label for="userAddress">
-                <input type="text" name="ownerAddr" id="userAddress" class="text-field"
-                       placeholder="입력한 주소">
+                <input type="text" name="ownerAddr" id="userAddress" class="text-field" placeholder="입력한 주소">
             </label>
 
             <input type="submit" class="submit-btn" id="registerBtn" value="가입하기" disabled>
@@ -100,33 +94,37 @@
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/common/daum-postcode.js"></script>
+<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let ownerEmail = document.getElementById("ownerEmail");
-        let ownerBusinessNum = document.getElementById("ownerBusinessNum");
-        let ownerPassword = document.getElementById("ownerPassword");
-        let ownerRePassword = document.getElementById("ownerRePassword");
-        let ownerNm = document.getElementById("ownerNm");
-        let ownerTel = document.getElementById("ownerTel");
-        let ownerCompanyName = document.getElementById("ownerCompanyName");
-        let ownerAddr = document.getElementById("userAddress");
+        const ownerEmail = document.getElementById("ownerEmail");
+        const ownerPassword = document.getElementById("ownerPassword");
+        const ownerRePassword = document.getElementById("ownerRePassword");
+        const ownerBusinessNum = document.getElementById("ownerBusinessNum");
+        const ownerNm = document.getElementById("ownerNm");
+        const ownerTel = document.getElementById("ownerTel");
+        const ownerCompanyName = document.getElementById("ownerCompanyName");
+        const ownerAddr = document.getElementById("userAddress");
 
-        let emailResult = document.querySelector(".email-result");
-        let businessNumResult = document.querySelector(".businessNum-result");
-        let passwordResult = document.querySelector(".password-result");
-        let rePasswordResult = document.querySelector(".rePassword-result");
-        let nameResult = document.querySelector(".name-result");
-        let telResult = document.querySelector(".tel-result");
-        let companyNameResult = document.querySelector(".companyName-result");
+        const emailResult = document.querySelector(".email-result");
+        const passwordResult = document.querySelector(".password-result");
+        const rePasswordResult = document.querySelector(".rePassword-result");
+        const businessNumResult = document.querySelector(".businessNum-result");
+        const nameResult = document.querySelector(".name-result");
+        const telResult = document.querySelector(".tel-result");
+        const companyNameResult = document.querySelector(".companyName-result");
 
-        let resetButton = document.getElementById("resetBtn");
-        let submitButton = document.getElementById("registerBtn");
+        const resetButton = document.getElementById("resetBtn");
+        const submitButton = document.getElementById("registerBtn");
 
-        let validStates = {
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        const validStates = {
             ownerEmail: false,
-            ownerBusinessNum: false,
             ownerPassword: false,
             ownerRePassword: false,
+            ownerBusinessNum: false,
             ownerNm: false,
             ownerTel: false,
             ownerCompanyName: false
@@ -137,177 +135,9 @@
             submitButton.disabled = !allValid;
         }
 
-        ownerEmail.addEventListener("change", (e) => {
-            validEmail(e.target, emailResult);
-        });
-
-        ownerBusinessNum.addEventListener("change", (e) => {
-            validBusinessNum(e.target, businessNumResult);
-        });
-
-        ownerPassword.addEventListener("input", (e) => {
-            validPassword(e.target, passwordResult);
-        });
-
-        ownerRePassword.addEventListener("change", (e) => {
-            validRePassword(e.target, ownerPassword.value, rePasswordResult);
-        });
-
-        ownerNm.addEventListener("input", (e) => {
-            validName(e.target, nameResult);
-        });
-
-        ownerTel.addEventListener("input", (e) => {
-            validTel(e.target, telResult);
-        });
-
-        ownerCompanyName.addEventListener("input", (e) => {
-            validCompanyName(e.target, companyNameResult);
-        });
-
-        resetButton.addEventListener("click", function () {
-            window.location.href = "/owner/login";
-        });
-
-        document.getElementById("ownerEmail").addEventListener("blur", function () {
-            validEmail(this, document.querySelector(".email-result"));
-        });
-
-        function validEmail(emailInput, resultElement) {
-            const email = emailInput.value.trim();
-            if (email.length === 0) {
-                resultElement.textContent = "이메일을 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                emailInput.focus();
-                validStates.ownerEmail = false;
-            } else if (!validEmailCheck(email)) {
-                resultElement.textContent = "이메일 형식으로 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                emailInput.focus();
-                validStates.ownerEmail = false;
-            } else {
-                checkEmailDuplication(emailInput, resultElement);
-            }
-            checkFormValid();
-        }
-
-        function checkEmailDuplication(emailInput, resultElement) {
-            const ownerEmail = emailInput.value.trim();
-            fetch("/api/auth/owner/emailCheck?ownerEmail=" + encodeURIComponent(ownerEmail), {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = data.resultMsg;
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
-                        validStates.ownerEmail = true;
-                        checkFormValid();
-                    }
-                })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.ownerEmail = false;
-                        checkFormValid();
-                    });
-                });
-        }
-
         function validEmailCheck(email) {
             let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             return emailPattern.test(email.trim());
-        }
-
-        function validBusinessNum(businessNumInput, resultElement) {
-            const businessNum = businessNumInput.value.trim();
-            if (businessNum.length === 0) {
-                resultElement.textContent = "사업자 번호를 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                businessNumInput.focus();
-                validStates.ownerBusinessNum = false;
-            } else if (!validBusinessNumCheck(businessNum)) {
-                resultElement.textContent = "사업자 번호 형식에 맞게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                businessNumInput.focus();
-                validStates.ownerBusinessNum = false;
-            } else {
-                checkBusinessNumDuplication(businessNumInput, resultElement);
-            }
-            checkFormValid();
-        }
-
-        function checkBusinessNumDuplication(businessNumInput, resultElement) {
-            const ownerBusinessNum = businessNumInput.value.trim();
-            fetch("/api/auth/owner/businessNumCheck?ownerBusinessNum=" + encodeURIComponent(ownerBusinessNum), {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = data.resultMsg;
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
-                        validStates.ownerBusinessNum = true;
-                        checkFormValid();
-                    }
-                })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.ownerBusinessNum = false;
-                        checkFormValid();
-                    });
-                });
-        }
-
-        function validBusinessNumCheck(businessNum) {
-            let businessNumPattern = /^(\d{3}-\d{2}-\d{5}|\d{10})$/;
-            return businessNumPattern.test(businessNum.trim());
-        }
-
-        function validPassword(passwordInput, resultElement) {
-            const password = passwordInput.value.trim();
-            if (password.length === 0) {
-                resultElement.textContent = "비밀번호를 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                passwordInput.focus();
-                validStates.ownerPassword = false;
-            } else if (!validPasswordCheck(password)) {
-                resultElement.textContent = "비밀번호는 10자 이상이며, 특수문자를 포함해야 합니다.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                passwordInput.focus();
-                validStates.ownerPassword = false;
-            } else {
-                resultElement.textContent = "사용 가능한 비밀번호입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
-                validStates.ownerPassword = true;
-            }
-            checkFormValid();
         }
 
         function validPasswordCheck(password) {
@@ -315,47 +145,9 @@
             return passwordPattern.test(password.trim());
         }
 
-        function validRePassword(rePasswordInput, originalPassword, resultElement) {
-            if (rePasswordInput.value !== originalPassword) {
-                resultElement.textContent = "비밀번호가 일치하지 않습니다.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                rePasswordInput.focus();
-                validStates.ownerRePassword = false;
-            } else if (rePasswordInput.value === "") {
-                resultElement.textContent = "";
-                resultElement.classList.remove("success", "error");
-            } else {
-                resultElement.textContent = "비밀번호가 일치합니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
-                validStates.ownerRePassword = true;
-            }
-            checkFormValid();
-        }
-
-        // 이름 형식 정규식 체크
-        function validName(nameInput, resultElement) {
-            const name = nameInput.value.trim();
-            if (name.length === 0) {
-                resultElement.textContent = "이름을 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
-                validStates.ownerNm = false;
-            } else if (!validNameCheck(name)) {
-                resultElement.textContent = "이름을 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
-                validStates.ownerNm = false;
-            } else {
-                resultElement.textContent = "사용 가능한 이름입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
-                validStates.ownerNm = true;
-            }
-            checkFormValid();
+        function validBusinessNumCheck(businessNum) {
+            let businessNumPattern = /^(\d{3}-\d{2}-\d{5}|\d{10})$/;
+            return businessNumPattern.test(businessNum.trim());
         }
 
         function validNameCheck(name) {
@@ -363,113 +155,9 @@
             return namePattern.test(name.trim());
         }
 
-        function validTel(telInput, resultElement) {
-            const tel = telInput.value.trim();
-            if (tel.length === 0) {
-                resultElement.textContent = "전화번호를 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
-                validStates.ownerTel = false;
-            } else if (!validTelCheck(tel)) {
-                resultElement.textContent = "번호를 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
-                validStates.ownerTel = false;
-            } else {
-                checkTelDuplication(telInput, resultElement);
-            }
-            checkFormValid();
-        }
-
-        function checkTelDuplication(telInput, resultElement) {
-            const ownerTel = telInput.value.trim();
-            fetch("/api/auth/owner/ownerTelCheck?ownerTel=" + encodeURIComponent(ownerTel), {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = data.resultMsg;
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
-                        validStates.ownerTel = true;
-                        checkFormValid();
-                    }
-                })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.ownerTel = false;
-                        checkFormValid();
-                    });
-                });
-        }
-
         function validTelCheck(tel) {
             let telPattern = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
             return telPattern.test(tel.trim());
-        }
-
-        function validCompanyName(companyNameInput, resultElement) {
-            const companyName = companyNameInput.value.trim();
-            if (companyName.length === 0) {
-                resultElement.textContent = '회사명을 입력해주세요.';
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                companyNameInput.focus();
-                validStates.ownerCompanyName = false;
-            } else if (!validCompanyNameCheck(companyName)) {
-                resultElement.textContent = "회사명을 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                companyNameInput.focus();
-                validStates.ownerCompanyName = false;
-            } else {
-                checkCompanyNameDuplication(companyNameInput, resultElement);
-            }
-            checkFormValid();
-        }
-
-        function checkCompanyNameDuplication(companyNameInput, resultElement) {
-            const ownerCompanyName = companyNameInput.value.trim();
-            fetch("/api/auth/owner/companyNameCheck?ownerCompanyName=" + encodeURIComponent(ownerCompanyName), {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = "사용 가능한 회사명 입니다.";
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
-                        validStates.ownerCompanyName = true;
-                        checkFormValid();
-                    }
-                })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.ownerCompanyName = false;
-                        checkFormValid();
-                    });
-                });
         }
 
         function validCompanyNameCheck(companyName) {
@@ -477,22 +165,300 @@
             return companyNamePattern.test(companyName.trim());
         }
 
-        const csrfTokenElement = document.querySelector("input[name=_csrf]");
-        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+        function setValidationMessage(element, message, isValid) {
+            element.textContent = message;
+            element.classList.toggle("success", isValid);
+            element.classList.toggle("error", !isValid);
+        }
+
+        function checkEmailDuplication(emailStr, resultElement) {
+            fetch(`/api/auth/owner/emailCheck?ownerEmail=${encodeURIComponent(emailStr)}`, {
+                method: "GET",
+                credentials: "include"
+            })
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.EMAIL_OK, true);
+                        validStates.ownerEmail = true;
+
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.EMAIL_IN_USE, false);
+                        validStates.ownerEmail = false;
+
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.ownerEmail = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.ownerEmail = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function checkBusinessNumDuplication(businessNumStr, resultElement) {
+            fetch(`/api/auth/owner/businessNumCheck?ownerBusinessNum=${encodeURIComponent(businessNumStr)}`, {
+                method: "GET",
+                credentials: "include"
+            })
+                .then(async response => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.BUSINESS_NUM_OK, true);
+                        validStates.ownerBusinessNum = true;
+
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.BUSINESS_NUM_IN_USE, false);
+                        validStates.ownerBusinessNum = false;
+
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.ownerBusinessNum = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.ownerBusinessNum = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function checkTelDuplication(telStr, resultElement) {
+            fetch(`/api/auth/owner/ownerTelCheck?ownerTel=${encodeURIComponent(telStr)}`, {
+                method: "GET",
+                credentials: "include",
+            })
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.TEL_OK, true);
+                        validStates.ownerTel = true;
+
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.TEL_IN_USE, false);
+                        validStates.ownerTel = false;
+
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.ownerTel = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.ownerTel = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function checkCompanyNameDuplication(companyNameStr, resultElement) {
+            fetch(`/api/auth/owner/companyNameCheck?ownerCompanyName=${encodeURIComponent(companyNameStr)}`, {
+                method: "GET",
+                credentials: "include",
+            })
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.COMPANY_NAME_OK, true);
+                        validStates.ownerCompanyName = true;
+
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.COMPANY_NAME_IN_USE, false);
+                        validStates.ownerCompanyName = false;
+
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.ownerCompanyName = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.ownerCompanyName = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function validEmail(ownerEmail, resultElement) {
+            const emailStr = ownerEmail.value.trim();
+            if (emailStr.length === 0) {
+                setValidationMessage(resultElement, MSG.EMAIL_EMPTY, false);
+                ownerEmail.focus();
+                validStates.ownerEmail = false;
+
+            } else if (!validEmailCheck(emailStr)) {
+                setValidationMessage(resultElement, MSG.EMAIL_INVALID, false);
+                ownerEmail.focus();
+                validStates.ownerEmail = false;
+
+            } else {
+                checkEmailDuplication(emailStr, resultElement);
+            }
+            checkFormValid();
+        }
+
+        function validPassword(ownerPassword, resultElement) {
+            const passwordStr = ownerPassword.value.trim();
+
+            if (passwordStr.length === 0) {
+                setValidationMessage(resultElement, MSG.PASSWORD_EMPTY, false);
+                ownerPassword.focus();
+                validStates.ownerPassword = false;
+
+            } else if (!validPasswordCheck(passwordStr)) {
+                setValidationMessage(resultElement, MSG.PASSWORD_INVALID, false);
+                ownerPassword.focus();
+                validStates.ownerPassword = false;
+
+            } else {
+                setValidationMessage(resultElement, MSG.PASSWORD_OK, true);
+                validStates.ownerPassword = true;
+            }
+
+            checkFormValid();
+        }
+
+        function validRePassword(rePassword, originalPassword, resultElement) {
+            const rePasswordStr = rePassword.value.trim();
+
+            if (rePasswordStr.length === 0) {
+                setValidationMessage(resultElement, MSG.PASSWORD_EMPTY, false);
+                validStates.ownerRePassword = false;
+
+            } else if (rePasswordStr !== originalPassword) {
+                setValidationMessage(resultElement, MSG.REPASSWORD_MISMATCH, false);
+                rePassword.focus();
+                validStates.ownerRePassword = false;
+
+            } else {
+                setValidationMessage(resultElement, MSG.REPASSWORD_OK, true);
+                validStates.ownerRePassword = true;
+            }
+
+            checkFormValid();
+        }
+
+        function validBusinessNum(ownerBusinessNum, resultElement) {
+            const businessNumStr = ownerBusinessNum.value.trim();
+
+            if (businessNumStr.length === 0) {
+                setValidationMessage(resultElement, MSG.BUSINESS_NUM_EMPTY, false);
+                ownerBusinessNum.focus();
+                validStates.ownerBusinessNum = false;
+
+            } else if (!validBusinessNumCheck(businessNumStr)) {
+                setValidationMessage(resultElement, MSG.BUSINESS_NUM_INVALID, false);
+                ownerBusinessNum.focus();
+                validStates.ownerBusinessNum = false;
+
+            } else {
+                checkBusinessNumDuplication(businessNumStr, resultElement);
+            }
+
+            checkFormValid();
+        }
+
+        function validName(ownerNm, resultElement) {
+            const nameStr = ownerNm.value.trim();
+
+            if (nameStr.length === 0) {
+                setValidationMessage(resultElement, MSG.NAME_EMPTY, false);
+                ownerNm.focus();
+                validStates.ownerNm = false;
+            } else if (!validNameCheck(nameStr)) {
+                setValidationMessage(resultElement, MSG.NAME_INVALID, false);
+                ownerNm.focus();
+                validStates.ownerNm = false;
+            } else {
+                setValidationMessage(resultElement, MSG.NAME_OK, true);
+                validStates.ownerNm = true;
+            }
+
+            checkFormValid();
+        }
+
+        function validTel(ownerTel, resultElement) {
+            const telStr = ownerTel.value.trim();
+
+            if (telStr.length === 0) {
+                setValidationMessage(resultElement, MSG.TEL_EMPTY, false);
+                ownerTel.focus();
+                validStates.ownerTel = false;
+
+            } else if (!validTelCheck(telStr)) {
+                setValidationMessage(resultElement, MSG.TEL_INVALID, false);
+                ownerTel.focus();
+                validStates.ownerTel = false;
+
+            } else {
+                checkTelDuplication(telStr, resultElement);
+            }
+
+            checkFormValid();
+        }
+
+        function validCompanyName(ownerCompanyName, resultElement) {
+            const companyNameStr = ownerCompanyName.value.trim();
+
+            if (companyNameStr.length === 0) {
+                setValidationMessage(resultElement, MSG.COMPANY_NAME_EMPTY, false);
+                ownerCompanyName.focus();
+                validStates.ownerCompanyName = false;
+
+            } else if (!validCompanyNameCheck(companyNameStr)) {
+                setValidationMessage(resultElement, MSG.COMPANY_NAME_INVALID, false);
+                ownerCompanyName.focus();
+                validStates.ownerCompanyName = false;
+
+            } else {
+                checkCompanyNameDuplication(companyNameStr, resultElement);
+            }
+            checkFormValid();
+        }
+
+        ownerEmail.addEventListener("input", () => {
+            validEmail(ownerEmail, emailResult);
+        });
+
+        ownerPassword.addEventListener("input", () => {
+            validPassword(ownerPassword, passwordResult);
+        });
+
+        ownerRePassword.addEventListener("input", () => {
+            validRePassword(ownerRePassword, ownerPassword.value, rePasswordResult);
+        });
+
+        ownerBusinessNum.addEventListener("input", () => {
+            validBusinessNum(ownerBusinessNum, businessNumResult);
+        });
+
+        ownerNm.addEventListener("input", () => {
+            validName(ownerNm, nameResult);
+        });
+
+        ownerTel.addEventListener("input", () => {
+            validTel(ownerTel, telResult);
+        });
+
+        ownerCompanyName.addEventListener("input", () => {
+            validCompanyName(ownerCompanyName, companyNameResult);
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/owner/login";
+        });
 
         document.getElementById("ownerRegister").addEventListener("submit", function (e) {
             e.preventDefault();
+
             if (!submitButton.disabled) {
                 const ownerData = {
-                    ownerEmail: ownerEmail.value,
-                    ownerBusinessNum: ownerBusinessNum.value,
-                    ownerPassword: ownerPassword.value,
-                    ownerNm: ownerNm.value,
-                    ownerTel: ownerTel.value,
-                    ownerCompanyName: ownerCompanyName.value,
-                    ownerAddr: ownerAddr.value,
-                    _csrf: document.querySelector("[name=_csrf]").value
+                    ownerEmail: ownerEmail.value.trim(),
+                    ownerBusinessNum: ownerBusinessNum.value.trim(),
+                    ownerPassword: ownerPassword.value.trim(),
+                    ownerNm: ownerNm.value.trim(),
+                    ownerTel: ownerTel.value.trim(),
+                    ownerCompanyName: ownerCompanyName.value.trim(),
+                    ownerAddr: ownerAddr.value.trim(),
+                    _csrf: csrfToken
                 };
+
                 fetch("/api/auth/owner/register", {
                     method: "POST",
                     headers: {
@@ -502,28 +468,19 @@
                     credentials: "include",
                     body: JSON.stringify(ownerData)
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(errorData => {
-                                throw new Error(errorData.errorMsg);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.httpStatus === "CREATED") {
-                            alert(data.resultMsg);
+                    .then(async response => {
+                        if (response.status === 201) {
+                            alert(MSG.REGISTER_SUCCESS);
                             window.location.href = "/owner/login";
                         } else {
-                            throw new Error(data.errorMsg);
+                            alert(MSG.ERROR);
                         }
                     })
-                    .catch(error => {
-                        alert(error.message);
+                    .catch(() => {
+                        alert(MSG.ERROR);
                     });
             }
         });
-
     });
 </script>
 </body>

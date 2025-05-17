@@ -21,6 +21,16 @@ const MSG = {
     TEL_OK:                                 "사용 가능한 번호입니다.",
     TEL_IN_USE:                             "이미 사용 중인 번호입니다.",
 
+    BUSINESS_NUM_EMPTY:                     "사업자 등록번호를 입력해주세요.",
+    BUSINESS_NUM_INVALID:                   "유효하지 않은 사업자 등록번호입니다.",
+    BUSINESS_NUM_IN_USE:                    "이미 등록된 사업자 등록번호입니다.",
+    BUSINESS_NUM_OK:                        "사용 가능한 사업자 등록번호입니다.",
+
+    COMPANY_NAME_EMPTY:                     "회사명을 입력해주세요.",
+    COMPANY_NAME_INVALID:                   "회사명을 올바르게 입력해주세요.",
+    COMPANY_NAME_IN_USE:                    "이미 사용 중인 회사명입니다.",
+    COMPANY_NAME_OK:                        "사용 가능한 회사명입니다.",
+
     REGISTER_SUCCESS:                       "회원가입이 정상적으로 완료되었습니다.",
     LOGIN_SUCCESS:                          "로그인이 정상적으로 완료되었습니다.",
     USER_AUTHENTICATION_FAILED:             "이메일 또는 비밀번호가 올바르지 않습니다.",
