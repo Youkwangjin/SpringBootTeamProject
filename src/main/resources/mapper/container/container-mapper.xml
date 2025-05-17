@@ -35,7 +35,7 @@
         <where>
             CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
-                AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 AND CONTAINER_STATUS = #{searchName}
@@ -56,10 +56,10 @@
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
-                C.CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+                C.CONTAINER_ADDRESS LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'companyName' and searchName != null and searchName.trim() != ''">
-                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', #{searchName}, '%')
+                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 AND C.CONTAINER_STATUS = #{searchName}
@@ -89,7 +89,7 @@
         <where>
             CONTAINER_OWNER_ID = #{containerOwnerId}
             <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
-                AND CONTAINER_NAME LIKE CONCAT ('%', #{searchName}, '%')
+                AND CONTAINER_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 AND CONTAINER_STATUS = #{searchName}
@@ -119,10 +119,10 @@
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
-                C.CONTAINER_ADDRESS LIKE CONCAT ('%', #{searchName}, '%')
+                C.CONTAINER_ADDRESS LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'companyName' and searchName != null and searchName.trim() != ''">
-                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', #{searchName}, '%')
+                AND O.OWNER_COMPANY_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
                 AND C.CONTAINER_STATUS = #{searchName}
