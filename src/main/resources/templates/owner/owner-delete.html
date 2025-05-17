@@ -17,44 +17,37 @@
 
             <h3>이메일</h3>
             <label for="ownerEmail">
-                <input type="text" name="ownerEmail" id="ownerEmail" class="text-field"
-                       th:value="${ownerData.ownerEmail}" readonly>
+                <input type="text" name="ownerEmail" id="ownerEmail" class="text-field" th:value="${ownerData.ownerEmail}" readonly>
             </label><br/>
 
             <h3>비밀번호</h3>
             <label for="ownerPassword">
-                <input type="password" name="ownerPassword" id="ownerPassword" class="text-field"
-                       placeholder="비밀번호">
+                <input type="password" name="ownerPassword" id="ownerPassword" class="text-field" placeholder="비밀번호">
             </label><br/>
 
             <h3>사업자 번호</h3>
             <label for="ownerBusinessNum">
-                <input type="text" name="ownerBusinessNum" id="ownerBusinessNum" class="text-field"
-                       th:value="${ownerData.ownerBusinessNum}" readonly>
+                <input type="text" name="ownerBusinessNum" id="ownerBusinessNum" class="text-field" th:value="${ownerData.ownerBusinessNum}" readonly>
             </label><br/>
 
             <h3>이름</h3>
             <label for="ownerName">
-                <input type="text" name="ownerName" id="ownerName" class="text-field"
-                       th:value="${ownerData.ownerNm}" placeholder="이름" readonly>
+                <input type="text" name="ownerName" id="ownerName" class="text-field" th:value="${ownerData.ownerNm}" placeholder="이름" readonly>
             </label><br/>
 
             <h3>전화번호</h3>
             <label for="ownerTel">
-                <input type="tel" name="ownerTel" id="ownerTel" class="text-field"
-                       th:value="${ownerData.ownerTel}" placeholder="-를 제외한 숫자만 입력 바랍니다." readonly>
+                <input type="tel" name="ownerTel" id="ownerTel" class="text-field" th:value="${ownerData.ownerTel}" placeholder="-를 제외한 숫자만 입력 바랍니다." readonly>
             </label><br/>
 
             <h3>회사명</h3>
             <label for="ownerCompanyName">
-                <input type="tel" name="ownerCompanyName" id="ownerCompanyName" class="text-field"
-                       th:value="${ownerData.ownerCompanyName}" placeholder="회사명을 입력해주세요." readonly>
+                <input type="tel" name="ownerCompanyName" id="ownerCompanyName" class="text-field" th:value="${ownerData.ownerCompanyName}" placeholder="회사명을 입력해주세요." readonly>
             </label><br/>
 
             <h3>주소</h3>
             <label for="userAddress">
-                <input type="text" name="ownerAddress" id="userAddress" class="text-field"
-                       th:value="${ownerData.ownerAddr}" placeholder="입력한 주소" readonly>
+                <input type="text" name="ownerAddress" id="userAddress" class="text-field" th:value="${ownerData.ownerAddr}" placeholder="입력한 주소" readonly>
             </label>
 
             <input type="submit" class="submit-btn" id="ownerDeleteBtn" value="탈퇴하기">
@@ -62,37 +55,41 @@
         </form>
     </div>
 </div>
+<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let ownerPassword = document.getElementById("ownerPassword");
+        const ownerId = document.getElementById("ownerId").value;
+        const ownerPassword = document.getElementById("ownerPassword");
 
-        let resetButton = document.getElementById("resetBtn");
-        let submitButton = document.getElementById("ownerDeleteBtn");
-        resetButton.addEventListener("click", function () {
-            window.location.href = "/owner/mypage";
-        });
+        const resetButton = document.getElementById("resetBtn");
+        const submitButton = document.getElementById("ownerDeleteBtn");
 
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/owner/mypage";
+        });
 
         document.getElementById("ownerDelete").addEventListener("submit", function (e) {
             e.preventDefault();
 
             if (!submitButton.disabled) {
-                const ownerId = document.getElementById("ownerId").value;
                 const passwordValue = ownerPassword.value.trim();
 
                 if (passwordValue === "") {
                     alert("비밀번호를 입력해주세요.");
-                    document.getElementById("ownerPassword").focus();
+                    ownerPassword.focus();
                     return;
                 }
+
                 if (confirm("정말로 탈퇴하시겠습니까?")) {
                     const ownerData = {
                         ownerId: ownerId,
-                        ownerPassword: ownerPassword.value,
-                        _csrf: document.querySelector("[name=_csrf]").value
+                        ownerPassword: passwordValue,
+                        _csrf: csrfToken
                     };
+
                     fetch(`/api/owner/delete/${ownerId}`, {
                         method: "POST",
                         headers: {
@@ -102,24 +99,18 @@
                         credentials: "include",
                         body: JSON.stringify(ownerData)
                     })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(errorData => {
-                                    throw new Error(errorData.errorMsg);
-                                });
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.httpStatus === "OK") {
-                                alert(data.resultMsg);
+                        .then(async response => {
+                            const responseData = await response.json();
+
+                            if (response.status === 200) {
+                                alert(MSG.INFO_DELETE_SUCCESS);
                                 performLogout();
                             } else {
-                                throw new Error(data.errorMsg);
+                                alert(responseData.errorMsg);
                             }
                         })
-                        .catch(error => {
-                            alert(error.message);
+                        .catch(() => {
+                            alert(MSG.ERROR);
                         });
                 }
             }
@@ -128,15 +119,22 @@
         function performLogout() {
             fetch("/api/logout", {
                 method: "POST",
-                credentials: "include"
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
             })
-                .then(response => {
-                    if (response.ok) {
+                .then(async response => {
+                    if (response.status === 200) {
                         window.location.href = "/";
                     } else {
-                        alert("서버에 오류가 발생했습니다. 관리자에게 문의하세요.")
+                        alert(MSG.ERROR);
                     }
                 })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
         }
     })
 </script>
