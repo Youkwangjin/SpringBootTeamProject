@@ -143,9 +143,9 @@ public class OwnerServiceImpl implements OwnerService {
         if (existingOwner == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
-        final String existingOwnerPassword = existingOwner.getOwnerPassword();
 
-        if (StringUtils.isNotBlank(ownerPassword) && !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
+        final String existingOwnerPassword = existingOwner.getOwnerPassword();
+        if (StringUtils.isBlank(ownerPassword) || !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
@@ -176,9 +176,9 @@ public class OwnerServiceImpl implements OwnerService {
         if (existingOwner == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
-        final String existingOwnerPassword = existingOwner.getOwnerPassword();
 
-        if (StringUtils.isNotBlank(ownerPassword) && !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
+        final String existingOwnerPassword = existingOwner.getOwnerPassword();
+        if (StringUtils.isBlank(ownerPassword) || !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
