@@ -184,11 +184,23 @@ public class OwnerServiceImpl implements OwnerService {
 
         List<Container> containerData = containerRepository.selectContainerAllData(ownerId);
         for (Container container : containerData) {
+            final Integer containerId = container.getContainerId();
             final Integer containerStatus = container.getContainerStatus();
+            final Integer containerApprovalStatus = container.getContainerApprovalStatus();
 
-            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
+            if (!Objects.equals(containerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
                 throw new AcontainerException(ApiOwnerErrorCode.OWNER_DELETION_ERROR);
             }
+
+            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_DELETION_ERROR);
+            }
+
+            Container deleteContainer = Container.builder()
+                    .containerId(containerId)
+                    .build();
+
+            containerRepository.containerDelete(deleteContainer);
         }
 
         Owner deleteOwner = Owner.builder()
