@@ -35,6 +35,7 @@ const MSG = {
     LOGIN_SUCCESS:                          "로그인이 정상적으로 완료되었습니다.",
     USER_AUTHENTICATION_FAILED:             "이메일 또는 비밀번호가 올바르지 않습니다.",
     OWNER_AUTHENTICATION_FAILED:            "사업자 번호 또는 비밀번호가 올바르지 않습니다.",
+    ADMIN_AUTHENTICATION_FAILED:            "이메일 또는 비밀번호가 일치하지 않습니다. 보안을 위해 일정 횟수 이상 실패 시 계정이 잠금 처리됩니다.",
     ADMIN_PASSWORD_SUCCESS:                 "비밀번호가 검증되었습니다.",
     BOARD_SAVE_SUCCESS:                     "게시글이 성공적으로 등록되었습니다.",
     BOARD_UPDATE_SUCCESS:                   "게시글이 성공적으로 수정되었습니다.",
