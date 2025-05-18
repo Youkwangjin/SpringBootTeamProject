@@ -11,6 +11,11 @@ public class IndexController {
         return "index/index";
     }
 
+    @GetMapping("/service")
+    public String servicePage() {
+        return "index/service";
+    }
+
     @GetMapping("/containerMaps")
     public String containerMapsPage() {
         return "index/conajax";

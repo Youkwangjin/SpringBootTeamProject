@@ -111,9 +111,9 @@ public class UserServiceImpl implements UserService {
         if (existingUser == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
-        final String existingUserPassword = existingUser.getUserPassword();
 
-        if (StringUtils.isNotBlank(userPassword) && !passwordEncoder.matches(userPassword, existingUserPassword)) {
+        final String existingUserPassword = existingUser.getUserPassword();
+        if (StringUtils.isBlank(userPassword) || !passwordEncoder.matches(userPassword, existingUserPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
@@ -142,9 +142,9 @@ public class UserServiceImpl implements UserService {
         if (existingUser == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
-        final String existingUserPassword = existingUser.getUserPassword();
 
-        if (StringUtils.isNotBlank(userPassword) && !passwordEncoder.matches(userPassword, existingUserPassword)) {
+        final String existingUserPassword = existingUser.getUserPassword();
+        if (StringUtils.isBlank(userPassword) || !passwordEncoder.matches(userPassword, existingUserPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 

@@ -29,22 +29,19 @@
 
             <h3>이름</h3>
             <label for="userNm">
-                <input type="text" name="userNm" id="userNm" class="text-field"
-                       th:value="${userData.userNm}" placeholder="이름" readonly>
+                <input type="text" name="userNm" id="userNm" class="text-field" th:value="${userData.userNm}" placeholder="이름" readonly>
             </label><br/>
             <span class="name-result"></span>
 
             <h3>전화번호</h3>
             <label for="userTel">
-                <input type="tel" name="userTel" id="userTel" class="text-field"
-                       th:value="${userData.userTel}" readonly>
+                <input type="tel" name="userTel" id="userTel" class="text-field" th:value="${userData.userTel}" readonly>
             </label><br/>
             <span class="tel-result"></span>
 
             <h3>주소</h3>
             <label for="userAddress">
-                <input type="text" name="userAddress" id="userAddress" class="text-field"
-                       th:value="${userData.userAddr}" readonly>
+                <input type="text" name="userAddress" id="userAddress" class="text-field" th:value="${userData.userAddr}" readonly>
             </label>
 
             <input type="submit" class="submit-btn" id="userDeleteBtn" value="탈퇴하기">
@@ -52,39 +49,41 @@
         </form>
     </div>
 </div>
-<script src="/js/common/daum-postcode.js"></script>
+<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let userPassword = document.getElementById("userPassword");
+        const userId = document.getElementById("userId").value;
+        const userPassword = document.getElementById("userPassword");
 
-        let resetButton = document.getElementById("resetBtn");
-        let submitButton = document.getElementById("userDeleteBtn");
+        const resetButton = document.getElementById("resetBtn");
+        const submitButton = document.getElementById("userDeleteBtn");
+
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
         resetButton.addEventListener("click", function () {
             window.location.href = "/user/mypage";
         });
 
-        const csrfTokenElement = document.querySelector("input[name=_csrf]");
-        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
-
         document.getElementById("userDelete").addEventListener("submit", function (e) {
             e.preventDefault();
 
             if (!submitButton.disabled) {
-                const userId = document.getElementById("userId").value;
                 const passwordValue = userPassword.value.trim();
 
                 if (passwordValue === "") {
                     alert("비밀번호를 입력해주세요.");
-                    document.getElementById("userPassword").focus();
+                    userPassword.focus();
                     return;
                 }
+
                 if (confirm("정말로 탈퇴하시겠습니까?")) {
                     const userData = {
                         userId: userId,
-                        userPassword: userPassword.value,
-                        _csrf: document.querySelector("[name=_csrf]").value
+                        userPassword: passwordValue,
+                        _csrf: csrfToken
                     };
+
                     fetch(`/api/user/delete/${userId}`, {
                         method: "POST",
                         headers: {
@@ -94,24 +93,18 @@
                         credentials: "include",
                         body: JSON.stringify(userData)
                     })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(errorData => {
-                                    throw new Error(errorData.errorMsg);
-                                });
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.httpStatus === "OK") {
-                                alert(data.resultMsg);
+                        .then(async response => {
+                            const responseData = await response.json();
+
+                            if (response.status === 200) {
+                                alert(MSG.INFO_DELETE_SUCCESS);
                                 performLogout();
                             } else {
-                                throw new Error(data.errorMsg);
+                                alert(responseData.errorMsg);
                             }
                         })
-                        .catch(error => {
-                            alert(error.message);
+                        .catch(() => {
+                            alert(MSG.ERROR);
                         });
                 }
             }
@@ -120,15 +113,22 @@
         function performLogout() {
             fetch("/api/logout", {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
                 credentials: "include",
             })
-                .then(response => {
-                    if (response.ok) {
+                .then(async response => {
+                    if (response.status === 200) {
                         window.location.href = "/";
                     } else {
-                        alert("서버에 오류가 발생했습니다. 관리자에게 문의하세요.")
+                        alert(MSG.ERROR);
                     }
                 })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
         }
     });
 </script>

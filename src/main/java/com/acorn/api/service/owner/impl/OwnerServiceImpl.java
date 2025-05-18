@@ -143,10 +143,24 @@ public class OwnerServiceImpl implements OwnerService {
         if (existingOwner == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
-        final String existingOwnerPassword = existingOwner.getOwnerPassword();
 
-        if (StringUtils.isNotBlank(ownerPassword) && !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
+        final String existingOwnerPassword = existingOwner.getOwnerPassword();
+        if (StringUtils.isBlank(ownerPassword) || !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
+        }
+
+        List<Container> containerData = containerRepository.selectContainerAllData(ownerId);
+        for (Container container : containerData) {
+            final Integer containerStatus = container.getContainerStatus();
+            final Integer containerApprovalStatus = container.getContainerApprovalStatus();
+
+            if (!Objects.equals(containerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_UPDATE_ERROR);
+            }
+
+            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_UPDATE_ERROR);
+            }
         }
 
         Owner updateOwner = Owner.builder()
@@ -176,19 +190,31 @@ public class OwnerServiceImpl implements OwnerService {
         if (existingOwner == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
         }
-        final String existingOwnerPassword = existingOwner.getOwnerPassword();
 
-        if (StringUtils.isNotBlank(ownerPassword) && !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
+        final String existingOwnerPassword = existingOwner.getOwnerPassword();
+        if (StringUtils.isBlank(ownerPassword) || !passwordEncoder.matches(ownerPassword, existingOwnerPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
         List<Container> containerData = containerRepository.selectContainerAllData(ownerId);
         for (Container container : containerData) {
+            final Integer containerId = container.getContainerId();
             final Integer containerStatus = container.getContainerStatus();
+            final Integer containerApprovalStatus = container.getContainerApprovalStatus();
 
-            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
+            if (!Objects.equals(containerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
                 throw new AcontainerException(ApiOwnerErrorCode.OWNER_DELETION_ERROR);
             }
+
+            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_DELETION_ERROR);
+            }
+
+            Container deleteContainer = Container.builder()
+                    .containerId(containerId)
+                    .build();
+
+            containerRepository.containerDelete(deleteContainer);
         }
 
         Owner deleteOwner = Owner.builder()

@@ -23,6 +23,7 @@
 </div>
 <main class="container mt-5">
     <form id="containerListForm" method="get">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
         <div class="text-center mb-4">
             <h2>보유 창고 정보</h2>
@@ -40,7 +41,7 @@
                 <option value="0" th:selected="${request.searchName == '0'}">사용 대기</option>
                 <option value="1" th:selected="${request.searchName == '1'}">사용 가능</option>
                 <option value="2" th:selected="${request.searchName == '2'}">사용 중</option>
-                <option value="3" th:selected="${request.searchName == '3'}">사용 불가능</option>
+                <option value="3" th:selected="${request.searchName == '3'}">사용 불가</option>
             </select>
             <select id="approvalValue" name="searchName" style="display: none;" aria-label="승인 상태">
                 <option value="0" th:selected="${request.searchName == '0'}">승인 대기</option>
@@ -77,7 +78,7 @@
                         <span th:if="${container.containerStatus == 0}" class="text-success">사용 대기</span>
                         <span th:if="${container.containerStatus == 1}" class="text-warning">사용 가능</span>
                         <span th:if="${container.containerStatus == 2}" class="text-danger">사용 중</span>
-                        <span th:if="${container.containerStatus == 3}" class="text-danger">사용 불가능</span>
+                        <span th:if="${container.containerStatus == 3}" class="text-danger">사용 불가</span>
                     </td>
                     <td>
                         <span th:if="${container.containerApprovalStatus == 0}" class="text-success">승인 대기</span>
@@ -120,15 +121,18 @@
         </div>
     </form>
 </main>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const searchButton = document.getElementById("searchButton");
-        const resetButton = document.getElementById("resetBtn");
         const pageNo = document.getElementById("pageNo").value;
         const searchType = document.getElementById("searchType");
         const searchName = document.getElementById("searchName");
+
         const statusValue = document.getElementById("statusValue");
         const approvalValue = document.getElementById("approvalValue");
+
+        const searchButton = document.getElementById("searchButton");
+        const resetButton = document.getElementById("resetBtn");
 
         const setSearchInputVisibility = () => {
             searchName.style.display = "none";

@@ -39,43 +39,52 @@
         <a href="/owner/join">회원가입</a>
     </div>
 </section>
+<script src="/js/common/messages.js"></script>
 <script>
-    const csrfTokenElement = document.querySelector("input[name=_csrf]");
-    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+    document.addEventListener("DOMContentLoaded", function (){
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-    document.getElementById("ownerLoginForm").addEventListener("submit", function (event) {
-        event.preventDefault();
+        document.getElementById("ownerLoginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const ownerBusinessNum = document.getElementById("ownerBusinessNum").value.trim();
-        const ownerPassword = document.getElementById("ownerPassword").value.trim();
+            const ownerBusinessNum = document.getElementById("ownerBusinessNum").value.trim();
+            const ownerPassword = document.getElementById("ownerPassword").value.trim();
 
-        if (!ownerBusinessNum || !ownerPassword) {
-            alert("사업자 번호와 비밀번호를 모두 입력해주세요.");
-            return;
-        }
+            if (!ownerBusinessNum || !ownerPassword) {
+                alert("사업자 번호와 비밀번호를 모두 입력해주세요.");
+                return;
+            }
 
-        fetch("/api/auth/owner/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-            },
-            body: JSON.stringify ({
+            const ownerData = {
                 ownerBusinessNum: ownerBusinessNum,
-                ownerPassword: ownerPassword
+                ownerPassword: ownerPassword,
+                _csrf: csrfToken
+            };
+
+            fetch("/api/auth/owner/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                credentials: "include",
+                body: JSON.stringify(ownerData)
             })
-        }).then(response => response.json())
-            .then(data => {
-                if (data.httpStatus === "OK") {
-                    window.location.href = "/owner/mypage";
-                } else {
-                    alert(data.errorMsg);
-                }
-            })
-            .catch(error => {
-                alert(error.errorMsg);
-            })
-    })
+                .then(async response => {
+                    if (response.status === 200) {
+                        window.location.href = "/owner/mypage";
+                    } else if (response.status === 401) {
+                        alert(MSG.OWNER_AUTHENTICATION_FAILED);
+                    } else {
+                        alert(MSG.ERROR);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
+        })
+    });
 </script>
 </body>
 </html>

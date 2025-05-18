@@ -72,71 +72,6 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
-    @Transactional
-    public void containerRegister(ContainerRegisterDTO registerData) {
-        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
-        final Integer containerOwnerId = registerData.getContainerOwnerId();
-        final Integer containerId = containerRepository.selectContainerIdKey();
-        final String containerName = registerData.getContainerName();
-        final String containerAddr = registerData.getContainerAddr();
-        final BigDecimal containerLatitude = registerData.getContainerLatitude();
-        final BigDecimal containerLongitude = registerData.getContainerLongitude();
-        final String containerContents = registerData.getContainerContents();
-        final BigDecimal containerSize = registerData.getContainerSize();
-        final Integer containerPrice = registerData.getContainerPrice();
-        final Integer containerStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
-        final Integer containerApprovalStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode();
-        final List<MultipartFile> containerFiles = registerData.getContainerFiles();
-
-        if (currentOwnerId == null && containerOwnerId == null) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
-
-        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
-
-        Container newContainerRegisterData = Container.builder()
-                .containerId(containerId)
-                .containerName(containerName)
-                .containerSize(containerSize)
-                .containerPrice(containerPrice)
-                .containerAddr(containerAddr)
-                .containerLatitude(containerLatitude)
-                .containerLongitude(containerLongitude)
-                .containerContents(containerContents)
-                .containerContentsText(Jsoup.parse(containerContents).text())
-                .containerStatus(containerStatus)
-                .containerApprovalStatus(containerApprovalStatus)
-                .containerOwnerId(containerOwnerId)
-                .build();
-        containerRepository.containerRegister(newContainerRegisterData);
-
-        if (containerFiles != null && !containerFiles.isEmpty()) {
-            for (MultipartFile multipartFile : containerFiles) {
-                final Integer containerFileId = containerFileRepository.selectContainerFileIdKey();
-                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
-                final String storedFileName = String.format("[%s_%s]%s", containerId, containerFileId, UUID.randomUUID().toString().replaceAll("-", ""));
-                final String filePath = uploadDir;
-                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
-                final String fileSize = String.valueOf(multipartFile.getSize());
-
-                ContainerFile newContainerFile = ContainerFile.builder()
-                        .containerFileId(containerFileId)
-                        .containerOriginalFileName(originalFileName)
-                        .containerStoredFileName(storedFileName)
-                        .containerFilePath(filePath)
-                        .containerFileExtNm(fileExtNm)
-                        .containerFileSize(fileSize)
-                        .containerId(containerId)
-                        .build();
-                containerFileRepository.containerFileSave(newContainerFile);
-                fileComponent.upload(filePath, storedFileName, multipartFile);
-            }
-        }
-    }
-
-    @Override
     public ContainerDetailDTO getContainerData(Integer containerId) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         if (currentOwnerId == null) {
@@ -200,6 +135,73 @@ public class ContainerServiceImpl implements ContainerService {
 
     @Override
     @Transactional
+    public void containerRegister(ContainerRegisterDTO registerData) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer containerOwnerId = registerData.getContainerOwnerId();
+        final Integer containerId = containerRepository.selectContainerIdKey();
+        final String containerName = registerData.getContainerName();
+        final String containerAddr = registerData.getContainerAddr();
+        final BigDecimal containerLatitude = registerData.getContainerLatitude();
+        final BigDecimal containerLongitude = registerData.getContainerLongitude();
+        final String containerContents = registerData.getContainerContents();
+        final BigDecimal containerSize = registerData.getContainerSize();
+        final Integer containerPrice = registerData.getContainerPrice();
+        final Integer containerStatus = ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode();
+        final Integer containerApprovalStatus = ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode();
+        final List<MultipartFile> containerFiles = registerData.getContainerFiles();
+
+        if (currentOwnerId == null && containerOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container newContainerRegisterData = Container.builder()
+                .containerId(containerId)
+                .containerName(containerName)
+                .containerSize(containerSize)
+                .containerPrice(containerPrice)
+                .containerAddr(containerAddr)
+                .containerLatitude(containerLatitude)
+                .containerLongitude(containerLongitude)
+                .containerContents(containerContents)
+                .containerContentsText(Jsoup.parse(containerContents).text())
+                .containerStatus(containerStatus)
+                .containerApprovalStatus(containerApprovalStatus)
+                .containerOwnerId(containerOwnerId)
+                .build();
+
+        containerRepository.containerRegister(newContainerRegisterData);
+
+        if (containerFiles != null && !containerFiles.isEmpty()) {
+            for (MultipartFile multipartFile : containerFiles) {
+                final Integer containerFileId = containerFileRepository.selectContainerFileIdKey();
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", containerId, containerFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(multipartFile.getSize());
+
+                ContainerFile newContainerFile = ContainerFile.builder()
+                        .containerFileId(containerFileId)
+                        .containerOriginalFileName(originalFileName)
+                        .containerStoredFileName(storedFileName)
+                        .containerFilePath(filePath)
+                        .containerFileExtNm(fileExtNm)
+                        .containerFileSize(fileSize)
+                        .containerId(containerId)
+                        .build();
+
+                containerFileRepository.containerFileSave(newContainerFile);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
     public void containerUpdate(ContainerUpdateDTO updateData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer containerOwnerId = updateData.getContainerOwnerId();
@@ -229,12 +231,12 @@ public class ContainerServiceImpl implements ContainerService {
         final Integer exsitedContainerApprovalStatus = exsitedContainer.getContainerApprovalStatus();
         final Integer exsitedContainerStatus = exsitedContainer.getContainerStatus();
 
-        if (!Objects.equals(exsitedContainerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
-            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_PENDING);
-        }
-
         if (!Objects.equals(exsitedContainerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
             throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_PENDING);
+        }
+
+        if (!Objects.equals(exsitedContainerStatus, ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode())) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_MODIFY_DELETE_NOT_AVAILABLE);
         }
 
         Container newContainerUpdateData = Container.builder()
@@ -248,6 +250,7 @@ public class ContainerServiceImpl implements ContainerService {
                 .containerContents(containerContents)
                 .containerContentsText(containerContentsText)
                 .build();
+
         containerRepository.containerUpdate(newContainerUpdateData);
 
         List<Integer> containaerFileIds = updateData.getContainerFileIds();
@@ -294,6 +297,7 @@ public class ContainerServiceImpl implements ContainerService {
                         .containerFileSize(fileSize)
                         .containerId(containerId)
                         .build();
+
                 containerFileRepository.containerFileSave(newContainerFile);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
@@ -323,12 +327,12 @@ public class ContainerServiceImpl implements ContainerService {
         final Integer exsitedContainerApprovalStatus = exsitedContainer.getContainerApprovalStatus();
         final Integer exsitedContainerStatus = exsitedContainer.getContainerStatus();
 
-        if (!Objects.equals(exsitedContainerStatus, ContainerStatus.CONTAINER_STATUS_PENDING.getCode())) {
-            throw new AcontainerException(ApiErrorCode.CONTAINER_STATUS_NOT_PENDING);
-        }
-
         if (!Objects.equals(exsitedContainerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
             throw new AcontainerException(ApiErrorCode.CONTAINER_APPROVAL_NOT_PENDING);
+        }
+
+        if (!Objects.equals(exsitedContainerStatus, ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode())) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_MODIFY_DELETE_NOT_AVAILABLE);
         }
 
         List<ContainerFile> existingFiles = containerFileRepository.selectFilesByContainerId(containerId);

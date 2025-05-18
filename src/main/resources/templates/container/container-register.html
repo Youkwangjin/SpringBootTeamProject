@@ -124,37 +124,33 @@
 <script src="/js/tinymce/tinymce.min.js"></script>
 <script src="/js/common/tinyMCEConfig.js"></script>
 <script src="/js/common/fileModule.js"></script>
+<script src="/js/common/messages.js"></script>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        initBackListButton();
-        initSubmitHandler();
-    });
-
-    function initBackListButton() {
         const backListButton = document.getElementById("backListBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
         backListButton.addEventListener("click", function () {
             window.location.href = "/container/list";
         });
-    }
-
-    function initSubmitHandler() {
-        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
         document.getElementById("containerRegister").addEventListener("submit" , function (event) {
             event.preventDefault();
 
-            let missingFields = [];
+            const missingFields = [];
 
-            let containerOwnerId = document.getElementById("containerOwnerId").value.trim();
-            let containerName = document.getElementById("containerName").value.trim();
-            let ownerName = document.getElementById("ownerName").value.trim();
-            let containerSize = document.getElementById("containerSize").value.trim();
-            let containerPrice = document.getElementById("containerPrice").value.trim();
-            let containerAddr = document.getElementById("userAddress").value.trim();
-            let containerLatitude = document.getElementById("containerLatitude").value.trim();
-            let containerLongitude = document.getElementById("containerLongitude").value.trim();
-            let containerContents = tinymce.get("boardContents").getContent().trim();
+            const containerOwnerId = document.getElementById("containerOwnerId").value.trim();
+            const containerName = document.getElementById("containerName").value.trim();
+            const ownerName = document.getElementById("ownerName").value.trim();
+            const containerSize = document.getElementById("containerSize").value.trim();
+            const containerPrice = document.getElementById("containerPrice").value.trim();
+            const containerAddr = document.getElementById("userAddress").value.trim();
+            const containerLatitude = document.getElementById("containerLatitude").value.trim();
+            const containerLongitude = document.getElementById("containerLongitude").value.trim();
+            const containerContents = tinymce.get("boardContents").getContent().trim();
 
             if (!containerName) missingFields.push("창고 이름");
             if (!containerSize) missingFields.push("창고 크기");
@@ -203,29 +199,24 @@
                 headers: {
                     "X-CSRF-TOKEN": csrfToken,
                 },
-                body: formData,
+                credentials: "include",
+                body: formData
             })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.errorMsg);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        alert(data.resultMsg);
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.CONTAINER_REGISTER_SUCCESS);
                         window.location.href = "/container/list";
                     } else {
-                        throw new Error(data.errorMsg);
+                        alert(responseData.errorMsg);
                     }
                 })
-                .catch(error => {
-                    alert(error.message);
+                .catch(() => {
+                    alert(MSG.ERROR);
                 });
         });
-    }
+    });
 
     let file = fileModule({
         count: 5,
