@@ -149,6 +149,20 @@ public class OwnerServiceImpl implements OwnerService {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
+        List<Container> containerData = containerRepository.selectContainerAllData(ownerId);
+        for (Container container : containerData) {
+            final Integer containerStatus = container.getContainerStatus();
+            final Integer containerApprovalStatus = container.getContainerApprovalStatus();
+
+            if (!Objects.equals(containerApprovalStatus, ContainerStatus.CONTAINER_APPROVAL_STATUS_PENDING.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_UPDATE_ERROR);
+            }
+
+            if (!Objects.equals(containerStatus, ContainerStatus.CONTAINER_STATUS_UNAVAILABLE.getCode())) {
+                throw new AcontainerException(ApiOwnerErrorCode.OWNER_UPDATE_ERROR);
+            }
+        }
+
         Owner updateOwner = Owner.builder()
                 .ownerId(ownerId)
                 .ownerEmail(ownerEmail)
