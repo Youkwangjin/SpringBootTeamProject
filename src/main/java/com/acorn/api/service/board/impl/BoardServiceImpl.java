@@ -213,9 +213,9 @@ public class BoardServiceImpl implements BoardService {
         if (detailData == null) {
             throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
         }
-        final String existingBoardPassword = detailData.getBoardPassword();
 
-        if (StringUtils.isNotBlank(boardPassword) && !passwordEncoder.matches(boardPassword, existingBoardPassword)) {
+        final String existingBoardPassword = detailData.getBoardPassword();
+        if (StringUtils.isBlank(boardPassword) || !passwordEncoder.matches(boardPassword, existingBoardPassword)) {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 

@@ -29,17 +29,17 @@
         FROM TB_BOARD
         <where>
             <if test="searchType == 'boardTitle' and searchName != null and searchName.trim() !=''">
-                BOARD_TITLE LIKE CONCAT('%', #{searchName}, '%')
+                BOARD_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'boardContentsText' and searchName != null and searchName.trim() !=''">
-                BOARD_CONTENTS_TEXT LIKE CONCAT('%', #{searchName}, '%')
+                BOARD_CONTENTS_TEXT LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'boardWriter' and searchName != null and searchName.trim() !=''">
-                BOARD_WRITER LIKE CONCAT('%', #{searchName}, '%')
+                BOARD_WRITER LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'boardTitleContents' and searchName != null and searchName.trim() !=''">
-                (BOARD_TITLE LIKE CONCAT('%', #{searchName}, '%') OR
-                BOARD_CONTENTS LIKE CONCAT('%', #{searchName}, '%'))
+                (BOARD_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%') OR
+                BOARD_CONTENTS LIKE CONCAT('%', TRIM(#{searchName}), '%'))
             </if>
         </where>
     </select>
@@ -55,17 +55,17 @@
         FROM TB_BOARD
         <where>
             <if test="searchType == 'boardTitle' and searchName != null and searchName.trim() !=''">
-                BOARD_TITLE LIKE CONCAT('%', #{searchName}, '%')
+                BOARD_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'boardContentsText' and searchName != null and searchName.trim() !=''">
-                BOARD_CONTENTS_TEXT LIKE CONCAT('%', #{searchName}, '%')
+                BOARD_CONTENTS_TEXT LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'boardWriter' and searchName != null and searchName.trim() !=''">
-                BOARD_WRITER LIKE CONCAT('%', #{searchName}, '%')
+                BOARD_WRITER LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'boardTitleContents' and searchName != null and searchName.trim() !=''">
-                (BOARD_TITLE LIKE CONCAT('%', #{searchName}, '%') OR
-                BOARD_CONTENTS LIKE CONCAT('%', #{searchName}, '%'))
+                (BOARD_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%') OR
+                BOARD_CONTENTS LIKE CONCAT('%', TRIM(#{searchName}), '%'))
             </if>
         </where>
         ORDER BY BOARD_CREATED DESC

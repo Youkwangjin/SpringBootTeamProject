@@ -93,65 +93,62 @@
         </div>
     </form>
 </div>
+<script src="/js/common/messages.js"></script>
+<script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded" ,function () {
-       let backBtn = document.getElementById("backBtn");
-       let updateBtn = document.getElementById("updateBtn");
-       let deleteBtn = document.getElementById("deleteBtn");
-       const containerId = document.getElementById("containerId").value;
-       const ownerId = document.getElementById("containerOwnerId").value;
+        const containerId = document.getElementById("containerId").value;
+        const ownerId = document.getElementById("containerOwnerId").value;
+
+        const backBtn = document.getElementById("backBtn");
+        const updateBtn = document.getElementById("updateBtn");
+        const deleteBtn = document.getElementById("deleteBtn");
 
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-       backBtn.addEventListener("click" ,function () {
-          window.location.href = "/container/list";
-       });
+        backBtn.addEventListener("click" ,function () {
+            window.location.href = "/container/list";
+        });
 
-       updateBtn.addEventListener("click", function () {
-           window.location.href = `/container/update/${containerId}`;
-       });
+        updateBtn.addEventListener("click", function () {
+            window.location.href = `/container/update/${containerId}`;
+        });
 
-       deleteBtn.addEventListener("click", function () {
-           if (!confirm("정말로 삭제하시겠습니까?")) {
-               return;
-           }
+        deleteBtn.addEventListener("click", function () {
+            if (!confirm("정말로 삭제하시겠습니까?")) {
+                return;
+            }
 
-           const containerData = {
-               containerId: containerId,
-               ownerId: ownerId,
-               _csrf: csrfToken
-           };
+            const containerData = {
+                containerId: containerId,
+                ownerId: ownerId,
+                _csrf: csrfToken
+            };
 
-           fetch(`/api/container/delete/${containerId}`, {
-               method: "POST",
-               headers: {
-                   "Content-Type": "application/json",
-                   "X-CSRF-TOKEN": csrfToken
-               },
-               credentials: "include",
-               body: JSON.stringify(containerData)
-           })
-               .then(response => {
-                   if (!response.ok) {
-                       return response.json().then(errorData => {
-                           throw new Error(errorData.errorMsg);
-                       });
-                   }
-                   return response.json();
-               })
-               .then(data => {
-                   if (data.httpStatus === "OK") {
-                       alert(data.resultMsg);
-                       window.location.href = "/container/list";
-                   } else {
-                       throw new Error(data.errorMsg);
-                   }
-               })
-               .catch(error => {
-                   alert(error.message);
-               });
-       });
+            fetch(`/api/container/delete/${containerId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
+                body: JSON.stringify(containerData)
+            })
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.CONTAINER_DELETE_SUCCESS);
+                        window.location.href = "/container/list";
+                    } else {
+                        alert(responseData.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
+        });
     });
 </script>
 </body>
