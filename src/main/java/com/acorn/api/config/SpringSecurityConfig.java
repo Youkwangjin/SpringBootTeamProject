@@ -100,6 +100,7 @@ public class SpringSecurityConfig {
                                          "/session/expired",
                                          "/service",
                                          "/containerMaps",
+                                         "/api/geocode/**",
                                          "/user/join",
                                          "/user/login",
                                          "/owner/join",
