@@ -15,7 +15,7 @@
 <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
     <div th:replace="~{fragments/header-admin :: header}"></div>
 </div>
-<form id="userEditForm">
+<form id="userUpdate">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" id="userId" th:value="${userDetailData.userId}">
     <div class="user-box">
@@ -80,13 +80,14 @@
         </table>
         <div class="btn-wrap">
             <button type="button" id="backBtn" class="btn btn-list">이전</button>
-            <button type="button" id="saveBtn" class="btn btn-save">저장</button>
+            <button type="submit" id="saveBtn" class="btn btn-save">저장</button>
         </div>
     </div>
 </form>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/common/daum-postcode.js"></script>
 <script src="/js/common/logout.js"></script>
+<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const userId = document.getElementById("userId").value;
@@ -94,24 +95,25 @@
         const userTel = document.getElementById("userTel");
         const userNm = document.getElementById("userNm");
         const userAddr = document.getElementById("userAddress");
-        const saveBtn = document.getElementById("saveBtn");
-        const backBtn = document.getElementById("backBtn");
-
-        const emailResult = document.querySelector(".email-result");
-        const telResult = document.querySelector(".tel-result");
-        const nameResult = document.querySelector(".name-result");
 
         const initialEmail = userEmail.value;
         const initialTel = userTel.value;
         const initialName = userNm.value;
 
+        const emailResult = document.querySelector(".email-result");
+        const telResult = document.querySelector(".tel-result");
+        const nameResult = document.querySelector(".name-result");
+
+        const saveBtn = document.getElementById("saveBtn");
+        const backBtn = document.getElementById("backBtn");
+
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-        let validStates = {
+        const validStates = {
             userEmail: true,
             userTel: true,
-            userDisplayName: true
+            userNm: true
         };
 
         function checkFormValid() {
@@ -119,133 +121,9 @@
             saveBtn.disabled = !allValid;
         }
 
-        userEmail.addEventListener("input", (e) => {
-            validEmail(e.target, emailResult);
-        });
-
-        userTel.addEventListener("input", (e) => {
-            validTel(e.target, telResult);
-        });
-
-        userNm.addEventListener("input", (e) => {
-            validName(e.target, nameResult);
-        });
-
-        function validEmail(emailInput, resultElement) {
-            const email = emailInput.value.trim();
-            if (email.length === 0) {
-                resultElement.textContent = "이메일을 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                validStates.userEmail = false;
-            } else if (!validEmailCheck(email)) {
-                resultElement.textContent = "이메일 형식으로 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                validStates.userEmail = false;
-            } else if (email === initialEmail) {
-                resultElement.textContent = "현재 기존 사용자의 이메일입니다.";
-                resultElement.classList.add("success");
-                resultElement.classList.remove("error");
-                validStates.userEmail = true;
-            } else {
-                checkEmailDuplication(emailInput, resultElement);
-            }
-            checkFormValid();
-        }
-
-        function checkEmailDuplication(emailInput, resultElement) {
-            const userEmail = emailInput.value.trim();
-            fetch("/api/auth/user/emailCheck?userEmail=" + encodeURIComponent(userEmail), {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = data.resultMsg;
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
-                        validStates.userEmail = true;
-                        checkFormValid();
-                    }
-                })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.userEmail = false;
-                        checkFormValid();
-                    });
-                });
-        }
-
         function validEmailCheck(email) {
             const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
             return emailPattern.test(email);
-        }
-
-        function validTel(telInput, resultElement) {
-            const tel = telInput.value.trim();
-            if (tel.length === 0) {
-                resultElement.textContent = "전화번호를 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
-                validStates.userTel = false;
-            } else if (!validTelCheck(tel)) {
-                resultElement.textContent = "번호를 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                telInput.focus();
-                validStates.userTel = false;
-            } else if (tel === initialTel) {
-                resultElement.textContent = "현재 기존 사용자의 번호입니다.";
-                resultElement.classList.add("success");
-                resultElement.classList.remove("error");
-                validStates.userTel = true;
-            } else {
-                checkTelDuplication(telInput, resultElement);
-            }
-            checkFormValid();
-        }
-
-        function checkTelDuplication(telInput, resultElement) {
-            const userTel = telInput.value.trim();
-            fetch("/api/auth/user/userTelCheck?userTel=" + encodeURIComponent(userTel), {
-                method: "GET",
-                credentials: "include",
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.httpStatus === "OK") {
-                        resultElement.textContent = data.resultMsg;
-                        resultElement.classList.add("success");
-                        resultElement.classList.remove("error");
-                        validStates.userTel = true;
-                        checkFormValid();
-                    }
-                })
-                .catch(errorResponse => {
-                    errorResponse.json().then(errorData => {
-                        resultElement.textContent = errorData.errorMsg;
-                        resultElement.classList.add("error");
-                        resultElement.classList.remove("success");
-                        validStates.userTel = false;
-                        checkFormValid();
-                    });
-                });
         }
 
         function validTelCheck(tel) {
@@ -253,114 +131,222 @@
             return telPattern.test(tel.trim());
         }
 
-        function validName(nameInput, resultElement) {
-            const name = nameInput.value.trim();
-            if (name.length === 0) {
-                resultElement.textContent = "이름을 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
-                validStates.userDisplayName = false;
-            } else if (!validNameCheck(name)) {
-                resultElement.textContent = "이름을 올바르게 입력해주세요.";
-                resultElement.classList.remove("success");
-                resultElement.classList.add("error");
-                nameInput.focus();
-                validStates.userDisplayName = false;
-            } else if (name === initialName) {
-                resultElement.textContent = "현재 기존 회원님 이름입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
-                validStates.userDisplayName = true;
-            } else {
-                resultElement.textContent = "사용 가능한 이름입니다.";
-                resultElement.classList.remove("error");
-                resultElement.classList.add("success");
-                validStates.userDisplayName = true;
-            }
-            checkFormValid();
-        }
-
         function validNameCheck(name) {
             let namePattern = /^[가-힣a-zA-Z]{2,10}$/;
             return namePattern.test(name.trim());
         }
 
-        saveBtn.addEventListener("click", function (event) {
-            event.preventDefault();
+        function setValidationMessage(element, message, isValid) {
+            element.textContent = message;
+            element.classList.toggle("success", isValid);
+            element.classList.toggle("error", !isValid);
+        }
 
-            if (!saveBtn.disabled) {
-                if (!confirm("사용자 정보를 수정하시겠습니까?")) {
-                    alert("회원 정보 수정이 취소되었습니다.");
-                    return;
-                }
+        function checkTelDuplication(telStr, resultElement) {
+            fetch(`/api/auth/user/userTelCheck?userTel=${encodeURIComponent(telStr)}`, {
+                method: "GET",
+                credentials: "include",
+            })
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.TEL_OK, true);
+                        validStates.userTel = true;
 
-                const adminPassword = prompt("관리자 비밀번호를 입력해주세요.");
-                if (!adminPassword) {
-                    alert("비밀번호 입력이 취소되었습니다.");
-                    return;
-                }
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.TEL_IN_USE, false);
+                        validStates.userTel = false;
 
-                fetch("/api/admin/password/confirm", {
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.userTel = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.userTel = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function checkEmailDuplication(emailStr, resultElement) {
+            fetch(`/api/auth/user/emailCheck?userEmail=${encodeURIComponent(emailStr)}`, {
+                method: "GET",
+                credentials: "include"
+            })
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        setValidationMessage(resultElement, MSG.EMAIL_OK, true);
+                        validStates.userEmail = true;
+
+                    } else if (response.status === 409) {
+                        setValidationMessage(resultElement, MSG.EMAIL_IN_USE, false);
+                        validStates.userEmail = false;
+
+                    } else {
+                        setValidationMessage(resultElement, MSG.ERROR, false);
+                        validStates.userEmail = false;
+                    }
+                })
+                .catch(() => {
+                    setValidationMessage(resultElement, MSG.ERROR, false);
+                    validStates.userEmail = false;
+                })
+                .finally(checkFormValid);
+        }
+
+        function validEmail(userEmail, resultElement) {
+            const emailStr = userEmail.value.trim();
+            if (emailStr.length === 0) {
+                setValidationMessage(resultElement, MSG.EMAIL_EMPTY, false);
+                userEmail.focus();
+                validStates.userEmail = false;
+
+            } else if (!validEmailCheck(emailStr)) {
+                setValidationMessage(resultElement, MSG.EMAIL_INVALID, false);
+                userEmail.focus();
+                validStates.userEmail = false;
+
+            } else if (emailStr === initialEmail) {
+                setValidationMessage(resultElement, MSG.EMAIL_IN_USE, true);
+                validStates.userEmail = true;
+
+            } else {
+                checkEmailDuplication(emailStr, resultElement);
+            }
+
+            checkFormValid();
+        }
+
+        function validTel(userTel, resultElement) {
+            const telStr = userTel.value.trim();
+
+            if (telStr.length === 0) {
+                setValidationMessage(resultElement, MSG.TEL_EMPTY, false);
+                userTel.focus();
+                validStates.userTel = false;
+
+            } else if (!validTelCheck(telStr)) {
+                setValidationMessage(resultElement, MSG.TEL_INVALID, false);
+                userTel.focus();
+                validStates.userTel = false;
+
+            } else if (telStr === initialTel) {
+                setValidationMessage(resultElement, MSG.TEL_IN_USE, true);
+                validStates.userTel = true;
+
+            } else {
+                checkTelDuplication(telStr, resultElement);
+                return;
+            }
+
+            checkFormValid();
+        }
+
+        function validName(userNm, resultElement) {
+            const nameStr = userNm.value.trim();
+
+            if (nameStr.length === 0) {
+                setValidationMessage(resultElement, MSG.NAME_EMPTY, false);
+                userNm.focus();
+                validStates.userNm = false;
+
+            } else if (!validNameCheck(nameStr)) {
+                setValidationMessage(resultElement, MSG.NAME_INVALID, false);
+                userNm.focus();
+                validStates.userNm = false;
+
+            } else if (nameStr === initialName) {
+                setValidationMessage(resultElement, MSG.NAME_IN_USE, true);
+                validStates.userNm = true;
+
+            } else {
+                setValidationMessage(resultElement, MSG.NAME_OK, true);
+                validStates.userNm = true;
+            }
+
+            checkFormValid();
+        }
+
+        userEmail.addEventListener("input", () => {
+            validEmail(userEmail, emailResult);
+        });
+
+        userNm.addEventListener("input", () => {
+            validName(userNm, nameResult);
+        });
+
+        userTel.addEventListener("input", () => {
+            validTel(userTel, telResult);
+        });
+
+        backBtn.addEventListener("click", function () {
+            window.location.href = `/admin/user/detail/${userId}`;
+        });
+
+        document.getElementById("userUpdate").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            if (saveBtn.disabled) return;
+
+            if (!confirm("사용자 정보를 수정하시겠습니까?")) {
+                alert("회원 정보 수정이 취소되었습니다.");
+                return;
+            }
+
+            const adminPassword = prompt("관리자 비밀번호를 입력해주세요.");
+            if (!adminPassword) {
+                alert("비밀번호 입력이 취소되었습니다.");
+                return;
+            }
+
+            try {
+                const passwordRes = await fetch("/api/admin/password/confirm", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "X-CSRF-TOKEN": csrfToken
                     },
                     credentials: "include",
-                    body: JSON.stringify({ adminPassword: adminPassword })
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(errorData => {
-                                throw new Error(errorData.errorMsg);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(() => {
-                        const userData = {
-                            userId: userId,
-                            userEmail: userEmail.value,
-                            userNm: userNm.value,
-                            userTel: userTel.value,
-                            userAddr: userAddr.value,
-                            _csrf: csrfToken
-                        };
+                    body: JSON.stringify({ adminPassword })
+                });
 
-                        fetch(`/api/admin/user/update/${userId}`, {
-                            method: "PATCH",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRF-TOKEN": csrfToken
-                            },
-                            credentials: "include",
-                            body: JSON.stringify(userData)
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    return response.json().then(errorData => {
-                                        throw new Error(errorData.errorMsg);
-                                    });
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                if (data.httpStatus === "OK") {
-                                    alert(data.resultMsg);
-                                    window.location.href = "/admin/user/list";
-                                } else {
-                                    throw new Error(data.errorMsg);
-                                }
-                            })
-                            .catch(error => alert(error.message));
-                    })
-                    .catch(error => alert(error.message));
+                const passwordData = await passwordRes.json();
+
+                if (passwordRes.status !== 200) {
+                    alert(passwordData.errorMsg);
+                    return;
+                }
+
+                const userData = {
+                    userId:    userId,
+                    userEmail: userEmail.value,
+                    userNm:    userNm.value,
+                    userTel:   userTel.value,
+                    userAddr:  userAddr.value,
+                    _csrf:     csrfToken
+                };
+
+                const updateRes = await fetch(`/api/admin/user/update/${userId}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(userData)
+                });
+
+                const updateData = await updateRes.json();
+
+                if (updateRes.status === 200) {
+                    alert(MSG.INFO_UPDATE_SUCCESS);
+                    window.location.href = "/admin/user/list";
+                } else {
+                    alert(updateData.errorMsg);
+                }
+
+            } catch (error) {
+                alert(MSG.ERROR);
             }
-        });
-
-        backBtn.addEventListener("click", function () {
-            window.location.href = `/admin/user/detail/${userId}`;
         });
     });
 </script>
