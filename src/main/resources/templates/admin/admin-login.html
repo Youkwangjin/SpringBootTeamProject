@@ -33,43 +33,48 @@
         </div>
     </form>
 </section>
+<script src="/js/common/messages.js"></script>
 <script>
-    const csrfTokenElement = document.querySelector("input[name=_csrf]");
-    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+    document.addEventListener("DOMContentLoaded", function () {
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-    document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
-        event.preventDefault();
+        document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const adminEmail = document.getElementById("adminEmail").value.trim();
-        const adminPassword = document.getElementById("adminPassword").value.trim();
+            const adminEmail = document.getElementById("adminEmail").value.trim();
+            const adminPassword = document.getElementById("adminPassword").value.trim();
 
-        if (!adminEmail || !adminPassword) {
-            alert("이메일과 비밀번호를 모두 입력해주세요.");
-            return;
-        }
+            if (!adminEmail || !adminPassword) {
+                alert("이메일과 비밀번호를 모두 입력해주세요.");
+                return;
+            }
 
-        fetch("/api/auth/admin/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-            },
-            body: JSON.stringify ({
+            const adminData = {
                 adminEmail: adminEmail,
                 adminPassword: adminPassword
-            })
+            }
 
-        }).then(response => response.json())
-            .then(data => {
-                if (data.httpStatus === "OK") {
-                    window.location.href = "/admin/mypage";
-                } else {
-                    alert(data.errorMsg);
-                }
+            fetch("/api/auth/admin/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                credentials: "include",
+                body: JSON.stringify (adminData)
             })
-            .catch(() => {
-                alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
-            })
+                .then(async response => {
+                    if (response.status === 200) {
+                        window.location.href = "/admin/mypage";
+                    } else if (response.status === 401) {
+                        alert(MSG.ADMIN_AUTHENTICATION_FAILED);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
+        });
     });
 </script>
 </body>

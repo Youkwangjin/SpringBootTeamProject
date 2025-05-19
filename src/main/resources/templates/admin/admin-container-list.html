@@ -114,13 +114,15 @@
 <script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const searchButton = document.getElementById("searchButton");
-        const resetButton = document.getElementById("resetBtn");
         const pageNo = document.getElementById("pageNo").value;
         const searchType = document.getElementById("searchType");
         const searchName = document.getElementById("searchName");
+
         const statusValue = document.getElementById("statusValue");
         const approvalValue = document.getElementById("approvalValue");
+
+        const searchButton = document.getElementById("searchButton");
+        const resetButton = document.getElementById("resetBtn");
 
         const setSearchInputVisibility = () => {
             searchName.style.display = "none";
