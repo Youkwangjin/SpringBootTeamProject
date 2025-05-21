@@ -35,12 +35,19 @@ document.addEventListener("DOMContentLoaded", function () {
                                 },
                                 body: formData
                             })
-                                .then(response => response.json())
-                                .then(data => {
-                                    let img = "<img src='" + data.data + "' alt='' />";
-                                    editor.insertContent(img);
+                                .then(async response => {
+                                    const responseData = await response.json();
+
+                                    if (response.status === 200) {
+                                        let img = "<img src='" + responseData.data + "' alt='' />";
+                                        editor.insertContent(img);
+                                    } else {
+                                        alert(responseData.errorMsg);
+                                    }
                                 })
-                                .catch(error => console.error("Error:", error));
+                                .catch(() => {
+                                    alert(MSG.ERROR);
+                                });
                         };
                         input.click();
                     }
