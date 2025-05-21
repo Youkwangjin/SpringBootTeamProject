@@ -8,5 +8,7 @@ import java.io.IOException;
 @Service
 public interface CommonService {
 
+    String getCoordinatesFromNaverAPI(String address);
+
     String imageUpload(MultipartFile file) throws IOException;
 }

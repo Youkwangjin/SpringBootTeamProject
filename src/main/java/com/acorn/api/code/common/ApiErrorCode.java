@@ -36,7 +36,10 @@ public enum ApiErrorCode {
     FILE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "FNF", "파일 데이터가 존재하지 않습니다."),
     FILE_PATH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FPE", "파일 업로드 디렉토리가 존재하지 않습니다."),
     FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FUE", "파일 업로드에 실패하였습니다."),
-    FILE_DELETE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FDE", "파일 삭제 중 문제가 발생했습니다.");
+    FILE_DELETE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FDE", "파일 삭제 중 문제가 발생했습니다."),
+
+    NAVER_API_CALL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NAC", "네이버 API 호출 중 오류가 발생했습니다."),
+    NAVER_API_INVALID_RESPONSE(HttpStatus.INTERNAL_SERVER_ERROR, "NIR", "네이버 API 응답이 유효하지 않습니다.");
 
     private final HttpStatus httpStatus;
 
