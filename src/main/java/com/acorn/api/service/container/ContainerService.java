@@ -11,6 +11,8 @@ public interface ContainerService {
 
     List<ContainerListDTO> getContainerListData(ContainerListDTO listData);
 
+    List<ContainerMapListDTO> getContainersForMap();
+
     void containerRegister(ContainerRegisterDTO registerData);
 
     ContainerDetailDTO getContainerData(Integer containerId);

@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +38,8 @@ public class ContainerServiceImpl implements ContainerService {
     private final ContainerRepository containerRepository;
     private final ContainerFileRepository containerFileRepository;
     private final FileComponent fileComponent;
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     @Override
     public List<ContainerListDTO> getContainerListData(ContainerListDTO listData) {
@@ -66,6 +69,56 @@ public class ContainerServiceImpl implements ContainerService {
                             .containerStatus(containerStatus)
                             .containerApprovalStatus(containerApprovalStatus)
                             .containerCreated(containerCreated)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContainerMapListDTO> getContainersForMap() {
+        final Integer containerStatusValue = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
+        final Integer containerApprovalStatusValue = ContainerStatus.CONTAINER_APPROVAL_STATUS_APPROVED.getCode();
+
+        List<Container> containerListData = containerRepository.selectContainerMapListData(containerStatusValue, containerApprovalStatusValue);
+
+        return containerListData.stream()
+                .map(containerList -> {
+                    final Integer containerId = containerList.getContainerId();
+                    final String containerName = containerList.getContainerName();
+                    final String containerAddr = containerList.getContainerAddr();
+                    final BigDecimal containerSize = containerList.getContainerSize();
+                    final Integer containerPrice = containerList.getContainerPrice();
+                    final String containerContents = containerList.getContainerContents();
+                    final String containerContentsText = containerList.getContainerContentsText();
+                    final BigDecimal containerLatitude = containerList.getContainerLatitude();
+                    final BigDecimal containerLongitude = containerList.getContainerLongitude();
+                    final Integer containerStatus = containerList.getContainerStatus();
+                    final Integer containerApprovalStatus = containerList.getContainerApprovalStatus();
+                    final LocalDateTime containerCreated = containerList.getContainerCreated();
+                    final String containerCreatedText = containerCreated.format(DATE_FORMATTER);
+                    final String containerStatusText = ContainerStatus
+                            .fromUseCode(containerStatus)
+                            .getDescription();
+                    final String containerApprovalStatusText = ContainerStatus
+                            .fromApprovalCode(containerApprovalStatus)
+                            .getDescription();
+
+                    return ContainerMapListDTO.builder()
+                            .containerId(containerId)
+                            .containerName(containerName)
+                            .containerAddr(containerAddr)
+                            .containerSize(containerSize)
+                            .containerPrice(containerPrice)
+                            .containerContents(containerContents)
+                            .containerContentsText(containerContentsText)
+                            .containerLatitude(containerLatitude)
+                            .containerLongitude(containerLongitude)
+                            .containerStatus(containerStatus)
+                            .containerStatusText(containerStatusText)
+                            .containerApprovalStatusText(containerApprovalStatusText)
+                            .containerApprovalStatus(containerApprovalStatus)
+                            .containerCreated(containerCreated)
+                            .containerCreatedText(containerCreatedText)
                             .build();
                 })
                 .collect(Collectors.toList());
