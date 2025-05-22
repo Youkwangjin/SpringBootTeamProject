@@ -173,6 +173,7 @@ public class SpringSecurityConfig {
                                          "/api/admin/container/reviewRequest/{containerId}",
                                          "/api/admin/container/approvalRequest/{containerId}",
                                          "/api/admin/container/rejectRequest/{containerId}",
+                                         "/api/admin/container/cancelReview/{containerId}",
                                          "/api/admin/container/cancelApproval/{containerId}",
                                          "/api/admin/container/cancelReject/{containerId}",
                                          "/api/admin/user/update/{userId}",

@@ -26,8 +26,10 @@ public enum ApiErrorCode {
 
     CONTAINER_ALREADY_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, "CAR", "해당 창고는 이미 검토 처리된 상태입니다."),
     CONTAINER_ALREADY_APPROVED(HttpStatus.INTERNAL_SERVER_ERROR, "CAA", "해당 창고는 이미 승인 처리된 상태입니다."),
-    CONTAINER_ALREADY_REJECT(HttpStatus.INTERNAL_SERVER_ERROR, "CAJ", "해당 창고는 이미 승인거부 처리된 상태입니다."),
+    CONTAINER_ALREADY_REVIEW_CANCEL(HttpStatus.INTERNAL_SERVER_ERROR, "CAC", "해당 창고는 이미 검토 취소 처리된 상태입니다."),
+    CONTAINER_ALREADY_REJECT(HttpStatus.INTERNAL_SERVER_ERROR, "CAJ", "해당 창고는 이미 승인 거부 처리된 상태입니다."),
 
+    CONTAINER_REVIEW_CANCEL_NOT_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, "CRC", "검토중 상태의 창고만 검토 취소 처리 할 수 있습니다."),
     CONTAINER_APPROVAL_NOT_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, "CAR", "검토중 상태의 창고만 승인 처리할 수 있습니다."),
     CONTAINER_REJECT_NOT_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, "CJR", "검토중 상태의 창고만 승인거부 처리할 수 있습니다."),
     CONTAINER_APPROVAL_NOT_APPROVED(HttpStatus.INTERNAL_SERVER_ERROR, "CNA", "승인 완료 상태의 창고만 승인 취소가 가능합니다."),

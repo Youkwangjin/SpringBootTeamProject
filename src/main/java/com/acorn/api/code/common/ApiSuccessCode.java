@@ -15,6 +15,7 @@ public enum ApiSuccessCode {
     CONTAINER_SELECT_SUCCESS(HttpStatus.OK,   "CSS", "창고정보가 성공적으로 조회되었습니다."),
     CONTAINER_UPDATE_SUCCESS(HttpStatus.OK,   "CUS", "창고정보가 성공적으로 수정되었습니다."),
     CONTAINER_DELETE_SUCCESS(HttpStatus.OK,   "CDS", "창고정보가 성공적으로 삭제되었습니다."),
+    CONTAINER_PENDING_SUCCESS(HttpStatus.OK, "CPS", "해당 창고가 승인 대기 상태로 변경되었습니다."),
     CONTAINER_REVIEW_SUCCESS(HttpStatus.OK,   "CRS", "해당 창고가 검토 상태로 변경되었습니다."),
     CONTAINER_APPROVAL_SUCCESS(HttpStatus.OK, "CAS", "해당 창고가 승인 상태로 변경되었습니다."),
     CONTAINER_REJECT_SUCCESS(HttpStatus.OK,   "CJS", "해당 창고가 승인거부 상태로 변경되었습니다."),
