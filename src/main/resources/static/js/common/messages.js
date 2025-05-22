@@ -44,6 +44,7 @@ const MSG = {
     CONTAINER_UPDATE_SUCCESS:               "창고정보가 성공적으로 수정되었습니다.",
     CONTAINER_DELETE_SUCCESS:               "창고정보가 성공적으로 삭제되었습니다.",
     CONTAINER_REVIEW_SUCCESS:               "해당 창고가 검토 상태로 변경되었습니다.",
+    CONTAINER_REVIEW_CANCEL_SUCCESS:        "해당 창고가 승인 대기 상태로 변경되었습니다.",
     CONTAINER_APPROVAL_SUCCESS:             "해당 창고가 승인 상태로 변경되었습니다.",
     CONTAINER_REJECT_SUCCESS:               "해당 창고가 승인거부 상태로 변경되었습니다.",
     INFO_UPDATE_SUCCESS:                    "회원정보가 성공적으로 수정되었습니다.",

@@ -4,6 +4,7 @@ import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.dto.admin.ContainerManagementRequestDTO;
+import com.acorn.api.service.admin.AdminContainerService;
 import com.acorn.api.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminContainerManagementController {
 
     private final AdminService adminService;
+    private final AdminContainerService adminContainerService;
 
     @PostMapping("/api/admin/container/reviewRequest/{containerId}")
     public ResponseEntity<ApiSuccessResponse<Object>> reviewRequest(@RequestBody ContainerManagementRequestDTO requestData) {
@@ -44,6 +46,15 @@ public class AdminContainerManagementController {
         adminService.processRejectRequest(requestData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_REJECT_SUCCESS);
+    }
+
+    @PostMapping("/api/admin/container/cancelReview/{containerId}")
+    public ResponseEntity<ApiSuccessResponse<Object>> cancelReview(@RequestBody ContainerManagementRequestDTO requestData) {
+        log.info(" ************** [AdminContainerManagement] Review Cancel request started **************");
+
+        adminContainerService.processCancelReview(requestData);
+
+        return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_PENDING_SUCCESS);
     }
 
     @PostMapping("/api/admin/container/cancelApproval/{containerId}")

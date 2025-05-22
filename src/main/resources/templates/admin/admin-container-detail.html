@@ -79,6 +79,7 @@
                 <button type="button" id="reviewBtn" class="btn btn-review">검토하기</button>
             </th:block>
             <th:block th:if="${containerDetail.container.containerApprovalStatus == 1}">
+                <button type="button" id="cancelReviewBtn" class="btn btn-review">검토 취소</button>
                 <button type="button" id="approveBtn" class="btn btn-approve">승인</button>
                 <button type="button" id="rejectBtn" class="btn btn-deny">거부</button>
             </th:block>
@@ -102,6 +103,7 @@
         const reviewBtn = document.getElementById("reviewBtn");
         const approveBtn = document.getElementById("approveBtn");
         const rejectBtn = document.getElementById("rejectBtn");
+        const cancelReviewBtn = document.getElementById("cancelReviewBtn");
         const cancelApprovalBtn = document.getElementById("cancelApprovalBtn");
         const cancelRejectBtn = document.getElementById("cancelRejectBtn");
 
@@ -212,6 +214,43 @@
 
                         if (response.status === 200) {
                             alert(MSG.CONTAINER_REJECT_SUCCESS);
+                            window.location.href = "/admin/container/list";
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
+            });
+        }
+
+        if (cancelReviewBtn) {
+            cancelReviewBtn.addEventListener("click", function () {
+                if (!confirm("해당 창고의 검토중 상태를 취소하시겠습니까?")) {
+                    return;
+                }
+
+                const cancelReviewRequest = {
+                    containerId: containerId,
+                    ownerId: ownerId,
+                    _csrf: csrfToken
+                };
+
+                fetch(`/api/admin/container/cancelReview/${containerId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(cancelReviewRequest)
+                })
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.CONTAINER_REVIEW_CANCEL_SUCCESS);
                             window.location.href = "/admin/container/list";
                         } else {
                             alert(responseData.errorMsg);
