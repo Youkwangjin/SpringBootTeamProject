@@ -35,11 +35,14 @@ const MSG = {
     LOGIN_SUCCESS:                          "로그인이 정상적으로 완료되었습니다.",
     USER_AUTHENTICATION_FAILED:             "이메일 또는 비밀번호가 올바르지 않습니다.",
     OWNER_AUTHENTICATION_FAILED:            "사업자 번호 또는 비밀번호가 올바르지 않습니다.",
+
     ADMIN_AUTHENTICATION_FAILED:            "이메일 또는 비밀번호가 일치하지 않습니다. 보안을 위해 일정 횟수 이상 실패 시 계정이 잠금 처리됩니다.",
     ADMIN_PASSWORD_SUCCESS:                 "비밀번호가 검증되었습니다.",
+
     BOARD_SAVE_SUCCESS:                     "게시글이 성공적으로 등록되었습니다.",
     BOARD_UPDATE_SUCCESS:                   "게시글이 성공적으로 수정되었습니다.",
     BOARD_DELETE_SUCCESS:                   "게시글이 성공적으로 삭제되었습니다.",
+
     CONTAINER_REGISTER_SUCCESS:             "창고정보가 성공적으로 등록되었습니다.",
     CONTAINER_UPDATE_SUCCESS:               "창고정보가 성공적으로 수정되었습니다.",
     CONTAINER_DELETE_SUCCESS:               "창고정보가 성공적으로 삭제되었습니다.",
@@ -47,6 +50,9 @@ const MSG = {
     CONTAINER_REVIEW_CANCEL_SUCCESS:        "해당 창고가 승인 대기 상태로 변경되었습니다.",
     CONTAINER_APPROVAL_SUCCESS:             "해당 창고가 승인 상태로 변경되었습니다.",
     CONTAINER_REJECT_SUCCESS:               "해당 창고가 승인거부 상태로 변경되었습니다.",
+
+    RESERVE_CONTAINER_SUCCESS:              "창고 예약이 성공적으로 완료되었습니다.",
+
     INFO_UPDATE_SUCCESS:                    "회원정보가 성공적으로 수정되었습니다.",
     INFO_DELETE_SUCCESS:                    "그동안 이용해 주셔서 감사합니다.",
     ADMIN_DELETE_SUCCESS:                   "회원정보가 성공적으로 삭제되었습니다.",

@@ -305,6 +305,15 @@
             CONTAINER_ID = #{containerId}
     </update>
 
+    <update id="updateContainerStatus" parameterType="com.acorn.api.entity.container.Container">
+        UPDATE
+            TB_CONTAINER
+        SET
+            CONTAINER_STATUS = #{containerStatus}
+        WHERE
+            CONTAINER_ID = #{containerId}
+    </update>
+
     <update id="updateContainerApprovalAndStatus" parameterType="com.acorn.api.entity.container.Container">
         UPDATE
             TB_CONTAINER

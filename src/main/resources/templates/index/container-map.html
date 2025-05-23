@@ -47,7 +47,7 @@
         <div class="btn-center">
             <button onclick="closePanel()">닫기</button>
             <div sec:authorize="hasAnyRole('ROLE_USER')">
-                <button class="reserve-btn" onclick="reserveContainer()">예약</button>
+                <button id="reserveBtn" class="reserve-btn">예약</button>
             </div>
         </div>
     </div>
@@ -55,6 +55,9 @@
 <script src="/js/common/messages.js"></script>
 <script src="/js/common/logout.js"></script>
 <script>
+    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
     document.addEventListener("DOMContentLoaded", function() {
         var mapOptions = {
             center: new naver.maps.LatLng(37.3595704, 127.105399),
@@ -121,14 +124,50 @@
         document.getElementById("infoApprovalStatus").innerText = container.containerApprovalStatusText;
 
         document.getElementById("infoPanel").classList.add("open");
+
+        const reserveBtn = document.getElementById('reserveBtn');
+        reserveBtn.addEventListener("click", function () {
+            reserveContainer(container.containerId);
+        });
     }
 
     function closePanel() {
         document.getElementById("infoPanel").classList.remove("open");
     }
 
-    function reserveContainer() {
-        alert('예약 기능을 구현하기.');
+    function reserveContainer(containerId) {
+        if (!confirm("해당 창고를 예약하시겠습니까?")) {
+            alert("창고 예약이 취소되었습니다.");
+            return;
+        }
+
+        const reserveRequestData = {
+            containerId: containerId,
+            _csrf: csrfToken
+        }
+
+        fetch(`/api/user/reservations/${containerId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken
+            },
+            credentials: "include",
+            body: JSON.stringify(reserveRequestData)
+        })
+            .then(async response => {
+                const responseData = await response.json();
+
+                if (response.status === 200) {
+                    alert(MSG.RESERVE_CONTAINER_SUCCESS);
+                    window.location.href = "/user/reserve/list";
+                } else {
+                    alert(responseData.errorMsg);
+                }
+            })
+            .catch(() => {
+                alert(MSG.ERROR);
+            });
     }
 </script>
 </body>

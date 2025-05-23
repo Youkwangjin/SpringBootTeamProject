@@ -35,6 +35,10 @@ public enum ApiErrorCode {
     CONTAINER_APPROVAL_NOT_APPROVED(HttpStatus.INTERNAL_SERVER_ERROR, "CNA", "승인 완료 상태의 창고만 승인 취소가 가능합니다."),
     CONTAINER_APPROVAL_NOT_REJECT(HttpStatus.INTERNAL_SERVER_ERROR, "CNR", "승인 거절 상태에서만 취소가 가능합니다."),
 
+    RESERVE_CONTAINERNOT_AVAILABLE(HttpStatus.INTERNAL_SERVER_ERROR, "CRV", "사용 가능 상태에서만 예약이 가능합니다."),
+    RESERVE_CONTAINER_NOT_APPROVED(HttpStatus.INTERNAL_SERVER_ERROR, "CRP", "승인 완료 상태에서만 예약이 가능합니다."),
+    RESERVE_CONTAINER_ALREADY(HttpStatus.INTERNAL_SERVER_ERROR, "CRD", "이미 예약이 완료된 창고입니다."),
+
     FILE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "FNF", "파일 데이터가 존재하지 않습니다."),
     FILE_PATH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FPE", "파일 업로드 디렉토리가 존재하지 않습니다."),
     FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FUE", "파일 업로드에 실패하였습니다."),
