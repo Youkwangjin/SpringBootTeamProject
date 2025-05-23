@@ -5,6 +5,8 @@
 <mapper namespace="com.acorn.api.repository.reservation.ReservationRepository">
     <resultMap id="reservationResultMap"            type="com.acorn.api.entity.reservation.Reservation">
         <id property="reservationId"                column="RESERVATION_ID"/>
+        <result property="reservationUserId"        column="RESERVATION_USER_ID"/>
+        <result property="reservationContainerId"   column="RESERVATION_CONTAINER_ID"/>
         <result property="reservationStatus"        column="RESERVATION_STATUS"/>
         <result property="reservationStartDate"     column="RESERVATION_START_DATE"/>
         <result property="reservationEndDate"       column="RESERVATION_END_DATE"/>
@@ -13,6 +15,21 @@
         <association property="user"                javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap"/>
         <association property="container"           javaType="com.acorn.api.entity.container.Container" resultMap="com.acorn.api.repository.container.ContainerRepository.containerResultMap"/>
     </resultMap>
+
+    <select id="selectReservationIdKey" resultType="Integer">
+        SELECT nextval(RESERVATION_SEQ)
+    </select>
+
+    <select id="selectActiveReservationsCountByRequest" parameterType="map" resultType="Boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM
+                TB_RESERVATION
+            WHERE
+                RESERVATION_CONTAINER_ID = #{containerId}
+            AND RESERVATION_STATUS = #{reservationStatus}
+        )
+    </select>
 
     <select id="selectReservationByUserId" parameterType="Integer" resultMap="reservationResultMap">
         SELECT
@@ -26,4 +43,23 @@
             ON U.USER_ID = R.RESERVATION_USER_ID
         WHERE U.USER_ID = #{userId}
     </select>
+
+    <insert id="insertReservation" parameterType="com.acorn.api.entity.reservation.Reservation" useGeneratedKeys="true" keyProperty="reservationId">
+        INSERT INTO TB_RESERVATION (
+            RESERVATION_ID,
+            RESERVATION_USER_ID,
+            RESERVATION_CONTAINER_ID,
+            RESERVATION_STATUS,
+            RESERVATION_START_DATE,
+            RESERVATION_END_DATE
+        )
+        VALUES (
+            #{reservationId},
+            #{reservationUserId},
+            #{reservationContainerId},
+            #{reservationStatus},
+            #{reservationStartDate},
+            #{reservationEndDate}
+        )
+    </insert>
 </mapper>

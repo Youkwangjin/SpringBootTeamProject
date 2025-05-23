@@ -19,6 +19,10 @@ public class Reservation {
 
     private Integer reservationId;
 
+    private Integer reservationUserId;
+
+    private Integer reservationContainerId;
+
     private Integer reservationStatus;
 
     private LocalDateTime reservationStartDate;

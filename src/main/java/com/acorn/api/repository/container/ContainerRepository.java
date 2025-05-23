@@ -36,5 +36,7 @@ public interface ContainerRepository {
 
     void updateContainerApproval(Container container);
 
+    void updateContainerStatus(Container container);
+
     void updateContainerApprovalAndStatus(Container container);
 }
