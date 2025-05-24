@@ -4,6 +4,7 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
+import com.acorn.api.dto.reservation.ReservationListDTO;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.exception.global.AcontainerException;
@@ -17,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,44 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final ContainerRepository containerRepository;
+
+    @Override
+    public List<ReservationListDTO> getReservationListData(ReservationListDTO listData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        if (currentUserId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        listData.setReservationUserId(currentUserId);
+        listData.setTotalCount(reservationRepository.selectListCountByRequest(listData));
+        List<Reservation> reservationListData = reservationRepository.selectReservationListData(listData);
+
+        return reservationListData.stream()
+                .map(reservationList -> {
+                    final Integer rowNum = reservationList.getRowNum();
+                    final Integer reservationId = reservationList.getReservationId();
+                    final Integer reservationUserId = reservationList.getReservationUserId();
+                    final String containerName = reservationList.getContainer().getContainerName();
+                    final String companyName = reservationList.getContainer().getOwner().getOwnerCompanyName();
+                    final Integer reservationStatus = reservationList.getReservationStatus();
+                    final LocalDateTime reservationStartDate = reservationList.getReservationStartDate();
+                    final LocalDateTime reservationEndDate = reservationList.getReservationEndDate();
+                    final LocalDateTime reservationCreated = reservationList.getReservationCreated();
+
+                    return ReservationListDTO.builder()
+                            .rowNum(rowNum)
+                            .reservationId(reservationId)
+                            .reservationUserId(reservationUserId)
+                            .containerName(containerName)
+                            .companyName(companyName)
+                            .reservationStatus(reservationStatus)
+                            .reservationStartDate(reservationStartDate)
+                            .reservationEndDate(reservationEndDate)
+                            .reservationCreated(reservationCreated)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional
