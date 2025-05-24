@@ -4,6 +4,7 @@
 
 <mapper namespace="com.acorn.api.repository.reservation.ReservationRepository">
     <resultMap id="reservationResultMap"            type="com.acorn.api.entity.reservation.Reservation">
+        <id property="rowNum"                       column="ROW_NUM"/>
         <id property="reservationId"                column="RESERVATION_ID"/>
         <result property="reservationUserId"        column="RESERVATION_USER_ID"/>
         <result property="reservationContainerId"   column="RESERVATION_CONTAINER_ID"/>
@@ -18,6 +19,65 @@
 
     <select id="selectReservationIdKey" resultType="Integer">
         SELECT nextval(RESERVATION_SEQ)
+    </select>
+
+    <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(R.RESERVATION_ID)
+        FROM
+            TB_RESERVATION R
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        <where>
+            R.RESERVATION_USER_ID = #{reservationUserId}
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'reservationStatus' and searchName != null and searchName.trim() != ''">
+                AND R.RESERVATION_STATUS = #{searchName}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectReservationListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="reservationResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY R.RESERVATION_CREATED ASC) AS ROW_NUM,
+            R.RESERVATION_ID,
+            R.RESERVATION_USER_ID,
+            R.RESERVATION_CONTAINER_ID,
+            R.RESERVATION_STATUS,
+            R.RESERVATION_START_DATE,
+            R.RESERVATION_END_DATE,
+            R.RESERVATION_CREATED,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            O.OWNER_COMPANY_NAME
+        FROM
+            TB_RESERVATION R
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        <where>
+            R.RESERVATION_USER_ID = #{reservationUserId}
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'ownerCompanyName' and searchName != null and searchName.trim() != ''">
+                AND O.OWNER_COMPANY_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'reservationStatus' and searchName != null and searchName.trim() != ''">
+                AND R.RESERVATION_STATUS = #{searchName}
+            </if>
+        </where>
+        ORDER BY R.RESERVATION_CREATED DESC
+        LIMIT #{startRowNum}, #{pageSize}
     </select>
 
     <select id="selectActiveReservationsCountByRequest" parameterType="map" resultType="Boolean">
