@@ -16,9 +16,9 @@
 <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
     <div th:replace="~{fragments/header-admin :: header}"></div>
 </div>
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <div class="custom-gap-top"></div>
 <form id="userListForm" method="get">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
     <div class="text-header">
         <h2 class="align">사용자 관리</h2>
