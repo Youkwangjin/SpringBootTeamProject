@@ -4,6 +4,7 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
+import com.acorn.api.dto.reservation.ReservationDetailDTO;
 import com.acorn.api.dto.reservation.ReservationListDTO;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.reservation.Reservation;
@@ -65,6 +66,48 @@ public class ReservationServiceImpl implements ReservationService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReservationDetailDTO getReservationData(Integer reservationId) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        if (currentUserId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Reservation reservationDetailData = reservationRepository.selectReservationDetailData(reservationId);
+        if (reservationDetailData == null) {
+            throw new AcontainerException(ApiErrorCode.RESERVE_CONTAINER_NOT_FOUND);
+        }
+
+        final Integer reservationUserId = reservationDetailData.getReservationUserId();
+        final Integer reservationContainerId = reservationDetailData.getReservationContainerId();
+        final Integer reservationStatus = reservationDetailData.getReservationStatus();
+        final String containerName = reservationDetailData.getContainer().getContainerName();
+        final String containerAddr = reservationDetailData.getContainer().getContainerAddr();
+        final Integer containerPrice = reservationDetailData.getContainer().getContainerPrice();
+        final String ownerNm = reservationDetailData.getContainer().getOwner().getOwnerNm();
+        final String companyName = reservationDetailData.getContainer().getOwner().getOwnerCompanyName();
+        final LocalDateTime reservationStartDate = reservationDetailData.getReservationStartDate();
+        final LocalDateTime reservationEndDate = reservationDetailData.getReservationEndDate();
+
+        if (!Objects.equals(currentUserId, reservationUserId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        return ReservationDetailDTO.builder()
+                .reservationId(reservationId)
+                .reservationUserId(reservationUserId)
+                .reservationContainerId(reservationContainerId)
+                .reservationStatus(reservationStatus)
+                .containerName(containerName)
+                .containerAddr(containerAddr)
+                .containerPrice(containerPrice)
+                .ownerNm(ownerNm)
+                .companyName(companyName)
+                .reservationStartDate(reservationStartDate)
+                .reservationEndDate(reservationEndDate)
+                .build();
     }
 
     @Override

@@ -20,5 +20,7 @@ public interface ReservationRepository {
 
     List<Reservation> selectReservationByUserId(@Param("userId") Integer userId);
 
+    Reservation selectReservationDetailData(@Param("reservationId") Integer reservationId);
+
     void insertReservation(Reservation reservation);
 }
