@@ -19,8 +19,8 @@
 <div sec:authorize="hasAnyRole('ROLE_USER')">
     <div th:replace="~{fragments/header-user :: header}"></div>
 </div>
-<div class="custom-gap-top"></div>
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<div class="custom-gap-top"></div>
 <form id="reservationListForm" method="get">
     <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
     <div class="text-header">
