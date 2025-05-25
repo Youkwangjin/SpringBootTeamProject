@@ -51,9 +51,11 @@
     </form>
 </div>
 <script src="/js/common/logout.js"></script>
+<script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const userId = document.getElementById("userId").value;
+
         const backBtn = document.getElementById("backBtn");
         const updateBtn = document.getElementById("updateBtn");
         const deleteBtn = document.getElementById("deleteBtn");
@@ -69,10 +71,8 @@
             window.location.href = `/admin/user/update/${userId}`;
         });
 
-        deleteBtn.addEventListener("click", function () {
-            if (!confirm("해당 사용자를 회원 탈퇴 처리하시겠습니까?")) {
-                return;
-            }
+        deleteBtn.addEventListener("click", async function () {
+            if (!confirm("해당 사용자를 회원 탈퇴 처리하시겠습니까?")) return;
 
             const adminPassword = prompt("관리자 비밀번호를 입력해주세요.");
             if (!adminPassword) {
@@ -80,57 +80,51 @@
                 return;
             }
 
-            fetch("/api/admin/password/confirm", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken
-                },
-                credentials: "include",
-                body: JSON.stringify({ adminPassword: adminPassword })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.errorMsg);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(() => {
-                    const userData = {
-                        userId: userId,
-                        _csrf: csrfToken
-                    };
+            try {
+                const passwordRes = await fetch("/api/admin/password/confirm", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({ adminPassword })
+                });
 
-                    fetch(`/api/admin/user/delete/${userId}`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": csrfToken
-                        },
-                        credentials: "include",
-                        body: JSON.stringify(userData)
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(errorData => {
-                                    throw new Error(errorData.errorMsg);
-                                });
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.httpStatus === "OK") {
-                                alert(data.resultMsg);
-                                window.location.href = "/admin/user/list";
-                            } else {
-                                throw new Error(data.errorMsg || "알 수 없는 오류가 발생했습니다.");
-                            }
-                        })
-                        .catch(error => alert(error.message));
-                })
-                .catch(error => alert(error.message));
+                const passwordData = await passwordRes.json();
+
+                if (passwordRes.status !== 200) {
+                    alert(passwordData.errorMsg);
+                    return;
+                }
+
+                const userData = {
+                    userId: userId,
+                    _csrf: csrfToken
+                };
+
+                const deleteRes = await fetch(`/api/admin/user/delete/${userId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(userData)
+                });
+
+                const deleteData = await deleteRes.json();
+
+                if (deleteRes.status === 200) {
+                    alert(MSG.ADMIN_DELETE_SUCCESS);
+                    window.location.href = "/admin/user/list";
+                } else {
+                    alert(deleteData.errorMsg);
+                }
+
+            } catch (error) {
+                alert(MSG.ERROR);
+            }
         });
     });
 </script>

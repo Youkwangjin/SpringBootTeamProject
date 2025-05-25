@@ -22,6 +22,8 @@ public interface ContainerRepository {
 
     List<Container> selectContainerAllData(@Param("containerOwnerId") Integer ownerId);
 
+    List<Container> selectContainerMapListData(@Param("containerStatus") Integer containerStatus, @Param("containerApprovalStatus") Integer containerApprovalStatus);
+
     void containerRegister(Container container);
 
     Container selectContainerDetailData(@Param("containerId") Integer containerId);
@@ -33,6 +35,8 @@ public interface ContainerRepository {
     void containerDelete(Container container);
 
     void updateContainerApproval(Container container);
+
+    void updateContainerStatus(Container container);
 
     void updateContainerApprovalAndStatus(Container container);
 }

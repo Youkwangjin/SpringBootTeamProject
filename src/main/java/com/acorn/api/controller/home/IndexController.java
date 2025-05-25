@@ -16,8 +16,8 @@ public class IndexController {
         return "index/service";
     }
 
-    @GetMapping("/containerMaps")
+    @GetMapping("/containers/map")
     public String containerMapsPage() {
-        return "index/conajax";
+        return "index/container-map";
     }
 }

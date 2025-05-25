@@ -17,8 +17,8 @@
     <div th:replace="~{fragments/header-admin :: header}"></div>
 </div>
 <div class="custom-gap-top"></div>
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <form id="ownerListForm" method="get">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
     <div class="text-header">
         <h2 class="align">공급자 관리</h2>
