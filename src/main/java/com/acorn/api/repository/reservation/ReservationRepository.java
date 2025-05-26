@@ -23,4 +23,6 @@ public interface ReservationRepository {
     Reservation selectReservationDetailData(@Param("reservationId") Integer reservationId);
 
     void insertReservation(Reservation reservation);
+
+    void updateReservationTid(@Param("reservationId") Integer reservationId, @Param("reservationTid") String kakaoPayTid);
 }
