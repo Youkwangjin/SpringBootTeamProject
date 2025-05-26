@@ -73,10 +73,42 @@
 <script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const reservationId = document.getElementById("reservationId").value;
+
         const backBtn = document.getElementById("backBtn");
+        const paymentBtn = document.getElementById("paymentBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
         backBtn.addEventListener("click", function () {
             window.location.href = "/user/reservation/list";
+        });
+
+        paymentBtn.addEventListener("click", function () {
+            const paymentData = {reservationId: reservationId};
+
+            fetch(`/api/user/payments/ready/${reservationId}`, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(paymentData)
+            })
+                .then(async response => {
+                    const data = await response.json();
+
+                    if (response.status === 200 && data.result?.next_redirect_pc_url) {
+                        window.location.href = data.result.next_redirect_pc_url;
+                    } else {
+                        alert(data.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
         });
     });
 </script>

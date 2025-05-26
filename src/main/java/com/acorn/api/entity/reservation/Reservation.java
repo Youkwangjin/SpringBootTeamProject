@@ -19,6 +19,8 @@ public class Reservation {
 
     private Integer reservationId;
 
+    private String reservationTid;
+
     private Integer reservationUserId;
 
     private Integer reservationContainerId;

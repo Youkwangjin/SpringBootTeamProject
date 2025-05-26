@@ -22,7 +22,8 @@ public enum ApiSuccessCode {
     RESERVE_CONTAINER_SUCCESS(HttpStatus.OK,  "RCS", "창고 예약이 성공적으로 완료되었습니다."),
     INFO_UPDATE_SUCCESS(HttpStatus.OK,        "IUS", "회원정보가 성공적으로 수정되었습니다."),
     INFO_DELETE_SUCCESS(HttpStatus.OK,        "IDS", "그동안 이용해 주셔서 감사합니다."),
-    ADMIN_DELETE_SUCCESS(HttpStatus.OK,       "ADS", "회원정보가 성공적으로 삭제되었습니다.");
+    ADMIN_DELETE_SUCCESS(HttpStatus.OK,       "ADS", "회원정보가 성공적으로 삭제되었습니다."),
+    KAKAOPAY_READY_SUCCESS(HttpStatus.OK,     "PAY", "카카오페이 결제 준비가 완료되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
