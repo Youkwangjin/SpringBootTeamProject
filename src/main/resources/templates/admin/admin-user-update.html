@@ -321,8 +321,7 @@
                     userEmail: userEmail.value,
                     userNm:    userNm.value,
                     userTel:   userTel.value,
-                    userAddr:  userAddr.value,
-                    _csrf:     csrfToken
+                    userAddr:  userAddr.value
                 };
 
                 const updateRes = await fetch(`/api/admin/user/update/${userId}`, {

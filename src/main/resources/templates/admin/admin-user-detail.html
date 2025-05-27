@@ -99,8 +99,7 @@
                 }
 
                 const userData = {
-                    userId: userId,
-                    _csrf: csrfToken
+                    userId: userId
                 };
 
                 const deleteRes = await fetch(`/api/admin/user/delete/${userId}`, {

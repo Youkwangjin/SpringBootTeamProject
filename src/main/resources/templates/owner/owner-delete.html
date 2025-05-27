@@ -86,8 +86,7 @@
                 if (confirm("정말로 탈퇴하시겠습니까?")) {
                     const ownerData = {
                         ownerId: ownerId,
-                        ownerPassword: passwordValue,
-                        _csrf: csrfToken
+                        ownerPassword: passwordValue
                     };
 
                     fetch(`/api/owner/delete/${ownerId}`, {

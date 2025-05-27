@@ -86,7 +86,9 @@
         });
 
         paymentBtn.addEventListener("click", function () {
-            const paymentData = {reservationId: reservationId};
+            const paymentData = {
+                reservationId: reservationId
+            };
 
             fetch(`/api/user/payments/ready/${reservationId}`, {
                 method: "POST",
