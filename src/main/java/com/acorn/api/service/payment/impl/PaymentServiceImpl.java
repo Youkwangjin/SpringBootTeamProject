@@ -4,7 +4,7 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.dto.payment.KakaoPayReadyRequestDTO;
 import com.acorn.api.dto.payment.KakaoPayReadyResponseDTO;
-import com.acorn.api.dto.payment.PaymentRequestDTO;
+import com.acorn.api.dto.payment.PaymentReadyRequestDTO;
 import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.reservation.ReservationRepository;
@@ -47,7 +47,7 @@ public class PaymentServiceImpl implements PaymentService {
     private static final String KAKAO_AUTH_PREFIX = "SECRET_KEY ";
 
     @Override
-    public KakaoPayReadyResponseDTO preparePayment(PaymentRequestDTO requestData) {
+    public KakaoPayReadyResponseDTO preparePayment(PaymentReadyRequestDTO requestData) {
         final Integer reservationId = requestData.getReservationId();
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
 
