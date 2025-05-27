@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class PaymentController {
+public class PaymentReadyController {
 
     private final PaymentService paymentService;
 
