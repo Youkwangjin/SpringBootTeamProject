@@ -111,8 +111,7 @@
                 }
 
                 const ownerData = {
-                    ownerId: ownerId,
-                    _csrf: csrfToken
+                    ownerId: ownerId
                 };
 
                 const deleteRes = await fetch(`/api/admin/owner/delete/${ownerId}`, {

@@ -122,8 +122,7 @@
 
             const containerData = {
                 containerId: containerId,
-                ownerId: ownerId,
-                _csrf: csrfToken
+                ownerId: ownerId
             };
 
             fetch(`/api/container/delete/${containerId}`, {

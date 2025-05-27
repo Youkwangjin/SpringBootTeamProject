@@ -142,8 +142,7 @@
         }
 
         const reserveRequestData = {
-            containerId: containerId,
-            _csrf: csrfToken
+            containerId: containerId
         }
 
         fetch(`/api/user/reservations/${containerId}`, {

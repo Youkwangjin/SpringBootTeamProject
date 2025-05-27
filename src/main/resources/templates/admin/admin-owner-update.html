@@ -468,8 +468,7 @@
                         ownerNm: ownerNm.value,
                         ownerTel: ownerTel.value,
                         ownerCompanyName: ownerCompanyName.value,
-                        ownerAddr: ownerAddr.value,
-                        _csrf: csrfToken
+                        ownerAddr: ownerAddr.value
                     };
 
                     const updateRes = await fetch(`/api/admin/owner/update/${ownerId}`, {
