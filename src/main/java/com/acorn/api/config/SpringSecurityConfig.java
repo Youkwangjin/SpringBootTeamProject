@@ -162,8 +162,9 @@ public class SpringSecurityConfig {
                         // Protected User API
                         .requestMatchers("/api/user/update/{userId}",
                                          "/api/user/delete/{userId}",
-                                         "/api/user/reservations/{containerId}",
-                                         "/api/user/payments/ready/{reservationId}").hasAuthority("ROLE_USER")
+                                         "/api/user/reservations/**",
+                                         "/api/user/payments/ready/**",
+                                         "/api/user/payments/approve/**").hasAuthority("ROLE_USER")
 
                         // Protected Owner API
                         .requestMatchers("/api/owner/update/{ownerId}",

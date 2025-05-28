@@ -40,6 +40,8 @@ public enum ApiErrorCode {
     RESERVE_CONTAINER_NOT_APPROVED(HttpStatus.INTERNAL_SERVER_ERROR, "CRP", "승인 완료 상태에서만 예약이 가능합니다."),
     RESERVE_CONTAINER_ALREADY(HttpStatus.INTERNAL_SERVER_ERROR, "CRD", "이미 예약이 완료된 창고입니다."),
 
+    PAYMENT_ALREADY_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "PAC", "이미 결제가 완료된 예약입니다."),
+
     FILE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "FNF", "파일 데이터가 존재하지 않습니다."),
     FILE_PATH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FPE", "파일 업로드 디렉토리가 존재하지 않습니다."),
     FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FUE", "파일 업로드에 실패하였습니다."),
