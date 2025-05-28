@@ -26,7 +26,9 @@ public enum ApiValidationErrorCode {
     LATITUDE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,     "LFE", "위도 형식이 유효하지 않습니다."),
     LONGITUDE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,    "LFE", "경도 형식이 유효하지 않습니다."),
     FILE_SIZE_ERROR(HttpStatus.BAD_REQUEST,           "FSE", "첨부 가능한 파일 갯수를 초과하였습니다."),
-    PASSWORD_LENGTH_ERROR(HttpStatus.BAD_REQUEST,     "PLE", "비밀번호는 6글자 이상이어야 합니다.");
+    PASSWORD_LENGTH_ERROR(HttpStatus.BAD_REQUEST,     "PLE", "비밀번호는 6글자 이상이어야 합니다."),
+    RESERVATION_ID_ERROR(HttpStatus.BAD_REQUEST,      "RIE", "예약 고유번호가 유효하지 않은 값입니다."),
+    TOKEN_VALUE_ERROR(HttpStatus.BAD_REQUEST,         "TVE", "토큰값이 유효하지 않은 값입니다.");
 
     private final HttpStatus httpStatus;
 

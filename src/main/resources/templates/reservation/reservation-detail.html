@@ -64,8 +64,12 @@
         </table>
         <div class="btn-wrap">
             <button type="button" class="btn-detail btn-back" id="backBtn">목록</button>
-            <button type="button" class="btn-detail btn-edit" id="paymentBtn">결제하기</button>
-            <button type="button" class="btn-detail btn-disable" id="cancelReservationBtn">예약취소</button>
+            <th:block th:if="${reservationDetailData.reservationStatus != 1}">
+                <button type="button" class="btn-detail btn-edit" id="paymentBtn">결제하기</button>
+            </th:block>
+            <th:block th:if="${reservationDetailData.reservationStatus == 1}">
+                <button type="button" class="btn-detail btn-disable" id="cancelReservationBtn">예약취소</button>
+            </th:block>
         </div>
     </form>
 </div>

@@ -15,11 +15,11 @@ public class KakaoPayReadyRequestDTO {
 
     private String item_name;
 
-    private int quantity;
+    private Integer quantity;
 
-    private int total_amount;
+    private Integer total_amount;
 
-    private int tax_free_amount;
+    private Integer tax_free_amount;
 
     private String approval_url;
 
