@@ -4,12 +4,15 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
+import com.acorn.api.dto.reservation.ReservationCancelDTO;
 import com.acorn.api.dto.reservation.ReservationDetailDTO;
 import com.acorn.api.dto.reservation.ReservationListDTO;
 import com.acorn.api.entity.container.Container;
+import com.acorn.api.entity.payment.Payment;
 import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.container.ContainerRepository;
+import com.acorn.api.repository.payment.PaymentRepository;
 import com.acorn.api.repository.reservation.ReservationRepository;
 import com.acorn.api.service.reservation.ReservationService;
 import com.acorn.api.utils.CommonSecurityUtil;
@@ -28,6 +31,7 @@ import java.util.stream.Collectors;
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final PaymentRepository paymentRepository;
     private final ContainerRepository containerRepository;
 
     @Override
@@ -159,6 +163,70 @@ public class ReservationServiceImpl implements ReservationService {
         Container updateContainerStatus = Container.builder()
                 .containerId(containerId)
                 .containerStatus(pendingStatus)
+                .build();
+
+        containerRepository.updateContainerStatus(updateContainerStatus);
+    }
+
+    @Override
+    public void reserveCancelContainer(ReservationCancelDTO requestData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer reservationId = requestData.getReservationId();
+        final Integer reservationContainerId = requestData.getReservationContainerId();
+
+        if (currentUserId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Container exsitedContainer = containerRepository.selectContainerDetailData(reservationContainerId);
+        if (exsitedContainer == null) {
+            throw new AcontainerException(ApiErrorCode.CONTAINER_NOT_FOUND);
+        }
+
+        Reservation reservationDetailData = reservationRepository.selectReservationDetailData(reservationId);
+        if (reservationDetailData == null) {
+            throw new AcontainerException(ApiErrorCode.RESERVE_CONTAINER_NOT_FOUND);
+        }
+
+        final Integer currentContainerId = exsitedContainer.getContainerId();
+        final Integer currentReservationId = reservationDetailData.getReservationId();
+        final Integer currentReservationUserId = reservationDetailData.getReservationUserId();
+        final Integer currentReservationStatus = reservationDetailData.getReservationStatus();
+        final Integer containerAvailableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
+        final Integer reservationPendingStatus = ReservationStatus.RESERVATION_STATUS_PENDING.getCode();
+        final Integer reservationCancelStatus = ReservationStatus.RESERVATION_STATUS_CANCELLED.getCode();
+
+        if (!Objects.equals(currentContainerId, reservationContainerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(currentReservationId, reservationId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(currentUserId, currentReservationUserId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(currentReservationStatus, reservationPendingStatus)) {
+            throw new AcontainerException(ApiErrorCode.RESERVE_CONTAINER_NOT_PENDING);
+        }
+
+        Payment paymentDetailData = paymentRepository.selectPaymentByReservationId(reservationId);
+        if (paymentDetailData != null) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_ALREADY_COMPLETED);
+        }
+
+        Reservation updateStatus = Reservation.builder()
+                .reservationId(reservationId)
+                .reservationStatus(reservationCancelStatus)
+                .build();
+
+        reservationRepository.updateReservationStatus(updateStatus);
+
+        Container updateContainerStatus = Container.builder()
+                .containerId(reservationContainerId)
+                .containerStatus(containerAvailableStatus)
                 .build();
 
         containerRepository.updateContainerStatus(updateContainerStatus);

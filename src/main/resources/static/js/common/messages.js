@@ -52,6 +52,7 @@ const MSG = {
     CONTAINER_REJECT_SUCCESS:               "해당 창고가 승인거부 상태로 변경되었습니다.",
 
     RESERVE_CONTAINER_SUCCESS:              "창고 예약이 성공적으로 완료되었습니다.",
+    RESERVE_CONTAINER_CANCEL:               "창고 예약이 성공적으로 취소되었습니다.",
 
     INFO_UPDATE_SUCCESS:                    "회원정보가 성공적으로 수정되었습니다.",
     INFO_DELETE_SUCCESS:                    "그동안 이용해 주셔서 감사합니다.",

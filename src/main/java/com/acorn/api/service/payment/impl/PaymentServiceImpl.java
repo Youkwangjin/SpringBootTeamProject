@@ -73,12 +73,18 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         final Integer reservationUserId = reservationDetailData.getReservationUserId();
+        final String containerName = reservationDetailData.getContainer().getContainerName();
+        final Integer containerPrice = reservationDetailData.getContainer().getContainerPrice();
+        final Integer currentReservationStatus = reservationDetailData.getReservationStatus();
+        final Integer reservationCancelStatus = ReservationStatus.RESERVATION_STATUS_CANCELLED.getCode();
+
         if (!Objects.equals(currentUserId, reservationUserId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
-        final String containerName = reservationDetailData.getContainer().getContainerName();
-        final Integer containerPrice = reservationDetailData.getContainer().getContainerPrice();
+        if (Objects.equals(currentReservationStatus, reservationCancelStatus)) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_DENIED_ON_CANCELED);
+        }
 
         KakaoPayReadyRequestDTO kakaoRequest = KakaoPayReadyRequestDTO.builder()
                 .cid(kakaoPayCid)

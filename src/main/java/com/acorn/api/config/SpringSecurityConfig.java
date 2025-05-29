@@ -163,6 +163,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/user/update/**",
                                          "/api/user/delete/**",
                                          "/api/user/reservations/**",
+                                         "/api/user/reservations/cancel/**",
                                          "/api/user/payments/ready/**",
                                          "/api/user/payments/approve/**").hasAuthority("ROLE_USER")
 
