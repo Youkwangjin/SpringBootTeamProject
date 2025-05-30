@@ -14,6 +14,7 @@
         <result property="paymentApproved"          column="PAYMENTS_APPROVED"/>
         <result property="paymentCreated"           column="PAYMENTS_CREATED"/>
         <result property="paymentCanceled"          column="PAYMENTS_CANCELED"/>
+        <result property="paymentCancelDeadline"    column="PAYMENTS_CANCEL_DEADLINE"/>
         <association property="user"                javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap"/>
         <association property="reservation"         javaType="com.acorn.api.entity.reservation.Reservation" resultMap="com.acorn.api.repository.reservation.ReservationRepository.reservationResultMap"/>
     </resultMap>
@@ -48,7 +49,8 @@
             PAYMENTS_RESERVATION_ID,
             PAYMENTS_AMOUNT,
             PAYMENTS_STATUS,
-            PAYMENTS_APPROVED
+            PAYMENTS_APPROVED,
+            PAYMENTS_CANCEL_DEADLINE
         ) VALUES (
             #{paymentId},
             #{paymentTid},
@@ -56,7 +58,8 @@
             #{paymentReservationId},
             #{paymentAmount},
             #{paymentStatus},
-            NOW()
+            #{paymentApproved},
+            #{paymentCancelDeadline}
         )
     </insert>
 </mapper>
