@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -184,6 +185,9 @@ public class PaymentServiceImpl implements PaymentService {
         reservationRepository.updateReservationStatus(updateReservationStatus);
 
         final Integer paymentId = paymentRepository.selectPaymentIdKey();
+        final LocalDateTime paymentApproved = LocalDateTime.now();
+        final LocalDateTime paymentCancelDeadline = paymentApproved.plusDays(3);
+
         Payment newPayment = Payment.builder()
                 .paymentId(paymentId)
                 .paymentTid(currentTid)
@@ -191,6 +195,8 @@ public class PaymentServiceImpl implements PaymentService {
                 .paymentReservationId(reservationId)
                 .paymentAmount(containerPrice)
                 .paymentStatus(paymentCompletedStatus)
+                .paymentApproved(paymentApproved)
+                .paymentCancelDeadline(paymentCancelDeadline)
                 .build();
 
         paymentRepository.insertPayment(newPayment);

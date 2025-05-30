@@ -35,6 +35,8 @@ public class Payment {
 
     private LocalDateTime paymentCanceled;
 
+    private LocalDateTime paymentCancelDeadline;
+
     private User user;
 
     private Reservation reservation;
