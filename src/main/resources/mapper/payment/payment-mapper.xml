@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.payment.PaymentRepository">
+    <resultMap id="paymentResultMap"                type="com.acorn.api.entity.payment.Payment">
+        <id property="rowNum"                       column="ROW_NUM"/>
+        <id property="paymentId"                    column="PAYMENTS_ID"/>
+        <result property="paymentTid"               column="PAYMENTS_TID"/>
+        <result property="paymentUserId"            column="PAYMENTS_USER_ID"/>
+        <result property="paymentReservationId"     column="PAYMENTS_RESERVATION_ID"/>
+        <result property="paymentAmount"            column="PAYMENTS_AMOUNT"/>
+        <result property="paymentStatus"            column="PAYMENTS_STATUS"/>
+        <result property="paymentApproved"          column="PAYMENTS_APPROVED"/>
+        <result property="paymentCreated"           column="PAYMENTS_CREATED"/>
+        <result property="paymentCanceled"          column="PAYMENTS_CANCELED"/>
+        <result property="paymentCancelDeadline"    column="PAYMENTS_CANCEL_DEADLINE"/>
+        <association property="user"                javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap"/>
+        <association property="reservation"         javaType="com.acorn.api.entity.reservation.Reservation" resultMap="com.acorn.api.repository.reservation.ReservationRepository.reservationResultMap"/>
+    </resultMap>
+
+    <select id="selectPaymentIdKey" resultType="Integer">
+        SELECT nextval(PAYMENTS_SEQ)
+    </select>
+
+    <select id="selectPaymentByReservationId" parameterType="Integer" resultMap="paymentResultMap">
+        SELECT
+            P.PAYMENTS_ID,
+            P.PAYMENTS_TID,
+            P.PAYMENTS_USER_ID,
+            P.PAYMENTS_RESERVATION_ID,
+            P.PAYMENTS_AMOUNT,
+            P.PAYMENTS_STATUS,
+            R.RESERVATION_ID,
+            R.RESERVATION_CONTAINER_ID
+        FROM
+            TB_PAYMENTS P
+        INNER JOIN
+            TB_RESERVATION R
+        ON P.PAYMENTS_RESERVATION_ID = R.RESERVATION_ID
+        WHERE p.PAYMENTS_RESERVATION_ID = #{paymentReservationId};
+    </select>
+
+    <insert id="insertPayment" parameterType="com.acorn.api.entity.payment.Payment" useGeneratedKeys="true" keyProperty="paymentId">
+        INSERT INTO TB_PAYMENTS (
+            PAYMENTS_ID,
+            PAYMENTS_TID,
+            PAYMENTS_USER_ID,
+            PAYMENTS_RESERVATION_ID,
+            PAYMENTS_AMOUNT,
+            PAYMENTS_STATUS,
+            PAYMENTS_APPROVED,
+            PAYMENTS_CANCEL_DEADLINE
+        ) VALUES (
+            #{paymentId},
+            #{paymentTid},
+            #{paymentUserId},
+            #{paymentReservationId},
+            #{paymentAmount},
+            #{paymentStatus},
+            #{paymentApproved},
+            #{paymentCancelDeadline}
+        )
+    </insert>
+</mapper>

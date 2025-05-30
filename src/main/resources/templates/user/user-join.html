@@ -330,8 +330,7 @@
                     userPassword: userPassword.value.trim(),
                     userNm: userNm.value.trim(),
                     userTel: userTel.value.trim(),
-                    userAddr: userAddr.value.trim(),
-                    _csrf: csrfToken
+                    userAddr: userAddr.value.trim()
                 };
 
                 fetch("/api/auth/user/register", {

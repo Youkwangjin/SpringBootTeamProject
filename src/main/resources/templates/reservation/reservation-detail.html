@@ -24,6 +24,7 @@
     <form id="detailForm">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input type="hidden" id="reservationId" th:value="${reservationDetailData.reservationId}">
+        <input type="hidden" id="reservationContainerId" th:value="${reservationDetailData.reservationContainerId}">
         <table class="reserve-detail-table">
             <tr>
                 <th>창고명</th>
@@ -64,8 +65,13 @@
         </table>
         <div class="btn-wrap">
             <button type="button" class="btn-detail btn-back" id="backBtn">목록</button>
-            <button type="button" class="btn-detail btn-edit" id="paymentBtn">결제하기</button>
-            <button type="button" class="btn-detail btn-disable" id="cancelReservationBtn">예약취소</button>
+            <th:block th:if="${reservationDetailData.reservationStatus == 0}">
+                <button type="button" class="btn-detail btn-edit" id="paymentBtn">결제하기</button>
+                <button type="button" class="btn-detail btn-disable" id="cancelReservationBtn">예약취소</button>
+            </th:block>
+            <th:block th:if="${reservationDetailData.reservationStatus == 1}">
+                <button type="button" class="btn-detail btn-disable" id="cancelPaymentBtn">결제취소</button>
+            </th:block>
         </div>
     </form>
 </div>
@@ -73,11 +79,90 @@
 <script src="/js/common/messages.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const reservationId = document.getElementById("reservationId").value;
+        const reservationContainerId = document.getElementById("reservationContainerId").value;
+
+        const cancelReservationBtn = document.getElementById("cancelReservationBtn");
+        const paymentBtn = document.getElementById("paymentBtn");
         const backBtn = document.getElementById("backBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
         backBtn.addEventListener("click", function () {
             window.location.href = "/user/reservation/list";
         });
+
+        if (cancelReservationBtn) {
+            cancelReservationBtn.addEventListener("click", function () {
+                if (!confirm("해당 예약을 취소하시겠습니까?")) {
+                    return;
+                }
+
+                const reserveCancelData = {
+                    reservationId: reservationId,
+                    reservationContainerId: reservationContainerId
+                };
+
+                fetch(`/api/user/reservations/cancel/${reservationId}`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(reserveCancelData)
+                })
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.RESERVE_CONTAINER_CANCEL);
+                            window.location.href = "/user/reservation/list";
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
+            });
+        }
+
+        if (paymentBtn) {
+            paymentBtn.addEventListener("click", function () {
+                alert("🚨 결제 전 주의사항\n\n✅ 결제 후 3일 이내에만 취소 가능\n✅ 이후에는 취소가 불가합니다.");
+                if (!confirm("해당 예약건에 대한 결제를 진행하시겠습니까?")) {
+                    return;
+                }
+
+                const paymentData = {
+                    reservationId: reservationId
+                };
+
+                fetch(`/api/user/payments/ready/${reservationId}`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(paymentData)
+                })
+                    .then(async response => {
+                        const data = await response.json();
+
+                        if (response.status === 200 && data.result?.next_redirect_pc_url) {
+                            window.location.href = data.result.next_redirect_pc_url;
+                        } else {
+                            alert(data.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
+            });
+        }
     });
 </script>
 </body>

@@ -6,6 +6,7 @@
     <resultMap id="reservationResultMap"            type="com.acorn.api.entity.reservation.Reservation">
         <id property="rowNum"                       column="ROW_NUM"/>
         <id property="reservationId"                column="RESERVATION_ID"/>
+        <result property="reservationTid"           column="RESERVATION_TID"/>
         <result property="reservationUserId"        column="RESERVATION_USER_ID"/>
         <result property="reservationContainerId"   column="RESERVATION_CONTAINER_ID"/>
         <result property="reservationStatus"        column="RESERVATION_STATUS"/>
@@ -107,11 +108,13 @@
     <select id="selectReservationDetailData" parameterType="Integer" resultMap="reservationResultMap">
         SELECT
             R.RESERVATION_ID,
+            R.RESERVATION_TID,
             R.RESERVATION_USER_ID,
             R.RESERVATION_CONTAINER_ID,
             R.RESERVATION_STATUS,
             R.RESERVATION_START_DATE,
             R.RESERVATION_END_DATE,
+            C.CONTAINER_ID,
             C.CONTAINER_NAME,
             C.CONTAINER_ADDRESS,
             C.CONTAINER_PRICE,
@@ -147,4 +150,20 @@
             #{reservationEndDate}
         )
     </insert>
+
+    <update id="updateReservationTid" parameterType="map">
+        UPDATE
+            TB_RESERVATION
+        SET
+            RESERVATION_TID = #{reservationTid}
+        WHERE RESERVATION_ID = #{reservationId}
+    </update>
+
+    <update id="updateReservationStatus" parameterType="com.acorn.api.entity.reservation.Reservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            RESERVATION_STATUS = #{reservationStatus}
+        WHERE RESERVATION_ID = #{reservationId}
+    </update>
 </mapper>

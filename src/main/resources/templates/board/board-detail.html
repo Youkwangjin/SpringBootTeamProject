@@ -87,8 +87,7 @@
             const boardData = {
                 boardId: boardId,
                 boardUserId: boardUserId,
-                boardOwnerId: boardOwnerId,
-                _csrf: csrfToken
+                boardOwnerId: boardOwnerId
             };
 
             fetch(`/api/board/delete/${boardId}`, {
