@@ -23,6 +23,58 @@
         SELECT nextval(PAYMENTS_SEQ)
     </select>
 
+    <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(P.PAYMENT_ID)
+        FROM
+            TB_PAYMENT P
+        INNER JOIN
+            TB_RESERVATION R
+        ON P.PAYMENT_RESERVATION_ID = R.RESERVATION_ID
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        <where>
+            P.PAYMENT_USER_ID = #{paymentUserId}
+            <if test="searchType == 'paymentStatus' and searchName != null and searchName.trim() != ''">
+                AND P.PAYMENT_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPaymentListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="paymentResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY P.PAYMENT_APPROVED ASC) AS ROW_NUM,
+            P.PAYMENT_ID,
+            P.PAYMENT_AMOUNT,
+            P.PAYMENT_STATUS,
+            P.PAYMENT_APPROVED,
+            P.PAYMENT_CANCELED,
+            C.CONTAINER_NAME
+        FROM
+            TB_PAYMENT P
+        INNER JOIN
+            TB_RESERVATION R
+        ON P.PAYMENT_RESERVATION_ID = R.RESERVATION_ID
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        <where>
+            P.PAYMENT_USER_ID = #{paymentUserId}
+            <if test="searchType == 'paymentStatus' and searchName != null and searchName.trim() != ''">
+                AND P.PAYMENT_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+        </where>
+        ORDER BY P.PAYMENT_APPROVED DESC
+        LIMIT #{startRowNum}, #{pageSize}
+    </select>
+
     <select id="selectPaymentByReservationId" parameterType="Integer" resultMap="paymentResultMap">
         SELECT
             P.PAYMENT_ID,

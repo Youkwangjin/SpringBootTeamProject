@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +59,42 @@ public class PaymentServiceImpl implements PaymentService {
     private String kakaoPayFailUrl;
 
     private static final String KAKAO_AUTH_PREFIX = "SECRET_KEY ";
+
+    @Override
+    public List<PaymentListDTO> getPaymentListData(PaymentListDTO listData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        if (currentUserId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        listData.setPaymentUserId(currentUserId);
+        listData.setTotalCount(paymentRepository.selectListCountByRequest(listData));
+        List<Payment> paymentListData = paymentRepository.selectPaymentListData(listData);
+
+        return paymentListData.stream()
+                .map(paymentList -> {
+                    final Integer rowNum = paymentList.getRowNum();
+                    final Integer paymentId = paymentList.getPaymentId();
+                    final Integer paymentUserId = paymentList.getPaymentUserId();
+                    final Integer paymentAmount = paymentList.getPaymentAmount();
+                    final Integer paymentStatus = paymentList.getPaymentStatus();
+                    final String containerName = paymentList.getReservation().getContainer().getContainerName();
+                    final LocalDateTime paymentApproved = paymentList.getPaymentApproved();
+                    final LocalDateTime paymentCanceled = paymentList.getPaymentCanceled();
+
+                    return PaymentListDTO.builder()
+                            .rowNum(rowNum)
+                            .paymentId(paymentId)
+                            .paymentUserId(paymentUserId)
+                            .paymentAmount(paymentAmount)
+                            .paymentStatus(paymentStatus)
+                            .containerName(containerName)
+                            .paymentApproved(paymentApproved)
+                            .paymentCanceled(paymentCanceled)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional

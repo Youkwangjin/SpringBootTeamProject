@@ -1,13 +1,14 @@
 package com.acorn.api.service.payment;
 
-import com.acorn.api.dto.payment.KakaoPayApproveResponseDTO;
-import com.acorn.api.dto.payment.KakaoPayReadyResponseDTO;
-import com.acorn.api.dto.payment.PaymentApproveRequestDTO;
-import com.acorn.api.dto.payment.PaymentReadyRequestDTO;
+import com.acorn.api.dto.payment.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface PaymentService {
+
+    List<PaymentListDTO> getPaymentListData(PaymentListDTO listData);
 
     KakaoPayReadyResponseDTO preparePayment(PaymentReadyRequestDTO requestData);
 
