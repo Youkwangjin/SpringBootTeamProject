@@ -15,6 +15,8 @@ public class ReservationDetailDTO {
 
     private Integer reservationContainerId;
 
+    private Integer paymentId;
+
     private String containerName;
 
     private String containerAddr;
