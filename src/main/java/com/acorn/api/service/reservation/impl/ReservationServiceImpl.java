@@ -99,10 +99,17 @@ public class ReservationServiceImpl implements ReservationService {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
+        Integer paymentId = null;
+        Payment paymentData = paymentRepository.selectPaymentByReservationId(reservationId);
+        if (paymentData != null) {
+            paymentId = paymentData.getPaymentId();
+        }
+
         return ReservationDetailDTO.builder()
                 .reservationId(reservationId)
                 .reservationUserId(reservationUserId)
                 .reservationContainerId(reservationContainerId)
+                .paymentId(paymentId)
                 .reservationStatus(reservationStatus)
                 .containerName(containerName)
                 .containerAddr(containerAddr)

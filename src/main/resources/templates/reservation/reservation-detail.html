@@ -25,6 +25,7 @@
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input type="hidden" id="reservationId" th:value="${reservationDetailData.reservationId}">
         <input type="hidden" id="reservationContainerId" th:value="${reservationDetailData.reservationContainerId}">
+        <input type="hidden" id="paymentId" th:value="${reservationDetailData.paymentId}">
         <table class="reserve-detail-table">
             <tr>
                 <th>창고명</th>
@@ -81,9 +82,11 @@
     document.addEventListener("DOMContentLoaded", function () {
         const reservationId = document.getElementById("reservationId").value;
         const reservationContainerId = document.getElementById("reservationContainerId").value;
+        const paymentId = document.getElementById("paymentId").value;
 
         const cancelReservationBtn = document.getElementById("cancelReservationBtn");
         const paymentBtn = document.getElementById("paymentBtn");
+        const cancelPaymentBtn = document.getElementById("cancelPaymentBtn");
         const backBtn = document.getElementById("backBtn");
 
         const csrfTokenElement = document.querySelector('input[name="_csrf"]');
@@ -161,6 +164,13 @@
                     .catch(() => {
                         alert(MSG.ERROR);
                     });
+            });
+        }
+
+        if (cancelPaymentBtn) {
+            cancelPaymentBtn.addEventListener("click", function () {
+                alert("결제 취소를 위해 결제 상세 페이지로 이동합니다.");
+                window.location.href = `/user/payments/detail/${paymentId}`;
             });
         }
     });

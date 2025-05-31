@@ -137,7 +137,8 @@ public class SpringSecurityConfig {
                                          "/user/update/profile",
                                          "/user/delete/profile",
                                          "/user/reservation/list/**",
-                                         "/user/reservation/detail/**").hasAuthority("ROLE_USER")
+                                         "/user/reservation/detail/**",
+                                         "/user/payment/list/**").hasAuthority("ROLE_USER")
 
                         // Protected Owner Common Pages
                         .requestMatchers("/owner/mypage",
