@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +49,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${kakaopay.approve-uri}")
     private String kakaoPayApprovalUri;
 
+    @Value("${kakaopay.cancel-uri}")
+    private String kakaoPayCancelUri;
+
     @Value("${kakaopay.approval-url}")
     private String kakaoPayApprovalUrl;
 
@@ -57,6 +62,80 @@ public class PaymentServiceImpl implements PaymentService {
     private String kakaoPayFailUrl;
 
     private static final String KAKAO_AUTH_PREFIX = "SECRET_KEY ";
+
+    @Override
+    public List<PaymentListDTO> getPaymentListData(PaymentListDTO listData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        if (currentUserId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        listData.setPaymentUserId(currentUserId);
+        listData.setTotalCount(paymentRepository.selectListCountByRequest(listData));
+        List<Payment> paymentListData = paymentRepository.selectPaymentListData(listData);
+
+        return paymentListData.stream()
+                .map(paymentList -> {
+                    final Integer rowNum = paymentList.getRowNum();
+                    final Integer paymentId = paymentList.getPaymentId();
+                    final Integer paymentUserId = paymentList.getPaymentUserId();
+                    final Integer paymentAmount = paymentList.getPaymentAmount();
+                    final Integer paymentStatus = paymentList.getPaymentStatus();
+                    final String containerName = paymentList.getReservation().getContainer().getContainerName();
+                    final LocalDateTime paymentApproved = paymentList.getPaymentApproved();
+                    final LocalDateTime paymentCanceled = paymentList.getPaymentCanceled();
+
+                    return PaymentListDTO.builder()
+                            .rowNum(rowNum)
+                            .paymentId(paymentId)
+                            .paymentUserId(paymentUserId)
+                            .paymentAmount(paymentAmount)
+                            .paymentStatus(paymentStatus)
+                            .containerName(containerName)
+                            .paymentApproved(paymentApproved)
+                            .paymentCanceled(paymentCanceled)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public PaymentDetailDTO getPaymentData(Integer paymentId) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        if (currentUserId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Payment paymentData = paymentRepository.selectPaymentDetailData(paymentId);
+        if (paymentData == null) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_NOT_FOUND);
+        }
+
+        final String paymentTid = paymentData.getPaymentTid();
+        final Integer paymentUserId = paymentData.getPaymentUserId();
+        final Integer paymentAmount = paymentData.getPaymentAmount();
+        final Integer paymentStatus = paymentData.getPaymentStatus();
+        final String containerName = paymentData.getReservation().getContainer().getContainerName();
+        final LocalDateTime paymentApproved = paymentData.getPaymentApproved();
+        final LocalDateTime paymentCanceled = paymentData.getPaymentCanceled();
+        final LocalDateTime paymentCancelDeadline = paymentData.getPaymentCancelDeadline();
+
+        if (!Objects.equals(currentUserId, paymentUserId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        return PaymentDetailDTO.builder()
+                .paymentId(paymentId)
+                .paymentTid(paymentTid)
+                .paymentUserId(paymentUserId)
+                .paymentAmount(paymentAmount)
+                .paymentStatus(paymentStatus)
+                .containerName(containerName)
+                .paymentApproved(paymentApproved)
+                .paymentCanceled(paymentCanceled)
+                .paymentCancelDeadline(paymentCancelDeadline)
+                .build();
+    }
 
     @Override
     @Transactional
@@ -202,5 +281,92 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.insertPayment(newPayment);
 
         return response;
+    }
+
+    @Override
+    @Transactional
+    public void cancelPayment(PaymentCancelRequestDTO requestData) {
+        final Integer paymentId = requestData.getPaymentId();
+        final String paymentTid = requestData.getPaymentTid();
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+
+        if (currentUserId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Payment paymentData = paymentRepository.selectPaymentDetailData(paymentId);
+        if (paymentData == null) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_NOT_FOUND);
+        }
+
+        final String currentTid = paymentData.getPaymentTid();
+        final Integer paymentUserId = paymentData.getPaymentUserId();
+        final Integer paymentAmount = paymentData.getPaymentAmount();
+        final Integer paymentStatus = paymentData.getPaymentStatus();
+        final LocalDateTime paymentCancelDeadline = paymentData.getPaymentCancelDeadline();
+        final Integer reservationId = paymentData.getReservation().getReservationId();
+        final Integer containerId = paymentData.getReservation().getContainer().getContainerId();
+        final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
+        final Integer paymentCancelStatus = PaymentStatus.PAYMENT_STATUS_CANCELLED.getCode();
+        final Integer reservationPendingStatus = ReservationStatus.RESERVATION_STATUS_PENDING.getCode();
+        final Integer containerPendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
+
+        if (!Objects.equals(currentUserId, paymentUserId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(currentTid, paymentTid)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        if (!Objects.equals(paymentStatus, paymentCompletedStatus)) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_CANCEL_ERROR);
+        }
+
+        if (paymentCancelDeadline == null || paymentCancelDeadline.isBefore(LocalDateTime.now())) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_CANCEL_EXPIRED);
+        }
+
+        KakaoPayCancelRequestDTO kakaoRequest = KakaoPayCancelRequestDTO.builder()
+                .cid(kakaoPayCid)
+                .tid(currentTid)
+                .cancel_amount(paymentAmount)
+                .cancel_tax_free_amount(0)
+                .cancel_available_amount(paymentAmount)
+                .build();
+
+        KakaoPayCancelResponseDTO response = kakaoPayWebClient.post()
+                .uri(kakaoPayCancelUri)
+                .header(HttpHeaders.AUTHORIZATION, KAKAO_AUTH_PREFIX + kakaoPaySecretKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(kakaoRequest)
+                .retrieve()
+                .bodyToMono(KakaoPayCancelResponseDTO.class)
+                .block();
+
+        if (response == null) {
+            throw new AcontainerException(ApiErrorCode.KAKAOPAY_CANCEL_FAILED);
+        }
+
+        Payment updatePaymentStatus = Payment.builder()
+                .paymentId(paymentId)
+                .paymentStatus(paymentCancelStatus)
+                .build();
+
+        paymentRepository.updatePaymentStatus(updatePaymentStatus);
+
+        Reservation updateReservationStatus = Reservation.builder()
+                .reservationId(reservationId)
+                .reservationStatus(reservationPendingStatus)
+                .build();
+
+        reservationRepository.updateReservationStatus(updateReservationStatus);
+
+        Container updateContainerStatus = Container.builder()
+                .containerId(containerId)
+                .containerStatus(containerPendingStatus)
+                .build();
+
+        containerRepository.updateContainerStatus(updateContainerStatus);
     }
 }

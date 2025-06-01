@@ -3,6 +3,7 @@ package com.acorn.api.service.reservation.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
+import com.acorn.api.code.payment.PaymentStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
 import com.acorn.api.dto.reservation.ReservationCancelDTO;
 import com.acorn.api.dto.reservation.ReservationDetailDTO;
@@ -99,10 +100,17 @@ public class ReservationServiceImpl implements ReservationService {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
+        Integer paymentId = null;
+        Payment paymentData = paymentRepository.selectPaymentByReservationId(reservationId);
+        if (paymentData != null) {
+            paymentId = paymentData.getPaymentId();
+        }
+
         return ReservationDetailDTO.builder()
                 .reservationId(reservationId)
                 .reservationUserId(reservationUserId)
                 .reservationContainerId(reservationContainerId)
+                .paymentId(paymentId)
                 .reservationStatus(reservationStatus)
                 .containerName(containerName)
                 .containerAddr(containerAddr)
@@ -214,7 +222,12 @@ public class ReservationServiceImpl implements ReservationService {
 
         Payment paymentDetailData = paymentRepository.selectPaymentByReservationId(reservationId);
         if (paymentDetailData != null) {
-            throw new AcontainerException(ApiErrorCode.PAYMENT_ALREADY_COMPLETED);
+            final Integer paymentStatus = paymentDetailData.getPaymentStatus();
+            final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
+
+            if (Objects.equals(paymentStatus, paymentCompletedStatus)) {
+                throw new AcontainerException(ApiErrorCode.PAYMENT_ALREADY_COMPLETED);
+            }
         }
 
         Reservation updateStatus = Reservation.builder()

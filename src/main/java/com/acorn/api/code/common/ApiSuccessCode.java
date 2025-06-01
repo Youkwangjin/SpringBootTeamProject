@@ -25,7 +25,8 @@ public enum ApiSuccessCode {
     INFO_DELETE_SUCCESS(HttpStatus.OK,        "IDS", "그동안 이용해 주셔서 감사합니다."),
     ADMIN_DELETE_SUCCESS(HttpStatus.OK,       "ADS", "회원정보가 성공적으로 삭제되었습니다."),
     KAKAOPAY_READY_SUCCESS(HttpStatus.OK,     "KRS", "카카오페이 결제 준비가 완료되었습니다."),
-    KAKAOPAY_APPROVE_SUCCESS(HttpStatus.OK,   "KAS", "카카오페이 결제가 완료되었습니다.");
+    KAKAOPAY_APPROVE_SUCCESS(HttpStatus.OK,   "KAS", "카카오페이 결제가 완료되었습니다."),
+    PAYMENT_CANCEL_SUCCESS(HttpStatus.OK,     "PCS", "결제가 성공적으로 취소되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

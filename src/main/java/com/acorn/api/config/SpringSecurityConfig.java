@@ -137,7 +137,9 @@ public class SpringSecurityConfig {
                                          "/user/update/profile",
                                          "/user/delete/profile",
                                          "/user/reservation/list/**",
-                                         "/user/reservation/detail/**").hasAuthority("ROLE_USER")
+                                         "/user/reservation/detail/**",
+                                         "/user/payment/list/**",
+                                         "/user/payment/detail/**").hasAuthority("ROLE_USER")
 
                         // Protected Owner Common Pages
                         .requestMatchers("/owner/mypage",
@@ -165,7 +167,8 @@ public class SpringSecurityConfig {
                                          "/api/user/reservations/**",
                                          "/api/user/reservations/cancel/**",
                                          "/api/user/payments/ready/**",
-                                         "/api/user/payments/approve/**").hasAuthority("ROLE_USER")
+                                         "/api/user/payments/approve/**",
+                                         "/api/user/payments/cancel/**").hasAuthority("ROLE_USER")
 
                         // Protected Owner API
                         .requestMatchers("/api/owner/update/**",
