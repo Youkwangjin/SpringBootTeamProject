@@ -16,6 +16,8 @@ public interface PaymentRepository {
 
     List<Payment> selectPaymentListData(PaginationRequest pagination);
 
+    Payment selectPaymentDetailData(@Param("paymentId") Integer paymentId);
+
     void insertPayment(Payment payment);
 
     Payment selectPaymentByReservationId(@Param("paymentReservationId") Integer paymentReservationId);

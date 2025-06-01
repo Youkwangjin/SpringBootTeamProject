@@ -90,7 +90,29 @@
         INNER JOIN
             TB_RESERVATION R
         ON P.PAYMENT_RESERVATION_ID = R.RESERVATION_ID
-        WHERE p.PAYMENT_RESERVATION_ID = #{paymentReservationId};
+        WHERE P.PAYMENT_RESERVATION_ID = #{paymentReservationId};
+    </select>
+
+    <select id="selectPaymentDetailData" parameterType="Integer" resultMap="paymentResultMap">
+        SELECT
+            P.PAYMENT_ID,
+            P.PAYMENT_TID,
+            P.PAYMENT_USER_ID,
+            P.PAYMENT_AMOUNT,
+            P.PAYMENT_STATUS,
+            P.PAYMENT_APPROVED,
+            P.PAYMENT_CANCELED,
+            P.PAYMENT_CANCEL_DEADLINE,
+            C.CONTAINER_NAME
+        FROM
+            TB_PAYMENT P
+        INNER JOIN
+            TB_RESERVATION R
+        ON P.PAYMENT_RESERVATION_ID = R.RESERVATION_ID
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        WHERE PAYMENT_ID = #{paymentId}
     </select>
 
     <insert id="insertPayment" parameterType="com.acorn.api.entity.payment.Payment" useGeneratedKeys="true" keyProperty="paymentId">
