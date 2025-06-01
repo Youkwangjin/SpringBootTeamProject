@@ -41,8 +41,11 @@ public enum ApiErrorCode {
     RESERVE_CONTAINER_ALREADY(HttpStatus.INTERNAL_SERVER_ERROR, "CRD", "이미 예약이 완료된 창고입니다."),
     RESERVE_CONTAINER_NOT_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CRW", "예약 대기 상태에서만 예약 취소가 가능합니다."),
 
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PNF", "결제 내역이 존재하지 않습니다."),
     PAYMENT_ALREADY_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "PAC", "이미 결제가 완료된 예약입니다."),
     PAYMENT_DENIED_ON_CANCELED(HttpStatus.INTERNAL_SERVER_ERROR, "PDC", "예약 취소건은 결제를 진행할 수 없습니다."),
+    PAYMENT_CANCEL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "PCE", "결제가 완료된 건만 취소가 가능합니다."),
+    PAYMENT_CANCEL_EXPIRED(HttpStatus.BAD_REQUEST, "PCE", "결제 취소 가능 기간이 지났습니다."),
 
     FILE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "FNF", "파일 데이터가 존재하지 않습니다."),
     FILE_PATH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FPE", "파일 업로드 디렉토리가 존재하지 않습니다."),
@@ -52,7 +55,8 @@ public enum ApiErrorCode {
     NAVER_API_CALL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NAC", "네이버 API 호출 중 오류가 발생했습니다."),
     NAVER_API_INVALID_RESPONSE(HttpStatus.INTERNAL_SERVER_ERROR, "NIR", "네이버 API 응답이 유효하지 않습니다."),
 
-    KAKAOPAY_API_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "KPF", "카카오페이 결제 요청 중 오류가 발생했습니다.");
+    KAKAOPAY_API_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "KPF", "카카오페이 결제 요청 중 오류가 발생했습니다."),
+    KAKAOPAY_CANCEL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "KCF", "카카오페이 결제 취소 응답 중 오류가 발생했습니다.");
 
     private final HttpStatus httpStatus;
 

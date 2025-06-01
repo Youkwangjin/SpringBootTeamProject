@@ -38,7 +38,7 @@
         <select id="statusValue" name="searchName" style="display: none;" aria-label="창고 상태">
             <option value="0" th:selected="${request.searchName == '0'}">예약 대기</option>
             <option value="1" th:selected="${request.searchName == '1'}">예약 중</option>
-            <option value="2" th:selected="${request.searchName == '2'}">예약 완료</option>
+            <option value="2" th:selected="${request.searchName == '2'}">예약 종료</option>
             <option value="3" th:selected="${request.searchName == '3'}">예약 취소</option>
         </select>
         <button id="searchButton" type="button">검색</button>
