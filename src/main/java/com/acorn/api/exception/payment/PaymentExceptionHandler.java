@@ -2,6 +2,7 @@ package com.acorn.api.exception.payment;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.controller.payment.PaymentCancelController;
 import com.acorn.api.controller.payment.PaymentReadyController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice (assignableTypes = {PaymentReadyController.class})
+@RestControllerAdvice (assignableTypes = {PaymentReadyController.class, PaymentCancelController.class})
 public class PaymentExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,6 +29,8 @@ public class PaymentExceptionHandler {
             errorPaymentMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             paymentErrorCode = switch (fieldError.getField()) {
+                case "paymentId" -> ApiValidationErrorCode.PAYMENT_ID_ERROR;
+                case "paymentTid" -> ApiValidationErrorCode.PAYMENT_TID_ERROR;
                 case "reservationId" -> ApiValidationErrorCode.RESERVATION_ID_ERROR;
                 case "pgToken" -> ApiValidationErrorCode.TOKEN_VALUE_ERROR;
                 default -> ApiValidationErrorCode.VALIDATION_ERROR;

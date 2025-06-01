@@ -103,6 +103,8 @@
             P.PAYMENT_APPROVED,
             P.PAYMENT_CANCELED,
             P.PAYMENT_CANCEL_DEADLINE,
+            R.RESERVATION_ID,
+            C.CONTAINER_ID,
             C.CONTAINER_NAME
         FROM
             TB_PAYMENT P
@@ -136,4 +138,14 @@
             #{paymentCancelDeadline}
         )
     </insert>
+
+    <update id="updatePaymentStatus" parameterType="com.acorn.api.entity.payment.Payment">
+        UPDATE
+            TB_PAYMENT
+        SET
+            PAYMENT_STATUS = #{paymentStatus},
+            PAYMENT_CANCELED = NOW()
+        WHERE
+            PAYMENT_ID = #{paymentId}
+    </update>
 </mapper>

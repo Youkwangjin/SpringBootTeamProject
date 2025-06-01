@@ -21,4 +21,6 @@ public interface PaymentRepository {
     void insertPayment(Payment payment);
 
     Payment selectPaymentByReservationId(@Param("paymentReservationId") Integer paymentReservationId);
+
+    void updatePaymentStatus(Payment payment);
 }
