@@ -9,7 +9,7 @@
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/assets/img/favicon.png" rel="icon">
-    <link rel="stylesheet" type="text/css" href="/css/notice/notice-list.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice-list.css}">
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
