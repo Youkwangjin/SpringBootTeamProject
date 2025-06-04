@@ -9,7 +9,7 @@
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/assets/img/favicon.png" rel="icon">
-    <link rel="stylesheet" th:href="@{/css/common/list.css}">
+    <link rel="stylesheet" th:href="@{/css/board/board-list.css}">
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
@@ -33,7 +33,7 @@
                 <tr>
                     <td colspan="5" class="table-top-info">
                         <span class="title">자유게시판&nbsp;&nbsp;</span>
-                        <span>에이콘테이너의 새로운 소식들을 한곳에서 확인하세요</span><br/><br/>
+                        <span>에이콘테이너 회원들과 자유롭게 이야기를 나눠보세요.</span><br/><br/>
                     </td>
                 </tr>
                 <tr>
@@ -122,9 +122,9 @@
 <script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let searchButton = document.getElementById("searchBoard");
-        let resetButton = document.getElementById("resetBtn");
-        let writeButton = document.getElementById("boardWriteBtn");
+        const searchButton = document.getElementById("searchBoard");
+        const resetButton = document.getElementById("resetBtn");
+        const writeButton = document.getElementById("boardWriteBtn");
 
         searchButton.addEventListener("click", function (event) {
             event.preventDefault();

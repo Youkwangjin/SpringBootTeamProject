@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.notice.NoticeFileRepository">
+    <resultMap id="noticeFileResultMap"              type="com.acorn.api.entity.notice.NoticeFile">
+        <id property="noticeFileId"                  column="NOTICE_FILE_ID"/>
+        <id property="noticeId"                      column="NOTICE_FILE_NOTICE_ID"/>
+        <result property="noticeOriginalFileName"    column="NOTICE_FILE_ORIGINAL_FILE_NAME"/>
+        <result property="noticeStoredFileName"      column="NOTICE_FILE_STORED_FILE_NAME"/>
+        <result property="noticeFilePath"            column="NOTICE_FILE_PATH"/>
+        <result property="noticeFileExtNm"           column="NOTICE_FILE_EXTNS_NM"/>
+        <result property="noticeFileSize"            column="NOTICE_FILE_SIZE"/>
+        <result property="noticeFileCreated"         column="NOTICE_FILE_CREATED"/>
+        <result property="noticeFileUpdated"         column="NOTICE_FILE_UPDATED"/>
+    </resultMap>
+
+    <select id="selectNoticeFileIdKey" resultType="Integer">
+        SELECT nextval(NOTICE_FILE_SEQ)
+    </select>
+</mapper>
