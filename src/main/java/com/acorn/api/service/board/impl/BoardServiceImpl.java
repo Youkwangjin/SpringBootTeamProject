@@ -33,12 +33,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-    @Value("${file.upload.path.board}")
-    private String uploadDir;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
     private final BoardFileRepository boardFileRepository;
     private final FileComponent fileComponent;
+
+    @Value("${file.upload.path.board}")
+    private String uploadDir;
 
     @Override
     public List<BoardListDTO> getBoardListData(BoardListDTO listData) {
@@ -151,7 +152,7 @@ public class BoardServiceImpl implements BoardService {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
-        Board newBoardSaveData = Board.builder()
+        Board saveBoardData = Board.builder()
                 .boardId(boardId)
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
@@ -161,7 +162,8 @@ public class BoardServiceImpl implements BoardService {
                 .boardUserId(currentUserId)
                 .boardOwnerId(currentOwnerId)
                 .build();
-        boardRepository.boardSave(newBoardSaveData);
+
+        boardRepository.boardSave(saveBoardData);
 
         if(boardFiles!= null && !boardFiles.isEmpty()) {
             for(MultipartFile multipartFile : boardFiles) {

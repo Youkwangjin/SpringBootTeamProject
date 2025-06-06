@@ -83,7 +83,7 @@ public class NoticeServiceImpl implements NoticeService {
                 .noticeAdminId(currentAdminId)
                 .build();
 
-        noticeRepository.saveNoticeData(saveNoticeData);
+        noticeRepository.saveNotice(saveNoticeData);
 
         if (noticeFiles != null && !noticeFiles.isEmpty()) {
             for (MultipartFile multipartFile : noticeFiles) {
@@ -104,7 +104,7 @@ public class NoticeServiceImpl implements NoticeService {
                         .noticeId(noticeId)
                         .build();
 
-                noticeFileRepository.saveNoticeFileData(saveNoticeFileData);
+                noticeFileRepository.saveNoticeFile(saveNoticeFileData);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }

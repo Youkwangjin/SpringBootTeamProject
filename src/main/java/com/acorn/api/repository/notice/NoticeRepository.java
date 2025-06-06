@@ -15,5 +15,5 @@ public interface NoticeRepository {
 
     List<Notice> selectNoticeListData(PaginationRequest paginationRequest);
 
-    void saveNoticeData(Notice notice);
+    void saveNotice(Notice notice);
 }

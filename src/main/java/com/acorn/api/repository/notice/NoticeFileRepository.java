@@ -8,5 +8,5 @@ public interface NoticeFileRepository {
 
     Integer selectNoticeFileIdKey();
 
-    void saveNoticeFileData(NoticeFile noticeFile);
+    void saveNoticeFile(NoticeFile noticeFile);
 }

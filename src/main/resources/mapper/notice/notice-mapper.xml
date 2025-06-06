@@ -70,7 +70,7 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
-    <insert id="saveNoticeData" parameterType="com.acorn.api.entity.notice.Notice" useGeneratedKeys="true" keyProperty="noticeId">
+    <insert id="saveNotice" parameterType="com.acorn.api.entity.notice.Notice" useGeneratedKeys="true" keyProperty="noticeId">
         INSERT INTO TB_NOTICE (
             NOTICE_ID,
             NOTICE_TITLE,

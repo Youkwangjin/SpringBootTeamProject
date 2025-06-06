@@ -19,7 +19,7 @@
         SELECT nextval(NOTICE_FILE_SEQ)
     </select>
 
-    <insert id="saveNoticeFileData" parameterType="com.acorn.api.entity.notice.NoticeFile" useGeneratedKeys="true" keyProperty="noticeFileId">
+    <insert id="saveNoticeFile" parameterType="com.acorn.api.entity.notice.NoticeFile" useGeneratedKeys="true" keyProperty="noticeFileId">
         INSERT INTO TB_NOTICE_FILE (
             NOTICE_FILE_ID,
             NOTICE_FILE_ORIGINAL_FILE_NAME,
