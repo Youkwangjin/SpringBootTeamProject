@@ -1,0 +1,102 @@
+.notice-view-form {
+    width: 95%;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 10px;
+}
+
+.notice-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.notice-view-header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.notice-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.notice-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    padding: 20px 0;
+}
+
+.notice-attachments {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 20px;
+}
+
+.notice-attachments ul {
+    list-style: none;
+    padding: 0;
+}
+
+.notice-attachments li {
+    margin-bottom: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-right: 10px;
+}
+
+.button-container > div {
+    display: flex;
+    gap: 10px;
+}
+
+.button-container input {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border-radius: 5px;
+}
+
+.ListBtn {
+    background-color: #343a40;
+    color: white;
+}
+
+.ListBtn:hover {
+    background-color: #23272b;
+}
+
+.updateBtn {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.updateBtn:hover {
+    background-color: #0b5ed7;
+}
+
+.deleteBtn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.deleteBtn:hover {
+    background-color: #bb2d3b;
+}

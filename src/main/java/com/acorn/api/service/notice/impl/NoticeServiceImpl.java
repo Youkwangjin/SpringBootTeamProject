@@ -1,7 +1,10 @@
 package com.acorn.api.service.notice.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.component.FileComponent;
+import com.acorn.api.dto.notice.NoticeDetailDTO;
+import com.acorn.api.dto.notice.NoticeFileDTO;
 import com.acorn.api.dto.notice.NoticeListDTO;
 import com.acorn.api.dto.notice.NoticeSaveDTO;
 import com.acorn.api.entity.notice.Notice;
@@ -62,13 +65,62 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public NoticeDetailDTO getNoticeDetailData(Integer noticeId) {
+        Notice detailData = noticeRepository.selectNoticeDetailData(noticeId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.NOTICE_NOT_FOUND);
+        }
+
+        final String noticeTitle = detailData.getNoticeTitle();
+        final String noticeWriter = detailData.getAdmin().getAdminNm();
+        final String noticeContents = detailData.getNoticeContents();
+        final String noticeContentsText = detailData.getNoticeContentsText();
+        final Integer noticeHits = detailData.getNoticeHits();
+        final LocalDateTime noticeCreated = detailData.getNoticeCreated();
+
+        noticeRepository.updateNoticeHits(noticeId);
+
+        List<NoticeFile> noticeFileEntities = detailData.getNoticeFilesList();
+        final List<NoticeFileDTO> noticeFileData = noticeFileEntities.stream()
+                .map(noticeFile -> {
+                    final Integer noticeFileId = noticeFile.getNoticeFileId();
+                    final String noticeOriginalFileName = noticeFile.getNoticeOriginalFileName();
+                    final String noticeStoredFileName = noticeFile.getNoticeStoredFileName();
+                    final String noticeFilePath = noticeFile.getNoticeFilePath();
+                    final String noticeFileExtNm = noticeFile.getNoticeFileExtNm();
+                    final String noticeFileSize = noticeFile.getNoticeFileSize();
+
+                    return NoticeFileDTO.builder()
+                            .noticeFileId(noticeFileId)
+                            .noticeOriginalFileName(noticeOriginalFileName)
+                            .noticeStoredFileName(noticeStoredFileName)
+                            .noticeFilePath(noticeFilePath)
+                            .noticeFileExtNm(noticeFileExtNm)
+                            .noticeFileSize(noticeFileSize)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return NoticeDetailDTO.builder()
+                .noticeId(noticeId)
+                .noticeTitle(noticeTitle)
+                .noticeWriter(noticeWriter)
+                .noticeContents(noticeContents)
+                .noticeContentsText(noticeContentsText)
+                .noticeHits(noticeHits + 1)
+                .noticeCreated(noticeCreated)
+                .noticeFiles(noticeFileData)
+                .build();
+    }
+
+    @Override
     @Transactional
     public void noticeDataSave(NoticeSaveDTO saveData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer noticeId = noticeRepository.selectNoticeIdKey();
         final String noticeTitle = saveData.getNoticeTitle();
-        final String noticeContent = saveData.getNoticeContents();
-        final String noticeContentText = Jsoup.parse(noticeContent).text();
+        final String noticeContents = saveData.getNoticeContents();
+        final String noticeContentsText = Jsoup.parse(noticeContents).text();
         final List<MultipartFile> noticeFiles = saveData.getNoticeFiles();
 
         if (currentAdminId == null) {
@@ -78,8 +130,8 @@ public class NoticeServiceImpl implements NoticeService {
         Notice saveNoticeData = Notice.builder()
                 .noticeId(noticeId)
                 .noticeTitle(noticeTitle)
-                .noticeContents(noticeContent)
-                .noticeContentText(noticeContentText)
+                .noticeContents(noticeContents)
+                .noticeContentsText(noticeContentsText)
                 .noticeAdminId(currentAdminId)
                 .build();
 

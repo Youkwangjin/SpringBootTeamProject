@@ -109,6 +109,7 @@ public class SpringSecurityConfig {
                                          "/board/list/**",
                                          "/board/detail/**",
                                          "/notice/list/**",
+                                         "/notice/detail/**",
                                          "/admin/login").permitAll()
 
                         // Public Common API

@@ -8,7 +8,7 @@
         <id property="noticeId"                     column="NOTICE_ID"/>
         <result property="noticeTitle"              column="NOTICE_TITLE"/>
         <result property="noticeContents"           column="NOTICE_CONTENTS"/>
-        <result property="noticeContentText"        column="NOTICE_CONTENTS_TEXT"/>
+        <result property="noticeContentsText"       column="NOTICE_CONTENTS_TEXT"/>
         <result property="noticeHits"               column="NOTICE_HITS"/>
         <result property="noticeCreated"            column="NOTICE_CREATED"/>
         <result property="noticeUpdated"            column="NOTICE_UPDATED"/>
@@ -70,6 +70,34 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
+    <select id="selectNoticeDetailData" parameterType="Integer" resultMap="noticeResultMap">
+        SELECT
+            N.NOTICE_ID,
+            N.NOTICE_TITLE,
+            N.NOTICE_CONTENTS,
+            N.NOTICE_CONTENTS_TEXT,
+            N.NOTICE_HITS,
+            N.NOTICE_CREATED,
+            A.ADMIN_NM,
+            F.NOTICE_FILE_ID,
+            F.NOTICE_FILE_NOTICE_ID,
+            F.NOTICE_FILE_ORIGINAL_FILE_NAME,
+            F.NOTICE_FILE_STORED_FILE_NAME,
+            F.NOTICE_FILE_PATH,
+            F.NOTICE_FILE_EXTNS_NM,
+            F.NOTICE_FILE_SIZE
+        FROM
+            TB_NOTICE N
+        INNER JOIN
+            TB_ADMIN A
+        ON N.NOTICE_ADMIN_ID = A.ADMIN_ID
+        LEFT OUTER JOIN
+            TB_NOTICE_FILE F
+        ON N.NOTICE_ID = F.NOTICE_FILE_ID
+        WHERE
+            N.NOTICE_ID = #{noticeId}
+    </select>
+
     <insert id="saveNotice" parameterType="com.acorn.api.entity.notice.Notice" useGeneratedKeys="true" keyProperty="noticeId">
         INSERT INTO TB_NOTICE (
             NOTICE_ID,
@@ -82,9 +110,18 @@
             #{noticeId},
             #{noticeTitle},
             #{noticeContents},
-            #{noticeContentText},
+            #{noticeContentsText},
             #{noticeAdminId},
             NOW()
         )
     </insert>
+
+    <update id="updateNoticeHits" parameterType="Integer">
+        UPDATE
+            TB_NOTICE
+        SET
+            NOTICE_HITS = NOTICE_HITS + 1
+        WHERE
+            NOTICE_ID = #{noticeId}
+    </update>
 </mapper>
