@@ -33,12 +33,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-    @Value("${file.upload.path.board}")
-    private String uploadDir;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
     private final BoardFileRepository boardFileRepository;
     private final FileComponent fileComponent;
+
+    @Value("${file.upload.path.board}")
+    private String uploadDir;
 
     @Override
     public List<BoardListDTO> getBoardListData(BoardListDTO listData) {
@@ -99,14 +100,14 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.updateBoardHits(boardId);
 
         List<BoardFile> boardFileEntities = detailData.getBoardFilesList();
-        final List<BoardFileDTO> boardFileDTOs = boardFileEntities.stream()
-                .map(file -> {
-                    final Integer boardFileId = file.getBoardFileId();
-                    final String boardOriginalFileName = file.getBoardOriginalFileName();
-                    final String boardStoredFileName = file.getBoardStoredFileName();
-                    final String boardFilePath = file.getBoardFilePath();
-                    final String boardFileExtNm = file.getBoardFileExtNm();
-                    final String boardFileSize = file.getBoardFileSize();
+        final List<BoardFileDTO> boardFileData = boardFileEntities.stream()
+                .map(boardFile -> {
+                    final Integer boardFileId = boardFile.getBoardFileId();
+                    final String boardOriginalFileName = boardFile.getBoardOriginalFileName();
+                    final String boardStoredFileName = boardFile.getBoardStoredFileName();
+                    final String boardFilePath = boardFile.getBoardFilePath();
+                    final String boardFileExtNm = boardFile.getBoardFileExtNm();
+                    final String boardFileSize = boardFile.getBoardFileSize();
 
                     return BoardFileDTO.builder()
                             .boardFileId(boardFileId)
@@ -130,7 +131,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardUserId(boardUserId)
                 .boardOwnerId(boardOwnerId)
                 .isAuthor(isAuthor)
-                .boardFiles(boardFileDTOs)
+                .boardFiles(boardFileData)
                 .build();
     }
 
@@ -151,7 +152,7 @@ public class BoardServiceImpl implements BoardService {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
-        Board newBoardSaveData = Board.builder()
+        Board saveBoardData = Board.builder()
                 .boardId(boardId)
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
@@ -161,7 +162,8 @@ public class BoardServiceImpl implements BoardService {
                 .boardUserId(currentUserId)
                 .boardOwnerId(currentOwnerId)
                 .build();
-        boardRepository.boardSave(newBoardSaveData);
+
+        boardRepository.boardSave(saveBoardData);
 
         if(boardFiles!= null && !boardFiles.isEmpty()) {
             for(MultipartFile multipartFile : boardFiles) {

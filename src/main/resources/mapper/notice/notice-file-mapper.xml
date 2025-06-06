@@ -18,4 +18,26 @@
     <select id="selectNoticeFileIdKey" resultType="Integer">
         SELECT nextval(NOTICE_FILE_SEQ)
     </select>
+
+    <insert id="saveNoticeFile" parameterType="com.acorn.api.entity.notice.NoticeFile" useGeneratedKeys="true" keyProperty="noticeFileId">
+        INSERT INTO TB_NOTICE_FILE (
+            NOTICE_FILE_ID,
+            NOTICE_FILE_ORIGINAL_FILE_NAME,
+            NOTICE_FILE_STORED_FILE_NAME,
+            NOTICE_FILE_PATH,
+            NOTICE_FILE_EXTNS_NM,
+            NOTICE_FILE_SIZE,
+            NOTICE_FILE_NOTICE_ID,
+            NOTICE_FILE_CREATED
+        ) VALUES (
+            #{noticeFileId},
+            #{noticeOriginalFileName},
+            #{noticeStoredFileName},
+            #{noticeFilePath},
+            #{noticeFileExtNm},
+            #{noticeFileSize},
+            #{noticeId},
+            NOW()
+        )
+    </insert>
 </mapper>

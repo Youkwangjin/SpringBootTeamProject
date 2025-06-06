@@ -43,6 +43,10 @@ const MSG = {
     BOARD_UPDATE_SUCCESS:                   "게시글이 성공적으로 수정되었습니다.",
     BOARD_DELETE_SUCCESS:                   "게시글이 성공적으로 삭제되었습니다.",
 
+    NOTICE_SAVE_SUCCESS:                     "공지사항이 성공적으로 등록되었습니다.",
+    NOTICE_UPDATE_SUCCESS:                   "공지사항이 성공적으로 수정되었습니다.",
+    NOTICE_DELETE_SUCCESS:                   "공지사항이 성공적으로 삭제되었습니다.",
+
     CONTAINER_REGISTER_SUCCESS:             "창고정보가 성공적으로 등록되었습니다.",
     CONTAINER_UPDATE_SUCCESS:               "창고정보가 성공적으로 수정되었습니다.",
     CONTAINER_DELETE_SUCCESS:               "창고정보가 성공적으로 삭제되었습니다.",

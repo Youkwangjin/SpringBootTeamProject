@@ -23,7 +23,7 @@ public class Notice {
 
     private String noticeContents;
 
-    private String noticeContentText;
+    private String noticeContentsText;
 
     private Integer noticeHits;
 

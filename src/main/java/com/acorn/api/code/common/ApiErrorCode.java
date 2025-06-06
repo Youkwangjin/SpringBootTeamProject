@@ -9,7 +9,8 @@ public enum ApiErrorCode {
     OWNER_FOUND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "OFE", "존재하지 않는 공급자 입니다."),
     RESERVATION_STATUS_ACTIVE(HttpStatus.FORBIDDEN, "RSA", "예약 중인 사용자는 정보 수정이 불가능 합니다."),
 
-    BOARD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "BNF", "게시글이 존재하지 않습니다."),
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "BNF", "게시글이 존재하지 않습니다."),
+    NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "NNF", "공지사항이 존재하지 않습니다."),
 
     CONTAINER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "CNF", "창고가 존재하지 않습니다."),
     CONTAINER_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "CUF", "창고 정보 수정에 실패하였습니다."),

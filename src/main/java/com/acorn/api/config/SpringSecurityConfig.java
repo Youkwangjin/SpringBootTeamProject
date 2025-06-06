@@ -109,6 +109,7 @@ public class SpringSecurityConfig {
                                          "/board/list/**",
                                          "/board/detail/**",
                                          "/notice/list/**",
+                                         "/notice/detail/**",
                                          "/admin/login").permitAll()
 
                         // Public Common API
@@ -160,7 +161,8 @@ public class SpringSecurityConfig {
                                          "/admin/user/update/**",
                                          "/admin/owner/list/**",
                                          "/admin/owner/detail/**",
-                                         "/admin/owner/update/**").hasAuthority("ROLE_ADMIN")
+                                         "/admin/owner/update/**",
+                                         "/admin/notice/write").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/**",
@@ -190,7 +192,8 @@ public class SpringSecurityConfig {
                                          "/api/admin/user/delete/**",
                                          "/api/admin/owner/update/**",
                                          "/api/admin/owner/delete/**",
-                                         "/api/admin/password/confirm").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/password/confirm",
+                                         "/api/admin/notice/save").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",

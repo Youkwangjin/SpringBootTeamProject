@@ -19,6 +19,7 @@ public enum ApiValidationErrorCode {
     COMPANY_NAME_ERROR(HttpStatus.CONFLICT,           "CNE", "이미 사용 중인 회사명입니다."),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST,          "VE",  "기타 형식이 유효하지 않습니다."),
     TITLE_LENGTH_ERROR(HttpStatus.BAD_REQUEST,        "TLE", "제목은 50글자 미만이어야 합니다."),
+    CONTENT_LENGTH_ERROR(HttpStatus.BAD_REQUEST,      "CLE", "내용이 입력되지 않았습니다."),
     FIELD_BLANK_ERROR(HttpStatus.BAD_REQUEST,         "FBE", "필수 입력 항목이 비어 있습니다."),
     CONTAINER_NAME_ERROR(HttpStatus.BAD_REQUEST,      "CNE", "창고명 형식이 유효하지 않습니다."),
     SIZE_FORMAT_ERROR(HttpStatus.BAD_REQUEST,         "SFE", "크기 형식이 유효하지 않습니다."),

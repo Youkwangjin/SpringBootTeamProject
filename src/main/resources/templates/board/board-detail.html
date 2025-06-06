@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns="http://www.w3.org/1999/html" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board/board-detail.css}">
@@ -35,6 +34,7 @@
             <div class="board-meta">
                 <span th:text="|작성자: ${boardDetailData.boardWriter}|"></span>
                 <span th:text="|조회수: ${boardDetailData.boardHits}|"></span>
+                <span th:text="|등록일자: ${#temporals.format(boardDetailData.boardCreated, 'yyyy-MM-dd')}|"></span>
             </div>
         </div>
         <div class="board-content" th:utext="${boardDetailData.boardContents}"></div>
