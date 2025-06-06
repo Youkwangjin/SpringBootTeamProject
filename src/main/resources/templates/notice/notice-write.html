@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/notice/notice-write.css}">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <title>에이콘테이너 : 공지사항 작성하기</title>
+</head>
+<body>
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+    <div th:replace="~{fragments/header-admin :: header}"></div>
+</div>
+<main id="main">
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+    </div>
+    <div class="notice-write-form">
+        <form id="writeForm">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div class="form-group">
+                <label for="noticeTitle">제목</label>
+                <input type="text" id="noticeTitle">
+            </div>
+            <div class="form-group">
+                <label for="noticeContents">내용</label>
+                <textarea id="noticeContents"></textarea>
+            </div>
+            <div class="form-group">
+                <label>파일첨부</label>
+                <button type="button" onclick="file.add();">파일 선택하기</button>
+                <div id="fileList">
+                </div>
+            </div>
+            <div class="form-group button-container">
+                <input type="button" id="backListBtn" value="목록">
+                <input type="submit" id="writeBtn" value="작성하기">
+            </div>
+        </form>
+    </div>
+</main>
+<script src="/js/tinymce/tinymce.min.js"></script>
+<script src="/js/common/tinyMCEConfig.js"></script>
+<script src="/js/common/fileModule.js"></script>
+<script src="/js/common/messages.js"></script>
+<script src="/js/common/logout.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const backListButton = document.getElementById("backListBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        backListButton.addEventListener("click", function () {
+            window.location.href = "/notice/list";
+        });
+
+        document.getElementById("writeForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const noticeTitle = document.getElementById("noticeTitle").value.trim();
+            const noticeContents = document.getElementById("noticeContents").value.trim();
+
+            if (!noticeTitle || !noticeContents) {
+                alert("제목, 내용 입력란은 필수 항목입니다.");
+                return;
+            }
+            if (noticeTitle.length > 50) {
+                alert("제목은 최대 50자까지 입력 가능합니다.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("noticeTitle", noticeTitle);
+            formData.append("noticeContents", noticeContents);
+
+            let fileList = file.list();
+            for (let i = 0; i < fileList.length; i++) {
+                formData.append("noticeFiles", fileList[i].file);
+            }
+
+            fetch("/api/admin/notice/save", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                credentials: "include",
+                body: formData
+            })
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.NOTICE_SAVE_SUCCESS);
+                        window.location.href = "/notice/list";
+                    } else {
+                        alert(responseData.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
+        });
+    });
+
+    let file = fileModule({
+        count: 5,
+        exts: [],
+        callback: {
+            add: function(target) {
+                let elem = document.getElementById("fileList");
+                let fragment = document.createDocumentFragment();
+
+                target.fileList.forEach(function(file) {
+                    let li = document.createElement("li");
+                    li.classList.add("file-entry");
+
+                    let span = document.createElement("span");
+                    span.textContent = file.name;
+
+                    let button = document.createElement("button");
+                    button.textContent = "×";
+                    button.classList.add("delete-btn");
+
+                    button.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        target.del(file);
+                        li.remove();
+                    });
+
+                    li.appendChild(span);
+                    li.appendChild(button);
+                    fragment.appendChild(li);
+                });
+
+                elem.innerHTML = "";
+                elem.appendChild(fragment);
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -22,4 +22,9 @@ public class NoticePageController {
         model.addAttribute("request", listData);
         return "notice/notice-list";
     }
+
+    @GetMapping("/admin/notice/write")
+    public String noticeWritePage() {
+        return "notice/notice-write";
+    }
 }

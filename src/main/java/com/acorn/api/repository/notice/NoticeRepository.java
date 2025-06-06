@@ -9,7 +9,11 @@ import java.util.List;
 @Mapper
 public interface NoticeRepository {
 
+    Integer selectNoticeIdKey();
+
     Integer selectListCountByRequest(PaginationRequest paginationRequest);
 
     List<Notice> selectNoticeListData(PaginationRequest paginationRequest);
+
+    void saveNoticeData(Notice notice);
 }
