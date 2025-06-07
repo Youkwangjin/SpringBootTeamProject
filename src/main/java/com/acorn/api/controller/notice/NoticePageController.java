@@ -36,4 +36,11 @@ public class NoticePageController {
         model.addAttribute("noticeDetailData", detailData);
         return "notice/notice-detail";
     }
+
+    @GetMapping("/notice/update/{noticeId}")
+    public String noticeUpdatePage(@PathVariable("noticeId") Integer noticeId, Model model) {
+        NoticeDetailDTO detailData = noticeService.getNoticeDetailData(noticeId);
+        model.addAttribute("noticeDetailData", detailData);
+        return "notice/notice-update";
+    }
 }

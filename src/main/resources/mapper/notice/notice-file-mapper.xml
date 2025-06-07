@@ -19,6 +19,40 @@
         SELECT nextval(NOTICE_FILE_SEQ)
     </select>
 
+    <select id="selectFilesByNoticeId" parameterType="Integer" resultMap="noticeFileResultMap">
+        SELECT
+            NOTICE_FILE_ID,
+            NOTICE_FILE_NOTICE_ID,
+            NOTICE_FILE_ORIGINAL_FILE_NAME,
+            NOTICE_FILE_STORED_FILE_NAME,
+            NOTICE_FILE_PATH,
+            NOTICE_FILE_EXTNS_NM,
+            NOTICE_FILE_SIZE,
+            NOTICE_FILE_CREATED,
+            NOTICE_FILE_UPDATED
+        FROM
+            TB_NOTICE_FILE
+        WHERE
+            NOTICE_FILE_NOTICE_ID = #{noticeId}
+    </select>
+
+    <select id="selectFilesByNoticeFileId" parameterType="Integer" resultMap="noticeFileResultMap">
+        SELECT
+            NOTICE_FILE_ID,
+            NOTICE_FILE_NOTICE_ID,
+            NOTICE_FILE_ORIGINAL_FILE_NAME,
+            NOTICE_FILE_STORED_FILE_NAME,
+            NOTICE_FILE_PATH,
+            NOTICE_FILE_EXTNS_NM,
+            NOTICE_FILE_SIZE,
+            NOTICE_FILE_CREATED,
+            NOTICE_FILE_UPDATED
+        FROM
+            TB_NOTICE_FILE
+        WHERE
+            NOTICE_FILE_ID = #{noticeFileId}
+    </select>
+
     <insert id="saveNoticeFile" parameterType="com.acorn.api.entity.notice.NoticeFile" useGeneratedKeys="true" keyProperty="noticeFileId">
         INSERT INTO TB_NOTICE_FILE (
             NOTICE_FILE_ID,
@@ -40,4 +74,12 @@
             NOW()
         )
     </insert>
+
+    <delete id="deleteNoticeFile" parameterType="Integer">
+        DELETE
+        FROM
+            TB_NOTICE_FILE
+        WHERE
+            NOTICE_FILE_ID = #{noticeFileId}
+    </delete>
 </mapper>

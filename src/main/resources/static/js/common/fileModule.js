@@ -93,6 +93,7 @@ let fileModule = (function() {
         this.setting.callback.add(this);
         return true;
     };
+
     FileModule.prototype.del = function(file) {
         let index = this.fileList.indexOf(file);
         if (index !== -1) {

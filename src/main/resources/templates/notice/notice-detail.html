@@ -61,11 +61,20 @@
 <script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const noticeId = document.getElementById("noticeId").value;
+
+        const updateBtn = document.getElementById("updateBtn");
         const listBtn = document.getElementById("listBtn");
 
         listBtn.addEventListener("click", function () {
             window.location.href = "/notice/list";
         });
+
+        if (updateBtn) {
+            updateBtn.addEventListener("click", function ()  {
+                window.location.href = `/notice/update/${noticeId}`;
+            });
+        }
     });
 </script>
 </body>
