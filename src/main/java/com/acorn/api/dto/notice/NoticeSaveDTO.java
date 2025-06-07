@@ -1,4 +1,4 @@
-package com.acorn.api.dto.board;
+package com.acorn.api.dto.notice;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,21 +10,14 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class BoardSaveDTO {
+public class NoticeSaveDTO {
 
     @NotBlank
     @Size(min = 1, max = 50)
-    private String boardTitle;
+    private String noticeTitle;
 
     @NotBlank
-    private String boardWriter;
+    private String noticeContents;
 
-    @NotBlank
-    @Size(min = 6)
-    private String boardPassword;
-
-    @NotBlank
-    private String boardContents;
-
-    private List<MultipartFile> boardFiles;
+    private List<MultipartFile> noticeFiles;
 }

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class BoardFile {
+
     private Integer boardFileId;
 
     private Integer boardId;

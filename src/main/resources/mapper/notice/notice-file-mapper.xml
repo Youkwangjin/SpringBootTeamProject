@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.notice.NoticeFileRepository">
+    <resultMap id="noticeFileResultMap"              type="com.acorn.api.entity.notice.NoticeFile">
+        <id property="noticeFileId"                  column="NOTICE_FILE_ID"/>
+        <id property="noticeId"                      column="NOTICE_FILE_NOTICE_ID"/>
+        <result property="noticeOriginalFileName"    column="NOTICE_FILE_ORIGINAL_FILE_NAME"/>
+        <result property="noticeStoredFileName"      column="NOTICE_FILE_STORED_FILE_NAME"/>
+        <result property="noticeFilePath"            column="NOTICE_FILE_PATH"/>
+        <result property="noticeFileExtNm"           column="NOTICE_FILE_EXTNS_NM"/>
+        <result property="noticeFileSize"            column="NOTICE_FILE_SIZE"/>
+        <result property="noticeFileCreated"         column="NOTICE_FILE_CREATED"/>
+        <result property="noticeFileUpdated"         column="NOTICE_FILE_UPDATED"/>
+    </resultMap>
+
+    <select id="selectNoticeFileIdKey" resultType="Integer">
+        SELECT nextval(NOTICE_FILE_SEQ)
+    </select>
+
+    <select id="selectFilesByNoticeId" parameterType="Integer" resultMap="noticeFileResultMap">
+        SELECT
+            NOTICE_FILE_ID,
+            NOTICE_FILE_NOTICE_ID,
+            NOTICE_FILE_ORIGINAL_FILE_NAME,
+            NOTICE_FILE_STORED_FILE_NAME,
+            NOTICE_FILE_PATH,
+            NOTICE_FILE_EXTNS_NM,
+            NOTICE_FILE_SIZE,
+            NOTICE_FILE_CREATED,
+            NOTICE_FILE_UPDATED
+        FROM
+            TB_NOTICE_FILE
+        WHERE
+            NOTICE_FILE_NOTICE_ID = #{noticeId}
+    </select>
+
+    <select id="selectFilesByNoticeFileId" parameterType="Integer" resultMap="noticeFileResultMap">
+        SELECT
+            NOTICE_FILE_ID,
+            NOTICE_FILE_NOTICE_ID,
+            NOTICE_FILE_ORIGINAL_FILE_NAME,
+            NOTICE_FILE_STORED_FILE_NAME,
+            NOTICE_FILE_PATH,
+            NOTICE_FILE_EXTNS_NM,
+            NOTICE_FILE_SIZE,
+            NOTICE_FILE_CREATED,
+            NOTICE_FILE_UPDATED
+        FROM
+            TB_NOTICE_FILE
+        WHERE
+            NOTICE_FILE_ID = #{noticeFileId}
+    </select>
+
+    <insert id="saveNoticeFile" parameterType="com.acorn.api.entity.notice.NoticeFile" useGeneratedKeys="true" keyProperty="noticeFileId">
+        INSERT INTO TB_NOTICE_FILE (
+            NOTICE_FILE_ID,
+            NOTICE_FILE_ORIGINAL_FILE_NAME,
+            NOTICE_FILE_STORED_FILE_NAME,
+            NOTICE_FILE_PATH,
+            NOTICE_FILE_EXTNS_NM,
+            NOTICE_FILE_SIZE,
+            NOTICE_FILE_NOTICE_ID,
+            NOTICE_FILE_CREATED
+        ) VALUES (
+            #{noticeFileId},
+            #{noticeOriginalFileName},
+            #{noticeStoredFileName},
+            #{noticeFilePath},
+            #{noticeFileExtNm},
+            #{noticeFileSize},
+            #{noticeId},
+            NOW()
+        )
+    </insert>
+
+    <delete id="deleteNoticeFile" parameterType="Integer">
+        DELETE
+        FROM
+            TB_NOTICE_FILE
+        WHERE
+            NOTICE_FILE_ID = #{noticeFileId}
+    </delete>
+</mapper>

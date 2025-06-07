@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>에이콘테이너 : 공지사항</title>
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice-list.css}">
+</head>
+<body>
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_USER')">
+    <div th:replace="~{fragments/header-user :: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_OWNER')">
+    <div th:replace="~{fragments/header-owner :: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+    <div th:replace="~{fragments/header-admin :: header}"></div>
+</div>
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<main id="main">
+    <form id="noticeListForm" method="get">
+        <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}" />
+        <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+        </div>
+        <section>
+            <div class="notice-container">
+                <table>
+                    <tr>
+                        <td colspan="5" class="table-top-info">
+                            <span class="title">공지사항&nbsp;&nbsp;</span>
+                            <span>에이콘테이너의 새로운 소식들을 한곳에서 확인하세요</span><br/><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <div id="notice-search" class="search-bar-container">
+                                <div class="container">
+                                    <div class="search-window">
+                                        <div class="search-wrap">
+                                            <label for="searchType" class="blind">검색 타입 선택</label>
+                                            <select id="searchType" name="searchType" class="search-type-select">
+                                                <option value="noticeTitle" th:selected="${request == 'noticeTitle'}">제목</option>
+                                                <option value="noticeContentsText" th:selected="${request == 'noticeContentsText'}">내용</option>
+                                                <option value="noticeTitleContents" th:selected="${request == 'noticeTitleContents'}">제목+내용</option>
+                                            </select>
+                                            <label for="search" class="blind">공지사항 내용 검색</label>
+                                            <input id="search" type="search" name="searchName" placeholder="검색어를 입력해주세요." th:value="${request.searchName}">
+                                            <button id="searchBoard" type="button" class="btn btn-dark">검색</button>
+                                            <button id="resetBtn" type="button" class="btn resetBtn-dark">초기화</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <div id="notice-list">
+                        <div class="container">
+                            <table class="notice-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="th-num">번호</th>
+                                    <th scope="col" class="th-title">제목</th>
+                                    <th scope="col" class="th-writer">작성자</th>
+                                    <th scope="col" class="th-date">등록일</th>
+                                    <th scope="col" class="th-views">조회수</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="notice: ${noticeListData}">
+                                    <td th:text="${notice.rowNum}"></td>
+                                    <td>
+                                        <a th:href="@{|/notice/detail/${notice.noticeId}|}" th:text="${notice.noticeTitle}"></a>
+                                    </td>
+                                    <td th:text="${notice.noticeWriter}"></td>
+                                    <td th:text="${#temporals.format(notice.noticeCreated, 'yyyy.MM.dd')}"></td>
+                                    <td th:text="${notice.noticeHits}"></td>
+                                </tr>
+                                <tr th:if="${noticeListData.size() == 0}">
+                                    <td colspan="5">조회된 결과가 없습니다.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </table>
+                <div class="custom-pagination">
+                    <th:block th:if="${request.totalCount > 0}">
+                        <ul>
+                            <li th:if="${request.startPageNo > 1}">
+                                <a th:href="@{/notice/list(pageNo=${request.firstPageNo})}">&laquo;</a>
+                            </li>
+                            <li th:if="${request.pageNo > request.startPageNo}">
+                                <a th:href="@{/notice/list(pageNo=${request.prevPageNo})}">&lt;</a>
+                            </li>
+                            <th:block th:each="i : ${#numbers.sequence(request.startPageNo, request.endPageNo)}">
+                                <li th:classappend="${i == request.pageNo} ? 'active'">
+                                    <a th:href="@{/notice/list(pageNo=${i})}" th:text="${i}"></a>
+                                </li>
+                            </th:block>
+                            <li th:if="${request.pageNo < request.endPageNo}">
+                                <a th:href="@{/notice/list(pageNo=${request.nextPageNo})}">&gt;</a>
+                            </li>
+                            <li th:if="${request.endPageNo < request.finalPageNo}">
+                                <a th:href="@{/notice/list(pageNo=${request.finalPageNo})}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </th:block>
+                </div>
+                <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                    <div class="write-btn">
+                        <button id="noticeWriteBtn" class="btn btn-dark" type="button">글쓰기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</main>
+<script src="/js/common/logout.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchButton = document.getElementById("searchBoard");
+        const resetButton = document.getElementById("resetBtn");
+        const writeButton = document.getElementById("noticeWriteBtn");
+
+        searchButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const pageNo = document.getElementById("pageNo").value;
+            const searchType = document.getElementById("searchType").value;
+            const searchName = document.getElementById("search").value;
+
+            window.location.href = `/notice/list?pageNo=${pageNo}&searchType=${searchType}&searchName=${searchName}`;
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/notice/list";
+        });
+
+        if (writeButton) {
+            writeButton.addEventListener("click", function () {
+                window.location.href = "/admin/notice/write";
+            });
+        }
+    })
+</script>

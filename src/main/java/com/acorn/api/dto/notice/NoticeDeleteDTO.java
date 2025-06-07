@@ -1,4 +1,4 @@
-package com.acorn.api.dto.board;
+package com.acorn.api.dto.notice;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -11,13 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardDeleteDTO {
+public class NoticeDeleteDTO {
 
     @NotNull
     @Positive
-    private Integer boardId;
-
-    private Integer boardUserId;
-
-    private Integer boardOwnerId;
+    private Integer noticeId;
 }
