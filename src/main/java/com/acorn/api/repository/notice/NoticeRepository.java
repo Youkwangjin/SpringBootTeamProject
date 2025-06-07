@@ -23,4 +23,6 @@ public interface NoticeRepository {
     void updateNoticeHits(@Param("noticeId") Integer noticeId);
 
     void updateNotice(Notice notice);
+
+    void deleteNotice(Notice notice);
 }

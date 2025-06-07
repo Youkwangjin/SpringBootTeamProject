@@ -237,4 +237,38 @@ public class NoticeServiceImpl implements NoticeService {
             }
         }
     }
+
+    @Override
+    @Transactional
+    public void noticeDataDelete(NoticeDeleteDTO deleteData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer noticeId = deleteData.getNoticeId();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Notice detailData = noticeRepository.selectNoticeDetailData(noticeId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.NOTICE_NOT_FOUND);
+        }
+
+        List<NoticeFile> existingFiles = noticeFileRepository.selectFilesByNoticeId(noticeId);
+        if (existingFiles != null && !existingFiles.isEmpty()) {
+            for (NoticeFile noticeFile : existingFiles) {
+                final Integer noticeFileId = noticeFile.getNoticeFileId();
+                final String filePath = noticeFile.getNoticeFilePath();
+                final String storedFileName = noticeFile.getNoticeStoredFileName();
+
+                fileComponent.delete(filePath, storedFileName);
+                noticeFileRepository.deleteNoticeFile(noticeFileId);
+            }
+        }
+
+        Notice deleteNoticeData = Notice.builder()
+                .noticeId(noticeId)
+                .build();
+
+        noticeRepository.deleteNotice(deleteNoticeData);
+    }
 }

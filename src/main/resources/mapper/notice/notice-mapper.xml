@@ -136,4 +136,12 @@
         WHERE
             NOTICE_ID = #{noticeId}
     </update>
+
+    <delete id="deleteNotice" parameterType="com.acorn.api.entity.notice.Notice">
+        DELETE
+        FROM
+            TB_NOTICE
+        WHERE
+            NOTICE_ID = #{noticeId}
+    </delete>
 </mapper>

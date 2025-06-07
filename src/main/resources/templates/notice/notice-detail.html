@@ -64,7 +64,11 @@
         const noticeId = document.getElementById("noticeId").value;
 
         const updateBtn = document.getElementById("updateBtn");
+        const deleteBtn = document.getElementById("deleteBtn");
         const listBtn = document.getElementById("listBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
         listBtn.addEventListener("click", function () {
             window.location.href = "/notice/list";
@@ -73,6 +77,41 @@
         if (updateBtn) {
             updateBtn.addEventListener("click", function ()  {
                 window.location.href = `/notice/update/${noticeId}`;
+            });
+        }
+
+        if (deleteBtn) {
+            deleteBtn.addEventListener("click", function () {
+                if (!confirm("해당 공지사항 삭제하시겠습니까?")) {
+                    return;
+                }
+
+                const noticeData = {
+                    noticeId: noticeId
+                };
+
+                fetch(`/api/admin/notice/delete/${noticeId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(noticeData)
+                })
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.NOTICE_DELETE_SUCCESS);
+                            window.location.href = "/notice/list";
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
             });
         }
     });
