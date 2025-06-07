@@ -10,11 +10,11 @@ import java.util.List;
 public interface BoardFileRepository {
     Integer selectBoardFileIdKey();
 
-    void boardFileSave(BoardFile boardFile);
+    void saveBoardFile(BoardFile boardFile);
 
     List<BoardFile> selectFilesByBoardId(@Param("boardId") Integer boardId);
 
     BoardFile selectFilesByBoardFileId(@Param("boardFileId") Integer boardFileId);
 
-    void boardFileDelete(@Param("boardFileId") Integer boardFileId);
+    void deleteBoardFile(@Param("boardFileId") Integer boardFileId);
 }

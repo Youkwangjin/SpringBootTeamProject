@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-    private final BCryptPasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
     private final BoardFileRepository boardFileRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final FileComponent fileComponent;
 
     @Value("${file.upload.path.board}")
@@ -163,7 +163,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardOwnerId(currentOwnerId)
                 .build();
 
-        boardRepository.boardSave(saveBoardData);
+        boardRepository.saveBoard(saveBoardData);
 
         if(boardFiles!= null && !boardFiles.isEmpty()) {
             for(MultipartFile multipartFile : boardFiles) {
@@ -174,7 +174,7 @@ public class BoardServiceImpl implements BoardService {
                 final String fileExtNm = FilenameUtils.getExtension(originalFileName);
                 final String fileSize = String.valueOf(multipartFile.getSize());
 
-                BoardFile newBoardFile = BoardFile.builder()
+                BoardFile saveBoardFileData = BoardFile.builder()
                         .boardFileId(boardFileId)
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
@@ -183,7 +183,8 @@ public class BoardServiceImpl implements BoardService {
                         .boardFileSize(fileSize)
                         .boardId(boardId)
                         .build();
-                boardFileRepository.boardFileSave(newBoardFile);
+
+                boardFileRepository.saveBoardFile(saveBoardFileData);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
@@ -202,13 +203,14 @@ public class BoardServiceImpl implements BoardService {
         final String boardContentsText = Jsoup.parse(boardContents).text();
         final Integer boardUserId = updateData.getBoardUserId();
         final Integer boardOwnerId = updateData.getBoardOwnerId();
+        final List<MultipartFile> boardFiles = updateData.getBoardFiles();
 
         if (!hasEditPermission(currentUserId, currentOwnerId, boardUserId, boardOwnerId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
         if (boardUserId == null && boardOwnerId == null) {
-            throw new AcontainerException(ApiHttpErrorCode.INTERNAL_SERVER_ERROR);
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
         Board detailData = boardRepository.selectBoardDetailData(boardId);
@@ -221,14 +223,15 @@ public class BoardServiceImpl implements BoardService {
             throw new AcontainerException(ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR);
         }
 
-        Board newBoardUpdateData = Board.builder()
+        Board updateBoardData = Board.builder()
                 .boardId(boardId)
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
                 .boardContents(boardContents)
                 .boardContentsText(boardContentsText)
                 .build();
-        boardRepository.boardUpdate(newBoardUpdateData);
+
+        boardRepository.updateBoard(updateBoardData);
 
         List<Integer> boardFileIds = updateData.getBoardFileIds();
         if (boardFileIds == null) {
@@ -252,11 +255,11 @@ public class BoardServiceImpl implements BoardService {
             final String storedFileName = boardFile.getBoardStoredFileName();
 
             fileComponent.delete(filePath, storedFileName);
-            boardFileRepository.boardFileDelete(boardFileId);
+            boardFileRepository.deleteBoardFile(boardFileId);
         }
 
-        if(updateData.getBoardFiles() != null && !updateData.getBoardFiles().isEmpty()) {
-            for(MultipartFile multipartFile : updateData.getBoardFiles()) {
+        if(boardFiles != null && !boardFiles.isEmpty()) {
+            for(MultipartFile multipartFile : boardFiles) {
                 final Integer boardFileId = boardFileRepository.selectBoardFileIdKey();
                 final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
                 final String storedFileName = String.format("[%s_%s]%s", boardId, boardFileId, UUID.randomUUID().toString().replaceAll("-", ""));
@@ -264,7 +267,7 @@ public class BoardServiceImpl implements BoardService {
                 final String fileExtNm = FilenameUtils.getExtension(originalFileName);
                 final String fileSize = String.valueOf(multipartFile.getSize());
 
-                BoardFile newBoardFile = BoardFile.builder()
+                BoardFile newFileData = BoardFile.builder()
                         .boardFileId(boardFileId)
                         .boardOriginalFileName(originalFileName)
                         .boardStoredFileName(storedFileName)
@@ -273,7 +276,8 @@ public class BoardServiceImpl implements BoardService {
                         .boardFileSize(fileSize)
                         .boardId(boardId)
                         .build();
-                boardFileRepository.boardFileSave(newBoardFile);
+
+                boardFileRepository.saveBoardFile(newFileData);
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
@@ -306,14 +310,15 @@ public class BoardServiceImpl implements BoardService {
                 final String filePath = boardFile.getBoardFilePath();
 
                 fileComponent.delete(filePath, storedFileName);
-                boardFileRepository.boardFileDelete(boardFileId);
+                boardFileRepository.deleteBoardFile(boardFileId);
             }
         }
 
-        Board boardDeleteData = Board.builder()
+        Board deleteBoardData = Board.builder()
                 .boardId(boardId)
                 .build();
-        boardRepository.boardDelete(boardDeleteData);
+
+        boardRepository.deleteBoard(deleteBoardData);
     }
 
     private boolean hasEditPermission(Integer currentUserId, Integer currentOwnerId, Integer boardUserId, Integer boardOwnerId) {

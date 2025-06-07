@@ -179,14 +179,14 @@ public class NoticeServiceImpl implements NoticeService {
             throw new AcontainerException(ApiErrorCode.NOTICE_NOT_FOUND);
         }
 
-        Notice noticeUpdateData = Notice.builder()
+        Notice updateNoticeData = Notice.builder()
                 .noticeId(noticeId)
                 .noticeTitle(noticeTitle)
                 .noticeContents(noticeContents)
                 .noticeContentsText(noticeContentsText)
                 .build();
 
-        noticeRepository.updateNotice(noticeUpdateData);
+        noticeRepository.updateNotice(updateNoticeData);
 
         List<Integer> noticeFileIds = updateData.getNoticeFileIds();
         if (noticeFileIds == null) {
