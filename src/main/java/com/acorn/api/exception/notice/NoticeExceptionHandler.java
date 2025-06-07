@@ -28,6 +28,7 @@ public class NoticeExceptionHandler {
             errorNoticeMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             noticeErrorCode = switch (fieldError.getField()) {
+                case "noticeId" -> ApiValidationErrorCode.ID_VAULE_ERROR;
                 case "noticeTitle" -> ApiValidationErrorCode.TITLE_LENGTH_ERROR;
                 case "noticeContents" -> ApiValidationErrorCode.CONTENT_LENGTH_ERROR;
                 default -> ApiValidationErrorCode.FIELD_BLANK_ERROR;

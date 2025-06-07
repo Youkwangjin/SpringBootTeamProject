@@ -15,13 +15,13 @@ public interface BoardRepository {
 
     List<Board> selectBoardListData(PaginationRequest pagination);
 
-    void boardSave(Board board);
+    void saveBoard(Board board);
 
     Board selectBoardDetailData(@Param("boardId") Integer boardId);
 
     void updateBoardHits(@Param("boardId")Integer boardId);
 
-    void boardUpdate(Board board);
+    void updateBoard(Board board);
 
-    void boardDelete(Board board);
+    void deleteBoard(Board board);
 }

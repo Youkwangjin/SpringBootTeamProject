@@ -144,8 +144,10 @@
             window.location.href = "/notice/list";
         });
 
-        writeButton.addEventListener("click", function () {
-            window.location.href = "/admin/notice/write";
-        });
+        if (writeButton) {
+            writeButton.addEventListener("click", function () {
+                window.location.href = "/admin/notice/write";
+            });
+        }
     })
 </script>

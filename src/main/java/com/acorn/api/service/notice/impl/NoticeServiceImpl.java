@@ -3,10 +3,7 @@ package com.acorn.api.service.notice.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.notice.NoticeDetailDTO;
-import com.acorn.api.dto.notice.NoticeFileDTO;
-import com.acorn.api.dto.notice.NoticeListDTO;
-import com.acorn.api.dto.notice.NoticeSaveDTO;
+import com.acorn.api.dto.notice.*;
 import com.acorn.api.entity.notice.Notice;
 import com.acorn.api.entity.notice.NoticeFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -23,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -160,5 +158,117 @@ public class NoticeServiceImpl implements NoticeService {
                 fileComponent.upload(filePath, storedFileName, multipartFile);
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void noticeDataUpdate(NoticeUpdateDTO updateData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer noticeId = updateData.getNoticeId();
+        final String noticeTitle = updateData.getNoticeTitle();
+        final String noticeContents = updateData.getNoticeContents();
+        final String noticeContentsText = Jsoup.parse(noticeContents).text();
+        final List<MultipartFile> noticeFiles = updateData.getNoticeFiles();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Notice detailData = noticeRepository.selectNoticeDetailData(noticeId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.NOTICE_NOT_FOUND);
+        }
+
+        Notice updateNoticeData = Notice.builder()
+                .noticeId(noticeId)
+                .noticeTitle(noticeTitle)
+                .noticeContents(noticeContents)
+                .noticeContentsText(noticeContentsText)
+                .build();
+
+        noticeRepository.updateNotice(updateNoticeData);
+
+        List<Integer> noticeFileIds = updateData.getNoticeFileIds();
+        if (noticeFileIds == null) {
+            noticeFileIds = new ArrayList<>();
+        }
+
+        List<NoticeFile> existingFiles = noticeFileRepository.selectFilesByNoticeId(noticeId);
+        List<Integer> deleteFileIds = new ArrayList<>();
+        for (NoticeFile noticeFile : existingFiles) {
+            if (!noticeFileIds.contains(noticeFile.getNoticeFileId())) {
+                deleteFileIds.add(noticeFile.getNoticeFileId());
+            }
+        }
+
+        for (Integer noticeFileId : deleteFileIds) {
+            NoticeFile noticeFile = noticeFileRepository.selectFilesByNoticeFileId(noticeFileId);
+            if (noticeFile == null) {
+                throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+            }
+            final String filePath = noticeFile.getNoticeFilePath();
+            final String storedFileName = noticeFile.getNoticeStoredFileName();
+
+            fileComponent.delete(filePath, storedFileName);
+            noticeFileRepository.deleteNoticeFile(noticeFileId);
+        }
+
+        if (noticeFiles != null && !noticeFiles.isEmpty()) {
+            for (MultipartFile multipartFile : noticeFiles) {
+                final Integer noticeFileId = noticeFileRepository.selectNoticeFileIdKey();
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", noticeId, noticeFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(multipartFile.getSize());
+
+                NoticeFile newFileData = NoticeFile.builder()
+                        .noticeFileId(noticeFileId)
+                        .noticeOriginalFileName(originalFileName)
+                        .noticeStoredFileName(storedFileName)
+                        .noticeFilePath(filePath)
+                        .noticeFileExtNm(fileExtNm)
+                        .noticeFileSize(fileSize)
+                        .noticeId(noticeId)
+                        .build();
+
+                noticeFileRepository.saveNoticeFile(newFileData);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void noticeDataDelete(NoticeDeleteDTO deleteData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer noticeId = deleteData.getNoticeId();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Notice detailData = noticeRepository.selectNoticeDetailData(noticeId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.NOTICE_NOT_FOUND);
+        }
+
+        List<NoticeFile> existingFiles = noticeFileRepository.selectFilesByNoticeId(noticeId);
+        if (existingFiles != null && !existingFiles.isEmpty()) {
+            for (NoticeFile noticeFile : existingFiles) {
+                final Integer noticeFileId = noticeFile.getNoticeFileId();
+                final String filePath = noticeFile.getNoticeFilePath();
+                final String storedFileName = noticeFile.getNoticeStoredFileName();
+
+                fileComponent.delete(filePath, storedFileName);
+                noticeFileRepository.deleteNoticeFile(noticeFileId);
+            }
+        }
+
+        Notice deleteNoticeData = Notice.builder()
+                .noticeId(noticeId)
+                .build();
+
+        noticeRepository.deleteNotice(deleteNoticeData);
     }
 }

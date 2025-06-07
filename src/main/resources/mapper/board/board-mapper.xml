@@ -72,9 +72,26 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
-    <insert id="boardSave" parameterType="com.acorn.api.entity.board.Board" useGeneratedKeys="true" keyProperty="boardId">
-        INSERT INTO TB_BOARD (BOARD_ID, BOARD_TITLE, BOARD_WRITER, BOARD_PASSWORD, BOARD_CONTENTS, BOARD_CONTENTS_TEXT, BOARD_USER_ID, BOARD_OWNER_ID)
-        VALUES (#{boardId}, #{boardTitle}, #{boardWriter}, #{boardPassword}, #{boardContents}, #{boardContentsText}, #{boardUserId}, #{boardOwnerId})
+    <insert id="saveBoard" parameterType="com.acorn.api.entity.board.Board" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO TB_BOARD (
+            BOARD_ID,
+            BOARD_TITLE,
+            BOARD_WRITER,
+            BOARD_PASSWORD,
+            BOARD_CONTENTS,
+            BOARD_CONTENTS_TEXT,
+            BOARD_USER_ID,
+            BOARD_OWNER_ID
+        ) VALUES (
+            #{boardId},
+            #{boardTitle},
+            #{boardWriter},
+            #{boardPassword},
+            #{boardContents},
+            #{boardContentsText},
+            #{boardUserId},
+            #{boardOwnerId}
+        )
     </insert>
 
     <select id="selectBoardDetailData" parameterType="Integer" resultMap="boardResultMap">
@@ -114,7 +131,7 @@
             BOARD_ID = #{boardId}
     </update>
 
-    <update id="boardUpdate" parameterType="com.acorn.api.entity.board.Board">
+    <update id="updateBoard" parameterType="com.acorn.api.entity.board.Board">
         UPDATE
             TB_BOARD
         SET
@@ -125,7 +142,7 @@
             BOARD_ID = #{boardId}
     </update>
 
-    <delete id="boardDelete" parameterType="com.acorn.api.entity.board.Board">
+    <delete id="deleteBoard" parameterType="com.acorn.api.entity.board.Board">
         DELETE
         FROM
             TB_BOARD

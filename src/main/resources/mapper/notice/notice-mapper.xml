@@ -93,7 +93,7 @@
         ON N.NOTICE_ADMIN_ID = A.ADMIN_ID
         LEFT OUTER JOIN
             TB_NOTICE_FILE F
-        ON N.NOTICE_ID = F.NOTICE_FILE_ID
+        ON N.NOTICE_ID = F.NOTICE_FILE_NOTICE_ID
         WHERE
             N.NOTICE_ID = #{noticeId}
     </select>
@@ -124,4 +124,24 @@
         WHERE
             NOTICE_ID = #{noticeId}
     </update>
+
+    <update id="updateNotice" parameterType="com.acorn.api.entity.notice.Notice">
+        UPDATE
+            TB_NOTICE
+        SET
+            NOTICE_TITLE = #{noticeTitle},
+            NOTICE_CONTENTS = #{noticeContents},
+            NOTICE_CONTENTS_TEXT = #{noticeContentsText},
+            NOTICE_UPDATED = NOW()
+        WHERE
+            NOTICE_ID = #{noticeId}
+    </update>
+
+    <delete id="deleteNotice" parameterType="com.acorn.api.entity.notice.Notice">
+        DELETE
+        FROM
+            TB_NOTICE
+        WHERE
+            NOTICE_ID = #{noticeId}
+    </delete>
 </mapper>

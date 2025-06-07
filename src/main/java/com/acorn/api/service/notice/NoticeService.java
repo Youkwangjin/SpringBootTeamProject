@@ -1,8 +1,6 @@
 package com.acorn.api.service.notice;
 
-import com.acorn.api.dto.notice.NoticeDetailDTO;
-import com.acorn.api.dto.notice.NoticeListDTO;
-import com.acorn.api.dto.notice.NoticeSaveDTO;
+import com.acorn.api.dto.notice.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +13,8 @@ public interface NoticeService {
     NoticeDetailDTO getNoticeDetailData(Integer noticeId);
 
     void noticeDataSave(NoticeSaveDTO saveData);
+
+    void noticeDataUpdate(NoticeUpdateDTO updateData);
+
+    void noticeDataDelete(NoticeDeleteDTO deleteData);
 }

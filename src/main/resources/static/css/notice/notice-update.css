@@ -1,0 +1,109 @@
+.notice-update-form {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.notice-update-form .form-group {
+    margin-bottom: 15px;
+}
+
+.notice-update-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.notice-update-form .form-group input[type="text"],
+.notice-update-form .form-group input[type="password"],
+.notice-update-form .form-group textarea,
+.notice-update-form .form-group input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+.notice-update-form .form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notice-update-form .form-row .form-group.half {
+    width: 48%;
+}
+
+.notice-update-form .form-group textarea {
+    height: 150px;
+    resize: none;
+}
+
+.notice-update-form button {
+    padding: 10px 20px;
+    background-color: #4d5154;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-right: 10px;
+}
+
+.notice-update-form button:hover {
+    background-color: #4a5464;
+}
+
+.notice-update-form input[type="button"],
+.notice-update-form input[type="button"]#backListBtn {
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-right: 10px;
+}
+
+.notice-update-form input[type="button"]#backListBtn:hover {
+    background-color: #5a6268;
+}
+
+.notice-update-form input[type="submit"]#updateBtn {
+    padding: 10px 20px;
+    background-color: #ff7f00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-right: 10px;
+}
+
+.notice-update-form input[type="submit"]#updateBtn:hover {
+    background-color: #e67300;
+}
+
+.notice-update-form .button-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+#fileListArea {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.file-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.file-entry span {
+    flex-grow: 1;
+    margin-right: 10px;
+}

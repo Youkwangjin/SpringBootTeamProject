@@ -29,6 +29,7 @@ public class BoardExceptionHandler {
             errorBoardMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             boardErrorCode = switch (fieldError.getField()) {
+                case "boardId" -> ApiValidationErrorCode.ID_VAULE_ERROR;
                 case "boardTitle" -> ApiValidationErrorCode.TITLE_LENGTH_ERROR;
                 case "boardPassword" -> ApiValidationErrorCode.PASSWORD_LENGTH_ERROR;
                 default -> ApiValidationErrorCode.FIELD_BLANK_ERROR;
