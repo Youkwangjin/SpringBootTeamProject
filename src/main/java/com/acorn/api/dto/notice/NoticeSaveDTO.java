@@ -13,7 +13,7 @@ import java.util.List;
 public class NoticeSaveDTO {
 
     @NotBlank
-    @Size(max = 50)
+    @Size(min = 1, max = 50)
     private String noticeTitle;
 
     @NotBlank
