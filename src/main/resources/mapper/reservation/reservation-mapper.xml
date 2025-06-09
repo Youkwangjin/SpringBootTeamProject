@@ -132,6 +132,24 @@
             R.RESERVATION_ID = #{reservationId}
     </select>
 
+    <select id="selectReservationByUserIdAndStatus" parameterType="map" resultMap="reservationResultMap">
+        SELECT
+            RESERVATION_ID,
+            RESERVATION_TID,
+            RESERVATION_USER_ID,
+            RESERVATION_CONTAINER_ID,
+            RESERVATION_STATUS,
+            RESERVATION_START_DATE,
+            RESERVATION_END_DATE
+        FROM
+            TB_RESERVATION
+        WHERE RESERVATION_USER_ID = #{reservationUserId}
+        AND RESERVATION_STATUS IN
+        <foreach item="reservationStatus" collection="reservationStatus" open="(" separator="," close=")">
+            #{reservationStatus}
+        </foreach>
+    </select>
+
     <insert id="insertReservation" parameterType="com.acorn.api.entity.reservation.Reservation" useGeneratedKeys="true" keyProperty="reservationId">
         INSERT INTO TB_RESERVATION (
             RESERVATION_ID,
