@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 public enum ApiErrorCode {
     USER_FOUND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "UFE", "존재하지 않는 사용자 입니다."),
     OWNER_FOUND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "OFE", "존재하지 않는 공급자 입니다."),
-    RESERVATION_STATUS_ACTIVE(HttpStatus.FORBIDDEN, "RSA", "예약 중인 사용자는 정보 수정이 불가능 합니다."),
+
+    RESERVATION_STATUS_ACTIVE(HttpStatus.FORBIDDEN, "RSA", "예약 중인 사용자는 회원수정 및 탈퇴가 불가능 합니다."),
+    PAYMENT_HISTORY_ACTIVE(HttpStatus.FORBIDDEN, "PHA", "이미 결제한 내역이 존재하여 회원수정 및 탈퇴가 불가능합니다."),
 
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "BNF", "게시글이 존재하지 않습니다."),
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "NNF", "공지사항이 존재하지 않습니다."),
