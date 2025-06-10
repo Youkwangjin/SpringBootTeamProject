@@ -123,7 +123,7 @@
                     </th:block>
                 </div>
                 <div class="write-btn">
-                    <button id="noticeWriteBtn" class="btn btn-dark" type="button">문의하기</button>
+                    <button id="contactWriteBtn" class="btn btn-dark" type="button">문의하기</button>
                 </div>
             </div>
         </section>
@@ -139,6 +139,7 @@
         const answerYn = document.getElementById("answerYn");
 
         const searchButton = document.getElementById("searchButton");
+        const contactWriteBtn = document.getElementById("contactWriteBtn");
         const resetButton = document.getElementById("resetBtn");
 
         const setSearchInputVisibility = () => {
@@ -180,6 +181,10 @@
             }
 
             window.location.href = `/contact/user/list?pageNo=${pageNo}&searchType=${searchType.value}&searchName=${searchValue}`;
+        });
+
+        contactWriteBtn.addEventListener("click", function () {
+           window.location.href = "/contact/user/write";
         });
 
         resetButton.addEventListener("click", function () {
