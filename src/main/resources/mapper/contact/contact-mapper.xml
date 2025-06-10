@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.contact.ContactRepository">
+    <resultMap id="contactResultMap"                type="com.acorn.api.entity.contact.Contact">
+        <id property="rowNum"                       column="ROW_NUM"/>
+        <id property="contactId"                    column="CONTACT_ID"/>
+        <result property="contactUserId"            column="CONTACT_USER_ID"/>
+        <result property="contactOwnerId"           column="CONTACT_OWNER_ID"/>
+        <result property="contactAdminId"           column="CONTACT_ADMIN_ID"/>
+        <result property="contactTitle"             column="CONTACT_TITLE"/>
+        <result property="contactContents"          column="CONTACT_CONTENTS"/>
+        <result property="contactContentsText"      column="CONTACT_CONTENTS_TEXT"/>
+        <result property="contactStatus"            column="CONTACT_STATUS"/>
+        <result property="contactWriterType"        column="CONTACT_WRITER_TYPE"/>
+        <result property="contactAdminContents"     column="CONTACT_ADMIN_CONTENTS"/>
+        <result property="contactAnswerYn"          column="CONTACT_ANSWER_YN"/>
+        <result property="contactCreated"           column="CONTACT_CREATED"/>
+        <result property="contactUpdated"           column="CONTACT_UPDATED"/>
+        <association property="user"                javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap"/>
+        <association property="owner"               javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap"/>
+        <association property="admin"               javaType="com.acorn.api.entity.admin.Admin" resultMap="com.acorn.api.repository.admin.AdminRepository.adminResultMap"/>
+        <collection property="contactFilesList"     javaType="java.util.List" resultMap="com.acorn.api.repository.contact.ContactFileRepository.contactFileResultMap" />
+    </resultMap>
+
+    <select id="selectContactIdKey" resultType="Integer">
+        SELECT nextval(CONTACT_SEQ)
+    </select>
+
+    <select id="selectListCountByUserRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(CONTACT_ID)
+        FROM
+            TB_CONTACT
+        <where>
+            CONTACT_USER_ID = #{contactUserId}
+            <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactContentsText' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_CONTENTS_TEXT LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_STATUS = #{searchName}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectContactUserListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="contactResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY CONTACT_CREATED ASC) AS ROW_NUM,
+            CONTACT_ID,
+            CONTACT_TITLE,
+            CONTACT_STATUS,
+            CONTACT_ANSWER_YN,
+            CONTACT_CREATED
+        FROM
+            TB_CONTACT
+        <where>
+            CONTACT_USER_ID = #{contactUserId}
+            <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactContentsText' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_CONTENTS_TEXT LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_STATUS = #{searchName}
+            </if>
+        </where>
+        ORDER BY CONTACT_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
+    </select>
+</mapper>

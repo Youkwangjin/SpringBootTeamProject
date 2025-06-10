@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>에이콘테이너 : 1:1문의</title>
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/contact/contact-list.css}">
+</head>
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_USER')">
+    <div th:replace="~{fragments/header-user :: header}"></div>
+</div>
+<body>
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<main id="main">
+    <form id="contactListForm" method="get">
+        <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}" />
+        <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');">
+        </div>
+        <section>
+            <div class="contact-container">
+                <table>
+                    <tr>
+                        <td colspan="5" class="table-top-info">
+                            <span class="title">1:1문의&nbsp;&nbsp;</span>
+                            <span>궁금한 점이나 요청 사항이 있으시면 언제든 문의해 주세요.</span><br/><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <div id="contact-search" class="search-bar-container">
+                                <div class="container">
+                                    <div class="search-window">
+                                        <div class="search-wrap">
+                                            <label for="searchType" class="blind">검색 타입 선택</label>
+                                            <select id="searchType" name="searchType" class="search-type-select">
+                                                <option value="contactTitle" th:selected="${request == 'contactTitle'}">제목</option>
+                                                <option value="contactContentsText" th:selected="${request == 'contactContentsText'}">내용</option>
+                                                <option value="contactStatus" th:selected="${request.searchType == 'contactStatus'}">문의상태</option>
+                                                <option value="contactAnswerYn" th:selected="${request.searchType == 'contactAnswerYn'}">답변여부</option>
+                                            </select>
+                                            <label for="searchName" class="blind">1:1문의 내용 검색</label>
+                                            <input id="searchName" type="search" name="searchName" placeholder="검색어를 입력해주세요." th:value="${request.searchName}">
+                                            <select id="statusValue" name="searchName" style="display: none;" aria-label="문의 상태">
+                                                <option value="0" th:selected="${request.searchName == '0'}">문의 대기</option>
+                                                <option value="1" th:selected="${request.searchName == '1'}">문의 처리중</option>
+                                                <option value="2" th:selected="${request.searchName == '2'}">문의 처리완료</option>
+                                                <option value="3" th:selected="${request.searchName == '3'}">문의 취소</option>
+                                            </select>
+                                            <select id="answerYn" name="searchName" style="display: none;" aria-label="답변 여부">
+                                                <option value="Y" th:selected="${request.searchName == 'Y'}">문의 대기</option>
+                                                <option value="N" th:selected="${request.searchName == 'N'}">검토 중</option>
+                                            </select>
+                                            <button id="searchButton" type="button" class="btn btn-dark">검색</button>
+                                            <button id="resetBtn" type="button" class="btn resetBtn-dark">초기화</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <div id="contact-list">
+                        <div class="container">
+                            <table class="contact-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="th-num">번호</th>
+                                    <th scope="col" class="th-title">제목</th>
+                                    <th scope="col" class="th-writer">문의상태</th>
+                                    <th scope="col" class="th-views">답변여부</th>
+                                    <th scope="col" class="th-date">등록일</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="contact: ${contactListData}">
+                                    <td th:text="${contact.rowNum}"></td>
+                                    <td>
+                                        <a th:href="@{|/contact/detail/${contact.contactId}|}" th:text="${contact.contactTitle}"></a>
+                                    </td>
+                                    <td th:text="${contact.contactStatus}"></td>
+                                    <td>
+                                        <span th:if="${contact.contactAnswerYn == 'Y'}" class="text-success">답변완료</span>
+                                        <span th:if="${contact.contactAnswerYn == 'N'}" class="text-warning">검토 중</span>
+                                    </td>
+                                    <td th:text="${#temporals.format(contact.contactCreated, 'yyyy.MM.dd')}"></td>
+                                </tr>
+                                <tr th:if="${contactListData.size() == 0}">
+                                    <td colspan="5">조회된 결과가 없습니다.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </table>
+                <div class="custom-pagination">
+                    <th:block th:if="${request.totalCount > 0}">
+                        <ul>
+                            <li th:if="${request.startPageNo > 1}">
+                                <a th:href="@{/contact/user/list(pageNo=${request.firstPageNo})}">&laquo;</a>
+                            </li>
+                            <li th:if="${request.pageNo > request.startPageNo}">
+                                <a th:href="@{/contact/user/list(pageNo=${request.prevPageNo})}">&lt;</a>
+                            </li>
+                            <th:block th:each="i : ${#numbers.sequence(request.startPageNo, request.endPageNo)}">
+                                <li th:classappend="${i == request.pageNo} ? 'active'">
+                                    <a th:href="@{/contact/user/list(pageNo=${i})}" th:text="${i}"></a>
+                                </li>
+                            </th:block>
+                            <li th:if="${request.pageNo < request.endPageNo}">
+                                <a th:href="@{/contact/user/list(pageNo=${request.nextPageNo})}">&gt;</a>
+                            </li>
+                            <li th:if="${request.endPageNo < request.finalPageNo}">
+                                <a th:href="@{/contact/user/list(pageNo=${request.finalPageNo})}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </th:block>
+                </div>
+                <div class="write-btn">
+                    <button id="contactWriteBtn" class="btn btn-dark" type="button">문의하기</button>
+                </div>
+            </div>
+        </section>
+    </form>
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const pageNo = document.getElementById("pageNo").value;
+        const searchType = document.getElementById("searchType");
+        const searchName = document.getElementById("searchName");
+
+        const statusValue = document.getElementById("statusValue");
+        const answerYn = document.getElementById("answerYn");
+
+        const searchButton = document.getElementById("searchButton");
+        const contactWriteBtn = document.getElementById("contactWriteBtn");
+        const resetButton = document.getElementById("resetBtn");
+
+        const setSearchInputVisibility = () => {
+            searchName.style.display = "none";
+            searchName.name = "";
+
+            statusValue.style.display = "none";
+            statusValue.name = "";
+
+            answerYn.style.display = "none";
+            answerYn.name = "";
+
+            if (searchType.value === "contactStatus") {
+                statusValue.style.display = "inline-block";
+                statusValue.name = "searchName";
+            } else if (searchType.value === "contactAnswerYn") {
+                answerYn.style.display = "inline-block";
+                answerYn.name = "searchName";
+            } else {
+                searchName.style.display = "inline-block";
+                searchName.name = "searchName";
+            }
+        }
+
+        setSearchInputVisibility();
+        searchType.addEventListener("change", setSearchInputVisibility);
+
+        searchButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            let searchValue;
+
+            if (searchType.value === "contactStatus") {
+                searchValue = statusValue.value;
+            } else if (searchType.value === "contactAnswerYn") {
+                searchValue = answerYn.value;
+            } else {
+                searchValue = searchName.value.trim();
+            }
+
+            window.location.href = `/contact/user/list?pageNo=${pageNo}&searchType=${searchType.value}&searchName=${searchValue}`;
+        });
+
+        contactWriteBtn.addEventListener("click", function () {
+           window.location.href = "/contact/user/write";
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/contact/user/list";
+        });
+    });
+</script>
+</body>
+</html>
