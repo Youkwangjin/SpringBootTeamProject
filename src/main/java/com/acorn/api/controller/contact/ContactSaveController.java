@@ -1,4 +1,4 @@
-package com.acorn.api.controller.contact.common;
+package com.acorn.api.controller.contact;
 
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
@@ -19,7 +19,7 @@ public class ContactSaveController {
 
     private final ContactService contactService;
 
-    @PostMapping("/api/user/contact/save")
+    @PostMapping("/api/contact/save")
     public ResponseEntity<ApiSuccessResponse<Object>> contactSave(@Valid ContactSaveDTO saveData) {
         log.info(" *****************************    Contact Save START    *****************************");
 

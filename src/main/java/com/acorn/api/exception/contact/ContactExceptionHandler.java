@@ -2,7 +2,7 @@ package com.acorn.api.exception.contact;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
-import com.acorn.api.controller.contact.common.ContactSaveController;
+import com.acorn.api.controller.contact.ContactSaveController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
