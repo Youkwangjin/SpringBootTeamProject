@@ -132,7 +132,9 @@ public class SpringSecurityConfig {
 
                         // Protected Common Pages
                         .requestMatchers("/board/write",
-                                         "/board/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                                         "/board/update/**",
+                                         "/contact/list/**",
+                                         "/contact/write").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         // Protected User Common Pages
                         .requestMatchers("/user/mypage",
@@ -141,9 +143,7 @@ public class SpringSecurityConfig {
                                          "/user/reservation/list/**",
                                          "/user/reservation/detail/**",
                                          "/user/payment/list/**",
-                                         "/user/payment/detail/**",
-                                         "/contact/user/list/**",
-                                         "/contact/user/write").hasAuthority("ROLE_USER")
+                                         "/user/payment/detail/**").hasAuthority("ROLE_USER")
 
                         // Protected Owner Common Pages
                         .requestMatchers("/owner/mypage",
@@ -174,7 +174,8 @@ public class SpringSecurityConfig {
                                          "/api/user/reservations/cancel/**",
                                          "/api/user/payments/ready/**",
                                          "/api/user/payments/approve/**",
-                                         "/api/user/payments/cancel/**").hasAuthority("ROLE_USER")
+                                         "/api/user/payments/cancel/**",
+                                         "/api/user/contact/save").hasAuthority("ROLE_USER")
 
                         // Protected Owner API
                         .requestMatchers("/api/owner/update/**",
@@ -204,7 +205,8 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/editor/image/upload",
                                          "/api/board/save",
                                          "/api/board/update/**",
-                                         "/api/board/delete/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                                         "/api/board/delete/**",
+                                         "/api/contact/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );

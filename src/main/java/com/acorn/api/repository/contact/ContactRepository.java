@@ -14,4 +14,6 @@ public interface ContactRepository {
     Integer selectListCountByUserRequest(PaginationRequest paginationRequest);
 
     List<Contact> selectContactUserListData(PaginationRequest paginationRequest);
+
+    void saveContact(Contact contact);
 }

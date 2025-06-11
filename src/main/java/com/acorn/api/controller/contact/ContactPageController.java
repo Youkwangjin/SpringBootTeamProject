@@ -15,16 +15,16 @@ public class ContactPageController {
 
     private final ContactService contactService;
 
-    @GetMapping("/contact/user/list")
+    @GetMapping("/contact/list")
     public String contactUserListPage(ContactListDTO listData, Model model) {
         List<ContactListDTO> contactListData = contactService.getUserContactList(listData);
         model.addAttribute("contactListData", contactListData);
         model.addAttribute("request", listData);
-        return "contact/user/contact-user-list";
+        return "contact/contact-list";
     }
 
-    @GetMapping("/contact/user/write")
+    @GetMapping("/contact/write")
     public String contactUserWritePage() {
-        return "contact/user/contact-user-write";
+        return "contact/contact-write";
     }
 }
