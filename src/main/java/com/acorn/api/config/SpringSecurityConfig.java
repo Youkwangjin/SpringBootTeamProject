@@ -174,7 +174,8 @@ public class SpringSecurityConfig {
                                          "/api/user/reservations/cancel/**",
                                          "/api/user/payments/ready/**",
                                          "/api/user/payments/approve/**",
-                                         "/api/user/payments/cancel/**").hasAuthority("ROLE_USER")
+                                         "/api/user/payments/cancel/**",
+                                         "/api/user/contact/save").hasAuthority("ROLE_USER")
 
                         // Protected Owner API
                         .requestMatchers("/api/owner/update/**",

@@ -72,4 +72,30 @@
         ORDER BY CONTACT_CREATED DESC
         LIMIT ${startRowNum}, ${pageSize}
     </select>
+
+    <insert id="saveContact" parameterType="com.acorn.api.entity.contact.Contact" useGeneratedKeys="true" keyProperty="contactId">
+        INSERT INTO TB_CONTACT (
+            CONTACT_ID,
+            CONTACT_USER_ID,
+            CONTACT_OWNER_ID,
+            CONTACT_TITLE,
+            CONTACT_CONTENTS,
+            CONTACT_CONTENTS_TEXT,
+            CONTACT_STATUS,
+            CONTACT_WRITER_TYPE,
+            CONTACT_ANSWER_YN,
+            CONTACT_CREATED
+        ) VALUES (
+            #{contactId},
+            #{contactUserId},
+            #{contactOwnerId},
+            #{contactTitle},
+            #{contactContents},
+            #{contactContentsText},
+            #{contactStatus},
+            #{contactWriterType},
+            #{contactAnswerYn},
+            NOW()
+        )
+    </insert>
 </mapper>

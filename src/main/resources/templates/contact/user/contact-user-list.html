@@ -84,10 +84,15 @@
                                     <td>
                                         <a th:href="@{|/contact/detail/${contact.contactId}|}" th:text="${contact.contactTitle}"></a>
                                     </td>
-                                    <td th:text="${contact.contactStatus}"></td>
                                     <td>
-                                        <span th:if="${contact.contactAnswerYn == 'Y'}" class="text-success">답변완료</span>
-                                        <span th:if="${contact.contactAnswerYn == 'N'}" class="text-warning">검토 중</span>
+                                        <span th:if="${contact.contactStatus == 0}">대기</span>
+                                        <span th:if="${contact.contactStatus == 1}">처리중</span>
+                                        <span th:if="${contact.contactStatus == 2}">처리완료</span>
+                                        <span th:if="${contact.contactStatus == 3}">취소</span>
+                                    </td>
+                                    <td>
+                                        <span th:if="${contact.contactAnswerYn == 'Y'}">답변완료</span>
+                                        <span th:if="${contact.contactAnswerYn == 'N'}">미답변</span>
                                     </td>
                                     <td th:text="${#temporals.format(contact.contactCreated, 'yyyy.MM.dd')}"></td>
                                 </tr>

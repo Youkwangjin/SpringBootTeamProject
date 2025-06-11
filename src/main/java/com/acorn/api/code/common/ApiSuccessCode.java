@@ -14,6 +14,8 @@ public enum ApiSuccessCode {
     NOTICE_SAVE_SUCCESS(HttpStatus.OK,        "NSS", "공지사항이 성공적으로 등록되었습니다."),
     NOTICE_UPDATE_SUCCESS(HttpStatus.OK,      "NUS", "공지사항이 성공적으로 수정되었습니다."),
     NOTICE_DELETE_SUCCESS(HttpStatus.OK,      "NDS", "공지사항이 성공적으로 삭제되었습니다."),
+    CONTACT_SAVE_SUCCESS(HttpStatus.OK,       "CSS", "1:1 문의가 성공적으로 등록되었습니다."),
+    CONTACT_UPDATE_SUCCESS(HttpStatus.OK,     "CUS", "1:1 문의가 성공적으로 수정되었습니다."),
     CONTAINER_REGISTER_SUCCESS(HttpStatus.OK, "CRS", "창고정보가 성공적으로 등록되었습니다."),
     CONTAINER_SELECT_SUCCESS(HttpStatus.OK,   "CSS", "창고정보가 성공적으로 조회되었습니다."),
     CONTAINER_UPDATE_SUCCESS(HttpStatus.OK,   "CUS", "창고정보가 성공적으로 수정되었습니다."),

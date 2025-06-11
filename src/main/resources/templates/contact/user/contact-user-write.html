@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>에이콘테이너 : 공지사항 작성하기</title>
+    <title>에이콘테이너 : 1:1문의 작성하기</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
@@ -50,6 +50,65 @@
 <script src="/js/common/messages.js"></script>
 <script src="/js/common/logout.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const backListButton = document.getElementById("backListBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        backListButton.addEventListener("click", function () {
+            window.location.href = "/contact/user/list";
+        });
+
+        document.getElementById("writeForm").addEventListener("submit", function (event){
+            event.preventDefault();
+
+            const contactTitle = document.getElementById("contactTitle").value.trim();
+            const contactContents = document.getElementById("contactContents").value.trim();
+
+            if (!contactTitle || !contactContents) {
+                alert("제목, 내용 입력란은 필수 항목입니다.");
+                return;
+            }
+
+            if (contactTitle.length > 50) {
+                alert("제목은 최대 50자까지 입력 가능합니다.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("contactTitle", contactTitle);
+            formData.append("contactContents", contactContents);
+
+            let fileList = file.list();
+            for (let i = 0; i < fileList.length; i++) {
+                formData.append("contactFiles", fileList[i].file);
+            }
+
+            fetch("/api/user/contact/save", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                credentials: "include",
+                body: formData
+            })
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.CONTACT_SAVE_SUCCESS);
+                        window.location.href = "/contact/user/list";
+                    } else {
+                        alert(responseData.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
+        });
+    });
+
     let file = fileModule({
         count: 5,
         exts: [],
