@@ -39,7 +39,13 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<ContactListDTO> getUserContactList(ContactListDTO listData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
-        if (currentUserId == null) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+
+        if (currentUserId != null) {
+            listData.setContactUserId(currentUserId);
+        } else if (currentOwnerId != null) {
+            listData.setContactOwnerId(currentOwnerId);
+        } else {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 

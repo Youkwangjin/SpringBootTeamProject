@@ -34,7 +34,12 @@
         FROM
             TB_CONTACT
         <where>
-            CONTACT_USER_ID = #{contactUserId}
+            <if test="contactUserId != null">
+                CONTACT_USER_ID = #{contactUserId}
+            </if>
+            <if test="contactOwnerId != null">
+                CONTACT_OWNER_ID = #{contactOwnerId}
+            </if>
             <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
@@ -61,7 +66,12 @@
         FROM
             TB_CONTACT
         <where>
-            CONTACT_USER_ID = #{contactUserId}
+            <if test="contactUserId != null">
+                CONTACT_USER_ID = #{contactUserId}
+            </if>
+            <if test="contactOwnerId != null">
+                CONTACT_OWNER_ID = #{contactOwnerId}
+            </if>
             <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
