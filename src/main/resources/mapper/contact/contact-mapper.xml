@@ -44,6 +44,9 @@
             <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_STATUS = #{searchName}
             </if>
+            <if test="searchType == 'contactAnswerYn' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_ANSWER_YN = #{searchName}
+            </if>
         </where>
     </select>
 
@@ -67,6 +70,9 @@
             </if>
             <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'contactAnswerYn' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_ANSWER_YN = #{searchName}
             </if>
         </where>
         ORDER BY CONTACT_CREATED DESC
