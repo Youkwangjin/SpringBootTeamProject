@@ -28,7 +28,7 @@
         SELECT nextval(CONTACT_SEQ)
     </select>
 
-    <select id="selectListCountByUserRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+    <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
             COUNT(CONTACT_ID)
         FROM
@@ -55,7 +55,7 @@
         </where>
     </select>
 
-    <select id="selectContactUserListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="contactResultMap">
+    <select id="selectContactListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="contactResultMap">
         SELECT
             ROW_NUMBER() OVER (ORDER BY CONTACT_CREATED ASC) AS ROW_NUM,
             CONTACT_ID,

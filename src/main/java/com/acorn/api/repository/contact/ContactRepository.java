@@ -11,9 +11,9 @@ public interface ContactRepository {
 
     Integer selectContactIdKey();
 
-    Integer selectListCountByUserRequest(PaginationRequest paginationRequest);
+    Integer selectListCountByRequest(PaginationRequest paginationRequest);
 
-    List<Contact> selectContactUserListData(PaginationRequest paginationRequest);
+    List<Contact> selectContactListData(PaginationRequest paginationRequest);
 
     void saveContact(Contact contact);
 }

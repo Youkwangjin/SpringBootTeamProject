@@ -49,9 +49,8 @@ public class ContactServiceImpl implements ContactService {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
-        listData.setContactUserId(currentUserId);
-        listData.setTotalCount(contactRepository.selectListCountByUserRequest(listData));
-        List<Contact> contactListData = contactRepository.selectContactUserListData(listData);
+        listData.setTotalCount(contactRepository.selectListCountByRequest(listData));
+        List<Contact> contactListData = contactRepository.selectContactListData(listData);
         return contactListData.stream()
                 .map(contactList -> {
                     final Integer rowNum = contactList.getRowNum();
