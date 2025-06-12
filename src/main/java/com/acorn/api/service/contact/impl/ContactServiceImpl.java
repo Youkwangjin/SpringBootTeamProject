@@ -77,15 +77,14 @@ public class ContactServiceImpl implements ContactService {
     public void contactSaveData(ContactSaveDTO saveData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
-        final Integer contactWriterId;
         final Integer contactWriterType;
 
         if (currentUserId != null) {
-            contactWriterId = currentUserId;
             contactWriterType = ContactStaus.USER.getCode();
+
         } else if (currentOwnerId != null) {
-            contactWriterId = currentOwnerId;
             contactWriterType = ContactStaus.OWNER.getCode();
+
         } else {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
@@ -100,7 +99,7 @@ public class ContactServiceImpl implements ContactService {
 
         Contact saveContactData = Contact.builder()
                 .contactId(contactId)
-                .contactUserId(contactWriterId)
+                .contactUserId(currentUserId)
                 .contactOwnerId(currentOwnerId)
                 .contactTitle(contactTitle)
                 .contactContents(contactContents)
