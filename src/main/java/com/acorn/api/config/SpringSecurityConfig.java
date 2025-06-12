@@ -134,7 +134,9 @@ public class SpringSecurityConfig {
                         .requestMatchers("/board/write",
                                          "/board/update/**",
                                          "/contact/list/**",
-                                         "/contact/write").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/contact/write",
+                                         "/contact/detail/**",
+                                         "/contact/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         // Protected User Common Pages
                         .requestMatchers("/user/mypage",
@@ -206,7 +208,9 @@ public class SpringSecurityConfig {
                                          "/api/board/save",
                                          "/api/board/update/**",
                                          "/api/board/delete/**",
-                                         "/api/contact/save").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/api/contact/save",
+                                         "/api/contact/update/**",
+                                         "/api/contact/delete/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );

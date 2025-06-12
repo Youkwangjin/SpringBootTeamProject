@@ -3,6 +3,7 @@ package com.acorn.api.repository.contact;
 import com.acorn.api.common.PaginationRequest;
 import com.acorn.api.entity.contact.Contact;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,9 +12,15 @@ public interface ContactRepository {
 
     Integer selectContactIdKey();
 
-    Integer selectListCountByUserRequest(PaginationRequest paginationRequest);
+    Integer selectListCountByRequest(PaginationRequest paginationRequest);
 
-    List<Contact> selectContactUserListData(PaginationRequest paginationRequest);
+    List<Contact> selectContactListData(PaginationRequest paginationRequest);
+
+    Contact selectContactDetailData(@Param("contactId") Integer contactId);
 
     void saveContact(Contact contact);
+
+    void updateContact(Contact contact);
+
+    void deleteContact(Contact contact);
 }

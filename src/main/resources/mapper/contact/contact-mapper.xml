@@ -28,13 +28,18 @@
         SELECT nextval(CONTACT_SEQ)
     </select>
 
-    <select id="selectListCountByUserRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+    <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
             COUNT(CONTACT_ID)
         FROM
             TB_CONTACT
         <where>
-            CONTACT_USER_ID = #{contactUserId}
+            <if test="contactUserId != null">
+                CONTACT_USER_ID = #{contactUserId}
+            </if>
+            <if test="contactOwnerId != null">
+                CONTACT_OWNER_ID = #{contactOwnerId}
+            </if>
             <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
@@ -44,10 +49,13 @@
             <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_STATUS = #{searchName}
             </if>
+            <if test="searchType == 'contactAnswerYn' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_ANSWER_YN = #{searchName}
+            </if>
         </where>
     </select>
 
-    <select id="selectContactUserListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="contactResultMap">
+    <select id="selectContactListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="contactResultMap">
         SELECT
             ROW_NUMBER() OVER (ORDER BY CONTACT_CREATED ASC) AS ROW_NUM,
             CONTACT_ID,
@@ -58,7 +66,12 @@
         FROM
             TB_CONTACT
         <where>
-            CONTACT_USER_ID = #{contactUserId}
+            <if test="contactUserId != null">
+                CONTACT_USER_ID = #{contactUserId}
+            </if>
+            <if test="contactOwnerId != null">
+                CONTACT_OWNER_ID = #{contactOwnerId}
+            </if>
             <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
@@ -68,9 +81,40 @@
             <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_STATUS = #{searchName}
             </if>
+            <if test="searchType == 'contactAnswerYn' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_ANSWER_YN = #{searchName}
+            </if>
         </where>
         ORDER BY CONTACT_CREATED DESC
         LIMIT ${startRowNum}, ${pageSize}
+    </select>
+
+    <select id="selectContactDetailData" parameterType="Integer" resultMap="contactResultMap">
+        SELECT
+            C.CONTACT_ID,
+            C.CONTACT_USER_ID,
+            C.CONTACT_OWNER_ID,
+            C.CONTACT_TITLE,
+            C.CONTACT_CONTENTS,
+            C.CONTACT_CONTENTS_TEXT,
+            C.CONTACT_STATUS,
+            C.CONTACT_ADMIN_CONTENTS,
+            C.CONTACT_ANSWER_YN,
+            C.CONTACT_CREATED,
+            F.CONTACT_FILE_ID,
+            F.CONTACT_FILE_CONTACT_ID,
+            F.CONTACT_FILE_ORIGINAL_FILE_NAME,
+            F.CONTACT_FILE_STORED_FILE_NAME,
+            F.CONTACT_FILE_PATH,
+            F.CONTACT_FILE_EXTNS_NM,
+            F.CONTACT_FILE_SIZE
+        FROM
+            TB_CONTACT C
+        LEFT OUTER JOIN
+            TB_CONTACT_FILE F
+        ON C.CONTACT_ID = F.CONTACT_FILE_CONTACT_ID
+        WHERE
+            CONTACT_ID = #{contactId}
     </select>
 
     <insert id="saveContact" parameterType="com.acorn.api.entity.contact.Contact" useGeneratedKeys="true" keyProperty="contactId">
@@ -98,4 +142,24 @@
             NOW()
         )
     </insert>
+
+    <update id="updateContact" parameterType="com.acorn.api.entity.contact.Contact">
+        UPDATE
+            TB_CONTACT
+        SET
+            CONTACT_TITLE = #{contactTitle},
+            CONTACT_CONTENTS = #{contactContents},
+            CONTACT_CONTENTS_TEXT = #{contactContentsText},
+            CONTACT_UPDATED = NOW()
+        WHERE
+            CONTACT_ID = #{contactId}
+    </update>
+
+    <delete id="deleteContact" parameterType="Integer">
+        DELETE
+        FROM
+            TB_CONTACT
+        WHERE
+            CONTACT_ID = #{contactId}
+    </delete>
 </mapper>
