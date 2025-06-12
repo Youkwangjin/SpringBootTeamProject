@@ -21,4 +21,6 @@ public interface ContactRepository {
     void saveContact(Contact contact);
 
     void updateContact(Contact contact);
+
+    void deleteContact(Contact contact);
 }

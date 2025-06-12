@@ -154,4 +154,12 @@
         WHERE
             CONTACT_ID = #{contactId}
     </update>
+
+    <delete id="deleteContact" parameterType="Integer">
+        DELETE
+        FROM
+            TB_CONTACT
+        WHERE
+            CONTACT_ID = #{contactId}
+    </delete>
 </mapper>

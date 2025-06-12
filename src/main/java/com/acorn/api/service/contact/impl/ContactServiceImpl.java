@@ -307,4 +307,57 @@ public class ContactServiceImpl implements ContactService {
             }
         }
     }
+
+    @Override
+    public void contactDataDelete(ContactDeleteDTO deleteData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer contactId = deleteData.getContactId();
+        final Integer contactPendingStatus = ContactStatus.CONTACT_STATUS_PENDING.getCode();
+
+        if (currentUserId == null && currentOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Contact detailData = contactRepository.selectContactDetailData(contactId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FOUND);
+        }
+
+        final Integer existingUserId = detailData.getContactUserId();
+        final Integer existingOwnerId = detailData.getContactOwnerId();
+        final Integer existingContactStatus = detailData.getContactStatus();
+
+        if (currentUserId != null) {
+            if (!Objects.equals(existingUserId, currentUserId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+        } else {
+            if (!Objects.equals(existingOwnerId, currentOwnerId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+        }
+
+        if (!Objects.equals(contactPendingStatus, existingContactStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_WAITING);
+        }
+
+        List<ContactFile> existingFiles = contactFileRepository.selectFilesByContactId(contactId);
+        if (existingFiles != null && !existingFiles.isEmpty()) {
+            for (ContactFile contactFile : existingFiles) {
+                final Integer contactFileId = contactFile.getContactFileId();
+                final String filePath = contactFile.getContactFilePath();
+                final String storedFileName = contactFile.getContactStoredFileName();
+
+                fileComponent.delete(filePath, storedFileName);
+                contactFileRepository.deleteContactFile(contactFileId);
+            }
+        }
+
+        Contact deleteContactData = Contact.builder()
+                .contactId(contactId)
+                .build();
+
+        contactRepository.deleteContact(deleteContactData);
+    }
 }

@@ -209,7 +209,8 @@ public class SpringSecurityConfig {
                                          "/api/board/update/**",
                                          "/api/board/delete/**",
                                          "/api/contact/save",
-                                         "/api/contact/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/api/contact/update/**",
+                                         "/api/contact/delete/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );
