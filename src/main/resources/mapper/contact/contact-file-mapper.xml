@@ -19,6 +19,38 @@
         SELECT nextval(CONTACT_SEQ)
     </select>
 
+    <select id="selectFilesByContactId" parameterType="Integer" resultMap="contactFileResultMap">
+        SELECT
+            CONTACT_FILE_ID,
+            CONTACT_FILE_CONTACT_ID,
+            CONTACT_FILE_ORIGINAL_FILE_NAME,
+            CONTACT_FILE_STORED_FILE_NAME,
+            CONTACT_FILE_PATH,
+            CONTACT_FILE_EXTNS_NM,
+            CONTACT_FILE_SIZE,
+            CONTACT_FILE_CREATED
+        FROM
+            TB_CONTACT_FILE
+        WHERE
+            CONTACT_FILE_CONTACT_ID = #{contactId}
+    </select>
+
+    <select id="selectFilesByContactFileId" parameterType="Integer" resultMap="contactFileResultMap">
+        SELECT
+            CONTACT_FILE_ID,
+            CONTACT_FILE_CONTACT_ID,
+            CONTACT_FILE_ORIGINAL_FILE_NAME,
+            CONTACT_FILE_STORED_FILE_NAME,
+            CONTACT_FILE_PATH,
+            CONTACT_FILE_EXTNS_NM,
+            CONTACT_FILE_SIZE,
+            CONTACT_FILE_CREATED
+        FROM
+            TB_CONTACT_FILE
+        WHERE
+            CONTACT_FILE_ID = #{contactFileId}
+    </select>
+
     <insert id="saveContactFile" parameterType="com.acorn.api.entity.contact.ContactFile" useGeneratedKeys="true" keyProperty="contactFileId">
         INSERT INTO TB_CONTACT_FILE (
             CONTACT_FILE_ID,
@@ -40,4 +72,12 @@
             NOW()
         )
     </insert>
+
+    <delete id="deleteContactFile" parameterType="Integer">
+        DELETE
+        FROM
+            TB_CONTACT_FILE
+        WHERE
+            CONTACT_FILE_ID = #{contactFileId}
+    </delete>
 </mapper>

@@ -142,4 +142,16 @@
             NOW()
         )
     </insert>
+
+    <update id="updateContact" parameterType="com.acorn.api.entity.contact.Contact">
+        UPDATE
+            TB_CONTACT
+        SET
+            CONTACT_TITLE = #{contactTitle},
+            CONTACT_CONTENTS = #{contactContents},
+            CONTACT_CONTENTS_TEXT = #{contactContentsText},
+            CONTACT_UPDATED = NOW()
+        WHERE
+            CONTACT_ID = #{contactId}
+    </update>
 </mapper>

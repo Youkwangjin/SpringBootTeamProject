@@ -2,12 +2,9 @@ package com.acorn.api.service.contact.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
-import com.acorn.api.code.contact.ContactStaus;
+import com.acorn.api.code.contact.ContactStatus;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.contact.ContactDetailDTO;
-import com.acorn.api.dto.contact.ContactFileDTO;
-import com.acorn.api.dto.contact.ContactListDTO;
-import com.acorn.api.dto.contact.ContactSaveDTO;
+import com.acorn.api.dto.contact.*;
 import com.acorn.api.entity.contact.Contact;
 import com.acorn.api.entity.contact.ContactFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -24,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -122,7 +120,7 @@ public class ContactServiceImpl implements ContactService {
                     final String contactFileSize = contactFile.getContactFileSize();
 
                     return ContactFileDTO.builder()
-                            .contactId(contactFileId)
+                            .contactFileId(contactFileId)
                             .contactOriginalFileName(contactOriginalFileName)
                             .contactStoredFileName(contactStoredFileName)
                             .contactFilePath(contactFilePath)
@@ -156,10 +154,10 @@ public class ContactServiceImpl implements ContactService {
         final Integer contactWriterType;
 
         if (currentUserId != null) {
-            contactWriterType = ContactStaus.USER.getCode();
+            contactWriterType = ContactStatus.USER.getCode();
 
         } else if (currentOwnerId != null) {
-            contactWriterType = ContactStaus.OWNER.getCode();
+            contactWriterType = ContactStatus.OWNER.getCode();
 
         } else {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -169,7 +167,7 @@ public class ContactServiceImpl implements ContactService {
         final String contactTitle = saveData.getContactTitle();
         final String contactContents = saveData.getContactContents();
         final String contactContentsText = Jsoup.parse(contactContents).text();
-        final Integer contactStatus = ContactStaus.CONTACT_STATUS_PENDING.getCode();
+        final Integer contactStatus = ContactStatus.CONTACT_STATUS_PENDING.getCode();
         final String contactAnswerYn = "N";
         final List<MultipartFile> contactFiles = saveData.getContactFiles();
 
@@ -186,6 +184,104 @@ public class ContactServiceImpl implements ContactService {
                 .build();
 
         contactRepository.saveContact(saveContactData);
+
+        if (contactFiles != null && !contactFiles.isEmpty()) {
+            for (MultipartFile multipartFile : contactFiles) {
+                final Integer contactFileId = contactFileRepository.selectContactFileIdKey();
+                final String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+                final String storedFileName = String.format("[%s_%s]%s", contactId, contactFileId, UUID.randomUUID().toString().replaceAll("-", ""));
+                final String filePath = uploadDir;
+                final String fileExtNm = FilenameUtils.getExtension(originalFileName);
+                final String fileSize = String.valueOf(multipartFile.getSize());
+
+                ContactFile saveContactFileData = ContactFile.builder()
+                        .contactFileId(contactFileId)
+                        .contactId(contactId)
+                        .contactOriginalFileName(originalFileName)
+                        .contactStoredFileName(storedFileName)
+                        .contactFilePath(filePath)
+                        .contactFileExtNm(fileExtNm)
+                        .contactFileSize(fileSize)
+                        .build();
+
+                contactFileRepository.saveContactFile(saveContactFileData);
+                fileComponent.upload(filePath, storedFileName, multipartFile);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void contactDataUpdate(ContactUpdateDTO updateData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer contactId = updateData.getContactId();
+        final String contactTitle = updateData.getContactTitle();
+        final String contactContents = updateData.getContactContents();
+        final String contactContentsText = Jsoup.parse(contactContents).text();
+        final List<MultipartFile> contactFiles = updateData.getContactFiles();
+        final Integer contactPendingStatus = ContactStatus.CONTACT_STATUS_PENDING.getCode();
+
+        if (currentUserId == null && currentOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Contact detailData = contactRepository.selectContactDetailData(contactId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FOUND);
+        }
+
+        final Integer existingUserId = detailData.getContactUserId();
+        final Integer existingOwnerId = detailData.getContactOwnerId();
+        final Integer existingContactStatus = detailData.getContactStatus();
+
+        if (currentUserId != null) {
+            if (!Objects.equals(existingUserId, currentUserId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+        } else {
+            if (!Objects.equals(existingOwnerId, currentOwnerId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+        }
+
+        if (!Objects.equals(contactPendingStatus, existingContactStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_WAITING);
+        }
+
+        Contact updateContactData = Contact.builder()
+                .contactId(contactId)
+                .contactTitle(contactTitle)
+                .contactContents(contactContents)
+                .contactContentsText(contactContentsText)
+                .build();
+
+        contactRepository.updateContact(updateContactData);
+
+        List<Integer> contactFileIds = updateData.getContactFileIds();
+        if (contactFileIds == null) {
+            contactFileIds = new ArrayList<>();
+        }
+
+        List<ContactFile> existingFiles = contactFileRepository.selectFilesByContactId(contactId);
+        List<Integer> deleteFileIds = new ArrayList<>();
+        for (ContactFile contactFile : existingFiles) {
+            if (!contactFileIds.contains(contactFile.getContactFileId())) {
+                deleteFileIds.add(contactFile.getContactFileId());
+            }
+        }
+
+        for (Integer contactFileId : deleteFileIds) {
+            ContactFile contactFile = contactFileRepository.selectFilesByContactFileId(contactFileId);
+            if (contactFile == null) {
+                throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+            }
+            final String filePath = contactFile.getContactFilePath();
+            final String storedFileName = contactFile.getContactStoredFileName();
+
+            fileComponent.delete(filePath, storedFileName);
+            contactFileRepository.deleteContactFile(contactFileId);
+        }
 
         if (contactFiles != null && !contactFiles.isEmpty()) {
             for (MultipartFile multipartFile : contactFiles) {

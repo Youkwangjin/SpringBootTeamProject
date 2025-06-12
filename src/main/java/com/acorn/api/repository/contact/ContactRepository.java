@@ -19,4 +19,6 @@ public interface ContactRepository {
     Contact selectContactDetailData(@Param("contactId") Integer contactId);
 
     void saveContact(Contact contact);
+
+    void updateContact(Contact contact);
 }

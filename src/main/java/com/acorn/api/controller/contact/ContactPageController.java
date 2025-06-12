@@ -36,4 +36,11 @@ public class ContactPageController {
         model.addAttribute("contactDetailData", contactDetailData);
         return "contact/contact-detail";
     }
+
+    @GetMapping("/contact/update/{contactId}")
+    public String contactUpdatePage(@PathVariable("contactId") Integer contactId, Model model) {
+        ContactDetailDTO contactDetailData = contactService.selectContactDetailData(contactId);
+        model.addAttribute("contactDetailData", contactDetailData);
+        return "contact/contact-update";
+    }
 }
