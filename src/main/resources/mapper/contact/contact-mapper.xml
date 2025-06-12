@@ -89,6 +89,34 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
+    <select id="selectContactDetailData" parameterType="Integer" resultMap="contactResultMap">
+        SELECT
+            C.CONTACT_ID,
+            C.CONTACT_USER_ID,
+            C.CONTACT_OWNER_ID,
+            C.CONTACT_TITLE,
+            C.CONTACT_CONTENTS,
+            C.CONTACT_CONTENTS_TEXT,
+            C.CONTACT_STATUS,
+            C.CONTACT_ADMIN_CONTENTS,
+            C.CONTACT_ANSWER_YN,
+            C.CONTACT_CREATED,
+            F.CONTACT_FILE_ID,
+            F.CONTACT_FILE_CONTACT_ID,
+            F.CONTACT_FILE_ORIGINAL_FILE_NAME,
+            F.CONTACT_FILE_STORED_FILE_NAME,
+            F.CONTACT_FILE_PATH,
+            F.CONTACT_FILE_EXTNS_NM,
+            F.CONTACT_FILE_SIZE
+        FROM
+            TB_CONTACT C
+        LEFT OUTER JOIN
+            TB_CONTACT_FILE F
+        ON C.CONTACT_ID = F.CONTACT_FILE_CONTACT_ID
+        WHERE
+            CONTACT_ID = #{contactId}
+    </select>
+
     <insert id="saveContact" parameterType="com.acorn.api.entity.contact.Contact" useGeneratedKeys="true" keyProperty="contactId">
         INSERT INTO TB_CONTACT (
             CONTACT_ID,
