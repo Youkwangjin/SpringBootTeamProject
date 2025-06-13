@@ -81,7 +81,7 @@
         LIMIT #{startRowNum}, #{pageSize}
     </select>
 
-    <select id="selectActiveReservationsCountByRequest" parameterType="map" resultType="Boolean">
+    <select id="existsActiveReservationByRequest" parameterType="map" resultType="Boolean">
         SELECT EXISTS (
             SELECT 1
             FROM

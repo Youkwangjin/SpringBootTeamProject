@@ -141,7 +141,7 @@ public class ReservationServiceImpl implements ReservationService {
         final Integer exsitedContainerApprovalStatus = exsitedContainer.getContainerApprovalStatus();
         final Integer exsitedContainerStatus = exsitedContainer.getContainerStatus();
 
-        Boolean alreadyReserved = reservationRepository.selectActiveReservationsCountByRequest(containerId, reservePendingStatus);
+        Boolean alreadyReserved = reservationRepository.existsActiveReservationByRequest(containerId, reservePendingStatus);
         if (alreadyReserved) {
             throw new AcontainerException(ApiErrorCode.RESERVE_CONTAINER_ALREADY);
         }
