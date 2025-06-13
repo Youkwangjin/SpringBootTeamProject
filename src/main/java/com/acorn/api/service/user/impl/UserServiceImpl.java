@@ -5,10 +5,10 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.payment.PaymentStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
-import com.acorn.api.dto.user.request.UserDeleteResDTO;
+import com.acorn.api.dto.user.request.UserDeleteReqDTO;
 import com.acorn.api.dto.user.response.UserResDTO;
-import com.acorn.api.dto.user.request.UserRegisterResDTO;
-import com.acorn.api.dto.user.request.UserUpdateResDTO;
+import com.acorn.api.dto.user.request.UserRegisterReqDTO;
+import com.acorn.api.dto.user.request.UserUpdateReqDTO;
 import com.acorn.api.entity.payment.Payment;
 import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.exception.global.AcontainerException;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userRegister(UserRegisterResDTO userRegisterData) {
+    public void userRegister(UserRegisterReqDTO userRegisterData) {
         final Integer userId = userRepository.selectUserIdKey();
         final String userEmail = userRegisterData.getUserEmail();
         final String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userDataUpdate(UserUpdateResDTO userUpdateData) {
+    public void userDataUpdate(UserUpdateReqDTO userUpdateData) {
         final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
         final Integer userId = userUpdateData.getUserId();
         final String userPassword = userUpdateData.getUserPassword();
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userDataDelete(UserDeleteResDTO userDeleteData) {
+    public void userDataDelete(UserDeleteReqDTO userDeleteData) {
         final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
         final Integer userId = userDeleteData.getUserId();
         final String userPassword = userDeleteData.getUserPassword();

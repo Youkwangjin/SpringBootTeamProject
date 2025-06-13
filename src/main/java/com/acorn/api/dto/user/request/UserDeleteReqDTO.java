@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserUpdateResDTO {
+public class UserDeleteReqDTO {
 
     @NotNull
     @Positive
@@ -20,14 +20,4 @@ public class UserUpdateResDTO {
     @NotBlank
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+{}\":;'<>?,./]).{10,}$")
     private String userPassword;
-
-    @NotBlank
-    @Pattern(regexp = "^[가-힣a-zA-Z]{2,10}$")
-    private String userNm;
-
-    @NotBlank
-    @Pattern(regexp = "^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$")
-    private String userTel;
-
-    private String userAddr;
 }
