@@ -144,14 +144,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void boardDataSave(BoardSaveReqDTO saveData) {
+        final Integer boardId = boardRepository.selectBoardIdKey();
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
-        final Integer boardId = boardRepository.selectBoardIdKey();
         final String boardTitle = saveData.getBoardTitle();
         final String boardWriter = saveData.getBoardWriter();
-        final String boardPassword = passwordEncoder.encode(saveData.getBoardPassword());
         final String boardContents = saveData.getBoardContents();
         final String boardContentsText = Jsoup.parse(boardContents).text();
+        final String boardPassword = passwordEncoder.encode(saveData.getBoardPassword());
         final List<MultipartFile> boardFiles = saveData.getBoardFiles();
 
         if (currentUserId == null && currentOwnerId == null) {
@@ -160,13 +160,13 @@ public class BoardServiceImpl implements BoardService {
 
         Board saveBoardData = Board.builder()
                 .boardId(boardId)
-                .boardTitle(boardTitle)
-                .boardWriter(boardWriter)
-                .boardPassword(boardPassword)
-                .boardContents(boardContents)
-                .boardContentsText(boardContentsText)
                 .boardUserId(currentUserId)
                 .boardOwnerId(currentOwnerId)
+                .boardTitle(boardTitle)
+                .boardWriter(boardWriter)
+                .boardContents(boardContents)
+                .boardContentsText(boardContentsText)
+                .boardPassword(boardPassword)
                 .build();
 
         boardRepository.saveBoard(saveBoardData);
@@ -199,16 +199,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void boardDataUpdate(BoardUpdateReqDTO updateData) {
+        final Integer boardId = updateData.getBoardId();
+        final Integer boardUserId = updateData.getBoardUserId();
+        final Integer boardOwnerId = updateData.getBoardOwnerId();
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
-        final Integer boardId = updateData.getBoardId();
         final String boardTitle = updateData.getBoardTitle();
-        final String boardPassword = updateData.getBoardPassword();
         final String boardWriter = updateData.getBoardWriter();
         final String boardContents = updateData.getBoardContents();
         final String boardContentsText = Jsoup.parse(boardContents).text();
-        final Integer boardUserId = updateData.getBoardUserId();
-        final Integer boardOwnerId = updateData.getBoardOwnerId();
+        final String boardPassword = updateData.getBoardPassword();
         final List<MultipartFile> boardFiles = updateData.getBoardFiles();
 
         if (!hasEditPermission(currentUserId, currentOwnerId, boardUserId, boardOwnerId)) {
@@ -292,9 +292,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void boardDataDelete(BoardDeleteReqDTO deleteData) {
+        final Integer boardId = deleteData.getBoardId();
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
-        final Integer boardId = deleteData.getBoardId();
         final Integer boardUserId = deleteData.getBoardUserId();
         final Integer boardOwnerId = deleteData.getBoardOwnerId();
 
