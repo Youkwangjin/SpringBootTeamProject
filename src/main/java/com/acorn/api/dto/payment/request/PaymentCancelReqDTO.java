@@ -1,19 +1,21 @@
-package com.acorn.api.dto.payment;
+package com.acorn.api.dto.payment.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PaymentApproveRequestDTO {
+@NoArgsConstructor
+public class PaymentCancelReqDTO {
 
     @NotNull
     @Positive
-    private Integer reservationId;
+    private Integer paymentId;
 
     @NotBlank
-    private String pg_token;
+    private String paymentTid;
 }

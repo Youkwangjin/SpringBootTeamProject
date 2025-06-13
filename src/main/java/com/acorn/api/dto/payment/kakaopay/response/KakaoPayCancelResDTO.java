@@ -1,4 +1,4 @@
-package com.acorn.api.dto.payment;
+package com.acorn.api.dto.payment.kakaopay.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class KakaoPayCancelResponseDTO {
+public class KakaoPayCancelResDTO {
 
     private String aid;
 

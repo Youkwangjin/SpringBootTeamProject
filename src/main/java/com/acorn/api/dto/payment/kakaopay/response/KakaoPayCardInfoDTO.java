@@ -1,4 +1,4 @@
-package com.acorn.api.dto.payment;
+package com.acorn.api.dto.payment.kakaopay.response;
 
 import lombok.Getter;
 import lombok.Setter;

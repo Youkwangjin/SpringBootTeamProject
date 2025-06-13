@@ -1,11 +1,11 @@
-package com.acorn.api.dto.payment;
+package com.acorn.api.dto.payment.kakaopay.request;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class KakaoPayReadyRequestDTO {
+public class KakaoPayReadyReqDTO {
 
     private String cid;
 

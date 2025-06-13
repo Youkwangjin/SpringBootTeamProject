@@ -1,4 +1,4 @@
-package com.acorn.api.dto.payment;
+package com.acorn.api.dto.payment.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class PaymentDetailDTO {
+public class PaymentListResDTO {
+
+    private Integer rowNum;
 
     private Integer paymentId;
-
-    private String paymentTid;
 
     private Integer paymentUserId;
 
@@ -24,6 +24,4 @@ public class PaymentDetailDTO {
     private LocalDateTime paymentApproved;
 
     private LocalDateTime paymentCanceled;
-
-    private LocalDateTime paymentCancelDeadline;
 }
