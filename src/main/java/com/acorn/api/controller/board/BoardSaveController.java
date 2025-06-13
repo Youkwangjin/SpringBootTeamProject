@@ -7,18 +7,17 @@ import com.acorn.api.dto.board.request.BoardSaveReqDTO;
 import com.acorn.api.service.board.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class BoardSaveController {
 
-    private static final Logger log = LoggerFactory.getLogger(BoardSaveController.class);
     private final BoardService boardService;
 
     @PostMapping("/api/board/save")
