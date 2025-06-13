@@ -5,7 +5,18 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.payment.PaymentStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
-import com.acorn.api.dto.payment.*;
+import com.acorn.api.dto.payment.kakaopay.request.KakaoPayApproveReqDTO;
+import com.acorn.api.dto.payment.kakaopay.request.KakaoPayCancelReqDTO;
+import com.acorn.api.dto.payment.kakaopay.request.KakaoPayReadyReqDTO;
+import com.acorn.api.dto.payment.kakaopay.response.KakaoPayApproveResDTO;
+import com.acorn.api.dto.payment.kakaopay.response.KakaoPayCancelResDTO;
+import com.acorn.api.dto.payment.kakaopay.response.KakaoPayReadyResDTO;
+import com.acorn.api.dto.payment.request.PaymentApproveReqDTO;
+import com.acorn.api.dto.payment.request.PaymentCancelReqDTO;
+import com.acorn.api.dto.payment.request.PaymentListReqDTO;
+import com.acorn.api.dto.payment.request.PaymentReadyReqDTO;
+import com.acorn.api.dto.payment.response.PaymentDetailResDTO;
+import com.acorn.api.dto.payment.response.PaymentListResDTO;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.payment.Payment;
 import com.acorn.api.entity.reservation.Reservation;
@@ -64,7 +75,7 @@ public class PaymentServiceImpl implements PaymentService {
     private static final String KAKAO_AUTH_PREFIX = "SECRET_KEY ";
 
     @Override
-    public List<PaymentListDTO> getPaymentListData(PaymentListDTO listData) {
+    public List<PaymentListResDTO> getPaymentListData(PaymentListReqDTO listData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         if (currentUserId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -85,7 +96,7 @@ public class PaymentServiceImpl implements PaymentService {
                     final LocalDateTime paymentApproved = paymentList.getPaymentApproved();
                     final LocalDateTime paymentCanceled = paymentList.getPaymentCanceled();
 
-                    return PaymentListDTO.builder()
+                    return PaymentListResDTO.builder()
                             .rowNum(rowNum)
                             .paymentId(paymentId)
                             .paymentUserId(paymentUserId)
@@ -100,7 +111,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDetailDTO getPaymentData(Integer paymentId) {
+    public PaymentDetailResDTO getPaymentData(Integer paymentId) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         if (currentUserId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -124,7 +135,7 @@ public class PaymentServiceImpl implements PaymentService {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
-        return PaymentDetailDTO.builder()
+        return PaymentDetailResDTO.builder()
                 .paymentId(paymentId)
                 .paymentTid(paymentTid)
                 .paymentUserId(paymentUserId)
@@ -139,7 +150,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public KakaoPayReadyResponseDTO preparePayment(PaymentReadyRequestDTO requestData) {
+    public KakaoPayReadyResDTO preparePayment(PaymentReadyReqDTO requestData) {
         final Integer reservationId = requestData.getReservationId();
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
 
@@ -166,7 +177,7 @@ public class PaymentServiceImpl implements PaymentService {
             throw new AcontainerException(ApiErrorCode.PAYMENT_DENIED_ON_CANCELED);
         }
 
-        KakaoPayReadyRequestDTO kakaoRequest = KakaoPayReadyRequestDTO.builder()
+        KakaoPayReadyReqDTO kakaoRequest = KakaoPayReadyReqDTO.builder()
                 .cid(kakaoPayCid)
                 .partner_order_id(reservationId.toString())
                 .partner_user_id(reservationUserId.toString())
@@ -179,13 +190,13 @@ public class PaymentServiceImpl implements PaymentService {
                 .fail_url(kakaoPayFailUrl)
                 .build();
 
-        KakaoPayReadyResponseDTO response = kakaoPayWebClient.post()
+        KakaoPayReadyResDTO response = kakaoPayWebClient.post()
                 .uri(kakaoPayReadyUri)
                 .header(HttpHeaders.AUTHORIZATION, KAKAO_AUTH_PREFIX + kakaoPaySecretKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(kakaoRequest)
                 .retrieve()
-                .bodyToMono(KakaoPayReadyResponseDTO.class)
+                .bodyToMono(KakaoPayReadyResDTO.class)
                 .block();
 
         if (response == null || response.getTid() == null) {
@@ -200,7 +211,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public KakaoPayApproveResponseDTO approvePayment(PaymentApproveRequestDTO requestData) {
+    public KakaoPayApproveResDTO approvePayment(PaymentApproveReqDTO requestData) {
         final Integer reservationId = requestData.getReservationId();
         final String pgToken = requestData.getPg_token();
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
@@ -232,7 +243,7 @@ public class PaymentServiceImpl implements PaymentService {
         final Integer reservationActiveStatus = ReservationStatus.RESERVATION_STATUS_ACTIVE.getCode();
         final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
 
-        KakaoPayApproveRequestDTO kakaoRequest = KakaoPayApproveRequestDTO.builder()
+        KakaoPayApproveReqDTO kakaoRequest = KakaoPayApproveReqDTO.builder()
                 .cid(kakaoPayCid)
                 .tid(currentTid)
                 .partner_order_id(reservationId.toString())
@@ -240,13 +251,13 @@ public class PaymentServiceImpl implements PaymentService {
                 .pg_token(pgToken)
                 .build();
 
-        KakaoPayApproveResponseDTO response = kakaoPayWebClient.post()
+        KakaoPayApproveResDTO response = kakaoPayWebClient.post()
                 .uri(kakaoPayApprovalUri)
                 .header(HttpHeaders.AUTHORIZATION, KAKAO_AUTH_PREFIX + kakaoPaySecretKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(kakaoRequest)
                 .retrieve()
-                .bodyToMono(KakaoPayApproveResponseDTO.class)
+                .bodyToMono(KakaoPayApproveResDTO.class)
                 .block();
 
         Container updateContainerStatus = Container.builder()
@@ -285,7 +296,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public void cancelPayment(PaymentCancelRequestDTO requestData) {
+    public void cancelPayment(PaymentCancelReqDTO requestData) {
         final Integer paymentId = requestData.getPaymentId();
         final String paymentTid = requestData.getPaymentTid();
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
@@ -327,7 +338,7 @@ public class PaymentServiceImpl implements PaymentService {
             throw new AcontainerException(ApiErrorCode.PAYMENT_CANCEL_EXPIRED);
         }
 
-        KakaoPayCancelRequestDTO kakaoRequest = KakaoPayCancelRequestDTO.builder()
+        KakaoPayCancelReqDTO kakaoRequest = KakaoPayCancelReqDTO.builder()
                 .cid(kakaoPayCid)
                 .tid(currentTid)
                 .cancel_amount(paymentAmount)
@@ -335,13 +346,13 @@ public class PaymentServiceImpl implements PaymentService {
                 .cancel_available_amount(paymentAmount)
                 .build();
 
-        KakaoPayCancelResponseDTO response = kakaoPayWebClient.post()
+        KakaoPayCancelResDTO response = kakaoPayWebClient.post()
                 .uri(kakaoPayCancelUri)
                 .header(HttpHeaders.AUTHORIZATION, KAKAO_AUTH_PREFIX + kakaoPaySecretKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(kakaoRequest)
                 .retrieve()
-                .bodyToMono(KakaoPayCancelResponseDTO.class)
+                .bodyToMono(KakaoPayCancelResDTO.class)
                 .block();
 
         if (response == null) {

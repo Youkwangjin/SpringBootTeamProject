@@ -1,7 +1,7 @@
 package com.acorn.api.controller.payment;
 
-import com.acorn.api.dto.payment.KakaoPayApproveResponseDTO;
-import com.acorn.api.dto.payment.PaymentApproveRequestDTO;
+import com.acorn.api.dto.payment.kakaopay.response.KakaoPayApproveResDTO;
+import com.acorn.api.dto.payment.request.PaymentApproveReqDTO;
 import com.acorn.api.service.payment.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +17,10 @@ public class PaymentApproveController {
     private final PaymentService paymentService;
 
     @GetMapping("/api/user/payments/approve")
-    public String approvePayment(@Valid PaymentApproveRequestDTO requestData) {
+    public String approvePayment(@Valid PaymentApproveReqDTO requestData) {
         log.info(" *****************************    User Payment Approve START    *****************************");
 
-        KakaoPayApproveResponseDTO response = paymentService.approvePayment(requestData);
+        KakaoPayApproveResDTO response = paymentService.approvePayment(requestData);
 
         return "redirect:/user/reservation/detail/" + Integer.parseInt(response.getPartner_order_id());
     }

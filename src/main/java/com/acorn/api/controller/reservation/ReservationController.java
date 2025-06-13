@@ -3,7 +3,7 @@ package com.acorn.api.controller.reservation;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.dto.reservation.ReservationCancelDTO;
+import com.acorn.api.dto.reservation.request.ReservationCancelReqDTO;
 import com.acorn.api.service.reservation.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ReservationController {
     }
 
     @PostMapping("/api/user/reservations/cancel/{reservationId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> reserveCancelContainer(@Valid @RequestBody ReservationCancelDTO requestData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> reserveCancelContainer(@Valid @RequestBody ReservationCancelReqDTO requestData) {
         log.info(" *****************************    Reserve Cancel START    *****************************");
 
         reservationService.reserveCancelContainer(requestData);

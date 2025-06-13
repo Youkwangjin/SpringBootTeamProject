@@ -1,7 +1,8 @@
 package com.acorn.api.controller.board;
 
-import com.acorn.api.dto.board.BoardDetailDTO;
-import com.acorn.api.dto.board.BoardListDTO;
+import com.acorn.api.dto.board.response.BoardDetailResDTO;
+import com.acorn.api.dto.board.response.BoardListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,8 @@ public class BoardPageController {
     private final BoardService boardService;
 
     @GetMapping("/board/list")
-    public String boardList(BoardListDTO listData, Model model) {
-        List<BoardListDTO> boardListData = boardService.getBoardListData(listData);
+    public String boardList(CommonListReqDTO listData, Model model) {
+        List<BoardListResDTO> boardListData = boardService.getBoardListData(listData);
         model.addAttribute("boardData", boardListData);
         model.addAttribute("request", listData);
         return "board/board-list";
@@ -34,14 +35,14 @@ public class BoardPageController {
 
     @GetMapping("/board/detail/{boardId}")
     public String boardDetail(@PathVariable("boardId") Integer boardId, Model model) {
-        BoardDetailDTO detailData = boardService.getBoardDetailData(boardId);
+        BoardDetailResDTO detailData = boardService.getBoardDetailData(boardId);
         model.addAttribute("boardDetailData", detailData);
         return "board/board-detail";
     }
 
     @GetMapping("/board/update/{boardId}")
     public String boardUpdate(@PathVariable("boardId") Integer boardId, Model model) {
-        BoardDetailDTO detailData = boardService.getBoardDetailData(boardId);
+        BoardDetailResDTO detailData = boardService.getBoardDetailData(boardId);
         model.addAttribute("boardDetailData", detailData);
         return "board/board-update";
     }

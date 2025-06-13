@@ -23,4 +23,6 @@ public interface ContactRepository {
     void updateContact(Contact contact);
 
     void deleteContact(Contact contact);
+
+    void updateContactStatus(Contact contact);
 }

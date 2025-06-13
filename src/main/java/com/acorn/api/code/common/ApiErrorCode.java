@@ -15,7 +15,7 @@ public enum ApiErrorCode {
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "NNF", "공지사항이 존재하지 않습니다."),
     CONTACT_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF","문의내역이 존재하지 않습니다."),
 
-    CONTACT_NOT_WAITING(HttpStatus.BAD_REQUEST, "CNW", "문의대기 상태에서만 수정 및 삭제가 가능합니다."),
+    CONTACT_NOT_WAITING(HttpStatus.BAD_REQUEST, "CNW", "문의대기 상태에서만 수정, 삭제, 취소가 가능합니다."),
 
     CONTAINER_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF", "창고가 존재하지 않습니다."),
     CONTAINER_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "CUF", "창고 정보 수정에 실패하였습니다."),

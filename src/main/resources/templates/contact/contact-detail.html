@@ -57,6 +57,7 @@
                 <input type="button" class="ListBtn" id="listBtn" value="목록">
                 <input type="button" class="updateBtn" id="updateBtn" value="수정" th:if="${contactDetailData.contactStatus == 0 and contactDetailData.contactAnswerYn == 'N'}"/>
                 <input type="button" class="deleteBtn" id="deleteBtn" value="삭제" th:if="${contactDetailData.contactStatus == 0 and contactDetailData.contactAnswerYn == 'N'}"/>
+                <input type="button" class="cancelBtn" id="cancelBtn" value="문의취소" th:if="${contactDetailData.contactStatus == 0 and contactDetailData.contactAnswerYn == 'N'}"/>
             </div>
         </form>
     </div>
@@ -70,6 +71,7 @@
         const listBtn = document.getElementById("listBtn");
         const updateBtn = document.getElementById("updateBtn");
         const deleteBtn = document.getElementById("deleteBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
 
         const csrfTokenElement = document.querySelector('input[name="_csrf"]');
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
@@ -86,13 +88,14 @@
 
         if (deleteBtn) {
             deleteBtn.addEventListener("click", function () {
-               if (!confirm("해당 문의내역을 삭제하시겠습니까?")) {
-                   return;
-               }
 
-               const contactData = {
-                   contactId: contactId
-               };
+                if (!confirm("문의 삭제 후에는 복구할 수 없습니다. 계속 진행하시겠습니까?")) {
+                    return;
+                }
+
+                const contactData = {
+                    contactId: contactId
+                };
 
                 fetch(`/api/contact/delete/${contactId}`, {
                     method: "POST",
@@ -108,6 +111,41 @@
 
                         if (response.status === 200) {
                             alert(MSG.CONTACT_DELETE_SUCCESS);
+                            window.location.href = "/contact/list";
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
+            });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener("click", function () {
+                if (!confirm("문의 취소 후에는 복구할 수 없습니다. 계속 진행하시겠습니까?")) {
+                    return;
+                }
+
+                const contactData = {
+                    contactId: contactId
+                };
+
+                fetch(`/api/contact/cancel/${contactId}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(contactData)
+                })
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.CONTACT_CANCEL_SUCCESS);
                             window.location.href = "/contact/list";
                         } else {
                             alert(responseData.errorMsg);

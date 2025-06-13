@@ -5,10 +5,10 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.payment.PaymentStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
-import com.acorn.api.dto.user.UserDeleteDTO;
-import com.acorn.api.dto.user.UserResponseDTO;
-import com.acorn.api.dto.user.UserRegisterDTO;
-import com.acorn.api.dto.user.UserUpdateDTO;
+import com.acorn.api.dto.user.request.UserDeleteReqDTO;
+import com.acorn.api.dto.user.response.UserResDTO;
+import com.acorn.api.dto.user.request.UserRegisterReqDTO;
+import com.acorn.api.dto.user.request.UserUpdateReqDTO;
 import com.acorn.api.entity.payment.Payment;
 import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.exception.global.AcontainerException;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userRegister(UserRegisterDTO userRegisterData) {
+    public void userRegister(UserRegisterReqDTO userRegisterData) {
         final Integer userId = userRepository.selectUserIdKey();
         final String userEmail = userRegisterData.getUserEmail();
         final String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO getUserData() {
+    public UserResDTO getUserData() {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         if (currentUserId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         final String userTel = userData.getUserTel();
         final String userAddr = userData.getUserAddr();
 
-        return UserResponseDTO.builder()
+        return UserResDTO.builder()
                 .userId(userId)
                 .userEmail(userEmail)
                 .userNm(userNm)
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userDataUpdate(UserUpdateDTO userUpdateData) {
+    public void userDataUpdate(UserUpdateReqDTO userUpdateData) {
         final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
         final Integer userId = userUpdateData.getUserId();
         final String userPassword = userUpdateData.getUserPassword();
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userDataDelete(UserDeleteDTO userDeleteData) {
+    public void userDataDelete(UserDeleteReqDTO userDeleteData) {
         final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
         final Integer userId = userDeleteData.getUserId();
         final String userPassword = userDeleteData.getUserPassword();

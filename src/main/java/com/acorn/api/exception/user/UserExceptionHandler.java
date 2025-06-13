@@ -31,7 +31,7 @@ public class UserExceptionHandler {
             errorUserMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             userErrorCode = switch (fieldError.getField()) {
-                case "userId" -> ApiValidationErrorCode.USER_ID_ERROR;
+                case "userId" -> ApiValidationErrorCode.ID_VAULE_ERROR;
                 case "userEmail" -> ApiValidationErrorCode.EMAIL_FORMAT_ERROR;
                 case "userPassword" -> ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR;
                 case "userNm" -> ApiValidationErrorCode.NAME_FORMAT_ERROR;

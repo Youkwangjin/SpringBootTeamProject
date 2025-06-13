@@ -6,7 +6,7 @@ import com.acorn.api.code.reservation.ReservationStatus;
 import com.acorn.api.dto.admin.AdminUserDeleteRequestDTO;
 import com.acorn.api.dto.admin.AdminUserListDTO;
 import com.acorn.api.dto.admin.AdminUserUpdateRequestDTO;
-import com.acorn.api.dto.user.UserResponseDTO;
+import com.acorn.api.dto.user.response.UserResDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.entity.user.User;
@@ -59,7 +59,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public UserResponseDTO getUserData(Integer userId) {
+    public UserResDTO getUserData(Integer userId) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
@@ -82,7 +82,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         final LocalDateTime userCreated = userData.getUserCreated();
         final LocalDateTime userUpdated = userData.getUserUpdated();
 
-        return UserResponseDTO.builder()
+        return UserResDTO.builder()
                 .userId(userId)
                 .userEmail(userEmail)
                 .userNm(userNm)

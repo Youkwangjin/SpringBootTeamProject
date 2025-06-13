@@ -1,6 +1,6 @@
 package com.acorn.api.security.user;
 
-import com.acorn.api.dto.user.UserLoginDTO;
+import com.acorn.api.dto.user.request.UserLoginReqDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,7 +47,7 @@ public class CustomUserJsonAuthenticationFilter extends AbstractAuthenticationPr
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
-        UserLoginDTO userLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), UserLoginDTO.class);
+        UserLoginReqDTO userLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), UserLoginReqDTO.class);
 
         String username = userLoginData.getUserEmail();
         String password = userLoginData.getUserPassword();

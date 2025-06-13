@@ -3,8 +3,8 @@ package com.acorn.api.controller.payment;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.dto.payment.KakaoPayReadyResponseDTO;
-import com.acorn.api.dto.payment.PaymentReadyRequestDTO;
+import com.acorn.api.dto.payment.kakaopay.response.KakaoPayReadyResDTO;
+import com.acorn.api.dto.payment.request.PaymentReadyReqDTO;
 import com.acorn.api.service.payment.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +22,10 @@ public class PaymentReadyController {
     private final PaymentService paymentService;
 
     @PostMapping("/api/user/payments/ready/{reservationId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> userPayment(@Valid @RequestBody PaymentReadyRequestDTO requestData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> userPayment(@Valid @RequestBody PaymentReadyReqDTO requestData) {
         log.info(" *****************************    User Payment START    *****************************");
 
-        KakaoPayReadyResponseDTO response = paymentService.preparePayment(requestData);
+        KakaoPayReadyResDTO response = paymentService.preparePayment(requestData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.KAKAOPAY_READY_SUCCESS, response);
     }
