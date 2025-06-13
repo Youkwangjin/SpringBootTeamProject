@@ -1,6 +1,6 @@
 package com.acorn.api.controller.user;
 
-import com.acorn.api.dto.user.UserResponseDTO;
+import com.acorn.api.dto.user.response.UserResDTO;
 import com.acorn.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,21 +25,21 @@ public class UserPageController {
 
     @GetMapping("/user/mypage")
     public String mypage(Model model) {
-        UserResponseDTO userData = userService.getUserData();
+        UserResDTO userData = userService.getUserData();
         model.addAttribute("userName", userData.getUserNm());
         return "common/mypage";
     }
 
     @GetMapping("/user/update/profile")
     public String userUpdatePage(Model model) {
-        UserResponseDTO userData = userService.getUserData();
+        UserResDTO userData = userService.getUserData();
         model.addAttribute("userData", userData);
         return "user/user-update";
     }
 
     @GetMapping("/user/delete/profile")
     public String userDeletePage(Model model) {
-        UserResponseDTO userData = userService.getUserData();
+        UserResDTO userData = userService.getUserData();
         model.addAttribute("userData", userData);
         return "user/user-delete";
     }

@@ -1,13 +1,13 @@
-package com.acorn.api.dto.user;
+package com.acorn.api.dto.user.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class UserLoginDTO {
+public class UserLoginResDTO {
 
     private String userEmail;
 

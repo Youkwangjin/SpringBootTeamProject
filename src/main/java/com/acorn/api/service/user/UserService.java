@@ -1,9 +1,9 @@
 package com.acorn.api.service.user;
 
-import com.acorn.api.dto.user.UserDeleteDTO;
-import com.acorn.api.dto.user.UserResponseDTO;
-import com.acorn.api.dto.user.UserRegisterDTO;
-import com.acorn.api.dto.user.UserUpdateDTO;
+import com.acorn.api.dto.user.request.UserDeleteResDTO;
+import com.acorn.api.dto.user.response.UserResDTO;
+import com.acorn.api.dto.user.request.UserRegisterResDTO;
+import com.acorn.api.dto.user.request.UserUpdateResDTO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,13 +11,13 @@ public interface UserService {
 
     void isEmailDuplicate(String userEmail);
 
-    void userRegister(UserRegisterDTO userRegisterData);
+    void userRegister(UserRegisterResDTO userRegisterData);
 
     void isTelPhoneDuplicate(String userTel);
 
-    UserResponseDTO getUserData();
+    UserResDTO getUserData();
 
-    void userDataUpdate(UserUpdateDTO userUpdateData);
+    void userDataUpdate(UserUpdateResDTO userUpdateData);
 
-    void userDataDelete(UserDeleteDTO userDeleteData);
+    void userDataDelete(UserDeleteResDTO userDeleteData);
 }

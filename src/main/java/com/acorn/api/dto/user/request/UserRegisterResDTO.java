@@ -1,17 +1,17 @@
-package com.acorn.api.dto.user;
+package com.acorn.api.dto.user.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class UserUpdateDTO {
+public class UserRegisterResDTO {
 
-    private Integer userId;
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    private String userEmail;
 
     @NotBlank
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+{}\":;'<>?,./]).{10,}$")

@@ -1,4 +1,4 @@
-package com.acorn.api.dto.user;
+package com.acorn.api.dto.user.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class UserResponseDTO {
+public class UserResDTO {
 
     private Integer userId;
 
