@@ -1,4 +1,4 @@
-package com.acorn.api.dto.contact;
+package com.acorn.api.dto.contact.requset;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContactDeleteDTO {
+public class ContactDeleteReqDTO {
 
     @NotNull
     @Positive

@@ -1,7 +1,8 @@
 package com.acorn.api.controller.contact;
 
-import com.acorn.api.dto.contact.ContactDetailDTO;
-import com.acorn.api.dto.contact.ContactListDTO;
+import com.acorn.api.dto.contact.requset.ContactListReqDTO;
+import com.acorn.api.dto.contact.response.ContactDetailResDTO;
+import com.acorn.api.dto.contact.response.ContactListResDTO;
 import com.acorn.api.service.contact.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,8 @@ public class ContactPageController {
     private final ContactService contactService;
 
     @GetMapping("/contact/list")
-    public String contactListPage(ContactListDTO listData, Model model) {
-        List<ContactListDTO> contactListData = contactService.getUserContactList(listData);
+    public String contactListPage(ContactListReqDTO listData, Model model) {
+        List<ContactListResDTO> contactListData = contactService.getUserContactList(listData);
         model.addAttribute("contactListData", contactListData);
         model.addAttribute("request", listData);
         return "contact/contact-list";
@@ -32,14 +33,14 @@ public class ContactPageController {
 
     @GetMapping("/contact/detail/{contactId}")
     public String contactDetailPage(@PathVariable("contactId") Integer contactId, Model model) {
-        ContactDetailDTO contactDetailData = contactService.selectContactDetailData(contactId);
+        ContactDetailResDTO contactDetailData = contactService.selectContactDetailData(contactId);
         model.addAttribute("contactDetailData", contactDetailData);
         return "contact/contact-detail";
     }
 
     @GetMapping("/contact/update/{contactId}")
     public String contactUpdatePage(@PathVariable("contactId") Integer contactId, Model model) {
-        ContactDetailDTO contactDetailData = contactService.selectContactDetailData(contactId);
+        ContactDetailResDTO contactDetailData = contactService.selectContactDetailData(contactId);
         model.addAttribute("contactDetailData", contactDetailData);
         return "contact/contact-update";
     }

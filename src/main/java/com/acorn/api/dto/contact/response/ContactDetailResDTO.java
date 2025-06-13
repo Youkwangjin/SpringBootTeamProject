@@ -1,4 +1,4 @@
-package com.acorn.api.dto.contact;
+package com.acorn.api.dto.contact.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,15 +8,13 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ContactDetailDTO {
+public class ContactDetailResDTO {
 
     private Integer contactId;
 
     private Integer contactUserId;
 
     private Integer contactOwnerId;
-
-    private Integer contactAdminId;
 
     private String contactTitle;
 
@@ -34,5 +32,5 @@ public class ContactDetailDTO {
 
     private LocalDateTime contactCreated;
 
-    private List<ContactFileDTO> contactFiles;
+    private List<ContactFileResDTO> contactFiles;
 }

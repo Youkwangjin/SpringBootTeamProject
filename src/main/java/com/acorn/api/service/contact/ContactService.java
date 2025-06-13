@@ -1,7 +1,12 @@
 package com.acorn.api.service.contact;
 
-import com.acorn.api.dto.contact.*;
+import com.acorn.api.dto.contact.requset.ContactListReqDTO;
 import com.acorn.api.dto.contact.requset.ContactCancelReqDTO;
+import com.acorn.api.dto.contact.requset.ContactDeleteReqDTO;
+import com.acorn.api.dto.contact.requset.ContactSaveReqDTO;
+import com.acorn.api.dto.contact.requset.ContactUpdateReqDTO;
+import com.acorn.api.dto.contact.response.ContactDetailResDTO;
+import com.acorn.api.dto.contact.response.ContactListResDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,15 +14,15 @@ import java.util.List;
 @Service
 public interface ContactService {
 
-    List<ContactListDTO> getUserContactList(ContactListDTO listData);
+    List<ContactListResDTO> getUserContactList(ContactListReqDTO listData);
 
-    ContactDetailDTO selectContactDetailData(Integer contactId);
+    ContactDetailResDTO selectContactDetailData(Integer contactId);
 
-    void contactSaveData(ContactSaveDTO saveData);
+    void contactSaveData(ContactSaveReqDTO saveData);
 
-    void contactDataUpdate(ContactUpdateDTO updateData);
+    void contactDataUpdate(ContactUpdateReqDTO updateData);
 
-    void contactDataDelete(ContactDeleteDTO deleteData);
+    void contactDataDelete(ContactDeleteReqDTO deleteData);
 
     void contactDataCancel(ContactCancelReqDTO cancelData);
 }

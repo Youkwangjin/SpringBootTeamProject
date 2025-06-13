@@ -1,10 +1,11 @@
-package com.acorn.api.dto.contact;
+package com.acorn.api.dto.contact.requset;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ContactUpdateDTO {
+@NoArgsConstructor
+public class ContactUpdateReqDTO {
 
     @NotNull
     @Positive

@@ -1,10 +1,12 @@
 package com.acorn.api.common;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public abstract class PaginationRequest {
     private int pageSize = 10;
 

@@ -1,11 +1,11 @@
-package com.acorn.api.dto.contact;
+package com.acorn.api.dto.contact.response;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class ContactFileDTO {
+public class ContactFileResDTO {
 
     private Integer contactFileId;
 

@@ -4,8 +4,14 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.contact.ContactStatus;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.contact.*;
+import com.acorn.api.dto.contact.requset.ContactListReqDTO;
 import com.acorn.api.dto.contact.requset.ContactCancelReqDTO;
+import com.acorn.api.dto.contact.requset.ContactDeleteReqDTO;
+import com.acorn.api.dto.contact.requset.ContactSaveReqDTO;
+import com.acorn.api.dto.contact.requset.ContactUpdateReqDTO;
+import com.acorn.api.dto.contact.response.ContactDetailResDTO;
+import com.acorn.api.dto.contact.response.ContactFileResDTO;
+import com.acorn.api.dto.contact.response.ContactListResDTO;
 import com.acorn.api.entity.contact.Contact;
 import com.acorn.api.entity.contact.ContactFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -40,7 +46,7 @@ public class ContactServiceImpl implements ContactService {
     private String uploadDir;
 
     @Override
-    public List<ContactListDTO> getUserContactList(ContactListDTO listData) {
+    public List<ContactListResDTO> getUserContactList(ContactListReqDTO listData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
 
@@ -63,7 +69,7 @@ public class ContactServiceImpl implements ContactService {
                     final String contactAnswerYn = contactList.getContactAnswerYn();
                     final LocalDateTime contactCreated = contactList.getContactCreated();
 
-                    return ContactListDTO.builder()
+                    return ContactListResDTO.builder()
                             .rowNum(rowNum)
                             .contactId(contactId)
                             .contactTitle(contactTitle)
@@ -76,7 +82,7 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ContactDetailDTO selectContactDetailData(Integer contactId) {
+    public ContactDetailResDTO selectContactDetailData(Integer contactId) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
 
@@ -111,7 +117,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         List<ContactFile> contactFileEntities = detailData.getContactFilesList();
-        final List<ContactFileDTO> contactFileData = contactFileEntities.stream()
+        final List<ContactFileResDTO> contactFileData = contactFileEntities.stream()
                 .map(contactFile -> {
                     final Integer contactFileId = contactFile.getContactFileId();
                     final String contactOriginalFileName = contactFile.getContactOriginalFileName();
@@ -120,7 +126,7 @@ public class ContactServiceImpl implements ContactService {
                     final String contactFileExtNm = contactFile.getContactFileExtNm();
                     final String contactFileSize = contactFile.getContactFileSize();
 
-                    return ContactFileDTO.builder()
+                    return ContactFileResDTO.builder()
                             .contactFileId(contactFileId)
                             .contactOriginalFileName(contactOriginalFileName)
                             .contactStoredFileName(contactStoredFileName)
@@ -132,7 +138,7 @@ public class ContactServiceImpl implements ContactService {
                 })
                 .collect(Collectors.toList());
 
-        return ContactDetailDTO.builder()
+        return ContactDetailResDTO.builder()
                 .contactId(contactId)
                 .contactUserId(contactUserId)
                 .contactOwnerId(contactOwnerId)
@@ -149,7 +155,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional
-    public void contactSaveData(ContactSaveDTO saveData) {
+    public void contactSaveData(ContactSaveReqDTO saveData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer contactWriterType;
@@ -213,7 +219,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional
-    public void contactDataUpdate(ContactUpdateDTO updateData) {
+    public void contactDataUpdate(ContactUpdateReqDTO updateData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer contactId = updateData.getContactId();
@@ -310,7 +316,7 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void contactDataDelete(ContactDeleteDTO deleteData) {
+    public void contactDataDelete(ContactDeleteReqDTO deleteData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer contactId = deleteData.getContactId();
