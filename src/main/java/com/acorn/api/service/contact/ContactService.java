@@ -1,6 +1,7 @@
 package com.acorn.api.service.contact;
 
 import com.acorn.api.dto.contact.*;
+import com.acorn.api.dto.contact.requset.ContactCancelReqDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface ContactService {
     void contactDataUpdate(ContactUpdateDTO updateData);
 
     void contactDataDelete(ContactDeleteDTO deleteData);
+
+    void contactDataCancel(ContactCancelReqDTO cancelData);
 }

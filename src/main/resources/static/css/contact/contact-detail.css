@@ -115,3 +115,12 @@
 .deleteBtn:hover {
     background-color: #bb2d3b;
 }
+
+.cancelBtn {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.cancelBtn:hover {
+    background-color: #e8590c;
+}

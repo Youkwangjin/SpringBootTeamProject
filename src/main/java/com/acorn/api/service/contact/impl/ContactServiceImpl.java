@@ -5,6 +5,7 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.contact.ContactStatus;
 import com.acorn.api.component.FileComponent;
 import com.acorn.api.dto.contact.*;
+import com.acorn.api.dto.contact.requset.ContactCancelReqDTO;
 import com.acorn.api.entity.contact.Contact;
 import com.acorn.api.entity.contact.ContactFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -359,5 +360,49 @@ public class ContactServiceImpl implements ContactService {
                 .build();
 
         contactRepository.deleteContact(deleteContactData);
+    }
+
+    @Override
+    @Transactional
+    public void contactDataCancel(ContactCancelReqDTO cancelData) {
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer contactId = cancelData.getContactId();
+        final Integer contactPendingStatus = ContactStatus.CONTACT_STATUS_PENDING.getCode();
+        final Integer contactCancelStatus = ContactStatus.CONTACT_STATUS_CANCELLED.getCode();
+
+        if (currentUserId == null && currentOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Contact detailData = contactRepository.selectContactDetailData(contactId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FOUND);
+        }
+
+        final Integer existingUserId = detailData.getContactUserId();
+        final Integer existingOwnerId = detailData.getContactOwnerId();
+        final Integer existingContactStatus = detailData.getContactStatus();
+
+        if (currentUserId != null) {
+            if (!Objects.equals(existingUserId, currentUserId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+        } else {
+            if (!Objects.equals(existingOwnerId, currentOwnerId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+        }
+
+        if (!Objects.equals(contactPendingStatus, existingContactStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_WAITING);
+        }
+
+        Contact cancelContactData = Contact.builder()
+                .contactId(contactId)
+                .contactStatus(contactCancelStatus)
+                .build();
+
+        contactRepository.updateContactStatus(cancelContactData);
     }
 }
