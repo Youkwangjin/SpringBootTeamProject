@@ -26,7 +26,8 @@
                 1
             FROM
                 TB_USER
-            WHERE USER_EMAIL = #{userEmail}
+            WHERE
+                USER_EMAIL = #{userEmail}
         )
     </select>
 
@@ -36,29 +37,61 @@
                 1
             FROM
                 TB_USER
-            WHERE USER_TEL = #{userTel}
+            WHERE
+                USER_TEL = #{userTel}
         )
     </select>
 
     <insert id="userRegister" parameterType="com.acorn.api.entity.user.User" useGeneratedKeys="true" keyProperty="userId" >
-        INSERT INTO TB_USER (USER_ID, USER_EMAIL, USER_PASSWORD, USER_NM, USER_TEL, USER_ADDRESS, USER_ROLE)
-        VALUES (#{userId}, #{userEmail}, #{userPassword}, #{userNm}, #{userTel}, #{userAddr}, #{userRole})
+        INSERT INTO TB_USER (
+            USER_ID,
+            USER_EMAIL,
+            USER_PASSWORD,
+            USER_NM,
+            USER_TEL,
+            USER_ADDRESS,
+            USER_ROLE
+        ) VALUES (
+            #{userId},
+            #{userEmail},
+            #{userPassword},
+            #{userNm},
+            #{userTel},
+            #{userAddr},
+            #{userRole}
+        )
     </insert>
 
     <select id="findByUserEmail" parameterType="String" resultMap="userResultMap">
         SELECT
-            *
+            USER_ID,
+            USER_EMAIL,
+            USER_PASSWORD,
+            USER_NM,
+            USER_TEL,
+            USER_ADDRESS,
+            USER_ROLE
         FROM
             TB_USER
-        WHERE USER_EMAIL = #{userEmail}
+        WHERE
+            USER_EMAIL = #{userEmail}
     </select>
 
     <select id="selectAllUserData" parameterType="Integer" resultMap="userResultMap">
         SELECT
-            *
+            USER_ID,
+            USER_EMAIL,
+            USER_PASSWORD,
+            USER_NM,
+            USER_TEL,
+            USER_ADDRESS,
+            USER_ROLE,
+            USER_CREATED,
+            USER_UPDATED
         FROM
             TB_USER
-        WHERE USER_ID = #{userId}
+        WHERE
+            USER_ID = #{userId}
     </select>
 
     <select id="selectAdminUserListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
@@ -104,7 +137,8 @@
             USER_TEL = #{userTel},
             USER_ADDRESS = #{userAddr},
             USER_UPDATED = NOW()
-        WHERE USER_ID = #{userId}
+        WHERE
+            USER_ID = #{userId}
     </update>
 
     <update id="adminUserUpdate" parameterType="com.acorn.api.entity.user.User">
@@ -116,13 +150,15 @@
             USER_TEL = #{userTel},
             USER_ADDRESS = #{userAddr},
             USER_UPDATED = NOW()
-        WHERE USER_ID = #{userId}
+        WHERE
+            USER_ID = #{userId}
     </update>
 
     <delete id="userDelete" parameterType="com.acorn.api.entity.user.User">
         DELETE
         FROM
             TB_USER
-        WHERE USER_ID = #{userId}
+        WHERE
+            USER_ID = #{userId}
     </delete>
 </mapper>

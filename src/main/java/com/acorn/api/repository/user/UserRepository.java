@@ -16,11 +16,11 @@ public interface UserRepository {
 
     Boolean isTelDuplicate(@Param("userTel") String userTel);
 
-    void userRegister(User user);
-
     User findByUserEmail(@Param("userEmail") String userEmail);
 
     User selectAllUserData(@Param("userId") Integer userId);
+
+    void userRegister(User user);
 
     void userUpdate(User User);
 
