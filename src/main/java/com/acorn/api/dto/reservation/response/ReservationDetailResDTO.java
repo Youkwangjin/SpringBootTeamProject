@@ -1,4 +1,4 @@
-package com.acorn.api.dto.reservation;
+package com.acorn.api.dto.reservation.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class ReservationDetailDTO {
+public class ReservationDetailResDTO {
 
     private Integer reservationId;
 

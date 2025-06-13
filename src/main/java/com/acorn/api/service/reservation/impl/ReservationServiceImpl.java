@@ -5,9 +5,10 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.payment.PaymentStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
-import com.acorn.api.dto.reservation.ReservationCancelDTO;
-import com.acorn.api.dto.reservation.ReservationDetailDTO;
-import com.acorn.api.dto.reservation.ReservationListDTO;
+import com.acorn.api.dto.reservation.request.ReservationCancelReqDTO;
+import com.acorn.api.dto.reservation.response.ReservationDetailResDTO;
+import com.acorn.api.dto.reservation.request.ReservationListReqDTO;
+import com.acorn.api.dto.reservation.response.ReservationListResDTO;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.payment.Payment;
 import com.acorn.api.entity.reservation.Reservation;
@@ -36,7 +37,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ContainerRepository containerRepository;
 
     @Override
-    public List<ReservationListDTO> getReservationListData(ReservationListDTO listData) {
+    public List<ReservationListResDTO> getReservationListData(ReservationListReqDTO listData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         if (currentUserId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -58,7 +59,7 @@ public class ReservationServiceImpl implements ReservationService {
                     final LocalDateTime reservationEndDate = reservationList.getReservationEndDate();
                     final LocalDateTime reservationCreated = reservationList.getReservationCreated();
 
-                    return ReservationListDTO.builder()
+                    return ReservationListResDTO.builder()
                             .rowNum(rowNum)
                             .reservationId(reservationId)
                             .reservationUserId(reservationUserId)
@@ -74,7 +75,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationDetailDTO getReservationData(Integer reservationId) {
+    public ReservationDetailResDTO getReservationData(Integer reservationId) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         if (currentUserId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -106,7 +107,7 @@ public class ReservationServiceImpl implements ReservationService {
             paymentId = paymentData.getPaymentId();
         }
 
-        return ReservationDetailDTO.builder()
+        return ReservationDetailResDTO.builder()
                 .reservationId(reservationId)
                 .reservationUserId(reservationUserId)
                 .reservationContainerId(reservationContainerId)
@@ -177,7 +178,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void reserveCancelContainer(ReservationCancelDTO requestData) {
+    public void reserveCancelContainer(ReservationCancelReqDTO requestData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer reservationId = requestData.getReservationId();
         final Integer reservationContainerId = requestData.getReservationContainerId();

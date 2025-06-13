@@ -1,15 +1,15 @@
-package com.acorn.api.dto.reservation;
+package com.acorn.api.dto.reservation.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class ReservationCancelDTO {
+public class ReservationCancelReqDTO {
 
     @NotNull
     @Positive
