@@ -1,10 +1,10 @@
 package com.acorn.api.service.contact;
 
-import com.acorn.api.dto.contact.requset.ContactListReqDTO;
-import com.acorn.api.dto.contact.requset.ContactCancelReqDTO;
-import com.acorn.api.dto.contact.requset.ContactDeleteReqDTO;
-import com.acorn.api.dto.contact.requset.ContactSaveReqDTO;
-import com.acorn.api.dto.contact.requset.ContactUpdateReqDTO;
+import com.acorn.api.dto.contact.request.ContactListReqDTO;
+import com.acorn.api.dto.contact.request.ContactCancelReqDTO;
+import com.acorn.api.dto.contact.request.ContactDeleteReqDTO;
+import com.acorn.api.dto.contact.request.ContactSaveReqDTO;
+import com.acorn.api.dto.contact.request.ContactUpdateReqDTO;
 import com.acorn.api.dto.contact.response.ContactDetailResDTO;
 import com.acorn.api.dto.contact.response.ContactListResDTO;
 import org.springframework.stereotype.Service;

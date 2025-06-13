@@ -1,6 +1,6 @@
 package com.acorn.api.controller.contact;
 
-import com.acorn.api.dto.contact.requset.ContactListReqDTO;
+import com.acorn.api.dto.contact.request.ContactListReqDTO;
 import com.acorn.api.dto.contact.response.ContactDetailResDTO;
 import com.acorn.api.dto.contact.response.ContactListResDTO;
 import com.acorn.api.service.contact.ContactService;

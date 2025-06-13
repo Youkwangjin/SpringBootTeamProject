@@ -1,4 +1,4 @@
-package com.acorn.api.dto.contact.requset;
+package com.acorn.api.dto.contact.request;
 
 import com.acorn.api.dto.common.CommonListReqDTO;
 import lombok.Getter;

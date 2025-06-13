@@ -1,4 +1,4 @@
-package com.acorn.api.dto.contact.requset;
+package com.acorn.api.dto.contact.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
