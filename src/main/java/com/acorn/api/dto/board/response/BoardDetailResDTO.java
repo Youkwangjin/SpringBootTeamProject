@@ -1,4 +1,4 @@
-package com.acorn.api.dto.board;
+package com.acorn.api.dto.board.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class BoardDetailDTO {
+public class BoardDetailResDTO {
 
     private Integer boardId;
 
@@ -30,5 +30,5 @@ public class BoardDetailDTO {
 
     private boolean isAuthor;
 
-    private List<BoardFileDTO> boardFiles;
+    private List<BoardFileResDTO> boardFiles;
 }

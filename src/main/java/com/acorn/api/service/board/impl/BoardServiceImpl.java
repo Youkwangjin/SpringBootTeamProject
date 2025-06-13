@@ -4,7 +4,13 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.board.*;
+import com.acorn.api.dto.board.request.BoardDeleteReqDTO;
+import com.acorn.api.dto.board.request.BoardSaveReqDTO;
+import com.acorn.api.dto.board.request.BoardUpdateReqDTO;
+import com.acorn.api.dto.board.response.BoardDetailResDTO;
+import com.acorn.api.dto.board.response.BoardFileResDTO;
+import com.acorn.api.dto.board.response.BoardListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -42,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
     private String uploadDir;
 
     @Override
-    public List<BoardListDTO> getBoardListData(BoardListDTO listData) {
+    public List<BoardListResDTO> getBoardListData(CommonListReqDTO listData) {
         listData.setTotalCount(boardRepository.selectListCountByRequest(listData));
         List<Board> boardListData = boardRepository.selectBoardListData(listData);
 
@@ -55,7 +61,7 @@ public class BoardServiceImpl implements BoardService {
                     final Integer boardHits = boardList.getBoardHits();
                     final LocalDateTime boardCreated = boardList.getBoardCreated();
 
-                    return BoardListDTO.builder()
+                    return BoardListResDTO.builder()
                             .rowNum(rowNum)
                             .boardId(boardId)
                             .boardTitle(boardTitle)
@@ -78,7 +84,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDetailDTO getBoardDetailData(Integer boardId) {
+    public BoardDetailResDTO getBoardDetailData(Integer boardId) {
         Board detailData = boardRepository.selectBoardDetailData(boardId);
         if (detailData == null) {
             throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
@@ -100,7 +106,7 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.updateBoardHits(boardId);
 
         List<BoardFile> boardFileEntities = detailData.getBoardFilesList();
-        final List<BoardFileDTO> boardFileData = boardFileEntities.stream()
+        final List<BoardFileResDTO> boardFileData = boardFileEntities.stream()
                 .map(boardFile -> {
                     final Integer boardFileId = boardFile.getBoardFileId();
                     final String boardOriginalFileName = boardFile.getBoardOriginalFileName();
@@ -109,7 +115,7 @@ public class BoardServiceImpl implements BoardService {
                     final String boardFileExtNm = boardFile.getBoardFileExtNm();
                     final String boardFileSize = boardFile.getBoardFileSize();
 
-                    return BoardFileDTO.builder()
+                    return BoardFileResDTO.builder()
                             .boardFileId(boardFileId)
                             .boardOriginalFileName(boardOriginalFileName)
                             .boardStoredFileName(boardStoredFileName)
@@ -120,7 +126,7 @@ public class BoardServiceImpl implements BoardService {
                 })
                 .collect(Collectors.toList());
 
-        return BoardDetailDTO.builder()
+        return BoardDetailResDTO.builder()
                 .boardId(boardId)
                 .boardTitle(boardTitle)
                 .boardWriter(boardWriter)
@@ -137,7 +143,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void boardDataSave(BoardSaveDTO saveData) {
+    public void boardDataSave(BoardSaveReqDTO saveData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer boardId = boardRepository.selectBoardIdKey();
@@ -192,7 +198,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void boardDataUpdate(BoardUpdateDTO updateData) {
+    public void boardDataUpdate(BoardUpdateReqDTO updateData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer boardId = updateData.getBoardId();
@@ -285,7 +291,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void boardDataDelete(BoardDeleteDTO deleteData) {
+    public void boardDataDelete(BoardDeleteReqDTO deleteData) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer boardId = deleteData.getBoardId();

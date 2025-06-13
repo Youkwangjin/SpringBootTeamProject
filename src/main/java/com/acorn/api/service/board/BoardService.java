@@ -1,6 +1,11 @@
 package com.acorn.api.service.board;
 
-import com.acorn.api.dto.board.*;
+import com.acorn.api.dto.board.request.BoardDeleteReqDTO;
+import com.acorn.api.dto.board.request.BoardSaveReqDTO;
+import com.acorn.api.dto.board.request.BoardUpdateReqDTO;
+import com.acorn.api.dto.board.response.BoardDetailResDTO;
+import com.acorn.api.dto.board.response.BoardListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,15 +13,15 @@ import java.util.List;
 @Service
 public interface BoardService {
 
-    List<BoardListDTO> getBoardListData(BoardListDTO listData);
+    List<BoardListResDTO> getBoardListData(CommonListReqDTO listData);
 
     String getAuthenticatedUserName();
 
-    void boardDataSave(BoardSaveDTO saveData);
+    void boardDataSave(BoardSaveReqDTO saveData);
 
-    BoardDetailDTO getBoardDetailData(Integer boardId);
+    BoardDetailResDTO getBoardDetailData(Integer boardId);
 
-    void boardDataUpdate(BoardUpdateDTO updateData);
+    void boardDataUpdate(BoardUpdateReqDTO updateData);
 
-    void boardDataDelete(BoardDeleteDTO deleteData);
+    void boardDataDelete(BoardDeleteReqDTO deleteData);
 }

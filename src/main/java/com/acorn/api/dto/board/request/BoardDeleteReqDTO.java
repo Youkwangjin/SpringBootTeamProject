@@ -1,17 +1,13 @@
-package com.acorn.api.dto.board;
+package com.acorn.api.dto.board.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class BoardDeleteDTO {
+public class BoardDeleteReqDTO {
 
     @NotNull
     @Positive

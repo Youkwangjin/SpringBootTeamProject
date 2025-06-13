@@ -1,11 +1,11 @@
-package com.acorn.api.dto.board;
+package com.acorn.api.dto.board.response;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class BoardFileDTO {
+public class BoardFileResDTO {
 
     private Integer boardFileId;
 
