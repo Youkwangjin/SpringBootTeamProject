@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserValidationController {
 
-
     private final UserService userService;
 
     @GetMapping("/api/auth/user/emailCheck")
