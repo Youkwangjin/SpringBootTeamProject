@@ -1,6 +1,6 @@
 package com.acorn.api.security.owner;
 
-import com.acorn.api.dto.owner.OwnerLoginDTO;
+import com.acorn.api.dto.owner.request.OwnerLoginReqDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,7 +47,7 @@ public class CustomOwnerJsonAuthenticationFilter extends AbstractAuthenticationP
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
-        OwnerLoginDTO ownerLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), OwnerLoginDTO.class);
+        OwnerLoginReqDTO ownerLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), OwnerLoginReqDTO.class);
 
         String username = ownerLoginData.getOwnerBusinessNum();
         String password = ownerLoginData.getOwnerPassword();

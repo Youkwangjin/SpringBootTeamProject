@@ -1,4 +1,4 @@
-package com.acorn.api.dto.container;
+package com.acorn.api.dto.container.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -10,12 +10,14 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ContainerUpdateDTO {
+public class ContainerUpdateReqDTO {
 
     @NotNull
+    @Positive
     private Integer containerId;
 
     @NotNull
+    @Positive
     private Integer containerOwnerId;
 
     @NotBlank

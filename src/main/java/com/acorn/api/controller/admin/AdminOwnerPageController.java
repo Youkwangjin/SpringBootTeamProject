@@ -1,7 +1,7 @@
 package com.acorn.api.controller.admin;
 
 import com.acorn.api.dto.admin.AdminOwnerListDTO;
-import com.acorn.api.dto.owner.OwnerResponseDTO;
+import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.service.admin.AdminOwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -27,14 +27,14 @@ public class AdminOwnerPageController {
 
     @GetMapping("/admin/owner/detail/{ownerId}")
     public String ownerDetailPage(@PathVariable("ownerId") Integer ownerId, Model model) {
-        OwnerResponseDTO ownerDetailData = adminOwnerService.getOwnerData(ownerId);
+        OwnerResDTO ownerDetailData = adminOwnerService.getOwnerData(ownerId);
         model.addAttribute("ownerDetailData", ownerDetailData);
         return "admin/admin-owner-detail";
     }
 
     @GetMapping("/admin/owner/update/{ownerId}")
     public String ownerUpdatePage(@PathVariable("ownerId") Integer ownerId, Model model) {
-        OwnerResponseDTO ownerDetailData = adminOwnerService.getOwnerData(ownerId);
+        OwnerResDTO ownerDetailData = adminOwnerService.getOwnerData(ownerId);
         model.addAttribute("ownerDetailData", ownerDetailData);
         return "admin/admin-owner-update";
     }

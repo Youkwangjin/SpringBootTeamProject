@@ -3,7 +3,7 @@ package com.acorn.api.controller.container;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.dto.container.ContainerDeleteDTO;
+import com.acorn.api.dto.container.request.ContainerDeleteReqDTO;
 import com.acorn.api.service.container.ContainerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class ContainerDeleteController {
     private final ContainerService containerService;
 
     @PostMapping("/api/container/delete/{containerId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> containerDelete(@Valid @RequestBody ContainerDeleteDTO deleteData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> containerDelete(@Valid @RequestBody ContainerDeleteReqDTO deleteData) {
         log.info(" *****************************    Container Delete START    *****************************");
 
         containerService.containerDelete(deleteData);
