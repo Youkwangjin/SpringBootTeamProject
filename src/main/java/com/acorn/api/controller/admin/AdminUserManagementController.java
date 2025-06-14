@@ -3,8 +3,8 @@ package com.acorn.api.controller.admin;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.dto.admin.AdminUserDeleteRequestDTO;
-import com.acorn.api.dto.admin.AdminUserUpdateRequestDTO;
+import com.acorn.api.dto.admin.request.AdminUserDeleteReqDTO;
+import com.acorn.api.dto.admin.request.AdminUserUpdateReqDTO;
 import com.acorn.api.service.admin.AdminUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class AdminUserManagementController {
     private final AdminUserService adminUserService;
 
     @PatchMapping("/api/admin/user/update/{userId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> userUpdate(@Valid @RequestBody AdminUserUpdateRequestDTO requestData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> userUpdate(@Valid @RequestBody AdminUserUpdateReqDTO requestData) {
         log.info(" ************** [AdminUserManagement] Update request started **************");
 
         adminUserService.adminUpdateUser(requestData);
@@ -32,7 +32,7 @@ public class AdminUserManagementController {
     }
 
     @PostMapping("/api/admin/user/delete/{userId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> userDelete(@Valid @RequestBody AdminUserDeleteRequestDTO requestData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> userDelete(@Valid @RequestBody AdminUserDeleteReqDTO requestData) {
         log.info(" ************** [AdminUserManagement] Delete request started **************");
 
         adminUserService.adminDeleteUser(requestData);

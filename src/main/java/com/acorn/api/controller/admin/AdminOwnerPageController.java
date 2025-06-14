@@ -1,6 +1,7 @@
 package com.acorn.api.controller.admin;
 
-import com.acorn.api.dto.admin.AdminOwnerListDTO;
+import com.acorn.api.dto.admin.response.AdminOwnerListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.service.admin.AdminOwnerService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class AdminOwnerPageController {
     private final AdminOwnerService adminOwnerService;
 
     @GetMapping("/admin/owner/list")
-    public String ownerListPage(AdminOwnerListDTO listData, Model model) {
-        List<AdminOwnerListDTO> ownerListData = adminOwnerService.getOwnerList(listData);
+    public String ownerListPage(CommonListReqDTO listData, Model model) {
+        List<AdminOwnerListResDTO> ownerListData = adminOwnerService.getOwnerList(listData);
         model.addAttribute("ownerListData", ownerListData);
         model.addAttribute("request", listData);
         return "admin/admin-owner-list";
