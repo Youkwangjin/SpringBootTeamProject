@@ -3,7 +3,7 @@ package com.acorn.api.controller.container;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.dto.container.ContainerRegisterDTO;
+import com.acorn.api.dto.container.request.ContainerRegisterReqDTO;
 import com.acorn.api.service.container.ContainerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ContainerRegisterController {
     private final ContainerService containerService;
 
     @PostMapping("/api/container/register")
-    public ResponseEntity<ApiSuccessResponse<Object>> containerRegister(@Valid ContainerRegisterDTO registerData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> containerRegister(@Valid ContainerRegisterReqDTO registerData) {
         log.info(" *****************************    Container Register START    *****************************");
 
         containerService.containerRegister(registerData);

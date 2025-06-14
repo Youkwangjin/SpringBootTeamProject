@@ -2,7 +2,8 @@ package com.acorn.api.service.admin;
 
 import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
 import com.acorn.api.dto.admin.ContainerManagementRequestDTO;
-import com.acorn.api.dto.container.ContainerListDTO;
+import com.acorn.api.dto.container.request.ContainerListReqDTO;
+import com.acorn.api.dto.container.response.ContainerListResDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 @Service
 public interface AdminContainerService {
 
-    List<ContainerListDTO> getContainerList(ContainerListDTO listData);
+    List<ContainerListResDTO> getContainerList(ContainerListReqDTO listData);
 
     AdminContainerDetailResponseDTO getContainerData(Integer containerId);
 

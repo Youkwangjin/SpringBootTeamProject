@@ -1,11 +1,11 @@
-package com.acorn.api.dto.container;
+package com.acorn.api.dto.container.response;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class ContainerFileDTO {
+public class ContainerFileResDTO {
 
     private Integer containerFileId;
 

@@ -4,7 +4,14 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.container.*;
+import com.acorn.api.dto.container.request.ContainerDeleteReqDTO;
+import com.acorn.api.dto.container.request.ContainerListReqDTO;
+import com.acorn.api.dto.container.request.ContainerRegisterReqDTO;
+import com.acorn.api.dto.container.request.ContainerUpdateReqDTO;
+import com.acorn.api.dto.container.response.ContainerDetailResDTO;
+import com.acorn.api.dto.container.response.ContainerFileResDTO;
+import com.acorn.api.dto.container.response.ContainerListResDTO;
+import com.acorn.api.dto.container.response.ContainerMapListResDTO;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.container.ContainerFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -42,7 +49,7 @@ public class ContainerServiceImpl implements ContainerService {
 
 
     @Override
-    public List<ContainerListDTO> getContainerListData(ContainerListDTO listData) {
+    public List<ContainerListResDTO> getContainerListData(ContainerListReqDTO listData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         if (currentOwnerId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -61,7 +68,7 @@ public class ContainerServiceImpl implements ContainerService {
                     final Integer containerApprovalStatus = containerList.getContainerApprovalStatus();
                     final LocalDateTime containerCreated = containerList.getContainerCreated();
 
-                    return ContainerListDTO.builder()
+                    return ContainerListResDTO.builder()
                             .rowNum(rowNum)
                             .containerId(containerId)
                             .containerName(containerName)
@@ -75,7 +82,7 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
-    public List<ContainerMapListDTO> getContainersForMap() {
+    public List<ContainerMapListResDTO> getContainersForMap() {
         final Integer containerStatusValue = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
         final Integer containerApprovalStatusValue = ContainerStatus.CONTAINER_APPROVAL_STATUS_APPROVED.getCode();
 
@@ -103,7 +110,7 @@ public class ContainerServiceImpl implements ContainerService {
                             .fromApprovalCode(containerApprovalStatus)
                             .getDescription();
 
-                    return ContainerMapListDTO.builder()
+                    return ContainerMapListResDTO.builder()
                             .containerId(containerId)
                             .containerName(containerName)
                             .containerAddr(containerAddr)
@@ -125,7 +132,7 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
-    public ContainerDetailDTO getContainerData(Integer containerId) {
+    public ContainerDetailResDTO getContainerData(Integer containerId) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         if (currentOwnerId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -151,7 +158,7 @@ public class ContainerServiceImpl implements ContainerService {
         }
 
         List<ContainerFile> containerFiles = containerDetailData.getContainerFiles();
-        final List<ContainerFileDTO> containerFileDTOS = containerFiles.stream()
+        final List<ContainerFileResDTO> containerFileResDTOS = containerFiles.stream()
                 .map( file -> {
                     final Integer containerFileId = file.getContainerFileId();
                     final String containerOriginalFileName = file.getContainerOriginalFileName();
@@ -160,7 +167,7 @@ public class ContainerServiceImpl implements ContainerService {
                     final String containerFileExtNm = file.getContainerFileExtNm();
                     final String containerFileSize = file.getContainerFileSize();
 
-                    return ContainerFileDTO.builder()
+                    return ContainerFileResDTO.builder()
                             .containerFileId(containerFileId)
                             .containerOriginalFileName(containerOriginalFileName)
                             .containerStoredFileName(containerStoredFileName)
@@ -171,7 +178,7 @@ public class ContainerServiceImpl implements ContainerService {
                 })
                 .collect(Collectors.toList());
 
-        return ContainerDetailDTO.builder()
+        return ContainerDetailResDTO.builder()
                 .containerId(containerId)
                 .ownerId(containerOwnerId)
                 .containerName(containerName)
@@ -182,13 +189,13 @@ public class ContainerServiceImpl implements ContainerService {
                 .containerLatitude(containerLatitude)
                 .containerLongitude(containerLongitude)
                 .containerContents(containerContents)
-                .containerFiles(containerFileDTOS)
+                .containerFiles(containerFileResDTOS)
                 .build();
     }
 
     @Override
     @Transactional
-    public void containerRegister(ContainerRegisterDTO registerData) {
+    public void containerRegister(ContainerRegisterReqDTO registerData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer containerOwnerId = registerData.getContainerOwnerId();
         final Integer containerId = containerRepository.selectContainerIdKey();
@@ -255,7 +262,7 @@ public class ContainerServiceImpl implements ContainerService {
 
     @Override
     @Transactional
-    public void containerUpdate(ContainerUpdateDTO updateData) {
+    public void containerUpdate(ContainerUpdateReqDTO updateData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer containerOwnerId = updateData.getContainerOwnerId();
         final Integer containerId = updateData.getContainerId();
@@ -359,7 +366,7 @@ public class ContainerServiceImpl implements ContainerService {
 
     @Override
     @Transactional
-    public void containerDelete(ContainerDeleteDTO deleteData) {
+    public void containerDelete(ContainerDeleteReqDTO deleteData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer containerId = deleteData.getContainerId();
         final Integer ownerId = deleteData.getOwnerId();

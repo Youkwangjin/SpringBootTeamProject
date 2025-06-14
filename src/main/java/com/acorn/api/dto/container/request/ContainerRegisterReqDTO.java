@@ -1,4 +1,4 @@
-package com.acorn.api.dto.container;
+package com.acorn.api.dto.container.request;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class ContainerRegisterDTO {
+public class ContainerRegisterReqDTO {
 
     @NotBlank
     @Size(max = 100)

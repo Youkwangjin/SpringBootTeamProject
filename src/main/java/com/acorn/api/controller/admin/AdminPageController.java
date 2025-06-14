@@ -2,7 +2,8 @@ package com.acorn.api.controller.admin;
 
 import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
 import com.acorn.api.dto.admin.AdminResponseDTO;
-import com.acorn.api.dto.container.ContainerListDTO;
+import com.acorn.api.dto.container.request.ContainerListReqDTO;
+import com.acorn.api.dto.container.response.ContainerListResDTO;
 import com.acorn.api.service.admin.AdminContainerService;
 import com.acorn.api.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,8 @@ public class AdminPageController {
     }
 
     @GetMapping("/admin/container/list")
-    public String containersListPage(ContainerListDTO listData, Model model) {
-        List<ContainerListDTO> containerListData = adminContainerService.getContainerList(listData);
+    public String containersListPage(ContainerListReqDTO listData, Model model) {
+        List<ContainerListResDTO> containerListData = adminContainerService.getContainerList(listData);
         model.addAttribute("containerList", containerListData);
         model.addAttribute("request", listData);
         return "admin/admin-container-list";

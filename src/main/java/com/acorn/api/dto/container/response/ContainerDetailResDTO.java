@@ -1,4 +1,4 @@
-package com.acorn.api.dto.container;
+package com.acorn.api.dto.container.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ContainerDetailDTO {
+public class ContainerDetailResDTO {
 
     private Integer containerId;
 
@@ -36,5 +36,5 @@ public class ContainerDetailDTO {
 
     private Integer containerApprovalStatus;
 
-    private List<ContainerFileDTO> containerFiles;
+    private List<ContainerFileResDTO> containerFiles;
 }

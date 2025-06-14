@@ -1,6 +1,6 @@
 package com.acorn.api.dto.admin;
 
-import com.acorn.api.dto.container.ContainerDetailDTO;
+import com.acorn.api.dto.container.response.ContainerDetailResDTO;
 import com.acorn.api.dto.owner.response.OwnerResDTO;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class AdminContainerDetailResponseDTO {
 
-    private ContainerDetailDTO container;
+    private ContainerDetailResDTO container;
 
     private OwnerResDTO owner;
 }

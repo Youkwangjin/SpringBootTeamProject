@@ -1,16 +1,16 @@
-package com.acorn.api.dto.container;
+package com.acorn.api.dto.container.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @Builder
-public class ContainerMapListDTO {
+public class ContainerListResDTO {
+
+    private Integer rowNum;
 
     private Integer containerId;
 
@@ -24,25 +24,9 @@ public class ContainerMapListDTO {
 
     private BigDecimal containerSize;
 
-    private Integer containerPrice;
-
-    private String containerContents;
-
-    private String containerContentsText;
-
-    private BigDecimal containerLatitude;
-
-    private BigDecimal containerLongitude;
-
     private Integer containerStatus;
-
-    private String containerStatusText;
 
     private Integer containerApprovalStatus;
 
-    private String containerApprovalStatusText;
-
     private LocalDateTime containerCreated;
-
-    private String containerCreatedText;
 }

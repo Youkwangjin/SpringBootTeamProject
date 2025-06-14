@@ -5,8 +5,9 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
 import com.acorn.api.dto.admin.ContainerManagementRequestDTO;
-import com.acorn.api.dto.container.ContainerDetailDTO;
-import com.acorn.api.dto.container.ContainerListDTO;
+import com.acorn.api.dto.container.response.ContainerDetailResDTO;
+import com.acorn.api.dto.container.request.ContainerListReqDTO;
+import com.acorn.api.dto.container.response.ContainerListResDTO;
 import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.container.Container;
@@ -35,7 +36,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
     private final ContainerRepository containerRepository;
 
     @Override
-    public List<ContainerListDTO> getContainerList(ContainerListDTO listData) {
+    public List<ContainerListResDTO> getContainerList(ContainerListReqDTO listData) {
         listData.setTotalCount(containerRepository.selectAdminListCountByRequest(listData));
         List<Container> containerListData = containerRepository.selectAdminContainerListData(listData);
 
@@ -49,7 +50,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
                     final Integer containerStatus = containerList.getContainerStatus();
                     final Integer containerApprovalStatus = containerList.getContainerApprovalStatus();
 
-                    return ContainerListDTO.builder()
+                    return ContainerListResDTO.builder()
                             .rowNum(rowNum)
                             .containerId(containerId)
                             .containerAddr(containerAddr)
@@ -89,7 +90,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
         final String companyName = containerData.getOwner().getOwnerCompanyName();
         final String ownerTel = containerData.getOwner().getOwnerTel();
 
-        final ContainerDetailDTO containerDTO = ContainerDetailDTO.builder()
+        final ContainerDetailResDTO containerDTO = ContainerDetailResDTO.builder()
                 .containerId(containerId)
                 .containerName(containerName)
                 .containerSize(containerSize)
