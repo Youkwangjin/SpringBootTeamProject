@@ -3,7 +3,7 @@ package com.acorn.api.controller.owner;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.dto.owner.OwnerUpdateDTO;
+import com.acorn.api.dto.owner.request.OwnerUpdateReqDTO;
 import com.acorn.api.service.owner.OwnerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class OwnerUpdateController {
     private final OwnerService ownerService;
 
     @PatchMapping("/api/owner/update/{ownerId}")
-    public ResponseEntity<ApiSuccessResponse<Object>> updateOwner(@Valid @RequestBody OwnerUpdateDTO ownerUpdateData) {
+    public ResponseEntity<ApiSuccessResponse<Object>> updateOwner(@Valid @RequestBody OwnerUpdateReqDTO ownerUpdateData) {
 
         log.info(" *****************************    Owner Update START    *****************************");
 

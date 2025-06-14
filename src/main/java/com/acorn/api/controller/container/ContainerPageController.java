@@ -2,7 +2,7 @@ package com.acorn.api.controller.container;
 
 import com.acorn.api.dto.container.ContainerDetailDTO;
 import com.acorn.api.dto.container.ContainerListDTO;
-import com.acorn.api.dto.owner.OwnerResponseDTO;
+import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.service.container.ContainerService;
 import com.acorn.api.service.owner.OwnerService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class ContainerPageController {
 
     @GetMapping("/container/register")
     public String registerPage(Model model) {
-        OwnerResponseDTO ownerData = ownerService.getOwnerData();
+        OwnerResDTO ownerData = ownerService.getOwnerData();
         model.addAttribute("ownerId", ownerData.getOwnerId());
         model.addAttribute("ownerName", ownerData.getOwnerNm());
         return "container/container-register";

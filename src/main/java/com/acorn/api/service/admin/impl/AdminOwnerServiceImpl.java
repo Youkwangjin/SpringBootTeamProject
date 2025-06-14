@@ -8,7 +8,7 @@ import com.acorn.api.code.owner.ApiOwnerErrorCode;
 import com.acorn.api.dto.admin.AdminOwnerDeleteRequestDTO;
 import com.acorn.api.dto.admin.AdminOwnerListDTO;
 import com.acorn.api.dto.admin.AdminOwnerUpdateRequestDTO;
-import com.acorn.api.dto.owner.OwnerResponseDTO;
+import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.owner.Owner;
@@ -62,7 +62,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
     }
 
     @Override
-    public OwnerResponseDTO getOwnerData(Integer ownerId) {
+    public OwnerResDTO getOwnerData(Integer ownerId) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
@@ -87,7 +87,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
         final LocalDateTime ownerCreated = ownerData.getOwnerCreated();
         final LocalDateTime ownerUpdated = ownerData.getOwnerUpdated();
 
-        return OwnerResponseDTO.builder()
+        return OwnerResDTO.builder()
                 .ownerId(ownerId)
                 .ownerEmail(ownerEmail)
                 .ownerBusinessNum(ownerBusinessNum)

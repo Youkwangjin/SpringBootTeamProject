@@ -1,4 +1,4 @@
-package com.acorn.api.dto.owner;
+package com.acorn.api.dto.owner.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class OwnerResponseDTO {
+public class OwnerResDTO {
 
     private Integer ownerId;
 

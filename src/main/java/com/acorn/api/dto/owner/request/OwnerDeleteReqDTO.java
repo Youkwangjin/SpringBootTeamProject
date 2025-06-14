@@ -1,16 +1,20 @@
-package com.acorn.api.dto.owner;
+package com.acorn.api.dto.owner.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class OwnerDeleteDTO {
+public class OwnerDeleteReqDTO {
 
+    @NotNull
+    @Positive
     private Integer ownerId;
 
     @NotBlank

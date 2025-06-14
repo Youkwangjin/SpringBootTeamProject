@@ -7,7 +7,7 @@ import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
 import com.acorn.api.dto.admin.ContainerManagementRequestDTO;
 import com.acorn.api.dto.container.ContainerDetailDTO;
 import com.acorn.api.dto.container.ContainerListDTO;
-import com.acorn.api.dto.owner.OwnerResponseDTO;
+import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.owner.Owner;
@@ -100,7 +100,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
                 .containerContents(containerContents)
                 .build();
 
-        final OwnerResponseDTO ownerDTO = OwnerResponseDTO.builder()
+        final OwnerResDTO ownerDTO = OwnerResDTO.builder()
                 .ownerId(ownerId)
                 .ownerBusinessNum(businessNum)
                 .ownerNm(ownerNm)

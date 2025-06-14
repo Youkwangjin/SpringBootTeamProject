@@ -5,10 +5,10 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.owner.ApiOwnerErrorCode;
-import com.acorn.api.dto.owner.OwnerDeleteDTO;
-import com.acorn.api.dto.owner.OwnerRegisterDTO;
-import com.acorn.api.dto.owner.OwnerResponseDTO;
-import com.acorn.api.dto.owner.OwnerUpdateDTO;
+import com.acorn.api.dto.owner.request.OwnerDeleteReqDTO;
+import com.acorn.api.dto.owner.request.OwnerRegisterReqDTO;
+import com.acorn.api.dto.owner.response.OwnerResDTO;
+import com.acorn.api.dto.owner.request.OwnerUpdateReqDTO;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.entity.owner.Owner;
@@ -30,9 +30,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OwnerServiceImpl implements OwnerService {
 
-    private final BCryptPasswordEncoder passwordEncoder;
     private final OwnerRepository ownerRepository;
     private final ContainerRepository containerRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void isOwnerEmailDuplicate(String ownerEmail) {
@@ -68,7 +68,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     @Transactional
-    public void ownerRegister(OwnerRegisterDTO ownerRegisterData) {
+    public void ownerRegister(OwnerRegisterReqDTO ownerRegisterData) {
         final Integer ownerId = ownerRepository.selectOwnerIdKey();
         final String ownerEmail = ownerRegisterData.getOwnerEmail();
         final String ownerPassword = passwordEncoder.encode(ownerRegisterData.getOwnerPassword());
@@ -94,7 +94,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public OwnerResponseDTO getOwnerData() {
+    public OwnerResDTO getOwnerData() {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         if (currentOwnerId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
@@ -112,7 +112,7 @@ public class OwnerServiceImpl implements OwnerService {
         final String ownerAddr = ownerData.getOwnerAddr();
         final String ownerTel = ownerData.getOwnerTel();
 
-        return OwnerResponseDTO.builder()
+        return OwnerResDTO.builder()
                 .ownerId(ownerId)
                 .ownerEmail(ownerEmail)
                 .ownerBusinessNum(ownerBusinessNum)
@@ -125,7 +125,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     @Transactional
-    public void ownerDataUpdate(OwnerUpdateDTO ownerUpdateData) {
+    public void ownerDataUpdate(OwnerUpdateReqDTO ownerUpdateData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer ownerId = ownerUpdateData.getOwnerId();
         final String ownerPassword = ownerUpdateData.getOwnerPassword();
@@ -177,7 +177,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     @Transactional
-    public void ownerDataDelete(OwnerDeleteDTO ownerDeleteData) {
+    public void ownerDataDelete(OwnerDeleteReqDTO ownerDeleteData) {
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
         final Integer ownerId = ownerDeleteData.getOwnerId();
         final String ownerPassword = ownerDeleteData.getOwnerPassword();

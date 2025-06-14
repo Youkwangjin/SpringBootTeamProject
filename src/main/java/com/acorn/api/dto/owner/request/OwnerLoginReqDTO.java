@@ -1,13 +1,13 @@
-package com.acorn.api.dto.owner;
+package com.acorn.api.dto.owner.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class OwnerLoginDTO {
+public class OwnerLoginReqDTO {
 
     private String ownerBusinessNum;
 
