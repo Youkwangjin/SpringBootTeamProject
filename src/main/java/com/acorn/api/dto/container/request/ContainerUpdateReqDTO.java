@@ -1,15 +1,17 @@
 package com.acorn.api.dto.container.request;
 
 import jakarta.validation.constraints.*;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
-@Builder
+@Setter
+@NoArgsConstructor
 public class ContainerUpdateReqDTO {
 
     @NotNull
