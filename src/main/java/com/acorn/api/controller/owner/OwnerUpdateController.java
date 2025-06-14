@@ -7,23 +7,21 @@ import com.acorn.api.dto.owner.request.OwnerUpdateReqDTO;
 import com.acorn.api.service.owner.OwnerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class OwnerUpdateController {
 
-    private static final Logger log = LoggerFactory.getLogger(OwnerUpdateController.class);
     private final OwnerService ownerService;
 
     @PatchMapping("/api/owner/update/{ownerId}")
     public ResponseEntity<ApiSuccessResponse<Object>> updateOwner(@Valid @RequestBody OwnerUpdateReqDTO ownerUpdateData) {
-
         log.info(" *****************************    Owner Update START    *****************************");
 
         ownerService.ownerDataUpdate(ownerUpdateData);

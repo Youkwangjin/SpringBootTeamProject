@@ -5,18 +5,17 @@ import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
 import com.acorn.api.service.owner.OwnerService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class OwnerValidationController {
 
-    private static final Logger log = LoggerFactory.getLogger(OwnerValidationController.class);
     private final OwnerService ownerService;
 
     @GetMapping("/api/auth/owner/emailCheck")
