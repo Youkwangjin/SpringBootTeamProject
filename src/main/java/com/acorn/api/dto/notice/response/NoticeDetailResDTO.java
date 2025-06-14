@@ -1,4 +1,4 @@
-package com.acorn.api.dto.notice;
+package com.acorn.api.dto.notice.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class NoticeDetailDTO {
+public class NoticeDetailResDTO {
 
     private Integer noticeId;
 
@@ -26,5 +26,5 @@ public class NoticeDetailDTO {
 
     private LocalDateTime noticeCreated;
 
-    private List<NoticeFileDTO> noticeFiles;
+    private List<NoticeFileResDTO> noticeFiles;
 }

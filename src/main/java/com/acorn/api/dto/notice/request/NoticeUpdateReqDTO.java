@@ -1,18 +1,20 @@
-package com.acorn.api.dto.notice;
+package com.acorn.api.dto.notice.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Getter
-@Builder
-public class NoticeUpdateDTO {
+@Setter
+@NoArgsConstructor
+public class NoticeUpdateReqDTO {
 
     @NotNull
     @Positive

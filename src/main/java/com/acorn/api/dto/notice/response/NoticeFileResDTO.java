@@ -1,11 +1,11 @@
-package com.acorn.api.dto.notice;
+package com.acorn.api.dto.notice.response;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class NoticeFileDTO {
+public class NoticeFileResDTO {
 
     private Integer noticeFileId;
 
