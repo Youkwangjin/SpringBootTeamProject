@@ -3,7 +3,13 @@ package com.acorn.api.service.notice.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.component.FileComponent;
-import com.acorn.api.dto.notice.*;
+import com.acorn.api.dto.common.CommonListReqDTO;
+import com.acorn.api.dto.notice.request.NoticeDeleteReqDTO;
+import com.acorn.api.dto.notice.request.NoticeSaveReqDTO;
+import com.acorn.api.dto.notice.request.NoticeUpdateReqDTO;
+import com.acorn.api.dto.notice.response.NoticeDetailResDTO;
+import com.acorn.api.dto.notice.response.NoticeFileResDTO;
+import com.acorn.api.dto.notice.response.NoticeListResDTO;
 import com.acorn.api.entity.notice.Notice;
 import com.acorn.api.entity.notice.NoticeFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -37,7 +43,7 @@ public class NoticeServiceImpl implements NoticeService {
     private String uploadDir;
 
     @Override
-    public List<NoticeListDTO> getNoticeListData(NoticeListDTO listData) {
+    public List<NoticeListResDTO> getNoticeListData(CommonListReqDTO listData) {
         listData.setTotalCount(noticeRepository.selectListCountByRequest(listData));
         List<Notice> noticeListData = noticeRepository.selectNoticeListData(listData);
 
@@ -50,7 +56,7 @@ public class NoticeServiceImpl implements NoticeService {
                     final Integer noticeHits = noticeList.getNoticeHits();
                     final LocalDateTime noticeCreated = noticeList.getNoticeCreated();
 
-                    return NoticeListDTO.builder()
+                    return NoticeListResDTO.builder()
                             .rowNum(rowNum)
                             .noticeId(noticeId)
                             .noticeTitle(noticeTitle)
@@ -63,7 +69,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public NoticeDetailDTO getNoticeDetailData(Integer noticeId) {
+    public NoticeDetailResDTO getNoticeDetailData(Integer noticeId) {
         Notice detailData = noticeRepository.selectNoticeDetailData(noticeId);
         if (detailData == null) {
             throw new AcontainerException(ApiErrorCode.NOTICE_NOT_FOUND);
@@ -79,7 +85,7 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.updateNoticeHits(noticeId);
 
         List<NoticeFile> noticeFileEntities = detailData.getNoticeFilesList();
-        final List<NoticeFileDTO> noticeFileData = noticeFileEntities.stream()
+        final List<NoticeFileResDTO> noticeFileData = noticeFileEntities.stream()
                 .map(noticeFile -> {
                     final Integer noticeFileId = noticeFile.getNoticeFileId();
                     final String noticeOriginalFileName = noticeFile.getNoticeOriginalFileName();
@@ -88,7 +94,7 @@ public class NoticeServiceImpl implements NoticeService {
                     final String noticeFileExtNm = noticeFile.getNoticeFileExtNm();
                     final String noticeFileSize = noticeFile.getNoticeFileSize();
 
-                    return NoticeFileDTO.builder()
+                    return NoticeFileResDTO.builder()
                             .noticeFileId(noticeFileId)
                             .noticeOriginalFileName(noticeOriginalFileName)
                             .noticeStoredFileName(noticeStoredFileName)
@@ -99,7 +105,7 @@ public class NoticeServiceImpl implements NoticeService {
                 })
                 .collect(Collectors.toList());
 
-        return NoticeDetailDTO.builder()
+        return NoticeDetailResDTO.builder()
                 .noticeId(noticeId)
                 .noticeTitle(noticeTitle)
                 .noticeWriter(noticeWriter)
@@ -113,7 +119,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional
-    public void noticeDataSave(NoticeSaveDTO saveData) {
+    public void noticeDataSave(NoticeSaveReqDTO saveData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer noticeId = noticeRepository.selectNoticeIdKey();
         final String noticeTitle = saveData.getNoticeTitle();
@@ -162,7 +168,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional
-    public void noticeDataUpdate(NoticeUpdateDTO updateData) {
+    public void noticeDataUpdate(NoticeUpdateReqDTO updateData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer noticeId = updateData.getNoticeId();
         final String noticeTitle = updateData.getNoticeTitle();
@@ -240,7 +246,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional
-    public void noticeDataDelete(NoticeDeleteDTO deleteData) {
+    public void noticeDataDelete(NoticeDeleteReqDTO deleteData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer noticeId = deleteData.getNoticeId();
 

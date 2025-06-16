@@ -1,17 +1,21 @@
-package com.acorn.api.dto.admin;
+package com.acorn.api.dto.admin.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class AdminUserDeleteRequestDTO {
+public class ContainerManagementReqDTO {
 
     @NotNull
     @Positive
-    private Integer userId;
+    private Integer containerId;
+
+    @NotNull
+    @Positive
+    private Integer ownerId;
 }

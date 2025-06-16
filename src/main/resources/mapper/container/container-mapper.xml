@@ -191,7 +191,7 @@
             F.CONTAINER_FILE_EXTNS_NM,
             F.CONTAINER_FILE_SIZE,
             O.OWNER_ID,
-            O.BUSINESS_NUMBER,
+            O.OWNER_BUSINESS_NUMBER,
             O.OWNER_NM,
             O.OWNER_TEL,
             O.OWNER_COMPANY_NAME

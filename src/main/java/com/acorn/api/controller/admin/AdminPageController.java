@@ -1,7 +1,7 @@
 package com.acorn.api.controller.admin;
 
-import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
-import com.acorn.api.dto.admin.AdminResponseDTO;
+import com.acorn.api.dto.admin.response.AdminContainerDetailResDTO;
+import com.acorn.api.dto.admin.response.AdminResDTO;
 import com.acorn.api.dto.container.request.ContainerListReqDTO;
 import com.acorn.api.dto.container.response.ContainerListResDTO;
 import com.acorn.api.service.admin.AdminContainerService;
@@ -28,7 +28,7 @@ public class AdminPageController {
 
     @GetMapping("/admin/mypage")
     public String adminPage(Model model) {
-        AdminResponseDTO adminData = adminService.getAdminData();
+        AdminResDTO adminData = adminService.getAdminData();
         model.addAttribute("adminNm", adminData.getAdminNm());
         return "/admin/admin-mypage";
     }
@@ -43,7 +43,7 @@ public class AdminPageController {
 
     @GetMapping("/admin/container/detail/{containerId}")
     public String containerDetailPage(@PathVariable("containerId") Integer containerId, Model model) {
-        AdminContainerDetailResponseDTO containerDetailData = adminContainerService.getContainerData(containerId);
+        AdminContainerDetailResDTO containerDetailData = adminContainerService.getContainerData(containerId);
         model.addAttribute("containerDetail", containerDetailData);
         return "admin/admin-container-detail";
     }

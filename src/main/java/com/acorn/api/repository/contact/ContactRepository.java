@@ -14,7 +14,11 @@ public interface ContactRepository {
 
     Integer selectListCountByRequest(PaginationRequest paginationRequest);
 
+    Integer selectAdminListCountByRequest(PaginationRequest paginationRequest);
+
     List<Contact> selectContactListData(PaginationRequest paginationRequest);
+
+    List<Contact> selectAdminContactListData(PaginationRequest paginationRequest);
 
     Contact selectContactDetailData(@Param("contactId") Integer contactId);
 

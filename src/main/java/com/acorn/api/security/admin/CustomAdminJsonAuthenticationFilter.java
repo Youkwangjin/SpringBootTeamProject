@@ -1,6 +1,6 @@
 package com.acorn.api.security.admin;
 
-import com.acorn.api.dto.admin.AdminLoginDTO;
+import com.acorn.api.dto.admin.request.AdminLoginReqDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +46,7 @@ public class CustomAdminJsonAuthenticationFilter extends AbstractAuthenticationP
             throw new AuthenticationServiceException("Unsupported content type: " + request.getContentType());
         }
 
-        AdminLoginDTO adminLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), AdminLoginDTO.class);
+        AdminLoginReqDTO adminLoginData = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), AdminLoginReqDTO.class);
 
         String username = adminLoginData.getAdminEmail();
         String password = adminLoginData.getAdminPassword();

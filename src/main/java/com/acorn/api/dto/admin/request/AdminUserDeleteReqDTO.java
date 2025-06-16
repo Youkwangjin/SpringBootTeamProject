@@ -1,19 +1,17 @@
-package com.acorn.api.dto.notice;
+package com.acorn.api.dto.admin.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class NoticeDeleteDTO {
+public class AdminUserDeleteReqDTO {
 
     @NotNull
     @Positive
-    private Integer noticeId;
+    private Integer userId;
 }

@@ -1,11 +1,11 @@
-package com.acorn.api.dto.admin;
+package com.acorn.api.dto.admin.response;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class AdminResponseDTO {
+public class AdminResDTO {
 
     private Integer adminId;
 

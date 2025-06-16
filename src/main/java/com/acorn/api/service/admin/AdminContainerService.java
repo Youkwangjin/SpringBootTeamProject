@@ -1,7 +1,7 @@
 package com.acorn.api.service.admin;
 
-import com.acorn.api.dto.admin.AdminContainerDetailResponseDTO;
-import com.acorn.api.dto.admin.ContainerManagementRequestDTO;
+import com.acorn.api.dto.admin.response.AdminContainerDetailResDTO;
+import com.acorn.api.dto.admin.request.ContainerManagementReqDTO;
 import com.acorn.api.dto.container.request.ContainerListReqDTO;
 import com.acorn.api.dto.container.response.ContainerListResDTO;
 import org.springframework.stereotype.Service;
@@ -13,17 +13,17 @@ public interface AdminContainerService {
 
     List<ContainerListResDTO> getContainerList(ContainerListReqDTO listData);
 
-    AdminContainerDetailResponseDTO getContainerData(Integer containerId);
+    AdminContainerDetailResDTO getContainerData(Integer containerId);
 
-    void processReviewRequest(ContainerManagementRequestDTO requestData);
+    void processReviewRequest(ContainerManagementReqDTO requestData);
 
-    void processApprovalRequest(ContainerManagementRequestDTO requestData);
+    void processApprovalRequest(ContainerManagementReqDTO requestData);
 
-    void processRejectRequest(ContainerManagementRequestDTO requestData);
+    void processRejectRequest(ContainerManagementReqDTO requestData);
 
-    void processCancelReview(ContainerManagementRequestDTO requestData);
+    void processCancelReview(ContainerManagementReqDTO requestData);
 
-    void processCancelApproval(ContainerManagementRequestDTO requestData);
+    void processCancelApproval(ContainerManagementReqDTO requestData);
 
-    void processCancelReject(ContainerManagementRequestDTO requestData);
+    void processCancelReject(ContainerManagementReqDTO requestData);
 }

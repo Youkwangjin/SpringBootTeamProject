@@ -3,9 +3,10 @@ package com.acorn.api.service.admin.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.reservation.ReservationStatus;
-import com.acorn.api.dto.admin.AdminUserDeleteRequestDTO;
-import com.acorn.api.dto.admin.AdminUserListDTO;
-import com.acorn.api.dto.admin.AdminUserUpdateRequestDTO;
+import com.acorn.api.dto.admin.request.AdminUserDeleteReqDTO;
+import com.acorn.api.dto.admin.request.AdminUserUpdateReqDTO;
+import com.acorn.api.dto.admin.response.AdminUserListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.dto.user.response.UserResDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.reservation.Reservation;
@@ -34,7 +35,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final ReservationRepository reservationRepository;
 
     @Override
-    public List<AdminUserListDTO> getUserList(AdminUserListDTO listData) {
+    public List<AdminUserListResDTO> getUserList(CommonListReqDTO listData) {
         listData.setTotalCount(userRepository.selectAdminUserListCountByRequest(listData));
         List<User> userListData = userRepository.selectAdminUserListData(listData);
         return userListData.stream()
@@ -46,7 +47,7 @@ public class AdminUserServiceImpl implements AdminUserService {
                     final String userTel = userList.getUserTel();
                     final LocalDateTime userCreated = userList.getUserCreated();
 
-                    return AdminUserListDTO.builder()
+                    return AdminUserListResDTO.builder()
                             .rowNum(rowNum)
                             .userId(userId)
                             .userEmail(userEmail)
@@ -95,7 +96,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     @Transactional
-    public void adminUpdateUser(AdminUserUpdateRequestDTO requestData) {
+    public void adminUpdateUser(AdminUserUpdateReqDTO requestData) {
         final Integer userId = requestData.getUserId();
         final String userEmail = requestData.getUserEmail();
         final String userNm = requestData.getUserNm();
@@ -139,7 +140,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     @Transactional
-    public void adminDeleteUser(AdminUserDeleteRequestDTO requestData) {
+    public void adminDeleteUser(AdminUserDeleteReqDTO requestData) {
         final Integer userId = requestData.getUserId();
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {

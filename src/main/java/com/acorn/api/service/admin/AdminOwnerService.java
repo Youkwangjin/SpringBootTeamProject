@@ -1,8 +1,9 @@
 package com.acorn.api.service.admin;
 
-import com.acorn.api.dto.admin.AdminOwnerDeleteRequestDTO;
-import com.acorn.api.dto.admin.AdminOwnerListDTO;
-import com.acorn.api.dto.admin.AdminOwnerUpdateRequestDTO;
+import com.acorn.api.dto.admin.request.AdminOwnerDeleteReqDTO;
+import com.acorn.api.dto.admin.request.AdminOwnerUpdateReqDTO;
+import com.acorn.api.dto.admin.response.AdminOwnerListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.dto.owner.response.OwnerResDTO;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,11 @@ import java.util.List;
 @Service
 public interface AdminOwnerService {
 
-    List<AdminOwnerListDTO> getOwnerList(AdminOwnerListDTO listData);
+    List<AdminOwnerListResDTO> getOwnerList(CommonListReqDTO listData);
 
     OwnerResDTO getOwnerData(Integer ownerId);
 
-    void adminOwnerUpdate(@Valid AdminOwnerUpdateRequestDTO requestData);
+    void adminOwnerUpdate(@Valid AdminOwnerUpdateReqDTO requestData);
 
-    void adminOwnerDelete(@Valid AdminOwnerDeleteRequestDTO requestData);
+    void adminOwnerDelete(@Valid AdminOwnerDeleteReqDTO requestData);
 }
