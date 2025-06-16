@@ -1,7 +1,8 @@
 package com.acorn.api.controller.admin;
 
-import com.acorn.api.dto.admin.AdminUserListDTO;
-import com.acorn.api.dto.user.UserResponseDTO;
+import com.acorn.api.dto.admin.response.AdminUserListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
+import com.acorn.api.dto.user.response.UserResDTO;
 import com.acorn.api.service.admin.AdminUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,8 @@ public class AdminUserPageController {
     private final AdminUserService adminUserService;
 
     @GetMapping("/admin/user/list")
-    public String userListPage(AdminUserListDTO listData, Model model) {
-        List<AdminUserListDTO> userListData = adminUserService.getUserList(listData);
+    public String userListPage(CommonListReqDTO listData, Model model) {
+        List<AdminUserListResDTO> userListData = adminUserService.getUserList(listData);
         model.addAttribute("userListData", userListData);
         model.addAttribute("request", listData);
         return "admin/admin-user-list";
@@ -27,14 +28,14 @@ public class AdminUserPageController {
 
     @GetMapping("/admin/user/detail/{userId}")
     public String userDetailPage(@PathVariable("userId") Integer userId, Model model) {
-        UserResponseDTO userDetailData = adminUserService.getUserData(userId);
+        UserResDTO userDetailData = adminUserService.getUserData(userId);
         model.addAttribute("userDetailData", userDetailData);
         return "admin/admin-user-detail";
     }
 
     @GetMapping("/admin/user/update/{userId}")
     public String userUpdatePage(@PathVariable("userId") Integer userId, Model model) {
-        UserResponseDTO userDetailData = adminUserService.getUserData(userId);
+        UserResDTO userDetailData = adminUserService.getUserData(userId);
         model.addAttribute("userDetailData", userDetailData);
         return "admin/admin-user-update";
     }

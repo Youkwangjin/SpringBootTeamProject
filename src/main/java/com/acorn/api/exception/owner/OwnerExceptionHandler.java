@@ -30,6 +30,7 @@ public class OwnerExceptionHandler {
             errorOwnerMsg.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
 
             ownerErrorCode = switch (fieldError.getField()) {
+                case "ownerId" -> ApiValidationErrorCode.ID_VAULE_ERROR;
                 case "ownerEmail" -> ApiValidationErrorCode.EMAIL_FORMAT_ERROR;
                 case "ownerBusinessNum" -> ApiValidationErrorCode.BUSINESS_NUMBER_ERROR;
                 case "ownerPassword" -> ApiValidationErrorCode.PASSWORD_STRENGTH_ERROR;

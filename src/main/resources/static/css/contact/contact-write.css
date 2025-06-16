@@ -1,0 +1,102 @@
+.contact-write-form {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.contact-write-form .form-group {
+    margin-bottom: 15px;
+}
+
+.contact-write-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.contact-write-form .form-group input[type="text"],
+.contact-write-form .form-group textarea,
+.contact-write-form .form-group input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+.contact-write-form .form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.contact-write-form .form-row .form-group.half {
+    width: 48%;
+}
+
+.contact-write-form .form-group textarea {
+    height: 150px;
+    resize: none;
+}
+
+.contact-write-form button {
+    padding: 10px 20px;
+    background-color: #4d5154;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-right: 10px;
+}
+
+.contact-write-form button:hover {
+    background-color: #4a5464;
+}
+
+.contact-write-form input[type="button"],
+.contact-write-form input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-right: 10px;
+}
+
+.contact-write-form input[type="button"]:hover {
+    background-color: #0b5ed7;
+}
+
+.contact-write-form .button-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.contact-write-form input[type="button"][value="목록"] {
+    background-color: #6c757d;
+}
+
+.contact-write-form input[type="button"][value="목록"]:hover {
+    background-color: #5a6268;
+}
+
+#fileListArea {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.file-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.file-entry span {
+    flex-grow: 1;
+    margin-right: 10px;
+}

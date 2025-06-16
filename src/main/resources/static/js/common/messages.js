@@ -47,6 +47,11 @@ const MSG = {
     NOTICE_UPDATE_SUCCESS:                   "공지사항이 성공적으로 수정되었습니다.",
     NOTICE_DELETE_SUCCESS:                   "공지사항이 성공적으로 삭제되었습니다.",
 
+    CONTACT_SAVE_SUCCESS:                    "1:1 문의가 성공적으로 등록되었습니다.",
+    CONTACT_UPDATE_SUCCESS:                  "1:1 문의가 성공적으로 수정되었습니다.",
+    CONTACT_DELETE_SUCCESS:                  "1:1 문의가 성공적으로 삭제되었습니다.",
+    CONTACT_CANCEL_SUCCESS:                  "1:1 문의가 성공적으로 취소되었습니다.",
+
     CONTAINER_REGISTER_SUCCESS:             "창고정보가 성공적으로 등록되었습니다.",
     CONTAINER_UPDATE_SUCCESS:               "창고정보가 성공적으로 수정되었습니다.",
     CONTAINER_DELETE_SUCCESS:               "창고정보가 성공적으로 삭제되었습니다.",

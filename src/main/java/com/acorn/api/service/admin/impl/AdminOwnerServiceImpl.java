@@ -5,10 +5,11 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.owner.ApiOwnerErrorCode;
-import com.acorn.api.dto.admin.AdminOwnerDeleteRequestDTO;
-import com.acorn.api.dto.admin.AdminOwnerListDTO;
-import com.acorn.api.dto.admin.AdminOwnerUpdateRequestDTO;
-import com.acorn.api.dto.owner.OwnerResponseDTO;
+import com.acorn.api.dto.admin.request.AdminOwnerDeleteReqDTO;
+import com.acorn.api.dto.admin.request.AdminOwnerUpdateReqDTO;
+import com.acorn.api.dto.admin.response.AdminOwnerListResDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
+import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.owner.Owner;
@@ -36,7 +37,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
     private final ContainerRepository containerRepository;
 
     @Override
-    public List<AdminOwnerListDTO> getOwnerList(AdminOwnerListDTO listData) {
+    public List<AdminOwnerListResDTO> getOwnerList(CommonListReqDTO listData) {
         listData.setTotalCount(ownerRepository.selectAdminOwnerListCountByRequest(listData));
         List<Owner> ownerListData = ownerRepository.selectAdminOwnerListData(listData);
         return ownerListData.stream()
@@ -48,7 +49,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
                     final String ownerCompanyName = ownerList.getOwnerCompanyName();
                     final LocalDateTime ownerCreated = ownerList.getOwnerCreated();
 
-                    return AdminOwnerListDTO.builder()
+                    return AdminOwnerListResDTO.builder()
                             .rowNum(rowNum)
                             .ownerId(ownerId)
                             .ownerBusinessNum(ownerBusinessNum)
@@ -62,7 +63,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
     }
 
     @Override
-    public OwnerResponseDTO getOwnerData(Integer ownerId) {
+    public OwnerResDTO getOwnerData(Integer ownerId) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
@@ -87,7 +88,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
         final LocalDateTime ownerCreated = ownerData.getOwnerCreated();
         final LocalDateTime ownerUpdated = ownerData.getOwnerUpdated();
 
-        return OwnerResponseDTO.builder()
+        return OwnerResDTO.builder()
                 .ownerId(ownerId)
                 .ownerEmail(ownerEmail)
                 .ownerBusinessNum(ownerBusinessNum)
@@ -102,7 +103,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
 
     @Override
     @Transactional
-    public void adminOwnerUpdate(AdminOwnerUpdateRequestDTO requestData) {
+    public void adminOwnerUpdate(AdminOwnerUpdateReqDTO requestData) {
         final Integer ownerId = requestData.getOwnerId();
         final String ownerEmail = requestData.getOwnerEmail();
         final String ownerBusinessNum = requestData.getOwnerBusinessNum();
@@ -153,7 +154,7 @@ public class AdminOwnerServiceImpl implements AdminOwnerService {
 
     @Override
     @Transactional
-    public void adminOwnerDelete(AdminOwnerDeleteRequestDTO requestData) {
+    public void adminOwnerDelete(AdminOwnerDeleteReqDTO requestData) {
         final Integer ownerId = requestData.getOwnerId();
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {

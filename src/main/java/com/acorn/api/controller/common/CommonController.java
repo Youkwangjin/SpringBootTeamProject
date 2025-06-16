@@ -3,7 +3,7 @@ package com.acorn.api.controller.common;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
-import com.acorn.api.dto.container.ContainerMapListDTO;
+import com.acorn.api.dto.container.response.ContainerMapListResDTO;
 import com.acorn.api.service.common.CommonService;
 import com.acorn.api.service.container.ContainerService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class CommonController {
     public ResponseEntity<ApiSuccessResponse<Object>> getContainersWithCoordinates() {
         log.info(" *****************************    Container Select START    *****************************");
 
-        List<ContainerMapListDTO> containers = containerService.getContainersForMap();
+        List<ContainerMapListResDTO> containers = containerService.getContainersForMap();
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_SELECT_SUCCESS, containers);
     }

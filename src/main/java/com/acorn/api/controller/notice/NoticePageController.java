@@ -1,7 +1,8 @@
 package com.acorn.api.controller.notice;
 
-import com.acorn.api.dto.notice.NoticeDetailDTO;
-import com.acorn.api.dto.notice.NoticeListDTO;
+import com.acorn.api.dto.common.CommonListReqDTO;
+import com.acorn.api.dto.notice.response.NoticeDetailResDTO;
+import com.acorn.api.dto.notice.response.NoticeListResDTO;
 import com.acorn.api.service.notice.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,8 @@ public class NoticePageController {
     private final NoticeService noticeService;
 
     @GetMapping("/notice/list")
-    public String noticeListPage(NoticeListDTO listData, Model model) {
-        List<NoticeListDTO> noticeListData = noticeService.getNoticeListData(listData);
+    public String noticeListPage(CommonListReqDTO listData, Model model) {
+        List<NoticeListResDTO> noticeListData = noticeService.getNoticeListData(listData);
         model.addAttribute("noticeListData", noticeListData);
         model.addAttribute("request", listData);
         return "notice/notice-list";
@@ -32,14 +33,14 @@ public class NoticePageController {
 
     @GetMapping("/notice/detail/{noticeId}")
     public String noticeDetailPage(@PathVariable("noticeId") Integer noticeId, Model model) {
-        NoticeDetailDTO detailData = noticeService.getNoticeDetailData(noticeId);
+        NoticeDetailResDTO detailData = noticeService.getNoticeDetailData(noticeId);
         model.addAttribute("noticeDetailData", detailData);
         return "notice/notice-detail";
     }
 
     @GetMapping("/notice/update/{noticeId}")
     public String noticeUpdatePage(@PathVariable("noticeId") Integer noticeId, Model model) {
-        NoticeDetailDTO detailData = noticeService.getNoticeDetailData(noticeId);
+        NoticeDetailResDTO detailData = noticeService.getNoticeDetailData(noticeId);
         model.addAttribute("noticeDetailData", detailData);
         return "notice/notice-update";
     }

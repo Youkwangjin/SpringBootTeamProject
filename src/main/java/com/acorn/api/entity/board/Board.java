@@ -18,25 +18,25 @@ public class Board {
 
     private Integer boardId;
 
+    private Integer boardUserId;
+
+    private Integer boardOwnerId;
+
     private String boardTitle;
 
     private String boardWriter;
 
-    private String boardPassword;
-
     private String boardContents;
 
     private String boardContentsText;
+
+    private String boardPassword;
 
     private Integer boardHits;
 
     private LocalDateTime boardCreated;
 
     private LocalDateTime boardUpdated;
-
-    private Integer boardUserId;
-
-    private Integer boardOwnerId;
 
     private List<BoardFile> boardFilesList;
 }

@@ -132,7 +132,11 @@ public class SpringSecurityConfig {
 
                         // Protected Common Pages
                         .requestMatchers("/board/write",
-                                         "/board/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                                         "/board/update/**",
+                                         "/contact/list/**",
+                                         "/contact/write",
+                                         "/contact/detail/**",
+                                         "/contact/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         // Protected User Common Pages
                         .requestMatchers("/user/mypage",
@@ -163,7 +167,8 @@ public class SpringSecurityConfig {
                                          "/admin/owner/detail/**",
                                          "/admin/owner/update/**",
                                          "/admin/notice/write",
-                                         "/notice/update/**").hasAuthority("ROLE_ADMIN")
+                                         "/notice/update/**",
+                                         "/admin/contact/list/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/**",
@@ -172,7 +177,8 @@ public class SpringSecurityConfig {
                                          "/api/user/reservations/cancel/**",
                                          "/api/user/payments/ready/**",
                                          "/api/user/payments/approve/**",
-                                         "/api/user/payments/cancel/**").hasAuthority("ROLE_USER")
+                                         "/api/user/payments/cancel/**",
+                                         "/api/user/contact/save").hasAuthority("ROLE_USER")
 
                         // Protected Owner API
                         .requestMatchers("/api/owner/update/**",
@@ -202,7 +208,11 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/editor/image/upload",
                                          "/api/board/save",
                                          "/api/board/update/**",
-                                         "/api/board/delete/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER", "ROLE_ADMIN")
+                                         "/api/board/delete/**",
+                                         "/api/contact/save",
+                                         "/api/contact/update/**",
+                                         "/api/contact/delete/**",
+                                         "/api/contact/cancel/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );

@@ -1,7 +1,8 @@
 package com.acorn.api.controller.payment;
 
-import com.acorn.api.dto.payment.PaymentDetailDTO;
-import com.acorn.api.dto.payment.PaymentListDTO;
+import com.acorn.api.dto.payment.response.PaymentDetailResDTO;
+import com.acorn.api.dto.payment.request.PaymentListReqDTO;
+import com.acorn.api.dto.payment.response.PaymentListResDTO;
 import com.acorn.api.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,8 @@ public class PaymentPageController {
     private final PaymentService paymentService;
 
     @GetMapping("/user/payment/list")
-    public String paymentListPage(PaymentListDTO listData, Model model) {
-        List<PaymentListDTO> paymentListData = paymentService.getPaymentListData(listData);
+    public String paymentListPage(PaymentListReqDTO listData, Model model) {
+        List<PaymentListResDTO> paymentListData = paymentService.getPaymentListData(listData);
         model.addAttribute("paymentListData", paymentListData);
         model.addAttribute("request", listData);
         return "payment/payment-list";
@@ -27,7 +28,7 @@ public class PaymentPageController {
 
     @GetMapping("/user/payment/detail/{paymentId}")
     public String paymentDetailPage(@PathVariable("paymentId") Integer paymentId, Model model) {
-        PaymentDetailDTO paymentDetailData = paymentService.getPaymentData(paymentId);
+        PaymentDetailResDTO paymentDetailData = paymentService.getPaymentData(paymentId);
         model.addAttribute("paymentDetailData", paymentDetailData);
         return "payment/payment-detail";
     }

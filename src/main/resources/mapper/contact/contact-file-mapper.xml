@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.contact.ContactFileRepository">
+    <resultMap id="contactFileResultMap"              type="com.acorn.api.entity.contact.ContactFile">
+        <id property="contactFileId"                  column="CONTACT_FILE_ID"/>
+        <id property="contactId"                      column="CONTACT_FILE_CONTACT_ID"/>
+        <result property="contactOriginalFileName"    column="CONTACT_FILE_ORIGINAL_FILE_NAME"/>
+        <result property="contactStoredFileName"      column="CONTACT_FILE_STORED_FILE_NAME"/>
+        <result property="contactFilePath"            column="CONTACT_FILE_PATH"/>
+        <result property="contactFileExtNm"           column="CONTACT_FILE_EXTNS_NM"/>
+        <result property="contactFileSize"            column="CONTACT_FILE_SIZE"/>
+        <result property="contactFileCreated"         column="CONTACT_FILE_CREATED"/>
+        <result property="contactFileUpdated"         column="CONTACT_FILE_UPDATED"/>
+    </resultMap>
+
+    <select id="selectContactFileIdKey" resultType="Integer">
+        SELECT nextval(CONTACT_SEQ)
+    </select>
+
+    <select id="selectFilesByContactId" parameterType="Integer" resultMap="contactFileResultMap">
+        SELECT
+            CONTACT_FILE_ID,
+            CONTACT_FILE_CONTACT_ID,
+            CONTACT_FILE_ORIGINAL_FILE_NAME,
+            CONTACT_FILE_STORED_FILE_NAME,
+            CONTACT_FILE_PATH,
+            CONTACT_FILE_EXTNS_NM,
+            CONTACT_FILE_SIZE,
+            CONTACT_FILE_CREATED
+        FROM
+            TB_CONTACT_FILE
+        WHERE
+            CONTACT_FILE_CONTACT_ID = #{contactId}
+    </select>
+
+    <select id="selectFilesByContactFileId" parameterType="Integer" resultMap="contactFileResultMap">
+        SELECT
+            CONTACT_FILE_ID,
+            CONTACT_FILE_CONTACT_ID,
+            CONTACT_FILE_ORIGINAL_FILE_NAME,
+            CONTACT_FILE_STORED_FILE_NAME,
+            CONTACT_FILE_PATH,
+            CONTACT_FILE_EXTNS_NM,
+            CONTACT_FILE_SIZE,
+            CONTACT_FILE_CREATED
+        FROM
+            TB_CONTACT_FILE
+        WHERE
+            CONTACT_FILE_ID = #{contactFileId}
+    </select>
+
+    <insert id="saveContactFile" parameterType="com.acorn.api.entity.contact.ContactFile" useGeneratedKeys="true" keyProperty="contactFileId">
+        INSERT INTO TB_CONTACT_FILE (
+            CONTACT_FILE_ID,
+            CONTACT_FILE_CONTACT_ID,
+            CONTACT_FILE_ORIGINAL_FILE_NAME,
+            CONTACT_FILE_STORED_FILE_NAME,
+            CONTACT_FILE_PATH,
+            CONTACT_FILE_EXTNS_NM,
+            CONTACT_FILE_SIZE,
+            CONTACT_FILE_CREATED
+        ) VALUES (
+            #{contactFileId},
+            #{contactId},
+            #{contactOriginalFileName},
+            #{contactStoredFileName},
+            #{contactFilePath},
+            #{contactFileExtNm},
+            #{contactFileSize},
+            NOW()
+        )
+    </insert>
+
+    <delete id="deleteContactFile" parameterType="Integer">
+        DELETE
+        FROM
+            TB_CONTACT_FILE
+        WHERE
+            CONTACT_FILE_ID = #{contactFileId}
+    </delete>
+</mapper>

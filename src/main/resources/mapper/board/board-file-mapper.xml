@@ -5,7 +5,7 @@
 <mapper namespace="com.acorn.api.repository.board.BoardFileRepository">
     <resultMap id="boardFileResultMap"              type="com.acorn.api.entity.board.BoardFile">
         <id property="boardFileId"                  column="BOARD_FILE_ID"/>
-        <id property="boardId"                      column="BOARD_FILE_BOARD_ID"/>
+        <result property="boardId"                      column="BOARD_FILE_BOARD_ID"/>
         <result property="boardOriginalFileName"    column="BOARD_FILE_ORIGINAL_FILE_NAME"/>
         <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
         <result property="boardFilePath"            column="BOARD_FILE_PATH"/>

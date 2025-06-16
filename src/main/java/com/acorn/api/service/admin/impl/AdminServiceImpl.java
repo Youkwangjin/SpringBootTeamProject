@@ -2,8 +2,8 @@ package com.acorn.api.service.admin.impl;
 
 import com.acorn.api.code.admin.ApiAdminErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
-import com.acorn.api.dto.admin.AdminLoginDTO;
-import com.acorn.api.dto.admin.AdminResponseDTO;
+import com.acorn.api.dto.admin.request.AdminLoginReqDTO;
+import com.acorn.api.dto.admin.response.AdminResDTO;
 import com.acorn.api.entity.admin.Admin;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.admin.AdminRepository;
@@ -22,7 +22,7 @@ public class AdminServiceImpl implements AdminService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public AdminResponseDTO getAdminData() {
+    public AdminResDTO getAdminData() {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -38,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
         final String adminPassword = adminData.getAdminPassword();
         final String adminNm = adminData.getAdminNm();
 
-        return AdminResponseDTO.builder()
+        return AdminResDTO.builder()
                 .adminId(adminId)
                 .adminEmail(adminEmail)
                 .adminPassword(adminPassword)
@@ -47,7 +47,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void verifyAdminPassword(AdminLoginDTO requestData) {
+    public void verifyAdminPassword(AdminLoginReqDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final String adminPassword = requestData.getAdminPassword();
 

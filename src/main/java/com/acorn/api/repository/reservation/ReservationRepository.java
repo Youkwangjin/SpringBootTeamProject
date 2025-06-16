@@ -16,9 +16,11 @@ public interface ReservationRepository {
 
     List<Reservation> selectReservationListData(PaginationRequest pagination);
 
-    Boolean selectActiveReservationsCountByRequest(@Param("containerId") Integer containerId, @Param("reservationStatus") Integer reservationStatus);
+    Boolean existsActiveReservationByRequest(@Param("containerId") Integer containerId, @Param("reservationStatus") Integer reservationStatus);
 
     List<Reservation> selectReservationByUserId(@Param("userId") Integer userId);
+
+    List<Reservation> selectReservationByUserIdAndStatus(@Param("reservationUserId") Integer reservationUserId, @Param("reservationStatus") List<Integer> statusList);
 
     Reservation selectReservationDetailData(@Param("reservationId") Integer reservationId);
 

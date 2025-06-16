@@ -1,6 +1,11 @@
 package com.acorn.api.service.notice;
 
-import com.acorn.api.dto.notice.*;
+import com.acorn.api.dto.common.CommonListReqDTO;
+import com.acorn.api.dto.notice.request.NoticeDeleteReqDTO;
+import com.acorn.api.dto.notice.request.NoticeSaveReqDTO;
+import com.acorn.api.dto.notice.request.NoticeUpdateReqDTO;
+import com.acorn.api.dto.notice.response.NoticeDetailResDTO;
+import com.acorn.api.dto.notice.response.NoticeListResDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,13 +13,13 @@ import java.util.List;
 @Service
 public interface NoticeService {
 
-    List<NoticeListDTO> getNoticeListData(NoticeListDTO listData);
+    List<NoticeListResDTO> getNoticeListData(CommonListReqDTO listData);
 
-    NoticeDetailDTO getNoticeDetailData(Integer noticeId);
+    NoticeDetailResDTO getNoticeDetailData(Integer noticeId);
 
-    void noticeDataSave(NoticeSaveDTO saveData);
+    void noticeDataSave(NoticeSaveReqDTO saveData);
 
-    void noticeDataUpdate(NoticeUpdateDTO updateData);
+    void noticeDataUpdate(NoticeUpdateReqDTO updateData);
 
-    void noticeDataDelete(NoticeDeleteDTO deleteData);
+    void noticeDataDelete(NoticeDeleteReqDTO deleteData);
 }

@@ -7,7 +7,7 @@
         <id property="rowNum"                  column="ROW_NUM"/>
         <id property="ownerId"                 column="OWNER_ID"/>
         <result property="ownerEmail"          column="OWNER_EMAIL"/>
-        <result property="ownerBusinessNum"    column="BUSINESS_NUMBER"/>
+        <result property="ownerBusinessNum"    column="OWNER_BUSINESS_NUMBER"/>
         <result property="ownerPassword"       column="OWNER_PASSWORD"/>
         <result property="ownerNm"             column="OWNER_NM"/>
         <result property="ownerTel"            column="OWNER_TEL"/>
@@ -38,7 +38,7 @@
                 1
             FROM
                 TB_OWNER
-            WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
+            WHERE OWNER_BUSINESS_NUMBER = #{ownerBusinessNum}
         )
     </select>
 
@@ -63,21 +63,58 @@
     </select>
 
     <insert id="ownerRegister" parameterType="com.acorn.api.entity.owner.Owner" useGeneratedKeys="true" keyProperty="ownerId" >
-        INSERT INTO TB_OWNER (OWNER_ID, OWNER_EMAIL, BUSINESS_NUMBER, OWNER_PASSWORD, OWNER_NM, OWNER_TEL, OWNER_COMPANY_NAME, OWNER_ADDRESS, OWNER_ROLE)
-        VALUES (#{ownerId}, #{ownerEmail}, #{ownerBusinessNum}, #{ownerPassword}, #{ownerNm}, #{ownerTel}, #{ownerCompanyName}, #{ownerAddr}, #{ownerRole})
+        INSERT INTO TB_OWNER (
+            OWNER_ID,
+            OWNER_EMAIL,
+            OWNER_BUSINESS_NUMBER,
+            OWNER_PASSWORD,
+            OWNER_NM,
+            OWNER_TEL,
+            OWNER_COMPANY_NAME,
+            OWNER_ADDRESS,
+            OWNER_ROLE
+        ) VALUES (
+            #{ownerId},
+            #{ownerEmail},
+            #{ownerBusinessNum},
+            #{ownerPassword},
+            #{ownerNm},
+            #{ownerTel},
+            #{ownerCompanyName},
+            #{ownerAddr},
+            #{ownerRole}
+        )
     </insert>
 
     <select id="findByOwnerBusinessNum" parameterType="String" resultMap="ownerResultMap">
         SELECT
-            *
+            OWNER_ID,
+            OWNER_EMAIL,
+            OWNER_BUSINESS_NUMBER,
+            OWNER_PASSWORD,
+            OWNER_NM,
+            OWNER_TEL,
+            OWNER_COMPANY_NAME,
+            OWNER_ADDRESS,
+            OWNER_ROLE,
+            OWNER_CREATED,
+            OWNER_UPDATED
         FROM
             TB_OWNER
-        WHERE BUSINESS_NUMBER = #{ownerBusinessNum}
+        WHERE OWNER_BUSINESS_NUMBER = #{ownerBusinessNum}
     </select>
 
     <select id="selectAllOwnerData" parameterType="Integer" resultMap="ownerResultMap">
         SELECT
-            *
+            OWNER_ID,
+            OWNER_EMAIL,
+            OWNER_BUSINESS_NUMBER,
+            OWNER_PASSWORD,
+            OWNER_NM,
+            OWNER_TEL,
+            OWNER_COMPANY_NAME,
+            OWNER_ADDRESS,
+            OWNER_ROLE
         FROM
             TB_OWNER
         WHERE OWNER_ID = #{ownerId}
@@ -90,7 +127,7 @@
             TB_OWNER
         <where>
             <if test="searchType == 'ownerBusinessNum' and searchName != null and searchName.trim() != ''">
-                BUSINESS_NUMBER LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+                OWNER_BUSINESS_NUMBER LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'ownerNm' and searchName != null and searchName.trim() != ''">
                 AND OWNER_NM LIKE CONCAT ('%', TRIM(#{searchName}), '%')
@@ -105,7 +142,7 @@
         SELECT
             ROW_NUMBER() OVER (ORDER BY OWNER_CREATED ASC) AS ROW_NUM,
             OWNER_ID,
-            BUSINESS_NUMBER,
+            OWNER_BUSINESS_NUMBER,
             OWNER_NM,
             OWNER_TEL,
             OWNER_COMPANY_NAME,
@@ -114,7 +151,7 @@
             TB_OWNER
         <where>
             <if test="searchType == 'ownerBusinessNum' and searchName != null and searchName.trim() != ''">
-                BUSINESS_NUMBER LIKE CONCAT('%', TRIM(#{searchName}), '%')
+                OWNER_BUSINESS_NUMBER LIKE CONCAT('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'ownerNm' and searchName != null and searchName.trim() != ''">
                 AND OWNER_NM LIKE CONCAT('%', TRIM(#{searchName}), '%')
@@ -143,7 +180,7 @@
             TB_OWNER
         SET
             OWNER_EMAIL = #{ownerEmail},
-            BUSINESS_NUMBER = #{ownerBusinessNum},
+            OWNER_BUSINESS_NUMBER = #{ownerBusinessNum},
             OWNER_NM = #{ownerNm},
             OWNER_TEL = #{ownerTel},
             OWNER_COMPANY_NAME = #{ownerCompanyName},

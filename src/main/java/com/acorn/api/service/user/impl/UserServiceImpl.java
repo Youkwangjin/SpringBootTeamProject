@@ -3,12 +3,18 @@ package com.acorn.api.service.user.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
-import com.acorn.api.dto.user.UserDeleteDTO;
-import com.acorn.api.dto.user.UserResponseDTO;
-import com.acorn.api.dto.user.UserRegisterDTO;
-import com.acorn.api.dto.user.UserUpdateDTO;
+import com.acorn.api.code.payment.PaymentStatus;
+import com.acorn.api.code.reservation.ReservationStatus;
+import com.acorn.api.dto.user.request.UserDeleteReqDTO;
+import com.acorn.api.dto.user.response.UserResDTO;
+import com.acorn.api.dto.user.request.UserRegisterReqDTO;
+import com.acorn.api.dto.user.request.UserUpdateReqDTO;
+import com.acorn.api.entity.payment.Payment;
+import com.acorn.api.entity.reservation.Reservation;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.entity.user.User;
+import com.acorn.api.repository.payment.PaymentRepository;
+import com.acorn.api.repository.reservation.ReservationRepository;
 import com.acorn.api.repository.user.UserRepository;
 import com.acorn.api.role.UserRole;
 import com.acorn.api.service.user.UserService;
@@ -19,14 +25,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final BCryptPasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ReservationRepository reservationRepository;
+    private final PaymentRepository paymentRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void isEmailDuplicate(String userEmail) {
@@ -46,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userRegister(UserRegisterDTO userRegisterData) {
+    public void userRegister(UserRegisterReqDTO userRegisterData) {
         final Integer userId = userRepository.selectUserIdKey();
         final String userEmail = userRegisterData.getUserEmail();
         final String encodedPassword = passwordEncoder.encode(userRegisterData.getUserPassword());
@@ -68,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO getUserData() {
+    public UserResDTO getUserData() {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         if (currentUserId == null) {
             throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
@@ -84,7 +94,7 @@ public class UserServiceImpl implements UserService {
         final String userTel = userData.getUserTel();
         final String userAddr = userData.getUserAddr();
 
-        return UserResponseDTO.builder()
+        return UserResDTO.builder()
                 .userId(userId)
                 .userEmail(userEmail)
                 .userNm(userNm)
@@ -95,13 +105,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userDataUpdate(UserUpdateDTO userUpdateData) {
+    public void userDataUpdate(UserUpdateReqDTO userUpdateData) {
         final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
         final Integer userId = userUpdateData.getUserId();
         final String userPassword = userUpdateData.getUserPassword();
         final String userNm = userUpdateData.getUserNm();
         final String userAddr = userUpdateData.getUserAddr();
         final String userTel = userUpdateData.getUserTel();
+        final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
+        final Integer reservationPendingStatus = ReservationStatus.RESERVATION_STATUS_PENDING.getCode();
+        final Integer reservationActiveStatus = ReservationStatus.RESERVATION_STATUS_ACTIVE.getCode();
 
         if (Objects.isNull(currentUserId) || !Objects.equals(currentUserId, userId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -110,6 +123,18 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.selectAllUserData(userId);
         if (existingUser == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        List<Payment> existingPayment = paymentRepository.selectPaymentByUserIdAndStatus(userId, paymentCompletedStatus);
+        if (!existingPayment.isEmpty()) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_HISTORY_ACTIVE);
+        }
+
+        List<Integer> statusList = Arrays.asList(reservationPendingStatus, reservationActiveStatus);
+        List<Reservation> activeOrPendingReservations = reservationRepository.selectReservationByUserIdAndStatus(userId, statusList);
+
+        if (!activeOrPendingReservations.isEmpty()) {
+            throw new AcontainerException(ApiErrorCode.RESERVATION_STATUS_ACTIVE);
         }
 
         final String existingUserPassword = existingUser.getUserPassword();
@@ -129,10 +154,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void userDataDelete(UserDeleteDTO userDeleteData) {
+    public void userDataDelete(UserDeleteReqDTO userDeleteData) {
         final Integer currentUserId  = CommonSecurityUtil.getCurrentUserId();
         final Integer userId = userDeleteData.getUserId();
         final String userPassword = userDeleteData.getUserPassword();
+        final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
+        final Integer reservationPendingStatus = ReservationStatus.RESERVATION_STATUS_PENDING.getCode();
+        final Integer reservationActiveStatus = ReservationStatus.RESERVATION_STATUS_ACTIVE.getCode();
 
         if (Objects.isNull(currentUserId) || !Objects.equals(currentUserId, userId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
@@ -141,6 +169,18 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.selectAllUserData(userId);
         if (existingUser == null) {
             throw new AcontainerException(ApiErrorCode.USER_FOUND_ERROR);
+        }
+
+        List<Payment> existingPayment = paymentRepository.selectPaymentByUserIdAndStatus(userId, paymentCompletedStatus);
+        if (!existingPayment.isEmpty()) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_HISTORY_ACTIVE);
+        }
+
+        List<Integer> statusList = Arrays.asList(reservationPendingStatus, reservationActiveStatus);
+        List<Reservation> activeOrPendingReservations = reservationRepository.selectReservationByUserIdAndStatus(userId, statusList);
+
+        if (!activeOrPendingReservations.isEmpty()) {
+            throw new AcontainerException(ApiErrorCode.RESERVATION_STATUS_ACTIVE);
         }
 
         final String existingUserPassword = existingUser.getUserPassword();

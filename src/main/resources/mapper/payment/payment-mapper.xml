@@ -117,6 +117,30 @@
         WHERE PAYMENT_ID = #{paymentId}
     </select>
 
+    <select id="selectPaymentByUserIdAndStatus" parameterType="map" resultMap="paymentResultMap">
+        SELECT
+            P.PAYMENT_ID,
+            P.PAYMENT_TID,
+            P.PAYMENT_USER_ID,
+            P.PAYMENT_RESERVATION_ID,
+            P.PAYMENT_AMOUNT,
+            P.PAYMENT_STATUS,
+            P.PAYMENT_APPROVED,
+            P.PAYMENT_CANCELED,
+            P.PAYMENT_CANCEL_DEADLINE,
+            U.USER_ID,
+            U.USER_EMAIL,
+            U.USER_NM,
+            U.USER_TEL
+        FROM
+            TB_PAYMENT P
+        INNER JOIN
+            TB_USER U
+        ON P.PAYMENT_USER_ID = U.USER_ID
+        WHERE U.USER_ID = #{paymentUserId}
+        AND P.PAYMENT_STATUS = #{paymentStatus}
+    </select>
+
     <insert id="insertPayment" parameterType="com.acorn.api.entity.payment.Payment" useGeneratedKeys="true" keyProperty="paymentId">
         INSERT INTO TB_PAYMENT (
             PAYMENT_ID,
