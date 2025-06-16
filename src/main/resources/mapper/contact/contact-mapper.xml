@@ -55,6 +55,27 @@
         </where>
     </select>
 
+    <select id="selectAdminListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+        COUNT(CONTACT_ID)
+        FROM
+        TB_CONTACT
+        <where>
+            <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
+                CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactContentsText' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_CONTENTS_TEXT LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'contactAnswerYn' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_ANSWER_YN = #{searchName}
+            </if>
+        </where>
+    </select>
+
     <select id="selectContactListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="contactResultMap">
         SELECT
             ROW_NUMBER() OVER (ORDER BY CONTACT_CREATED ASC) AS ROW_NUM,
@@ -74,6 +95,34 @@
             </if>
             <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactContentsText' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_CONTENTS_TEXT LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'contactStatus' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'contactAnswerYn' and searchName != null and searchName.trim() != ''">
+                AND CONTACT_ANSWER_YN = #{searchName}
+            </if>
+        </where>
+        ORDER BY CONTACT_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
+    </select>
+
+    <select id="selectAdminContactListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="contactResultMap">
+        SELECT
+        ROW_NUMBER() OVER (ORDER BY CONTACT_CREATED ASC) AS ROW_NUM,
+        CONTACT_ID,
+        CONTACT_TITLE,
+        CONTACT_STATUS,
+        CONTACT_ANSWER_YN,
+        CONTACT_CREATED
+        FROM
+        TB_CONTACT
+        <where>
+            <if test="searchType == 'contactTitle' and searchName != null and searchName.trim() != ''">
+                CONTACT_TITLE LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
             <if test="searchType == 'contactContentsText' and searchName != null and searchName.trim() != ''">
                 AND CONTACT_CONTENTS_TEXT LIKE CONCAT ('%', TRIM(#{searchName}), '%')

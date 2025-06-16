@@ -13,10 +13,6 @@ public class ContactListResDTO {
 
     private Integer contactId;
 
-    private Integer contactUserId;
-
-    private Integer contactOwnerId;
-
     private String contactTitle;
 
     private Integer contactStatus;
