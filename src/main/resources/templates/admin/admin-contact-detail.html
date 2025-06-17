@@ -24,6 +24,7 @@
 <div class="text-contact">
     <form id="contactDetail">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" id="contactId" th:value="${contactDetailData.contactId}">
         <h3>제목</h3>
         <label for="contactTitle">
             <input type="text" class="text-field" id="contactTitle" th:value="${contactDetailData.contactTitle}" readonly>
@@ -61,6 +62,8 @@
 <script src="/js/common/logout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded" ,function () {
+        const contactId = document.getElementById("contactId").value;
+
         const backBtn = document.getElementById("backBtn");
         const reviewBtn = document.getElementById("reviewBtn");
 
@@ -73,7 +76,36 @@
 
         if (reviewBtn) {
             reviewBtn.addEventListener("click", function () {
+                if (!confirm("해당 문의를 검토 처리하시겠습니까?")) {
+                    return;
+                }
 
+                const contactReviewRequest = {
+                    contactId: contactId
+                };
+
+                fetch(`/api/admin/contact/reviewRequest/${contactId}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(contactReviewRequest)
+                })
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.CONTACT_REVIEW_SUCCESS);
+                            window.location.href = `/admin/contact/detail/${contactId}`;
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
             });
         }
     });

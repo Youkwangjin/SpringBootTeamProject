@@ -203,7 +203,8 @@ public class SpringSecurityConfig {
                                          "/api/admin/password/confirm",
                                          "/api/admin/notice/save",
                                          "/api/admin/notice/update/**",
-                                         "/api/admin/notice/delete/**").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/notice/delete/**",
+                                         "/api/admin/contact/reviewRequest/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
