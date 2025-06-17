@@ -25,6 +25,7 @@ public enum ApiSuccessCode {
     CONTACT_UPDATE_SUCCESS(HttpStatus.OK,     "CUS", "1:1 문의가 성공적으로 수정되었습니다."),
     CONTACT_DELETE_SUCCESS(HttpStatus.OK,     "CDS", "1:1 문의가 성공적으로 삭제되었습니다."),
     CONTACT_CANCEL_SUCCESS(HttpStatus.OK,     "CCS", "1:1 문의가 성공적으로 취소되었습니다."),
+    CONTACT_REVIEW_SUCCESS(HttpStatus.OK,     "CRS", "해당 문의내역이 검토 상태로 변경되었습니다."),
 
     CONTAINER_REGISTER_SUCCESS(HttpStatus.OK, "CRS", "창고정보가 성공적으로 등록되었습니다."),
     CONTAINER_SELECT_SUCCESS(HttpStatus.OK,   "CSS", "창고정보가 성공적으로 조회되었습니다."),

@@ -1,9 +1,15 @@
 package com.acorn.api.service.admin.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.code.contact.ContactStatus;
+import com.acorn.api.dto.admin.request.ContactManagementReqDTO;
 import com.acorn.api.dto.common.CommonListReqDTO;
+import com.acorn.api.dto.contact.response.ContactDetailResDTO;
+import com.acorn.api.dto.contact.response.ContactFileResDTO;
 import com.acorn.api.dto.contact.response.ContactListResDTO;
 import com.acorn.api.entity.contact.Contact;
+import com.acorn.api.entity.contact.ContactFile;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.contact.ContactRepository;
 import com.acorn.api.service.admin.AdminContactService;
@@ -13,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +30,7 @@ public class AdminContactServiceImpl implements AdminContactService {
 
     @Override
     public List<ContactListResDTO> getContactListData(CommonListReqDTO listData) {
-        Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         if (currentAdminId == null) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
@@ -49,5 +56,89 @@ public class AdminContactServiceImpl implements AdminContactService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ContactDetailResDTO selectContactDetailData(Integer contactId) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Contact detailData = contactRepository.selectContactDetailData(contactId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FOUND);
+        }
+
+        final String contactTitle = detailData.getContactTitle();
+        final String contactContents = detailData.getContactContents();
+        final String contactContentsText = detailData.getContactContentsText();
+        final Integer contactStatus = detailData.getContactStatus();
+        final String contactAdminContents = detailData.getContactAdminContents();
+        final String contactAnswerYn = detailData.getContactAnswerYn();
+        final LocalDateTime contactCreated = detailData.getContactCreated();
+
+        List<ContactFile> contactFileEntities = detailData.getContactFilesList();
+        final List<ContactFileResDTO> contactFileData = contactFileEntities.stream()
+                .map(contactFile -> {
+                    final Integer contactFileId = contactFile.getContactFileId();
+                    final String contactOriginalFileName = contactFile.getContactOriginalFileName();
+                    final String contactStoredFileName = contactFile.getContactStoredFileName();
+                    final String contactFilePath = contactFile.getContactFilePath();
+                    final String contactFileExtNm = contactFile.getContactFileExtNm();
+                    final String contactFileSize = contactFile.getContactFileSize();
+
+                    return ContactFileResDTO.builder()
+                            .contactFileId(contactFileId)
+                            .contactOriginalFileName(contactOriginalFileName)
+                            .contactStoredFileName(contactStoredFileName)
+                            .contactFilePath(contactFilePath)
+                            .contactFileExtNm(contactFileExtNm)
+                            .contactFileSize(contactFileSize)
+                            .build();
+
+                })
+                .collect(Collectors.toList());
+
+        return ContactDetailResDTO.builder()
+                .contactId(contactId)
+                .contactTitle(contactTitle)
+                .contactContents(contactContents)
+                .contactContentsText(contactContentsText)
+                .contactStatus(contactStatus)
+                .contactAdminContents(contactAdminContents)
+                .contactAnswerYn(contactAnswerYn)
+                .contactCreated(contactCreated)
+                .contactFiles(contactFileData)
+                .build();
+    }
+
+    @Override
+    public void processReviewRequest(ContactManagementReqDTO requsetData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer contactId = requsetData.getContactId();
+        final Integer contactPendingStatus = ContactStatus.CONTACT_STATUS_PENDING.getCode();
+        final Integer contactProgressStatus = ContactStatus.CONTACT_STATUS_PROGRESS.getCode();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Contact detailData = contactRepository.selectContactDetailData(contactId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FOUND);
+        }
+
+        final Integer contactStatus = detailData.getContactStatus();
+        if (!Objects.equals(contactStatus, contactPendingStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_STATUS_NOT_PENDING);
+        }
+
+        Contact updateStatus = Contact.builder()
+                .contactId(contactId)
+                .contactStatus(contactProgressStatus)
+                .build();
+
+        contactRepository.updateContactStatus(updateStatus);
     }
 }
