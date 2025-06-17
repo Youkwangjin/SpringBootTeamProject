@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>에이콘테이너 : 관리자용 1:1문의 상세</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/admin-contact-detail.css}">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+</head>
+<body>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+    <div th:replace="~{fragments/header-admin :: header}"></div>
+</div>
+<div class="text-contact">
+    <form id="contactDetail">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <h3>제목</h3>
+        <label for="contactTitle">
+            <input type="text" class="text-field" id="contactTitle" th:value="${contactDetailData.contactTitle}" readonly>
+        </label>
+        <h3>내용</h3>
+        <label>
+            <div class="contact-content" th:utext="${contactDetailData.contactContents}"></div>
+        </label>
+        <div class="form-group file-upload-contact">
+            <label>파일첨부</label>
+            <ul id="fileList" class="file-list">
+                <li th:each="file : ${contactDetailData.contactFiles}">
+                    <a th:text="${file.contactOriginalFileName}"></a>
+                </li>
+            </ul>
+        </div>
+        <div th:if="${contactDetailData.contactStatus == 1 or contactDetailData.contactStatus == 2}">
+            <h3>관리자 답변</h3>
+            <label for="adminAnswer">
+                <textarea id="adminAnswer" placeholder="여기에 답변을 입력하세요."></textarea>
+            </label>
+        </div>
+        <div class="button-group">
+            <button type="button" id="backBtn" class="custom-btn black-btn">목록</button>
+            <div th:if="${contactDetailData.contactStatus == 0}">
+                <button type="button" id="reviewBtn" class="custom-btn blue-btn">검토하기</button>
+            </div>
+            <div th:if="${contactDetailData.contactStatus == 1}">
+                <button type="button" id="answerBtn" class="custom-btn blue-btn">답변하기</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/js/common/messages.js"></script>
+<script src="/js/common/logout.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded" ,function () {
+        const backBtn = document.getElementById("backBtn");
+        const reviewBtn = document.getElementById("reviewBtn");
+
+        const csrfTokenElement = document.querySelector("input[name=_csrf]");
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        backBtn.addEventListener("click" ,function () {
+            window.location.href = "/admin/contact/list";
+        });
+
+        if (reviewBtn) {
+            reviewBtn.addEventListener("click", function () {
+
+            });
+        }
+    });
+</script>
+</body>
