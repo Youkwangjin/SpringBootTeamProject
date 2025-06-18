@@ -3,7 +3,8 @@ package com.acorn.api.service.admin.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.contact.ContactStatus;
-import com.acorn.api.dto.admin.request.ContactManagementReqDTO;
+import com.acorn.api.dto.admin.request.AdminContactReviewReqDTO;
+import com.acorn.api.dto.admin.request.AdminContactAnswerReqDTO;
 import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.dto.contact.response.ContactDetailResDTO;
 import com.acorn.api.dto.contact.response.ContactFileResDTO;
@@ -16,6 +17,7 @@ import com.acorn.api.service.admin.AdminContactService;
 import com.acorn.api.utils.AdminSecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -114,7 +116,8 @@ public class AdminContactServiceImpl implements AdminContactService {
     }
 
     @Override
-    public void processReviewRequest(ContactManagementReqDTO requsetData) {
+    @Transactional
+    public void processReviewRequest(AdminContactReviewReqDTO requsetData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer contactId = requsetData.getContactId();
         final Integer contactPendingStatus = ContactStatus.CONTACT_STATUS_PENDING.getCode();
@@ -140,5 +143,40 @@ public class AdminContactServiceImpl implements AdminContactService {
                 .build();
 
         contactRepository.updateContactStatus(updateStatus);
+    }
+
+    @Override
+    @Transactional
+    public void processAnswerRequest(AdminContactAnswerReqDTO requsetData) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        final Integer contactId = requsetData.getContactId();
+        final String contactAdminContents = requsetData.getContactAdminContents();
+        final String contactAnswerYn = "Y";
+        final Integer contactProgressStatus = ContactStatus.CONTACT_STATUS_PROGRESS.getCode();
+        final Integer contactCompletedStatus = ContactStatus.CONTACT_STATUS_COMPLETED.getCode();
+
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Contact detailData = contactRepository.selectContactDetailData(contactId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FOUND);
+        }
+
+        final Integer contactStatus = detailData.getContactStatus();
+        if (!Objects.equals(contactStatus, contactProgressStatus)) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_STATUS_NOT_PROCESSING);
+        }
+
+        Contact updateContactData = Contact.builder()
+                .contactId(contactId)
+                .contactAdminId(currentAdminId)
+                .contactStatus(contactCompletedStatus)
+                .contactAdminContents(contactAdminContents)
+                .contactAnswerYn(contactAnswerYn)
+                .build();
+
+        contactRepository.updateAdminContact(updateContactData);
     }
 }

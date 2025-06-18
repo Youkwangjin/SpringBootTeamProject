@@ -17,6 +17,7 @@ public enum ApiErrorCode {
 
     CONTACT_NOT_WAITING(HttpStatus.BAD_REQUEST, "CNW", "문의대기 상태에서만 수정, 삭제, 취소가 가능합니다."),
     CONTACT_STATUS_NOT_PENDING(HttpStatus.BAD_REQUEST, "CSP", "현재 문의가 대기 상태일 때만 검토로 변경할 수 있습니다."),
+    CONTACT_STATUS_NOT_PROCESSING(HttpStatus.BAD_REQUEST, "CNP", "현재 문의가 처리중 상태일 때만 답변을 등록할 수 있습니다."),
 
     CONTAINER_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF", "창고가 존재하지 않습니다."),
     CONTAINER_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "CUF", "창고 정보 수정에 실패하였습니다."),
