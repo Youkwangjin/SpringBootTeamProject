@@ -136,7 +136,8 @@ public class SpringSecurityConfig {
                                          "/contact/list/**",
                                          "/contact/write",
                                          "/contact/detail/**",
-                                         "/contact/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/contact/update/**",
+                                         "/api/contact/file/download/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         // Protected User Common Pages
                         .requestMatchers("/user/mypage",

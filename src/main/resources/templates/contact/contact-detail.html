@@ -48,8 +48,11 @@
             <div class="contact-attachments">
                 <label>첨부파일</label>
                 <ul>
-                    <li th:each="file : ${contactDetailData.contactFiles}">
-                        <a th:text="${file.contactOriginalFileName}"></a>
+                    <li th:each="file : ${contactDetailData.contactFiles}" class="cs-link cs-hover file-download-item" th:data-contact-id="${file.contactId}" th:data-file-id="${file.contactFileId}">
+                        <button type="button" class="btn btn-ico">
+                            <img src="/assets/img/svg/download.svg" alt="다운로드"/>
+                        </button>
+                        <span th:text="${file.contactOriginalFileName}"></span>
                     </li>
                 </ul>
             </div>
@@ -67,7 +70,6 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const contactId = document.getElementById("contactId").value;
-
         const listBtn = document.getElementById("listBtn");
         const updateBtn = document.getElementById("updateBtn");
         const deleteBtn = document.getElementById("deleteBtn");
@@ -156,6 +158,15 @@
                     });
             });
         }
+
+        document.querySelectorAll(".file-download-item").forEach(function(li) {
+            li.addEventListener("click", function() {
+                const contactId = li.getAttribute('data-contact-id');
+                const contactFileId = li.getAttribute('data-file-id');
+
+                window.location.href = `/api/contact/file/download/${contactId}/${contactFileId}`;
+            });
+        });
     });
 </script>
 </body>

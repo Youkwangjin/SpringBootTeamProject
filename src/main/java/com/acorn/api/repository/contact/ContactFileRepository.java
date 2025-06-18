@@ -17,5 +17,7 @@ public interface ContactFileRepository {
 
     ContactFile selectFilesByContactFileId(@Param("contactFileId") Integer contactFileId);
 
+    ContactFile selectContactFile(@Param("contactId") Integer contactId, @Param("contactFileId") Integer contactFileId);
+
     void deleteContactFile(@Param("contactFileId") Integer contactFileId);
 }
