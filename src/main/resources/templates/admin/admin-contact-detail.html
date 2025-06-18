@@ -43,8 +43,8 @@
         </div>
         <div th:if="${contactDetailData.contactStatus == 1 or contactDetailData.contactStatus == 2}">
             <h3>관리자 답변</h3>
-            <label for="adminAnswer">
-                <textarea id="adminAnswer" placeholder="여기에 답변을 입력하세요."></textarea>
+            <label for="contactAdminContents">
+                <textarea id="contactAdminContents" placeholder="여기에 답변을 입력하세요." th:text="${contactDetailData.contactAdminContents}"></textarea>
             </label>
         </div>
         <div class="button-group">
@@ -66,6 +66,7 @@
 
         const backBtn = document.getElementById("backBtn");
         const reviewBtn = document.getElementById("reviewBtn");
+        const answerBtn = document.getElementById("answerBtn");
 
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
@@ -98,6 +99,49 @@
 
                         if (response.status === 200) {
                             alert(MSG.CONTACT_REVIEW_SUCCESS);
+                            window.location.href = `/admin/contact/detail/${contactId}`;
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
+            });
+        }
+
+        if (answerBtn) {
+            answerBtn.addEventListener("click", function () {
+                const contactAdminContents = document.getElementById("contactAdminContents").value.trim();
+
+                if (!confirm("이 문의에 답변을 제출하시겠습니까?")) {
+                    return;
+                }
+
+                if (contactAdminContents.length === 0) {
+                    alert("답변 내용을 입력해주세요.");
+                    return;
+                }
+
+                const contactAnswerRequest = {
+                    contactId: contactId,
+                    contactAdminContents: contactAdminContents
+                };
+
+                fetch(`/api/admin/contact/answerRequest/${contactId}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(contactAnswerRequest)
+                })
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.CONTACT_ANSWER_SUCCESS);
                             window.location.href = `/admin/contact/detail/${contactId}`;
                         } else {
                             alert(responseData.errorMsg);

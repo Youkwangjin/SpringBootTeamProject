@@ -3,6 +3,7 @@ package com.acorn.api.component;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.exception.global.AcontainerException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -32,6 +33,18 @@ public class FileComponent {
             }
         } else {
             throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+        }
+    }
+
+    public byte[] download(String directory, String fileName) {
+        try {
+            File file = new File(directory + fileName);
+            if (!file.exists()) {
+                throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+            }
+            return FileCopyUtils.copyToByteArray(file);
+        } catch (IOException e) {
+            throw new AcontainerException(ApiErrorCode.FILE_DOWNLOAD_ERROR);
         }
     }
 }

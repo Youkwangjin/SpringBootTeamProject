@@ -10,6 +10,7 @@ import com.acorn.api.dto.contact.request.ContactDeleteReqDTO;
 import com.acorn.api.dto.contact.request.ContactSaveReqDTO;
 import com.acorn.api.dto.contact.request.ContactUpdateReqDTO;
 import com.acorn.api.dto.contact.response.ContactDetailResDTO;
+import com.acorn.api.dto.contact.response.ContactFileDownloadResDTO;
 import com.acorn.api.dto.contact.response.ContactFileResDTO;
 import com.acorn.api.dto.contact.response.ContactListResDTO;
 import com.acorn.api.entity.contact.Contact;
@@ -128,6 +129,7 @@ public class ContactServiceImpl implements ContactService {
 
                     return ContactFileResDTO.builder()
                             .contactFileId(contactFileId)
+                            .contactId(contactId)
                             .contactOriginalFileName(contactOriginalFileName)
                             .contactStoredFileName(contactStoredFileName)
                             .contactFilePath(contactFilePath)
@@ -410,5 +412,24 @@ public class ContactServiceImpl implements ContactService {
                 .build();
 
         contactRepository.updateContactStatus(cancelContactData);
+    }
+
+    @Override
+    public ContactFileDownloadResDTO contactFileDownload(Integer contactId, Integer contactFileId) {
+        final ContactFile detailData = contactFileRepository.selectContactFile(contactId, contactFileId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FILE_DATA);
+        }
+
+        final String originalFileName = detailData.getContactOriginalFileName();
+        final String storedFileName = detailData.getContactStoredFileName();
+        final String filePath = detailData.getContactFilePath();
+
+        byte[] fileBytes = fileComponent.download(filePath, storedFileName);
+
+        return ContactFileDownloadResDTO.builder()
+                .originalFileName(originalFileName)
+                .fileBytes(fileBytes)
+                .build();
     }
 }

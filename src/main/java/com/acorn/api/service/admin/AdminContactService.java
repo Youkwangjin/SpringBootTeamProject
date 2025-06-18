@@ -1,6 +1,7 @@
 package com.acorn.api.service.admin;
 
-import com.acorn.api.dto.admin.request.ContactManagementReqDTO;
+import com.acorn.api.dto.admin.request.AdminContactReviewReqDTO;
+import com.acorn.api.dto.admin.request.AdminContactAnswerReqDTO;
 import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.dto.contact.response.ContactDetailResDTO;
 import com.acorn.api.dto.contact.response.ContactListResDTO;
@@ -14,5 +15,7 @@ public interface AdminContactService {
 
     ContactDetailResDTO selectContactDetailData(Integer contactId);
 
-    void processReviewRequest(ContactManagementReqDTO requsetData);
+    void processReviewRequest(AdminContactReviewReqDTO requsetData);
+
+    void processAnswerRequest(AdminContactAnswerReqDTO requsetData);
 }
