@@ -136,8 +136,7 @@ public class SpringSecurityConfig {
                                          "/contact/list/**",
                                          "/contact/write",
                                          "/contact/detail/**",
-                                         "/contact/update/**",
-                                         "/api/contact/file/download/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/contact/update/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         // Protected User Common Pages
                         .requestMatchers("/user/mypage",
@@ -206,7 +205,8 @@ public class SpringSecurityConfig {
                                          "/api/admin/notice/update/**",
                                          "/api/admin/notice/delete/**",
                                          "/api/admin/contact/reviewRequest/**",
-                                         "/api/admin/contact/answerRequest/**").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/contact/answerRequest/**",
+                                         "/api/admin/contact/file/download/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",
@@ -216,7 +216,8 @@ public class SpringSecurityConfig {
                                          "/api/contact/save",
                                          "/api/contact/update/**",
                                          "/api/contact/delete/**",
-                                         "/api/contact/cancel/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/api/contact/cancel/**",
+                                         "/api/contact/file/download/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );

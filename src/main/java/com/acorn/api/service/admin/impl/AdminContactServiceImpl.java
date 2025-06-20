@@ -3,15 +3,18 @@ package com.acorn.api.service.admin.impl;
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.contact.ContactStatus;
+import com.acorn.api.component.FileComponent;
 import com.acorn.api.dto.admin.request.AdminContactReviewReqDTO;
 import com.acorn.api.dto.admin.request.AdminContactAnswerReqDTO;
 import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.dto.contact.response.ContactDetailResDTO;
+import com.acorn.api.dto.contact.response.ContactFileDownloadResDTO;
 import com.acorn.api.dto.contact.response.ContactFileResDTO;
 import com.acorn.api.dto.contact.response.ContactListResDTO;
 import com.acorn.api.entity.contact.Contact;
 import com.acorn.api.entity.contact.ContactFile;
 import com.acorn.api.exception.global.AcontainerException;
+import com.acorn.api.repository.contact.ContactFileRepository;
 import com.acorn.api.repository.contact.ContactRepository;
 import com.acorn.api.service.admin.AdminContactService;
 import com.acorn.api.utils.AdminSecurityUtil;
@@ -29,6 +32,8 @@ import java.util.stream.Collectors;
 public class AdminContactServiceImpl implements AdminContactService {
 
     private final ContactRepository contactRepository;
+    private final ContactFileRepository contactFileRepository;
+    private final FileComponent fileComponent;
 
     @Override
     public List<ContactListResDTO> getContactListData(CommonListReqDTO listData) {
@@ -92,6 +97,7 @@ public class AdminContactServiceImpl implements AdminContactService {
 
                     return ContactFileResDTO.builder()
                             .contactFileId(contactFileId)
+                            .contactId(contactId)
                             .contactOriginalFileName(contactOriginalFileName)
                             .contactStoredFileName(contactStoredFileName)
                             .contactFilePath(contactFilePath)
@@ -112,6 +118,30 @@ public class AdminContactServiceImpl implements AdminContactService {
                 .contactAnswerYn(contactAnswerYn)
                 .contactCreated(contactCreated)
                 .contactFiles(contactFileData)
+                .build();
+    }
+
+    @Override
+    public ContactFileDownloadResDTO contactAdminFileDownload(Integer contactId, Integer contactFileId) {
+        final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
+        if (currentAdminId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        final ContactFile detailData = contactFileRepository.selectContactFile(contactId, contactFileId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FILE_DATA);
+        }
+
+        final String originalFileName = detailData.getContactOriginalFileName();
+        final String storedFileName = detailData.getContactStoredFileName();
+        final String filePath = detailData.getContactFilePath();
+
+        byte[] fileBytes = fileComponent.download(filePath, storedFileName);
+
+        return ContactFileDownloadResDTO.builder()
+                .originalFileName(originalFileName)
+                .fileBytes(fileBytes)
                 .build();
     }
 
