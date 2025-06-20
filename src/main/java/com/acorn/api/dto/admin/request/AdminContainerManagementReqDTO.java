@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContainerManagementReqDTO {
+public class AdminContainerManagementReqDTO {
 
     @NotNull
     @Positive

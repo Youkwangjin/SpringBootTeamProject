@@ -4,7 +4,7 @@ import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.dto.admin.response.AdminContainerDetailResDTO;
-import com.acorn.api.dto.admin.request.ContainerManagementReqDTO;
+import com.acorn.api.dto.admin.request.AdminContainerManagementReqDTO;
 import com.acorn.api.dto.container.response.ContainerDetailResDTO;
 import com.acorn.api.dto.container.request.ContainerListReqDTO;
 import com.acorn.api.dto.container.response.ContainerListResDTO;
@@ -117,7 +117,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
 
     @Override
     @Transactional
-    public void processReviewRequest(ContainerManagementReqDTO requestData) {
+    public void processReviewRequest(AdminContainerManagementReqDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestOwnerId = requestData.getOwnerId();
         final Integer requestContainerId = requestData.getContainerId();
@@ -164,7 +164,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
 
     @Override
     @Transactional
-    public void processApprovalRequest(ContainerManagementReqDTO requestData) {
+    public void processApprovalRequest(AdminContainerManagementReqDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestOwnerId = requestData.getOwnerId();
         final Integer requestContainerId = requestData.getContainerId();
@@ -218,7 +218,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
 
     @Override
     @Transactional
-    public void processRejectRequest(ContainerManagementReqDTO requestData) {
+    public void processRejectRequest(AdminContainerManagementReqDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestOwnerId = requestData.getOwnerId();
         final Integer requestContainerId = requestData.getContainerId();
@@ -270,7 +270,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
     }
 
     @Override
-    public void processCancelReview(ContainerManagementReqDTO requestData) {
+    public void processCancelReview(AdminContainerManagementReqDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestOwnerId = requestData.getOwnerId();
         final Integer requestContainerId = requestData.getContainerId();
@@ -318,7 +318,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
 
     @Override
     @Transactional
-    public void processCancelApproval(ContainerManagementReqDTO requestData) {
+    public void processCancelApproval(AdminContainerManagementReqDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestOwnerId = requestData.getOwnerId();
         final Integer requestContainerId = requestData.getContainerId();
@@ -368,7 +368,7 @@ public class AdminContainerServiceImpl implements AdminContainerService {
 
     @Override
     @Transactional
-    public void processCancelReject(ContainerManagementReqDTO requestData) {
+    public void processCancelReject(AdminContainerManagementReqDTO requestData) {
         final Integer currentAdminId = AdminSecurityUtil.getCurrentAdminId();
         final Integer requestOwnerId = requestData.getOwnerId();
         final Integer requestContainerId = requestData.getContainerId();
