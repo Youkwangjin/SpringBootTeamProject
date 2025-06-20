@@ -158,15 +158,6 @@
                     });
             });
         }
-
-        document.querySelector(".contact-attachments ul").addEventListener("click", e => {
-            const item = e.target.closest('.file-download-item');
-            if (!item) return;
-
-            const { contactId, contactFileId } = item.dataset;
-            window.location.href = `/api/contact/file/download/${encodeURIComponent(contactId)}/${encodeURIComponent(contactFileId)}`;
-
-        });
     });
 </script>
 </body>
