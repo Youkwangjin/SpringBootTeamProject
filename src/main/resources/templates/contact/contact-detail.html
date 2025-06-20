@@ -48,11 +48,11 @@
             <div class="contact-attachments">
                 <label>첨부파일</label>
                 <ul>
-                    <li th:each="file : ${contactDetailData.contactFiles}" class="cs-link cs-hover file-download-item" th:data-contact-id="${file.contactId}" th:data-file-id="${file.contactFileId}">
-                        <button type="button" class="btn btn-ico">
+                    <li th:each="file : ${contactDetailData.contactFiles}" class="file-download-item">
+                        <a th:href="@{|/api/contact/file/download/${file.contactId}/${file.contactFileId}|}" class="cs-link cs-hover">
                             <img src="/assets/img/svg/download.svg" alt="다운로드"/>
-                        </button>
-                        <span th:text="${file.contactOriginalFileName}"></span>
+                            <span th:text="${file.contactOriginalFileName}"/>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -159,13 +159,13 @@
             });
         }
 
-        document.querySelectorAll(".file-download-item").forEach(function(li) {
-            li.addEventListener("click", function() {
-                const contactId = li.getAttribute('data-contact-id');
-                const contactFileId = li.getAttribute('data-file-id');
+        document.querySelector(".contact-attachments ul").addEventListener("click", e => {
+            const item = e.target.closest('.file-download-item');
+            if (!item) return;
 
-                window.location.href = `/api/contact/file/download/${contactId}/${contactFileId}`;
-            });
+            const { contactId, contactFileId } = item.dataset;
+            window.location.href = `/api/contact/file/download/${encodeURIComponent(contactId)}/${encodeURIComponent(contactFileId)}`;
+
         });
     });
 </script>
