@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface BoardFileRepository {
+
     Integer selectBoardFileIdKey();
 
     void saveBoardFile(BoardFile boardFile);
@@ -15,6 +16,8 @@ public interface BoardFileRepository {
     List<BoardFile> selectFilesByBoardId(@Param("boardId") Integer boardId);
 
     BoardFile selectFilesByBoardFileId(@Param("boardFileId") Integer boardFileId);
+
+    BoardFile selectBoardFile(@Param("boardId") Integer boardId, @Param("boardFileId") Integer boardFileId);
 
     void deleteBoardFile(@Param("boardFileId") Integer boardFileId);
 }

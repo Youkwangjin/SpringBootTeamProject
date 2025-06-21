@@ -15,7 +15,10 @@ public enum ApiErrorCode {
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "NNF", "공지사항이 존재하지 않습니다."),
     CONTACT_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF","문의내역이 존재하지 않습니다."),
 
+    CONTACT_NOT_FILE_DATA(HttpStatus.NOT_FOUND, "CNF","문의내역에 첨부된 파일이 존재하지 않습니다."),
     CONTACT_NOT_WAITING(HttpStatus.BAD_REQUEST, "CNW", "문의대기 상태에서만 수정, 삭제, 취소가 가능합니다."),
+    CONTACT_STATUS_NOT_PENDING(HttpStatus.BAD_REQUEST, "CSP", "현재 문의가 대기 상태일 때만 검토로 변경할 수 있습니다."),
+    CONTACT_STATUS_NOT_PROCESSING(HttpStatus.BAD_REQUEST, "CNP", "현재 문의가 처리중 상태일 때만 답변을 등록할 수 있습니다."),
 
     CONTAINER_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF", "창고가 존재하지 않습니다."),
     CONTAINER_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "CUF", "창고 정보 수정에 실패하였습니다."),
@@ -57,6 +60,7 @@ public enum ApiErrorCode {
     FILE_PATH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FPE", "파일 업로드 디렉토리가 존재하지 않습니다."),
     FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FUE", "파일 업로드에 실패하였습니다."),
     FILE_DELETE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FDE", "파일 삭제 중 문제가 발생했습니다."),
+    FILE_DOWNLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FDE", "파일 다운로드 중 문제가 발생했습니다."),
 
     NAVER_API_CALL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NAC", "네이버 API 호출 중 오류가 발생했습니다."),
     NAVER_API_INVALID_RESPONSE(HttpStatus.INTERNAL_SERVER_ERROR, "NIR", "네이버 API 응답이 유효하지 않습니다."),

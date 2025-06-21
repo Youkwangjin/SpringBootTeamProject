@@ -213,6 +213,18 @@
             CONTACT_ID = #{contactId}
     </update>
 
+    <update id="updateAdminContact" parameterType="com.acorn.api.entity.contact.Contact">
+        UPDATE
+            TB_CONTACT
+        SET
+            CONTACT_ADMIN_ID = #{contactAdminId},
+            CONTACT_STATUS = #{contactStatus},
+            CONTACT_ADMIN_CONTENTS = #{contactAdminContents},
+            CONTACT_ANSWER_YN = #{contactAnswerYn}
+        WHERE
+            CONTACT_ID = #{contactId}
+    </update>
+
     <delete id="deleteContact" parameterType="Integer">
         DELETE
         FROM

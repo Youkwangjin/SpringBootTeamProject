@@ -5,7 +5,7 @@
 <mapper namespace="com.acorn.api.repository.board.BoardFileRepository">
     <resultMap id="boardFileResultMap"              type="com.acorn.api.entity.board.BoardFile">
         <id property="boardFileId"                  column="BOARD_FILE_ID"/>
-        <result property="boardId"                      column="BOARD_FILE_BOARD_ID"/>
+        <result property="boardId"                  column="BOARD_FILE_BOARD_ID"/>
         <result property="boardOriginalFileName"    column="BOARD_FILE_ORIGINAL_FILE_NAME"/>
         <result property="boardStoredFileName"      column="BOARD_FILE_STORED_FILE_NAME"/>
         <result property="boardFilePath"            column="BOARD_FILE_PATH"/>
@@ -51,6 +51,24 @@
             TB_BOARD_FILE
         WHERE
             BOARD_FILE_ID = #{boardFileId}
+    </select>
+
+    <select id="selectBoardFile" parameterType="Map" resultMap="boardFileResultMap">
+        SELECT
+            BOARD_FILE_ID,
+            BOARD_FILE_BOARD_ID,
+            BOARD_FILE_ORIGINAL_FILE_NAME,
+            BOARD_FILE_STORED_FILE_NAME,
+            BOARD_FILE_PATH,
+            BOARD_FILE_EXTNS_NM,
+            BOARD_FILE_SIZE,
+            BOARD_FILE_CREATED
+        FROM
+            TB_BOARD_FILE
+        WHERE
+            BOARD_FILE_ID = #{boardFileId}
+        AND
+            BOARD_FILE_BOARD_ID = #{boardId}
     </select>
 
     <insert id="saveBoardFile" parameterType="com.acorn.api.entity.board.BoardFile" useGeneratedKeys="true" keyProperty="boardFileId">

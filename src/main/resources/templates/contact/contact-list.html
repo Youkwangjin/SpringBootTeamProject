@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 1:1문의</title>
-    <link href="/assets/img/favicon.png" rel="icon">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/main.css" rel="stylesheet">
-    <link href="/assets/img/favicon.png" rel="icon">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link rel="stylesheet" type="text/css" th:href="@{/css/contact/contact-list.css}">
 </head>
 <div sec:authorize="isAnonymous()">
@@ -44,8 +44,8 @@
                                         <div class="search-wrap">
                                             <label for="searchType" class="blind">검색 타입 선택</label>
                                             <select id="searchType" name="searchType" class="search-type-select">
-                                                <option value="contactTitle" th:selected="${request == 'contactTitle'}">제목</option>
-                                                <option value="contactContentsText" th:selected="${request == 'contactContentsText'}">내용</option>
+                                                <option value="contactTitle" th:selected="${request.searchType == 'contactTitle'}">제목</option>
+                                                <option value="contactContentsText" th:selected="${request.searchType == 'contactContentsText'}">내용</option>
                                                 <option value="contactStatus" th:selected="${request.searchType == 'contactStatus'}">문의상태</option>
                                                 <option value="contactAnswerYn" th:selected="${request.searchType == 'contactAnswerYn'}">답변여부</option>
                                             </select>
@@ -139,7 +139,7 @@
         </section>
     </form>
 </main>
-<script src="/js/common/logout.js"></script>
+<script th:src="@{/js/common/logout.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const pageNo = document.getElementById("pageNo").value;

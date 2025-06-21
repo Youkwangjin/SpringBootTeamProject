@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 창고상세</title>
-    <link rel="stylesheet" type="text/css" href="/css/container/container-register.css">
-    <link rel="stylesheet" type="text/css" href="/css/container/container-detail.css">
-    <link href="/assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/container/container-register.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/container/container-detail.css}">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-            rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
@@ -80,8 +78,11 @@
         <div class="form-group file-upload-container">
             <label>파일첨부</label>
             <ul id="fileList" class="file-list">
-                <li th:each="file : ${containerDetailData.containerFiles}">
-                    <a th:text="${file.containerOriginalFileName}"></a>
+                <li th:each="file : ${containerDetailData.containerFiles}" class="file-download-item">
+                    <a th:href="@{|/api/container/file/download/${file.containerId}/${file.containerFileId}|}" class="cs-link cs-hover">
+                        <img src="/assets/img/svg/download.svg" alt="다운로드"/>
+                        <span th:text="${file.containerOriginalFileName}"/>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -93,8 +94,8 @@
         </div>
     </form>
 </div>
-<script src="/js/common/messages.js"></script>
-<script src="/js/common/logout.js"></script>
+<script th:src="@{/js/common/messages.js}"></script>
+<script th:src="@{/js/common/logout.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded" ,function () {
         const containerId = document.getElementById("containerId").value;

@@ -13,6 +13,7 @@
         <result property="containerFileSize"            column="CONTAINER_FILE_SIZE"/>
         <result property="containerFileCreated"         column="CONTAINER_FILE_CREATED"/>
         <result property="containerFileUpdated"         column="CONTAINER_FILE_UPDATED"/>
+        <association property="container"               javaType="com.acorn.api.entity.container.Container" resultMap="com.acorn.api.repository.container.ContainerRepository.containerResultMap"/>
     </resultMap>
 
     <select id="selectContainerFileIdKey" resultType="java.lang.Integer">
@@ -51,6 +52,28 @@
             TB_CONTAINER_FILE
         WHERE
             CONTAINER_FILE_ID = #{containerFileId}
+    </select>
+
+    <select id="selectContainerFile" parameterType="Map" resultMap="containerFileResultMap">
+        SELECT
+            F.CONTAINER_FILE_ID,
+            F.CONTAINER_FILE_CONTAINER_ID,
+            F.CONTAINER_FILE_ORIGINAL_FILE_NAME,
+            F.CONTAINER_FILE_STORED_FILE_NAME,
+            F.CONTAINER_FILE_PATH,
+            F.CONTAINER_FILE_EXTNS_NM,
+            F.CONTAINER_FILE_SIZE,
+            F.CONTAINER_FILE_CREATED,
+            C.CONTAINER_OWNER_ID
+        FROM
+            TB_CONTAINER_FILE F
+        INNER JOIN
+            TB_CONTAINER C
+        ON F.CONTAINER_FILE_CONTAINER_ID = C.CONTAINER_ID
+        WHERE
+            F.CONTAINER_FILE_ID = #{containerFileId}
+        AND
+            F.CONTAINER_FILE_CONTAINER_ID = #{containerId}
     </select>
 
     <insert id="containerFileSave">

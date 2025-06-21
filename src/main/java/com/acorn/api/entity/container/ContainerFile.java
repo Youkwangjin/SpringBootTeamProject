@@ -30,4 +30,6 @@ public class ContainerFile {
     private LocalDateTime containerFileCreated;
 
     private LocalDateTime containerFileUpdated;
+
+    private Container container;
 }

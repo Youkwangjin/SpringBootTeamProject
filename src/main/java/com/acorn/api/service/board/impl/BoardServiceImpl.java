@@ -8,6 +8,7 @@ import com.acorn.api.dto.board.request.BoardDeleteReqDTO;
 import com.acorn.api.dto.board.request.BoardSaveReqDTO;
 import com.acorn.api.dto.board.request.BoardUpdateReqDTO;
 import com.acorn.api.dto.board.response.BoardDetailResDTO;
+import com.acorn.api.dto.board.response.BoardFileDownloadResDTO;
 import com.acorn.api.dto.board.response.BoardFileResDTO;
 import com.acorn.api.dto.board.response.BoardListResDTO;
 import com.acorn.api.dto.common.CommonListReqDTO;
@@ -117,6 +118,7 @@ public class BoardServiceImpl implements BoardService {
 
                     return BoardFileResDTO.builder()
                             .boardFileId(boardFileId)
+                            .boardId(boardId)
                             .boardOriginalFileName(boardOriginalFileName)
                             .boardStoredFileName(boardStoredFileName)
                             .boardFilePath(boardFilePath)
@@ -325,6 +327,25 @@ public class BoardServiceImpl implements BoardService {
                 .build();
 
         boardRepository.deleteBoard(deleteBoardData);
+    }
+
+    @Override
+    public BoardFileDownloadResDTO boardFileDownload(Integer boardId, Integer boardFileId) {
+        final BoardFile detailData = boardFileRepository.selectBoardFile(boardId, boardFileId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+        }
+
+        final String originalFileName = detailData.getBoardOriginalFileName();
+        final String storedFileName = detailData.getBoardStoredFileName();
+        final String filePath = detailData.getBoardFilePath();
+
+        byte[] fileBytes = fileComponent.download(filePath, storedFileName);
+
+        return BoardFileDownloadResDTO.builder()
+                .originalFileName(originalFileName)
+                .fileBytes(fileBytes)
+                .build();
     }
 
     private boolean hasEditPermission(Integer currentUserId, Integer currentOwnerId, Integer boardUserId, Integer boardOwnerId) {

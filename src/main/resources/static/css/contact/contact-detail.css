@@ -64,7 +64,65 @@
 }
 
 .contact-attachments li {
-    margin-bottom: 5px;
+    display: flex;
+    gap: 10px;
+}
+
+.contact-attachments .cs-link {
+    color: #333;
+    text-decoration: none;
+}
+
+.contact-attachments .cs-link:hover {
+    color: #0d6efd;
+    text-decoration: underline;
+}
+
+.contact-attachments .cs-link span {
+    color: inherit;
+}
+
+.download-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: filter 0.2s, opacity 0.2s;
+}
+
+.download-icon:hover {
+    filter: brightness(0.7);
+    opacity: 1;
+}
+
+.cs-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    cursor: pointer;
+}
+
+.btn-ico {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+.btn-ico img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    opacity: 0.85;
+    transition: filter 0.2s, opacity 0.2s;
+}
+
+.btn-ico img:hover {
+    filter: brightness(0.7);
+    opacity: 1;
 }
 
 .button-container {
