@@ -60,11 +60,11 @@
         </form>
     </div>
 </main>
-<script src="/js/tinymce/tinymce.min.js"></script>
-<script src="/js/common/tinyMCEConfig.js"></script>
-<script src="/js/common/fileModule.js"></script>
-<script src="/js/common/messages.js"></script>
-<script src="/js/common/logout.js"></script>
+<script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/js/common/tinyMCEConfig.js}"></script>
+<script th:src="@{/js/common/fileModule.js}"></script>
+<script th:src="@{/js/common/messages.js}"></script>
+<script th:src="@{/js/common/logout.js}"></script>
 <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function () {
         const boardId = document.getElementById("boardId").value;
