@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>에이콘 컨테이너 : 회원탈퇴</title>
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-    <link rel="stylesheet" href="/css/owner/owner-join.css">
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/assets/img/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/owner/owner-join.css}">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
 <body>
 <h3 style="text-align: center; line-height: 2;"><span th:text="${ownerData.ownerNm}"></span>님의 회원정보</h3>
