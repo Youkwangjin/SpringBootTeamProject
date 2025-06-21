@@ -114,14 +114,14 @@
     </form>
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/common/daum-postcode.js"></script>
+<script th:src="@{/js/common/daum-postcode.js}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzGKmDfbyNTWo-0WqNSdQlQSlxc6Wjna4&libraries=places" defer></script>
-<script src="/js/common/geolocation.js" defer></script>
-<script src="/js/tinymce/tinymce.min.js"></script>
-<script src="/js/common/tinyMCEConfig.js"></script>
-<script src="/js/common/fileModule.js"></script>
-<script src="/js/common/messages.js"></script>
-<script src="/js/common/logout.js"></script>
+<script th:src="@{/js/common/geolocation.js}" defer></script>
+<script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/js/common/tinyMCEConfig.js}"></script>
+<script th:src="@{/js/common/fileModule.js}"></script>
+<script th:src="@{/js/common/messages.js}"></script>
+<script th:src="@{/js/common/logout.js}"></script>
 <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function () {
         const containerId = document.getElementById("containerId").value;
