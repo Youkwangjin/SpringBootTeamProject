@@ -30,4 +30,6 @@ public class ContactFile {
     private LocalDateTime contactFileCreated;
 
     private LocalDateTime contactFileUpdated;
+
+    private Contact contact;
 }

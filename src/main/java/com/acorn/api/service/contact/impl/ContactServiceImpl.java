@@ -421,6 +421,28 @@ public class ContactServiceImpl implements ContactService {
             throw new AcontainerException(ApiErrorCode.CONTACT_NOT_FILE_DATA);
         }
 
+        final Integer contactUserId = detailData.getContact().getContactUserId();
+        final Integer contactOwnerId = detailData.getContact().getContactOwnerId();
+        final Integer contactWriterType = detailData.getContact().getContactWriterType();
+        final Integer userStatus = ContactStatus.USER.getCode();
+        final Integer ownerStatus = ContactStatus.OWNER.getCode();
+
+        if (Objects.equals(contactWriterType, userStatus)) {
+            final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+            if (!Objects.equals(currentUserId, contactUserId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+
+        } else if (contactWriterType.equals(ownerStatus)) {
+            final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+            if (!Objects.equals(currentOwnerId, contactOwnerId)) {
+                throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+            }
+
+        } else {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
         final String originalFileName = detailData.getContactOriginalFileName();
         final String storedFileName = detailData.getContactStoredFileName();
         final String filePath = detailData.getContactFilePath();
