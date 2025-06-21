@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>에이콘 컨테이너 : 로그인</title>
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-    <link rel="stylesheet" href="/css/owner/owner-login.css">
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/assets/img/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/owner/owner-login.css}">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
 <body>
 <header id="header" class="header d-flex align-items-center">
@@ -39,7 +39,7 @@
         <a href="/owner/join">회원가입</a>
     </div>
 </section>
-<script src="/js/common/messages.js"></script>
+<script th:src="@{/js/common/messages.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (){
         const csrfTokenElement = document.querySelector("input[name=_csrf]");

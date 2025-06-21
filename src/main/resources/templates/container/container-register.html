@@ -4,25 +4,20 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 창고등록</title>
-    <link rel="stylesheet" type="text/css" href="/css/container/container-register.css">
-    <link href="/assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/container/container-register.css}">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-            rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
     <div th:replace="~{fragments/header:: header}"></div>
-</div>
-<div sec:authorize="hasAnyRole('ROLE_USER')">
-    <div th:replace="~{fragments/header-user :: header}"></div>
 </div>
 <div sec:authorize="hasAnyRole('ROLE_OWNER')">
     <div th:replace="~{fragments/header-owner :: header}"></div>
@@ -118,13 +113,13 @@
     </form>
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/common/daum-postcode.js"></script>
-<script src="/js/common/geolocation.js" defer></script>
-<script src="/js/tinymce/tinymce.min.js"></script>
-<script src="/js/common/tinyMCEConfig.js"></script>
-<script src="/js/common/fileModule.js"></script>
-<script src="/js/common/messages.js"></script>
-<script src="/js/common/logout.js"></script>
+<script th:src="@{/js/common/daum-postcode.js}"></script>
+<script th:src="@{/js/common/geolocation.js}" defer></script>
+<script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/js/common/tinyMCEConfig.js}"></script>
+<script th:src="@{/js/common/fileModule.js}"></script>
+<script th:src="@{/js/common/messages.js}"></script>
+<script th:src="@{/js/common/logout.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const backListButton = document.getElementById("backListBtn");

@@ -4,6 +4,7 @@ import com.acorn.api.dto.board.request.BoardDeleteReqDTO;
 import com.acorn.api.dto.board.request.BoardSaveReqDTO;
 import com.acorn.api.dto.board.request.BoardUpdateReqDTO;
 import com.acorn.api.dto.board.response.BoardDetailResDTO;
+import com.acorn.api.dto.board.response.BoardFileDownloadResDTO;
 import com.acorn.api.dto.board.response.BoardListResDTO;
 import com.acorn.api.dto.common.CommonListReqDTO;
 import org.springframework.stereotype.Service;
@@ -24,4 +25,6 @@ public interface BoardService {
     void boardDataUpdate(BoardUpdateReqDTO updateData);
 
     void boardDataDelete(BoardDeleteReqDTO deleteData);
+
+    BoardFileDownloadResDTO boardFileDownload(Integer boardId, Integer boardFileId);
 }

@@ -100,8 +100,6 @@ public class SpringSecurityConfig {
                                          "/session/expired",
                                          "/service",
                                          "/containers/map",
-                                         "/api/geocode/**",
-                                         "/api/containers/coordinates",
                                          "/user/join",
                                          "/user/login",
                                          "/owner/join",
@@ -112,23 +110,22 @@ public class SpringSecurityConfig {
                                          "/notice/detail/**",
                                          "/admin/login").permitAll()
 
-                        // Public Common API
-                        .requestMatchers("/api/logout",
-                                         "/api/auth/check").permitAll()
-
-                        // Public User API
+                        // Public API
                         .requestMatchers("/api/auth/user/register",
                                          "/api/auth/user/emailCheck",
                                          "/api/auth/user/userTelCheck",
-                                         "/api/auth/user/login").permitAll()
-
-                        // Public Owner API
-                        .requestMatchers("/api/auth/owner/register",
+                                         "/api/auth/user/login",
+                                         "/api/auth/owner/register",
                                          "/api/auth/owner/emailCheck",
                                          "/api/auth/owner/businessNumCheck",
                                          "/api/auth/owner/ownerTelCheck",
                                          "/api/auth/owner/companyNameCheck",
-                                         "/api/auth/owner/login").permitAll()
+                                         "/api/auth/owner/login",
+                                         "/api/logout",
+                                         "/api/auth/check",
+                                         "/api/geocode/**",
+                                         "/api/containers/coordinates",
+                                         "/api/board/file/download/**").permitAll()
 
                         // Protected Common Pages
                         .requestMatchers("/board/write",
@@ -186,7 +183,8 @@ public class SpringSecurityConfig {
                                          "/api/owner/delete/**",
                                          "/api/container/register",
                                          "/api/container/update/**",
-                                         "/api/container/delete/**").hasAuthority("ROLE_OWNER")
+                                         "/api/container/delete/**",
+                                         "/api/container/file/download/**").hasAuthority("ROLE_OWNER")
 
                         // Protected Admin API
                         .requestMatchers("/api/auth/admin/login",
