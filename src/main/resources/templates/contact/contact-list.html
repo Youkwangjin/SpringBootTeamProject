@@ -44,8 +44,8 @@
                                         <div class="search-wrap">
                                             <label for="searchType" class="blind">검색 타입 선택</label>
                                             <select id="searchType" name="searchType" class="search-type-select">
-                                                <option value="contactTitle" th:selected="${request == 'contactTitle'}">제목</option>
-                                                <option value="contactContentsText" th:selected="${request == 'contactContentsText'}">내용</option>
+                                                <option value="contactTitle" th:selected="${request.searchType == 'contactTitle'}">제목</option>
+                                                <option value="contactContentsText" th:selected="${request.searchType == 'contactContentsText'}">내용</option>
                                                 <option value="contactStatus" th:selected="${request.searchType == 'contactStatus'}">문의상태</option>
                                                 <option value="contactAnswerYn" th:selected="${request.searchType == 'contactAnswerYn'}">답변여부</option>
                                             </select>
