@@ -13,6 +13,7 @@
         <result property="contactFileSize"            column="CONTACT_FILE_SIZE"/>
         <result property="contactFileCreated"         column="CONTACT_FILE_CREATED"/>
         <result property="contactFileUpdated"         column="CONTACT_FILE_UPDATED"/>
+        <association property="contact"               javaType="com.acorn.api.entity.contact.Contact" resultMap="com.acorn.api.repository.contact.ContactRepository.contactResultMap" />
     </resultMap>
 
     <select id="selectContactFileIdKey" resultType="Integer">
@@ -53,20 +54,26 @@
 
     <select id="selectContactFile" parameterType="Map" resultMap="contactFileResultMap">
         SELECT
-            CONTACT_FILE_ID,
-            CONTACT_FILE_CONTACT_ID,
-            CONTACT_FILE_ORIGINAL_FILE_NAME,
-            CONTACT_FILE_STORED_FILE_NAME,
-            CONTACT_FILE_PATH,
-            CONTACT_FILE_EXTNS_NM,
-            CONTACT_FILE_SIZE,
-            CONTACT_FILE_CREATED
+            F.CONTACT_FILE_ID,
+            F.CONTACT_FILE_CONTACT_ID,
+            F.CONTACT_FILE_ORIGINAL_FILE_NAME,
+            F.CONTACT_FILE_STORED_FILE_NAME,
+            F.CONTACT_FILE_PATH,
+            F.CONTACT_FILE_EXTNS_NM,
+            F.CONTACT_FILE_SIZE,
+            F.CONTACT_FILE_CREATED,
+            C.CONTACT_USER_ID,
+            C.CONTACT_OWNER_ID,
+            C.CONTACT_WRITER_TYPE
         FROM
-            TB_CONTACT_FILE
+            TB_CONTACT_FILE F
+        INNER JOIN
+            TB_CONTACT C
+        ON F.CONTACT_FILE_CONTACT_ID = C.CONTACT_ID
         WHERE
-            CONTACT_FILE_CONTACT_ID = #{contactId}
+            F.CONTACT_FILE_CONTACT_ID = #{contactId}
         AND
-            CONTACT_FILE_ID = #{contactFileId}
+            F.CONTACT_FILE_ID = #{contactFileId}
     </select>
 
     <insert id="saveContactFile" parameterType="com.acorn.api.entity.contact.ContactFile" useGeneratedKeys="true" keyProperty="contactFileId">
