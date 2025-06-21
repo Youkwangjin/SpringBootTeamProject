@@ -39,7 +39,7 @@
         <a href="/owner/join">회원가입</a>
     </div>
 </section>
-<script src="/js/common/messages.js"></script>
+<script th:src="@{/js/common/messages.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (){
         const csrfTokenElement = document.querySelector("input[name=_csrf]");

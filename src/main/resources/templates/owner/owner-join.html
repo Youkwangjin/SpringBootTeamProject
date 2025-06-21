@@ -93,8 +93,8 @@
     </div>
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/common/daum-postcode.js"></script>
-<script src="/js/common/messages.js"></script>
+<script th:src="@{/js/common/daum-postcode.js}"></script>
+<script th:src="@{/js/common/messages.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const ownerEmail = document.getElementById("ownerEmail");
