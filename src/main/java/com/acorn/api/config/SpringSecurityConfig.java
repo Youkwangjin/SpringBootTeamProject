@@ -186,7 +186,8 @@ public class SpringSecurityConfig {
                                          "/api/owner/delete/**",
                                          "/api/container/register",
                                          "/api/container/update/**",
-                                         "/api/container/delete/**").hasAuthority("ROLE_OWNER")
+                                         "/api/container/delete/**",
+                                         "/api/container/file/download/**").hasAuthority("ROLE_OWNER")
 
                         // Protected Admin API
                         .requestMatchers("/api/auth/admin/login",

@@ -5,6 +5,7 @@ import com.acorn.api.dto.container.request.ContainerListReqDTO;
 import com.acorn.api.dto.container.request.ContainerRegisterReqDTO;
 import com.acorn.api.dto.container.request.ContainerUpdateReqDTO;
 import com.acorn.api.dto.container.response.ContainerDetailResDTO;
+import com.acorn.api.dto.container.response.ContainerFileDownloadResDTO;
 import com.acorn.api.dto.container.response.ContainerListResDTO;
 import com.acorn.api.dto.container.response.ContainerMapListResDTO;
 import jakarta.validation.Valid;
@@ -26,4 +27,6 @@ public interface ContainerService {
     void containerUpdate(ContainerUpdateReqDTO updateData);
 
     void containerDelete(@Valid ContainerDeleteReqDTO deleteData);
+
+    ContainerFileDownloadResDTO containerFileDownload(Integer containerId, Integer containerFileId);
 }

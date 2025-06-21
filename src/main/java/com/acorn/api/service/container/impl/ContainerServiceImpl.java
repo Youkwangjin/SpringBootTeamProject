@@ -8,10 +8,7 @@ import com.acorn.api.dto.container.request.ContainerDeleteReqDTO;
 import com.acorn.api.dto.container.request.ContainerListReqDTO;
 import com.acorn.api.dto.container.request.ContainerRegisterReqDTO;
 import com.acorn.api.dto.container.request.ContainerUpdateReqDTO;
-import com.acorn.api.dto.container.response.ContainerDetailResDTO;
-import com.acorn.api.dto.container.response.ContainerFileResDTO;
-import com.acorn.api.dto.container.response.ContainerListResDTO;
-import com.acorn.api.dto.container.response.ContainerMapListResDTO;
+import com.acorn.api.dto.container.response.*;
 import com.acorn.api.entity.container.Container;
 import com.acorn.api.entity.container.ContainerFile;
 import com.acorn.api.exception.global.AcontainerException;
@@ -40,13 +37,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
 
-    @Value("${file.upload.path.container}")
-    private String uploadDir;
     private final ContainerRepository containerRepository;
     private final ContainerFileRepository containerFileRepository;
     private final FileComponent fileComponent;
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    @Value("${file.upload.path.container}")
+    private String uploadDir;
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public List<ContainerListResDTO> getContainerListData(ContainerListReqDTO listData) {
@@ -169,6 +167,7 @@ public class ContainerServiceImpl implements ContainerService {
 
                     return ContainerFileResDTO.builder()
                             .containerFileId(containerFileId)
+                            .containerId(containerId)
                             .containerOriginalFileName(containerOriginalFileName)
                             .containerStoredFileName(containerStoredFileName)
                             .containerFilePath(containerFilePath)
@@ -412,5 +411,31 @@ public class ContainerServiceImpl implements ContainerService {
                 .build();
 
         containerRepository.containerDelete(deleteContainerData);
+    }
+
+    @Override
+    public ContainerFileDownloadResDTO containerFileDownload(Integer containerId, Integer containerFileId) {
+        final ContainerFile detailData = containerFileRepository.selectContainerFile(containerId, containerFileId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
+        }
+
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer containerOwnerId = detailData.getContainer().getContainerOwnerId();
+
+        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        final String originalFileName = detailData.getContainerOriginalFileName();
+        final String storedFileName = detailData.getContainerStoredFileName();
+        final String filePath = detailData.getContainerFilePath();
+
+        byte[] fileBytes = fileComponent.download(filePath, storedFileName);
+
+        return ContainerFileDownloadResDTO.builder()
+                .originalFileName(originalFileName)
+                .fileBytes(fileBytes)
+                .build();
     }
 }

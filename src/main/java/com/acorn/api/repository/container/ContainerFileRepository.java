@@ -17,5 +17,7 @@ public interface ContainerFileRepository {
 
     ContainerFile selectFilesByContainerFileId(@Param("containerFileId") Integer containerFileId);
 
+    ContainerFile selectContainerFile(@Param("containerId") Integer containerId, @Param("containerFileId") Integer containerFileId);
+
     void containerFileDelete(@Param("containerFileId") Integer containerFileId);
 }
