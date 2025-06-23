@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 관리자용 창고 정보 목록</title>
-    <link rel="stylesheet" type="text/css" href="/css/admin/admin-container-list.css">
-    <link href="/assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/admin-container-list.css}">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
 <body>
 <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
@@ -111,7 +111,7 @@
         </th:block>
     </div>
 </form>
-<script src="/js/common/logout.js"></script>
+<script th:src="@{/js/common/logout.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const pageNo = document.getElementById("pageNo").value;
