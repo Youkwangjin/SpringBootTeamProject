@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>에이콘테이너 : 회원탈퇴</title>
-    <link href="/assets/css/main.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-    <link rel="stylesheet" href="/css/user/user-join.css">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/assets/img/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/user/user-join.css}">
 </head>
 <body>
 <h3 style="text-align: center; line-height: 2;"><span th:text="${userData.userNm}"></span>님의 회원정보</h3>
@@ -49,7 +49,7 @@
         </form>
     </div>
 </div>
-<script src="/js/common/messages.js"></script>
+<script th:src="@{/js/common/messages.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const userId = document.getElementById("userId").value;
