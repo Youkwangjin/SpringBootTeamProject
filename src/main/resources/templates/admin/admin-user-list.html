@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 사용자 정보 확인</title>
-    <link rel="stylesheet" href="/css/member/member.css"/>
-    <link href="/assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" th:href="@{/css/member/member.css}"/>
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="/assets/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/css/admin/admin-user-list.css">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/admin-user-list.css}">
 </head>
 <body>
 <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
@@ -81,7 +81,7 @@
         </th:block>
     </div>
 </form>
-<script src="/js/common/logout.js"></script>
+<script th:src="@{/js/common/logout.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const searchButton = document.getElementById("searchButton");

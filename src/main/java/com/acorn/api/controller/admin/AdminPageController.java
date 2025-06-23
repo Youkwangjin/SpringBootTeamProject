@@ -30,7 +30,7 @@ public class AdminPageController {
     public String adminPage(Model model) {
         AdminResDTO adminData = adminService.getAdminData();
         model.addAttribute("adminNm", adminData.getAdminNm());
-        return "/admin/admin-mypage";
+        return "common/mypage";
     }
 
     @GetMapping("/admin/container/list")
