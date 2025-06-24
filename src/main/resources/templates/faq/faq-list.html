@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>에이콘테이너 : FAQ</title>
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/faq/faq-list.css}">
+</head>
+<body>
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_USER')">
+    <div th:replace="~{fragments/header-user :: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_OWNER')">
+    <div th:replace="~{fragments/header-owner :: header}"></div>
+</div>
+<main id="main">
+    <form id="faqListForm" method="get">
+        <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}" />
+        <div class="breadcrumbs d-flex align-items-center" style="background-image: url('/assets/img/breadcrumbs-bg.jpg');"></div>
+        <section>
+            <div class="faq-container">
+                <h3 class="faq-title">자주 묻는 질문</h3>
+                <div class="faq-search-bar">
+                    <label for="searchType" class="blind">검색 타입 선택</label>
+                        <select id="searchType" name="searchType" class="faq-search-select">
+                            <option value="faqTitle" th:selected="${request.searchType == 'faqTitle'}">제목</option>
+                            <option value="faqContentsText" th:selected="${request.searchType == 'faqContentsText'}">내용</option>
+                            <option value="faqTitleContents" th:selected="${request.searchType == 'faqTitleContents'}">제목+내용</option>
+                        </select>
+                    <label for="search" class="blind">FAQ 내용 검색</label>
+                    <input type="text" id="search" name="searchName" class="faq-search-input" placeholder="검색어를 입력하세요" th:value="${request.searchName}">
+                    <button id="searchFaq" type="button" class="faq-search-btn">검색</button>
+                    <button id="resetBtn" type="button" class="faq-reset-btn">초기화</button>
+                </div>
+                <table class="faq-table">
+                    <tr>
+                        <th class="faq-num">번호</th>
+                        <th class="faq-title-th">제목</th>
+                    </tr>
+                    <tr th:each="faq, iterStat : ${faqListData}">
+                        <td class="faq-num" th:text="${faq.rowNum}"></td>
+                        <td class="faq-title-th">
+                            <input type="hidden" id="faqId" class="faqId" th:value="${faq.faqId}" />
+                            <a href="javascript:void(0);" class="faq-link" th:text="${faq.faqTitle}"></a>
+                        </td>
+                    </tr>
+                    <tr class="faq-answer-row" style="display:none;">
+                        <td colspan="2" class="faq-answer"></td>
+                    </tr>
+                    <tr th:if="${faqListData == null or faqListData.size() == 0}">
+                        <td colspan="2" class="text-muted py-3">조회된 FAQ가 없습니다.</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="custom-pagination">
+                <th:block th:if="${request.totalCount > 0}">
+                    <ul>
+                        <li th:if="${request.startPageNo > 1}">
+                            <a th:href="@{/faq/list(pageNo=${request.firstPageNo})}">&laquo;</a>
+                        </li>
+                        <li th:if="${request.pageNo > request.startPageNo}">
+                            <a th:href="@{/faq/list(pageNo=${request.prevPageNo})}">&lt;</a>
+                        </li>
+                        <th:block th:each="i : ${#numbers.sequence(request.startPageNo, request.endPageNo)}">
+                            <li th:classappend="${i == request.pageNo} ? 'active'">
+                                <a th:href="@{/faq/list(pageNo=${i})}" th:text="${i}"></a>
+                            </li>
+                        </th:block>
+                        <li th:if="${request.pageNo < request.endPageNo}">
+                            <a th:href="@{/faq/list(pageNo=${request.nextPageNo})}">&gt;</a>
+                        </li>
+                        <li th:if="${request.endPageNo < request.finalPageNo}">
+                            <a th:href="@{/faq/list(pageNo=${request.finalPageNo})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </th:block>
+            </div>
+        </section>
+    </form>
+</main>
+<script th:src="@{/js/common/messages.js}"></script>
+<script th:src="@{/js/common/logout.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchButton = document.getElementById("searchFaq");
+        const resetButton = document.getElementById("resetBtn");
+
+        const faqLinks = document.querySelectorAll(".faq-link");
+
+        searchButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const pageNo = document.getElementById("pageNo").value;
+            const searchType = document.getElementById("searchType").value;
+            const searchName = document.getElementById("search").value;
+
+            window.location.href = `/faq/list?pageNo=${pageNo}&searchType=${searchType}&searchName=${searchName}`;
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/faq/list";
+        });
+
+        faqLinks.forEach(link => {
+            link.addEventListener("click", function () {
+                const row = link.closest("tr");
+                const faqId = row.querySelector(".faqId").value;
+                const answerRow = row.nextElementSibling;
+                const answerCell = answerRow.querySelector(".faq-answer");
+
+                if (answerRow.style.display === "table-row") {
+                    answerRow.style.display = "none";
+                    return;
+                }
+
+                fetch(`/api/faq/contents/${faqId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+                })
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            answerCell.innerHTML = responseData.faqContentsText;
+                            answerRow.style.display = "table-row";
+
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
+            });
+        });
+    })
+</script>
+</body>
+</html>

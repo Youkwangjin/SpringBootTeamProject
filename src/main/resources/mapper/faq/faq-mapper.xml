@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.faq.FaqRepository">
+    <resultMap id="faqResultMap"           type="com.acorn.api.entity.faq.Faq">
+        <id property="rowNum"                column="ROW_NUM"/>
+        <id property="faqId"                 column="FAQ_ID"/>
+        <result property="faqAdminId"        column="FAQ_ADMIN_ID"/>
+        <result property="faqTitle"          column="FAQ_TITLE"/>
+        <result property="faqContents"       column="FAQ_CONTENTS"/>
+        <result property="faqContentsText"   column="FAQ_CONTENTS_TEXT"/>
+        <result property="faqCreated"        column="FAQ_CREATED"/>
+        <result property="faqUpdated"        column="FAQ_UPDATED"/>
+    </resultMap>
+
+    <select id="selectFaqIdKey" resultType="Integer">
+        SELECT nextval(FAQ_SEQ)
+    </select>
+
+    <select id="selectListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(FAQ_ID)
+        FROM
+            TB_FAQ
+        <where>
+            <if test="searchType == 'faqTitle' and searchName != null and searchName.trim() !=''">
+                FAQ_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'faqContentsText' and searchName != null and searchName.trim() !=''">
+                FAQ_CONTENTS_TEXT LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'faqTitleContents' and searchName != null and searchName.trim() !=''">
+                (FAQ_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%') OR
+                FAQ_CONTENTS_TEXT LIKE CONCAT('%', TRIM(#{searchName}), '%'))
+            </if>
+        </where>
+    </select>
+
+    <select id="selectFaqListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="faqResultMap">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY FAQ_CREATED ASC) AS ROW_NUM,
+            FAQ_ID,
+            FAQ_TITLE,
+            FAQ_CONTENTS,
+            FAQ_CONTENTS_TEXT,
+            FAQ_CREATED
+        FROM
+            TB_FAQ
+        <where>
+            <if test="searchType == 'faqTitle' and searchName != null and searchName.trim() !=''">
+                FAQ_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'faqContentsText' and searchName != null and searchName.trim() !=''">
+                FAQ_CONTENTS_TEXT LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'faqTitleContents' and searchName != null and searchName.trim() !=''">
+                (FAQ_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%') OR
+                FAQ_CONTENTS_TEXT LIKE CONCAT('%', TRIM(#{searchName}), '%'))
+            </if>
+        </where>
+        ORDER BY FAQ_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
+    </select>
+</mapper>
