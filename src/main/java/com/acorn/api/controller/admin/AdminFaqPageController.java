@@ -34,4 +34,9 @@ public class AdminFaqPageController {
         model.addAttribute("faqDetailData", faqDetailData);
         return "admin/admin-faq-detail";
     }
+
+    @GetMapping("/admin/faq/write")
+    public String faqWritePage() {
+        return "admin/admin-faq-write";
+    }
 }

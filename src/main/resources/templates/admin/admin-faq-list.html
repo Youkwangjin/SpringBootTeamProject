@@ -35,6 +35,9 @@
         <button id="searchButton" type="button">검색</button>
         <button id="resetBtn" type="button">초기화</button>
     </div>
+    <div class="custom-search-extra-btn">
+        <button id="faqAddBtn" type="button">FAQ 등록</button>
+    </div>
     <div class="table-faq">
         <div class="table-row header-row">
             <div class="table-header-cell">번호</div>
@@ -55,7 +58,7 @@
                     <div class="table-cell" th:text="${faq.rowNum}"></div>
                     <div class="table-cell" th:text="${faq.faqTitle}"></div>
                     <div class="table-cell" th:text="${#temporals.format(faq.faqCreated, 'yyyy-MM-dd')}"></div>
-                    <div class="table-cell" th:text="${#temporals.format(faq.faqCreated, 'yyyy-MM-dd')}"></div>
+                    <div class="table-cell" th:text="${faq.faqUpdated != null} ? ${#temporals.format(faq.faqUpdated, 'yyyy-MM-dd')} : '수정 이력 없음'"></div>
                 </div>
             </th:block>
         </div>
@@ -89,6 +92,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const searchButton = document.getElementById("searchButton");
         const resetButton = document.getElementById("resetBtn");
+        const faqAddBtn = document.getElementById("faqAddBtn");
 
         searchButton.addEventListener("click", function (event) {
             event.preventDefault();
@@ -102,6 +106,10 @@
 
         resetButton.addEventListener("click", function () {
             window.location.href = "/admin/faq/list";
+        });
+
+        faqAddBtn.addEventListener("click", function () {
+           window.location.href = "/admin/faq/write";
         });
     });
 </script>

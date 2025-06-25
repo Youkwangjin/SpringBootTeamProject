@@ -76,4 +76,22 @@
         WHERE
             FAQ_ID = #{faqId}
     </select>
+
+    <insert id="saveFaq" parameterType="com.acorn.api.entity.faq.Faq" useGeneratedKeys="true" keyProperty="faqId">
+        INSERT INTO TB_FAQ (
+            FAQ_ID,
+            FAQ_ADMIN_ID,
+            FAQ_TITLE,
+            FAQ_CONTENTS,
+            FAQ_CONTENTS_TEXT,
+            FAQ_CREATED
+        ) VALUES (
+            #{faqId},
+            #{faqAdminId},
+            #{faqTitle},
+            #{faqContents},
+            #{faqContentsText},
+            NOW()
+        )
+    </insert>
 </mapper>

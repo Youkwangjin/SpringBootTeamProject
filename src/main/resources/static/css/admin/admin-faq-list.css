@@ -124,6 +124,29 @@ html, body {
     border-color: #007bff;
 }
 
+.custom-search-extra-btn {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+    margin: 10px auto 24px auto;
+}
+
+#faqAddBtn {
+    padding: 8px 20px;
+    background-color: #a55a6d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+#faqAddBtn:hover {
+    background-color: #943a50;
+}
+
 .custom-pagination {
     display: flex;
     justify-content: center;

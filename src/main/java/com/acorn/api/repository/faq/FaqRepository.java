@@ -9,9 +9,13 @@ import java.util.List;
 
 @Mapper
 public interface FaqRepository {
+    Integer selectFaqIdKey();
+
     Integer selectListCountByRequest(PaginationRequest paginationRequest);
 
     List<Faq> selectFaqListData(PaginationRequest paginationRequest);
 
     Faq selectFaqDetailData(@Param("faqId") Integer faqId);
+
+    void saveFaq(Faq faq);
 }
