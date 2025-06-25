@@ -1,0 +1,117 @@
+@charset "UTF-8";
+
+html, body {
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+body {
+    background: url("/assets/img/login/owner-loginImg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.text-faq {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    max-width: 820px;
+    width: 90%;
+    height: auto;
+    padding: 30px 30px 50px;
+    margin-top: 120px;
+}
+
+.text-faq h3 {
+    font-size: 18px;
+    color: #444;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.text-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.faq-content {
+    width: 740px;
+    min-height: 300px;
+    max-width: 1000px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 16px;
+    line-height: 1.8;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    white-space: normal;
+}
+
+.faq-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+#faqTitle {
+    width: 433%;
+    max-width: 1000px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.custom-btn {
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: none;
+    width: 150px;
+    text-align: center;
+}
+
+.black-btn {
+    background-color: #333;
+    color: white;
+}
+
+.black-btn:hover {
+    background-color: #000;
+}
+
+.orange-btn {
+    background-color: #ff8800;
+    color: white;
+}
+
+.orange-btn:hover {
+    background-color: #cc7000;
+}
+
+.red-btn {
+    background-color: #ff0000;
+    color: white;
+}
+
+.blue-btn {
+    background-color: #0a58ca;
+    color: white;
+}

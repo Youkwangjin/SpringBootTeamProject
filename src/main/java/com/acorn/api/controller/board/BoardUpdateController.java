@@ -7,12 +7,10 @@ import com.acorn.api.dto.board.request.BoardUpdateReqDTO;
 import com.acorn.api.service.board.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class BoardUpdateController {
@@ -21,8 +19,6 @@ public class BoardUpdateController {
 
     @PatchMapping("/api/board/update/{boardId}")
     public ResponseEntity<ApiSuccessResponse<Object>> boardUpdate (@Valid BoardUpdateReqDTO updateData) {
-        log.info(" *****************************    Board Update START    *****************************");
-
         boardService.boardDataUpdate(updateData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.BOARD_UPDATE_SUCCESS);

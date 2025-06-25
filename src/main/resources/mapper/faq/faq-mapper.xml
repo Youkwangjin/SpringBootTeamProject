@@ -44,7 +44,8 @@
             FAQ_TITLE,
             FAQ_CONTENTS,
             FAQ_CONTENTS_TEXT,
-            FAQ_CREATED
+            FAQ_CREATED,
+            FAQ_UPDATED
         FROM
             TB_FAQ
         <where>
@@ -62,4 +63,57 @@
         ORDER BY FAQ_CREATED DESC
         LIMIT ${startRowNum}, ${pageSize}
     </select>
+
+    <select id="selectFaqDetailData" parameterType="Integer" resultMap="faqResultMap">
+        SELECT
+            FAQ_ID,
+            FAQ_ADMIN_ID,
+            FAQ_TITLE,
+            FAQ_CONTENTS,
+            FAQ_CONTENTS_TEXT,
+            FAQ_CREATED,
+            FAQ_UPDATED
+        FROM
+            TB_FAQ
+        WHERE
+            FAQ_ID = #{faqId}
+    </select>
+
+    <insert id="saveFaq" parameterType="com.acorn.api.entity.faq.Faq" useGeneratedKeys="true" keyProperty="faqId">
+        INSERT INTO TB_FAQ (
+            FAQ_ID,
+            FAQ_ADMIN_ID,
+            FAQ_TITLE,
+            FAQ_CONTENTS,
+            FAQ_CONTENTS_TEXT,
+            FAQ_CREATED
+        ) VALUES (
+            #{faqId},
+            #{faqAdminId},
+            #{faqTitle},
+            #{faqContents},
+            #{faqContentsText},
+            NOW()
+        )
+    </insert>
+
+    <update id="updateFaq" parameterType="com.acorn.api.entity.faq.Faq">
+        UPDATE
+            TB_FAQ
+        SET
+            FAQ_TITLE = #{faqTitle},
+            FAQ_CONTENTS = #{faqContents},
+            FAQ_CONTENTS_TEXT = #{faqContentsText},
+            FAQ_UPDATED = NOW()
+        WHERE
+            FAQ_ID = #{faqId}
+    </update>
+
+    <delete id="deleteFaq" parameterType="com.acorn.api.entity.faq.Faq">
+        DELETE
+        FROM
+            TB_FAQ
+        WHERE
+            FAQ_ID = #{faqId}
+    </delete>
 </mapper>

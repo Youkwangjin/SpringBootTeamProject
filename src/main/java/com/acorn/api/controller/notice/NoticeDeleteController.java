@@ -7,13 +7,11 @@ import com.acorn.api.dto.notice.request.NoticeDeleteReqDTO;
 import com.acorn.api.service.notice.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class NoticeDeleteController {
@@ -22,8 +20,6 @@ public class NoticeDeleteController {
 
     @PostMapping("/api/admin/notice/delete/{noticeId}")
     public ResponseEntity<ApiSuccessResponse<Object>> noticeDelete(@Valid @RequestBody NoticeDeleteReqDTO deleteData) {
-        log.info(" *****************************    Notice Delete START    *****************************");
-
         noticeService.noticeDataDelete(deleteData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.NOTICE_DELETE_SUCCESS);

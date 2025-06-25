@@ -7,13 +7,11 @@ import com.acorn.api.dto.contact.request.ContactDeleteReqDTO;
 import com.acorn.api.service.contact.ContactService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ContactDeleteController {
@@ -22,8 +20,6 @@ public class ContactDeleteController {
 
     @PostMapping("/api/contact/delete/{contactId}")
     public ResponseEntity<ApiSuccessResponse<Object>> contactDelete(@Valid @RequestBody ContactDeleteReqDTO deleteData) {
-        log.info(" *****************************    Contact Delete START    *****************************");
-
         contactService.contactDataDelete(deleteData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTACT_DELETE_SUCCESS);

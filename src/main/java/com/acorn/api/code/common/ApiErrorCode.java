@@ -14,6 +14,7 @@ public enum ApiErrorCode {
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "BNF", "게시글이 존재하지 않습니다."),
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "NNF", "공지사항이 존재하지 않습니다."),
     CONTACT_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF","문의내역이 존재하지 않습니다."),
+    FAQ_NOT_FOUND(HttpStatus.NOT_FOUND, "FNF","FAQ가 존재하지 않습니다."),
 
     CONTACT_NOT_FILE_DATA(HttpStatus.NOT_FOUND, "CNF","문의내역에 첨부된 파일이 존재하지 않습니다."),
     CONTACT_NOT_WAITING(HttpStatus.BAD_REQUEST, "CNW", "문의대기 상태에서만 수정, 삭제, 취소가 가능합니다."),

@@ -1,8 +1,11 @@
 package com.acorn.api.service.faq.impl;
 
+import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.dto.common.CommonListReqDTO;
+import com.acorn.api.dto.faq.response.FaqContentsResDTO;
 import com.acorn.api.dto.faq.response.FaqListResDTO;
 import com.acorn.api.entity.faq.Faq;
+import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.faq.FaqRepository;
 import com.acorn.api.service.faq.FaqService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,7 @@ public class FaqServiceImpl implements FaqService {
                     final String faqContents = faqList.getFaqContents();
                     final String faqContentsText = faqList.getFaqContentsText();
                     final LocalDateTime faqCreated = faqList.getFaqCreated();
+                    final LocalDateTime faqUpdated = faqList.getFaqUpdated();
 
                     return FaqListResDTO.builder()
                             .rowNum(rowNum)
@@ -39,8 +43,24 @@ public class FaqServiceImpl implements FaqService {
                             .faqContents(faqContents)
                             .faqContentsText(faqContentsText)
                             .faqCreated(faqCreated)
+                            .faqUpdated(faqUpdated)
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public FaqContentsResDTO getFaqContents(Integer faqId) {
+        Faq detailData = faqRepository.selectFaqDetailData(faqId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.FAQ_NOT_FOUND);
+        }
+
+        final String faqContents = detailData.getFaqContents();
+
+        return FaqContentsResDTO.builder()
+                .faqId(faqId)
+                .faqContents(faqContents)
+                .build();
     }
 }
