@@ -122,16 +122,13 @@
 
                 fetch(`/api/faq/contents/${faqId}`, {
                     method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
                     credentials: "include"
                 })
                     .then(async response => {
                         const responseData = await response.json();
 
                         if (response.status === 200) {
-                            answerCell.innerHTML = responseData.faqContentsText;
+                            answerCell.innerHTML = responseData.result.faqContents;
                             answerRow.style.display = "table-row";
 
                         } else {

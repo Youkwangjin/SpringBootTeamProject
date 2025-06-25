@@ -109,7 +109,8 @@ public class SpringSecurityConfig {
                                          "/notice/list/**",
                                          "/notice/detail/**",
                                          "/admin/login",
-                                         "/faq/list/**").permitAll()
+                                         "/faq/list/**",
+                                         "/api/faq/contents/**").permitAll()
 
                         // Public API
                         .requestMatchers("/api/auth/user/register",

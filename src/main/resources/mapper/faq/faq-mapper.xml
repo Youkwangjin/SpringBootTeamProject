@@ -62,4 +62,17 @@
         ORDER BY FAQ_CREATED DESC
         LIMIT ${startRowNum}, ${pageSize}
     </select>
+
+    <select id="selectFaqDetailData" parameterType="Integer" resultMap="faqResultMap">
+        SELECT
+            FAQ_ID,
+            FAQ_TITLE,
+            FAQ_CONTENTS,
+            FAQ_CONTENTS_TEXT,
+            FAQ_CREATED
+        FROM
+            TB_FAQ
+        WHERE
+            FAQ_ID = #{faqId}
+    </select>
 </mapper>
