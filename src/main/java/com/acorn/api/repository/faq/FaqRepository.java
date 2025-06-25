@@ -18,4 +18,6 @@ public interface FaqRepository {
     Faq selectFaqDetailData(@Param("faqId") Integer faqId);
 
     void saveFaq(Faq faq);
+
+    void updateFaq(Faq faq);
 }

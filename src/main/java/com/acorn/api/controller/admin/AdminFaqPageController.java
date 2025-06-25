@@ -39,4 +39,11 @@ public class AdminFaqPageController {
     public String faqWritePage() {
         return "admin/admin-faq-write";
     }
+
+    @GetMapping("/admin/faq/update/{faqId}")
+    public String faqUpdatePage(@PathVariable("faqId") Integer faqId, Model model) {
+        AdminFaqDetailResDTO faqDetailData = adminFaqService.getFaqDetailData(faqId);
+        model.addAttribute("faqDetailData", faqDetailData);
+        return "admin/admin-faq-update";
+    }
 }

@@ -67,6 +67,7 @@
     <select id="selectFaqDetailData" parameterType="Integer" resultMap="faqResultMap">
         SELECT
             FAQ_ID,
+            FAQ_ADMIN_ID,
             FAQ_TITLE,
             FAQ_CONTENTS,
             FAQ_CONTENTS_TEXT,
@@ -95,4 +96,16 @@
             NOW()
         )
     </insert>
+
+    <update id="updateFaq" parameterType="com.acorn.api.entity.faq.Faq">
+        UPDATE
+            TB_FAQ
+        SET
+            FAQ_TITLE = #{faqTitle},
+            FAQ_CONTENTS = #{faqContents},
+            FAQ_CONTENTS_TEXT = #{faqContentsText},
+            FAQ_UPDATED = NOW()
+        WHERE
+            FAQ_ID = #{faqId}
+    </update>
 </mapper>
