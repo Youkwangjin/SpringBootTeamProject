@@ -34,6 +34,7 @@ public class FaqServiceImpl implements FaqService {
                     final String faqContents = faqList.getFaqContents();
                     final String faqContentsText = faqList.getFaqContentsText();
                     final LocalDateTime faqCreated = faqList.getFaqCreated();
+                    final LocalDateTime faqUpdated = faqList.getFaqUpdated();
 
                     return FaqListResDTO.builder()
                             .rowNum(rowNum)
@@ -42,6 +43,7 @@ public class FaqServiceImpl implements FaqService {
                             .faqContents(faqContents)
                             .faqContentsText(faqContentsText)
                             .faqCreated(faqCreated)
+                            .faqUpdated(faqUpdated)
                             .build();
                 })
                 .collect(Collectors.toList());

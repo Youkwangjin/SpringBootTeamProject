@@ -44,7 +44,8 @@
             FAQ_TITLE,
             FAQ_CONTENTS,
             FAQ_CONTENTS_TEXT,
-            FAQ_CREATED
+            FAQ_CREATED,
+            FAQ_UPDATED
         FROM
             TB_FAQ
         <where>
