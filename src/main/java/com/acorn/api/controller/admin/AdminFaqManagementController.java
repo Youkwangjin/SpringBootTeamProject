@@ -3,16 +3,14 @@ package com.acorn.api.controller.admin;
 import com.acorn.api.code.common.ApiSuccessCode;
 import com.acorn.api.code.response.ApiResponseBuilder;
 import com.acorn.api.code.response.ApiSuccessResponse;
+import com.acorn.api.dto.admin.request.AdminFaqDeleteReqDTO;
 import com.acorn.api.dto.admin.request.AdminFaqRegisterReqDTO;
 import com.acorn.api.dto.admin.request.AdminFaqUpdateReqDTO;
 import com.acorn.api.service.admin.AdminFaqService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,5 +30,12 @@ public class AdminFaqManagementController {
         adminFaqService.faqUpdate(updateData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.FAQ_UPDATE_SUCCESS);
+    }
+
+    @PostMapping("/api/admin/faq/delete/{faqId}")
+    public ResponseEntity<ApiSuccessResponse<Object>> faqDelete(@Valid @RequestBody AdminFaqDeleteReqDTO deleteData) {
+        adminFaqService.faqDelete(deleteData);
+
+        return ApiResponseBuilder.success(ApiSuccessCode.FAQ_DELETE_SUCCESS);
     }
 }

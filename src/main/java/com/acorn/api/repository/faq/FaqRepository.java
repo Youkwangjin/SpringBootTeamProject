@@ -20,4 +20,6 @@ public interface FaqRepository {
     void saveFaq(Faq faq);
 
     void updateFaq(Faq faq);
+
+    void deleteFaq(Faq faq);
 }

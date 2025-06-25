@@ -46,6 +46,7 @@
 
         const backBtn = document.getElementById("backListBtn");
         const updateBtn = document.getElementById("updateBtn");
+        const deleteBtn = document.getElementById("deleteBtn");
 
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
@@ -56,6 +57,39 @@
 
         updateBtn.addEventListener("click", function () {
             window.location.href = `/admin/faq/update/${faqId}`;
+        });
+
+        deleteBtn.addEventListener("click", function () {
+            if (!confirm("FAQ를 삭제하시겠습니까?")) {
+                return;
+            }
+
+            const faqData = {
+                faqId: faqId
+            }
+
+            fetch(`/api/admin/faq/delete/${faqId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
+                body: JSON.stringify(faqData)
+            })
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.FAQ_DELETE_SUCCESS);
+                        window.location.href = "/admin/faq/list";
+                    } else {
+                        alert(responseData.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
         });
     });
 </script>

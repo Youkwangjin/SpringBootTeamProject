@@ -108,4 +108,12 @@
         WHERE
             FAQ_ID = #{faqId}
     </update>
+
+    <delete id="deleteFaq" parameterType="com.acorn.api.entity.faq.Faq">
+        DELETE
+        FROM
+            TB_FAQ
+        WHERE
+            FAQ_ID = #{faqId}
+    </delete>
 </mapper>

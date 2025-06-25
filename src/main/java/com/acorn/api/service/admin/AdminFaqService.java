@@ -1,5 +1,6 @@
 package com.acorn.api.service.admin;
 
+import com.acorn.api.dto.admin.request.AdminFaqDeleteReqDTO;
 import com.acorn.api.dto.admin.request.AdminFaqRegisterReqDTO;
 import com.acorn.api.dto.admin.request.AdminFaqUpdateReqDTO;
 import com.acorn.api.dto.admin.response.AdminFaqDetailResDTO;
@@ -12,4 +13,6 @@ public interface AdminFaqService {
     void faqRegister(AdminFaqRegisterReqDTO registerData);
 
     void faqUpdate(AdminFaqUpdateReqDTO updateData);
+
+    void faqDelete(AdminFaqDeleteReqDTO deleteData);
 }

@@ -2,6 +2,7 @@ package com.acorn.api.service.admin.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.dto.admin.request.AdminFaqDeleteReqDTO;
 import com.acorn.api.dto.admin.request.AdminFaqRegisterReqDTO;
 import com.acorn.api.dto.admin.request.AdminFaqUpdateReqDTO;
 import com.acorn.api.dto.admin.response.AdminFaqDetailResDTO;
@@ -94,5 +95,27 @@ public class AdminFaqServiceImpl implements AdminFaqService {
                 .build();
 
         faqRepository.updateFaq(updateFaqData);
+    }
+
+    @Override
+    public void faqDelete(AdminFaqDeleteReqDTO deleteData) {
+        final Integer faqId = deleteData.getFaqId();
+        final Integer faqAdminId = AdminSecurityUtil.getCurrentAdminId();
+
+        Faq detailData = faqRepository.selectFaqDetailData(faqId);
+        if (detailData == null) {
+            throw new AcontainerException(ApiErrorCode.FAQ_NOT_FOUND);
+        }
+
+        final Integer currentAdminId = detailData.getFaqAdminId();
+        if (!Objects.equals(faqAdminId, currentAdminId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Faq deleteFaqData = Faq.builder()
+                .faqId(faqId)
+                .build();
+
+        faqRepository.deleteFaq(deleteFaqData);
     }
 }
