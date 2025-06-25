@@ -7,13 +7,11 @@ import com.acorn.api.dto.board.request.BoardSaveReqDTO;
 import com.acorn.api.service.board.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class BoardSaveController {
@@ -22,8 +20,6 @@ public class BoardSaveController {
 
     @PostMapping("/api/board/save")
     public ResponseEntity<ApiSuccessResponse<Object>> boardSave(@Valid BoardSaveReqDTO saveData) {
-        log.info(" *****************************    Board Save START    *****************************");
-
         boardService.boardDataSave(saveData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.BOARD_SAVE_SUCCESS);
