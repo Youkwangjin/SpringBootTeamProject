@@ -4,7 +4,6 @@
 
 <mapper namespace="com.acorn.api.repository.user.UserRepository">
     <resultMap id="userResultMap"           type="com.acorn.api.entity.user.User">
-        <id property="rowNum"               column="ROW_NUM"/>
         <id property="userId"               column="USER_ID"/>
         <result property="userEmail"        column="USER_EMAIL"/>
         <result property="userPassword"     column="USER_PASSWORD"/>
@@ -111,7 +110,6 @@
 
     <select id="selectAdminUserListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="userResultMap">
         SELECT
-            ROW_NUMBER() OVER (ORDER BY USER_CREATED ASC) AS ROW_NUM,
             USER_ID,
             USER_EMAIL,
             USER_NM,

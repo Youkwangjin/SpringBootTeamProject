@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 @Builder
 public class User {
 
-    private Integer rowNum;
-
     private Integer userId;
 
     private String userEmail;
