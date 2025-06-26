@@ -127,6 +127,8 @@
                 AND USER_NM LIKE CONCAT ('%', TRIM(#{searchName}), '%')
             </if>
         </where>
+        ORDER BY USER_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
     </select>
 
     <update id="userUpdate" parameterType="com.acorn.api.entity.user.User">
