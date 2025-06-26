@@ -42,9 +42,9 @@
             <div class="table-header-cell">전화번호</div>
             <div class="table-header-cell">가입일자</div>
         </div>
-        <th:block th:each="user : ${userListData}">
+        <th:block th:each="user, stat : ${userListData}">
             <div class="table-row" th:attr="onclick=|location.href='/admin/user/detail/${user.userId}'|" style="cursor: pointer;">
-                <div class="table-cell" th:text="${user.rowNum}"></div>
+                <div class="table-cell" th:text="${(request.pageNo - 1) * request.pageSize + stat.index + 1}"></div>
                 <div class="table-cell" th:text="${user.userEmail}"></div>
                 <div class="table-cell" th:text="${user.userNm}"></div>
                 <div class="table-cell" th:text="${user.userTel}"></div>
