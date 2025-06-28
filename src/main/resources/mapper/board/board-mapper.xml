@@ -139,7 +139,8 @@
         SET
             BOARD_TITLE = #{boardTitle},
             BOARD_CONTENTS = #{boardContents},
-            BOARD_CONTENTS_TEXT = #{boardContentsText}
+            BOARD_CONTENTS_TEXT = #{boardContentsText},
+            BOARD_UPDATED = NOW()
         WHERE
             BOARD_ID = #{boardId}
     </update>
