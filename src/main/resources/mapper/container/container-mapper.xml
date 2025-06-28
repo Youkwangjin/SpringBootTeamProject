@@ -291,7 +291,8 @@
             CONTAINER_LATITUDE = #{containerLatitude},
             CONTAINER_LONGITUDE = #{containerLongitude},
             CONTAINER_CONTENTS = #{containerContents},
-            CONTAINER_CONTENTS_TEXT = #{containerContentsText}
+            CONTAINER_CONTENTS_TEXT = #{containerContentsText},
+            CONTAINER_UPDATED = NOW()
         WHERE
             CONTAINER_ID = #{containerId}
     </update>
