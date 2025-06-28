@@ -61,29 +61,29 @@
                     <th>창고 크기</th>
                     <th>창고 상태</th>
                     <th>승인 상태</th>
-                    <th>임대인</th>
+                    <th>등록일</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="container, iterStat : ${containerData}">
                     <td th:text="${iterStat.count}"></td>
                     <td>
-                        <a th:href="@{|/container/detail/${container.containerId}|}" class="text-primary" th:text="${container.containerName}"></a>
+                        <a th:href="@{|/container/detail/${container.containerId}|}" class="text-black" th:text="${container.containerName}"></a>
                     </td>
                     <td th:text="${container.containerSize} + '㎡'"></td>
                     <td>
-                        <span th:if="${container.containerStatus == 0}" class="text-success">사용 대기</span>
-                        <span th:if="${container.containerStatus == 1}" class="text-warning">사용 가능</span>
-                        <span th:if="${container.containerStatus == 2}" class="text-danger">사용 중</span>
-                        <span th:if="${container.containerStatus == 3}" class="text-danger">사용 불가</span>
+                        <span th:if="${container.containerStatus == 0}">사용 대기</span>
+                        <span th:if="${container.containerStatus == 1}">사용 가능</span>
+                        <span th:if="${container.containerStatus == 2}">사용 중</span>
+                        <span th:if="${container.containerStatus == 3}">사용 불가</span>
                     </td>
                     <td>
-                        <span th:if="${container.containerApprovalStatus == 0}" class="text-success">승인 대기</span>
-                        <span th:if="${container.containerApprovalStatus == 1}" class="text-warning">검토 중</span>
-                        <span th:if="${container.containerApprovalStatus == 2}" class="text-warning">승인 완료</span>
-                        <span th:if="${container.containerApprovalStatus == 3}" class="text-danger">승인 거절</span>
+                        <span th:if="${container.containerApprovalStatus == 0}">승인 대기</span>
+                        <span th:if="${container.containerApprovalStatus == 1}">검토 중</span>
+                        <span th:if="${container.containerApprovalStatus == 2}">승인 완료</span>
+                        <span th:if="${container.containerApprovalStatus == 3}">승인 거절</span>
                     </td>
-                    <td></td>
+                    <td th:text="${#temporals.format(container.containerCreated, 'yyyy.MM.dd')}"></td>
                 </tr>
                 <tr th:if="${containerData.size() == 0}">
                     <td colspan="6" class="text-muted py-3">

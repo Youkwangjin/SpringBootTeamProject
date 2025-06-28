@@ -143,8 +143,10 @@
             RESERVATION_END_DATE
         FROM
             TB_RESERVATION
-        WHERE RESERVATION_USER_ID = #{reservationUserId}
-        AND RESERVATION_STATUS IN
+        WHERE
+            RESERVATION_USER_ID = #{reservationUserId}
+        AND
+            RESERVATION_STATUS IN
         <foreach item="reservationStatus" collection="reservationStatus" open="(" separator="," close=")">
             #{reservationStatus}
         </foreach>
@@ -174,14 +176,17 @@
             TB_RESERVATION
         SET
             RESERVATION_TID = #{reservationTid}
-        WHERE RESERVATION_ID = #{reservationId}
+        WHERE
+            RESERVATION_ID = #{reservationId}
     </update>
 
     <update id="updateReservationStatus" parameterType="com.acorn.api.entity.reservation.Reservation">
         UPDATE
             TB_RESERVATION
         SET
-            RESERVATION_STATUS = #{reservationStatus}
-        WHERE RESERVATION_ID = #{reservationId}
+            RESERVATION_STATUS = #{reservationStatus},
+            RESERVATION_UPDATED = NOW()
+        WHERE
+            RESERVATION_ID = #{reservationId}
     </update>
 </mapper>

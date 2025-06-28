@@ -45,7 +45,7 @@
         <div th:if="${contactDetailData.contactStatus == 1 or contactDetailData.contactStatus == 2}">
             <h3>관리자 답변</h3>
             <label for="contactAdminContents">
-                <textarea id="contactAdminContents" placeholder="여기에 답변을 입력하세요." th:text="${contactDetailData.contactAdminContents}" readonly></textarea>
+                <textarea id="contactAdminContents" placeholder="여기에 답변을 입력하세요." th:text="${contactDetailData.contactAdminContents}"></textarea>
             </label>
         </div>
         <div class="button-group">
