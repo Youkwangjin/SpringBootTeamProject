@@ -16,6 +16,7 @@
         <result property="reservationUpdated"       column="RESERVATION_UPDATED"/>
         <association property="user"                javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap"/>
         <association property="container"           javaType="com.acorn.api.entity.container.Container" resultMap="com.acorn.api.repository.container.ContainerRepository.containerResultMap"/>
+        <association property="payment"             javaType="com.acorn.api.entity.payment.Payment" resultMap="com.acorn.api.repository.payment.PaymentRepository.paymentResultMap"/>
     </resultMap>
 
     <select id="selectReservationIdKey" resultType="Integer">

@@ -20,6 +20,7 @@
         <result property="containerUpdated"         column="CONTAINER_UPDATED"/>
         <result property="containerOwnerId"         column="CONTAINER_OWNER_ID"/>
         <association property="owner"               javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap"/>
+        <association property="reservation"         javaType="com.acorn.api.entity.reservation.Reservation" resultMap="com.acorn.api.repository.reservation.ReservationRepository.reservationResultMap"/>
         <collection property="containerFiles"       javaType="java.util.List" resultMap="com.acorn.api.repository.container.ContainerFileRepository.containerFileResultMap"/>
     </resultMap>
 
@@ -42,6 +43,31 @@
             </if>
             <if test="searchType == 'containerApprovalStatus' and searchName != null and searchName.trim() != ''">
                 AND CONTAINER_APPROVAL_STATUS = #{searchName}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectReservationListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(C.CONTAINER_ID)
+        FROM
+            TB_CONTAINER C
+        INNER JOIN
+            TB_RESERVATION R
+        ON C.CONTAINER_ID = R.RESERVATION_CONTAINER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
+        INNER JOIN
+            TB_USER U
+        ON R.RESERVATION_USER_ID = U.USER_ID
+        <where>
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_STATUS = #{searchName}
             </if>
         </where>
     </select>
@@ -99,6 +125,39 @@
             </if>
         </where>
         ORDER BY CONTAINER_CREATED DESC
+        LIMIT ${startRowNum}, ${pageSize}
+    </select>
+
+    <select id="selectContainerReservationListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="containerResultMap">
+        SELECT
+            C.CONTAINER_ID,
+            C.CONTAINER_NAME,
+            U.USER_NM,
+            R.RESERVATION_STATUS,
+            P.PAYMENT_STATUS
+        FROM
+            TB_CONTAINER C
+        INNER JOIN
+            TB_RESERVATION R
+        ON C.CONTAINER_ID = R.RESERVATION_CONTAINER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
+        INNER JOIN
+            TB_USER U
+        ON R.RESERVATION_USER_ID = U.USER_ID
+        <where>
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'reservationStatus' and searchName != null and searchName.trim() != ''">
+                AND R.RESERVATION_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'paymentStatus' and searchName != null and searchName.trim() != ''">
+                AND P.PAYMENT_STATUS = #{searchName}
+            </if>
+        </where>
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
