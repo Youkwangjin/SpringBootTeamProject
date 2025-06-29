@@ -7,7 +7,6 @@ import com.acorn.api.dto.container.response.ContainerMapListResDTO;
 import com.acorn.api.service.common.CommonService;
 import com.acorn.api.service.container.ContainerService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class CommonController {
@@ -31,8 +29,6 @@ public class CommonController {
 
     @GetMapping("/api/geocode")
     public ResponseEntity<?> getCoordinates(@RequestParam String address) {
-        log.info(" *****************************    NAVER Geocoding API START    *****************************");
-
         String response = commonService.getCoordinatesFromNaverAPI(address);
 
         return ResponseEntity.ok(response);
@@ -40,8 +36,6 @@ public class CommonController {
 
     @GetMapping("/api/containers/coordinates")
     public ResponseEntity<ApiSuccessResponse<Object>> getContainersWithCoordinates() {
-        log.info(" *****************************    Container Select START    *****************************");
-
         List<ContainerMapListResDTO> containers = containerService.getContainersForMap();
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTAINER_SELECT_SUCCESS, containers);
@@ -49,9 +43,6 @@ public class CommonController {
 
     @PostMapping("/api/editor/image/upload")
     public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("file") MultipartFile file) {
-
-        log.info(" *****************************    uploadImage START    *****************************");
-
         Map<String, Object> responseData = new HashMap<>();
         try {
             String data = commonService.imageUpload(file);

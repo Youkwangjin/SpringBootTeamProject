@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>에이콘테이너 : 관리자용 FAQ 수정하기</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/admin-faq-detail.css}">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+</head>
+<body>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+    <div th:replace="~{fragments/header-admin :: header}"></div>
+</div>
+<div class="text-faq">
+    <form id="updateForm">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" id="faqId" th:value="${faqDetailData.faqId}">
+        <h3>제목</h3>
+        <label for="faqTitle">
+            <input type="text" class="text-field" id="faqTitle" th:value="${faqDetailData.faqTitle}" placeholder="제목을 입력하세요.">
+        </label>
+        <h3>내용</h3>
+        <label for="faqContents">
+            <textarea id="faqContents" th:text="${faqDetailData.faqContents}"></textarea>
+        </label>
+        <div class="button-group">
+            <button type="button" id="backListBtn" class="custom-btn black-btn">이전</button>
+            <button type="submit" id="updateBtn" class="custom-btn blue-btn">수정하기</button>
+        </div>
+    </form>
+</div>
+<script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/js/common/tinyMCEConfig.js}"></script>
+<script th:src="@{/js/common/messages.js}"></script>
+<script th:src="@{/js/common/logout.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const faqId = document.getElementById("faqId").value;
+
+        const backBtn = document.getElementById("backListBtn");
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        backBtn.addEventListener("click", function () {
+            window.location.href = `/admin/faq/detail/${faqId}`;
+        });
+
+        document.getElementById("updateForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const faqTitle = document.getElementById("faqTitle").value.trim();
+            const faqContents = document.getElementById("faqContents").value.trim();
+
+            if (!faqTitle || !faqContents) {
+                alert("제목, 내용 입력란은 필수 항목입니다.");
+                return;
+            }
+
+            if (faqTitle.length > 50) {
+                alert("제목은 최대 50자까지 입력 가능합니다.");
+                return;
+            }
+
+            if (!confirm("FAQ를 수정하시겠습니까?")) {
+                return;
+            }
+
+            const faqData = {
+                faqId: faqId,
+                faqTitle: faqTitle,
+                faqContents: faqContents
+            }
+
+            fetch(`/api/admin/faq/update/${faqId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
+                body: JSON.stringify(faqData)
+            })
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.FAQ_UPDATE_SUCCESS);
+                        window.location.href = `/admin/faq/detail/${faqId}`;
+                    } else {
+                        alert(responseData.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
+        });
+    });
+</script>
+</body>
+</html>

@@ -7,12 +7,10 @@ import com.acorn.api.dto.contact.request.ContactSaveReqDTO;
 import com.acorn.api.service.contact.ContactService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ContactSaveController {
@@ -21,8 +19,6 @@ public class ContactSaveController {
 
     @PostMapping("/api/contact/save")
     public ResponseEntity<ApiSuccessResponse<Object>> contactSave(@Valid ContactSaveReqDTO saveData) {
-        log.info(" *****************************    Contact Save START    *****************************");
-
         contactService.contactSaveData(saveData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.CONTACT_SAVE_SUCCESS);

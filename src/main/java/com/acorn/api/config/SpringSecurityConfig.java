@@ -108,7 +108,9 @@ public class SpringSecurityConfig {
                                          "/board/detail/**",
                                          "/notice/list/**",
                                          "/notice/detail/**",
-                                         "/admin/login").permitAll()
+                                         "/admin/login",
+                                         "/faq/list/**",
+                                         "/api/faq/contents/**").permitAll()
 
                         // Public API
                         .requestMatchers("/api/auth/user/register",
@@ -148,6 +150,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/owner/mypage",
                                          "/owner/update/profile",
                                          "/owner/delete/profile",
+                                         "/container/reservation/list/**",
                                          "/container/list/**",
                                          "/container/register",
                                          "/container/detail/**",
@@ -166,7 +169,11 @@ public class SpringSecurityConfig {
                                          "/admin/notice/write",
                                          "/notice/update/**",
                                          "/admin/contact/list/**",
-                                         "/admin/contact/detail/**").hasAuthority("ROLE_ADMIN")
+                                         "/admin/contact/detail/**",
+                                         "/admin/faq/list/**",
+                                         "/admin/faq/detail/**",
+                                         "/admin/faq/write",
+                                         "/admin/faq/update/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected User API
                         .requestMatchers("/api/user/update/**",
@@ -204,7 +211,10 @@ public class SpringSecurityConfig {
                                          "/api/admin/notice/delete/**",
                                          "/api/admin/contact/reviewRequest/**",
                                          "/api/admin/contact/answerRequest/**",
-                                         "/api/admin/contact/file/download/**").hasAuthority("ROLE_ADMIN")
+                                         "/api/admin/contact/file/download/**",
+                                         "/api/admin/faq/register",
+                                         "/api/admin/faq/update/**",
+                                         "/api/admin/faq/delete/**").hasAuthority("ROLE_ADMIN")
 
                         // Protected Common Api
                         .requestMatchers("/api/editor/image/upload",

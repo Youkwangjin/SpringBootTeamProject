@@ -5,11 +5,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>에이콘테이너 : 공급자 정보 수정</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="/assets/css/main.css" rel="stylesheet">
-    <link href="/css/admin/admin-owner-update.css" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+    <link th:href="@{/css/admin/admin-owner-update.css}" rel="stylesheet">
 </head>
 <body>
 <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
@@ -106,9 +106,9 @@
     </div>
 </form>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/common/daum-postcode.js"></script>
-<script src="/js/common/logout.js"></script>
-<script src="/js/common/messages.js"></script>
+<script th:src="@{/js/common/daum-postcode.js}"></script>
+<script th:src="@{/js/common/logout.js}"></script>
+<script th:src="@{/js/common/messages.js}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const ownerId = document.getElementById("ownerId").value;

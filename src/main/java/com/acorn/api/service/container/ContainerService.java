@@ -1,13 +1,7 @@
 package com.acorn.api.service.container;
 
-import com.acorn.api.dto.container.request.ContainerDeleteReqDTO;
-import com.acorn.api.dto.container.request.ContainerListReqDTO;
-import com.acorn.api.dto.container.request.ContainerRegisterReqDTO;
-import com.acorn.api.dto.container.request.ContainerUpdateReqDTO;
-import com.acorn.api.dto.container.response.ContainerDetailResDTO;
-import com.acorn.api.dto.container.response.ContainerFileDownloadResDTO;
-import com.acorn.api.dto.container.response.ContainerListResDTO;
-import com.acorn.api.dto.container.response.ContainerMapListResDTO;
+import com.acorn.api.dto.container.request.*;
+import com.acorn.api.dto.container.response.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +11,8 @@ import java.util.List;
 public interface ContainerService {
 
     List<ContainerListResDTO> getContainerListData(ContainerListReqDTO listData);
+
+    List<ContainerReservationListResDTO> getContainerReservationListData(ContainerReservationListReqDTO listData);
 
     List<ContainerMapListResDTO> getContainersForMap();
 

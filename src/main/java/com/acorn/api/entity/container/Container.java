@@ -1,6 +1,7 @@
 package com.acorn.api.entity.container;
 
 import com.acorn.api.entity.owner.Owner;
+import com.acorn.api.entity.reservation.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,7 +47,9 @@ public class Container {
 
     private Integer containerOwnerId;
 
+    private List<ContainerFile> containerFiles;
+
     private Owner owner;
 
-    private List<ContainerFile> containerFiles;
+    private Reservation reservation;
 }

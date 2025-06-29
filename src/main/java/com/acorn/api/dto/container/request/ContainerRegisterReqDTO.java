@@ -15,7 +15,7 @@ import java.util.List;
 public class ContainerRegisterReqDTO {
 
     @NotBlank
-    @Size(max = 100)
+    @Size(max = 50)
     private String containerName;
 
     @NotBlank

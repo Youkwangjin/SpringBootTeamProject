@@ -7,12 +7,10 @@ import com.acorn.api.dto.notice.request.NoticeUpdateReqDTO;
 import com.acorn.api.service.notice.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class NoticeUpdateController {
@@ -21,8 +19,6 @@ public class NoticeUpdateController {
 
     @PatchMapping("/api/admin/notice/update/{noticeId}")
     public ResponseEntity<ApiSuccessResponse<Object>> noticeUpdate(@Valid NoticeUpdateReqDTO updateData) {
-        log.info(" *****************************    Notice Update START    *****************************");
-
         noticeService.noticeDataUpdate(updateData);
 
         return ApiResponseBuilder.success(ApiSuccessCode.NOTICE_UPDATE_SUCCESS);

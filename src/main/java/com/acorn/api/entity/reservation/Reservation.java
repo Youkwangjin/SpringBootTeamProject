@@ -1,6 +1,7 @@
 package com.acorn.api.entity.reservation;
 
 import com.acorn.api.entity.container.Container;
+import com.acorn.api.entity.payment.Payment;
 import com.acorn.api.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,4 +39,6 @@ public class Reservation {
     private User user;
 
     private Container container;
+
+    private Payment payment;
 }

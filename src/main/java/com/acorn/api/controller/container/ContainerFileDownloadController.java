@@ -3,7 +3,6 @@ package com.acorn.api.controller.container;
 import com.acorn.api.dto.container.response.ContainerFileDownloadResDTO;
 import com.acorn.api.service.container.ContainerService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +14,6 @@ import org.springframework.web.util.UriUtils;
 
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ContainerFileDownloadController {
@@ -24,8 +22,6 @@ public class ContainerFileDownloadController {
 
     @GetMapping("/api/container/file/download/{containerId}/{containerFileId}")
     public ResponseEntity<byte[]> containerFileDownload(@PathVariable("containerId") Integer containerId, @PathVariable("containerFileId") Integer containerFileId) {
-        log.info(" *****************************    Container File  Download START    *****************************");
-
         ContainerFileDownloadResDTO resData = containerService.containerFileDownload(containerId, containerFileId);
 
         String fileName = UriUtils.encode(resData.getOriginalFileName(), StandardCharsets.UTF_8);

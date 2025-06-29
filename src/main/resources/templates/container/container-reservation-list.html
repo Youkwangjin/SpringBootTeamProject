@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>에이콘 컨테이너 : 창고 사용자 예약 조회</title>
+    <link rel="stylesheet" th:href="@{/css/member/member.css}"/>
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/container/container-reservation-list.css}">
+</head>
+<body>
+<div sec:authorize="isAnonymous()">
+    <div th:replace="~{fragments/header:: header}"></div>
+</div>
+<div sec:authorize="hasAnyRole('ROLE_OWNER')">
+    <div th:replace="~{fragments/header-owner :: header}"></div>
+</div>
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<div class="custom-gap-top"></div>
+<form id="listForm" method="get">
+    <input type="hidden" id="pageNo" name="pageNo" th:value="${request.pageNo}"/>
+    <div class="text-header">
+        <h2 class="align">예약 목록</h2>
+    </div>
+    <div class="custom-search-bar">
+        <label for="searchType" class="visually-hidden">검색 유형</label>
+        <select id="searchType" name="searchType">
+            <option value="containerName" th:selected="${request.searchType == 'containerName'}">창고이름</option>
+            <option value="reservationStatus" th:selected="${request.searchType == 'reservationStatus'}">예약 상태</option>
+            <option value="paymentStatus" th:selected="${request.searchType == 'paymentStatus'}">결제 상태</option>
+        </select>
+        <label for="searchName" class="visually-hidden">검색어 입력</label>
+        <input type="text" id="searchName" name="searchName" placeholder="검색어를 입력하세요." th:value="${request.searchName}">
+        <select id="reservationStatus" name="searchName" style="display: none;" aria-label="예약 상태">
+            <option value="0" th:selected="${request.searchName == '0'}">예약 대기</option>
+            <option value="1" th:selected="${request.searchName == '1'}">예약 중</option>
+            <option value="2" th:selected="${request.searchName == '2'}">예약 종료</option>
+            <option value="3" th:selected="${request.searchName == '3'}">예약 취소</option>
+        </select>
+        <select id="paymentStatus" name="searchName" style="display: none;" aria-label="결제 상태">
+            <option value="1" th:selected="${request.searchName == '0'}">결제 대기</option>
+            <option value="1" th:selected="${request.searchName == '1'}">결제 완료</option>
+            <option value="2" th:selected="${request.searchName == '2'}">결제 취소</option>
+        </select>
+        <button id="searchButton" type="button">검색</button>
+        <button id="resetBtn" type="button">초기화</button>
+    </div>
+    <div class="table-reserve">
+        <div class="table-row header-row">
+            <div class="table-header-cell">번호</div>
+            <div class="table-header-cell">창고이름</div>
+            <div class="table-header-cell">임대인</div>
+            <div class="table-header-cell">예약상태</div>
+            <div class="table-header-cell">결제상태</div>
+        </div>
+        <th:block th:each="containerReservation, stat : ${containerReservationData}">
+            <div class="table-row" th:attr="onclick=|location.href='/container/reservation/detail/${containerReservation.containerId}'|" style="cursor: pointer;">
+                <div class="table-cell" th:text="${(request.pageNo - 1) * request.pageSize + stat.index + 1}"></div>
+                <div class="table-cell" th:text="${containerReservation.containerName}"></div>
+                <div class="table-cell" th:text="${containerReservation.userNm}"></div>
+                <div class="table-cell"
+                     th:text="${containerReservation.reservationStatus == 0 ? '예약대기'
+                                    : (containerReservation.reservationStatus == 1 ? '예약중'
+                                    : (containerReservation.reservationStatus == 2 ? '예약종료'
+                                    : (containerReservation.reservationStatus == 3 ? '예약취소' : '알수없음')))}">
+                </div>
+                <div class="table-cell"
+                     th:text="${containerReservation.paymentStatus == 0 ? '결제대기'
+                                    : (containerReservation.paymentStatus == 1 ? '결제완료'
+                                    : (containerReservation.paymentStatus == 2 ? '결제취소' : '미결제'))}">
+                </div>
+            </div>
+        </th:block>
+        <th:block th:if="${#lists.isEmpty(containerReservationData)}">
+            <div class="table-row">
+                <div class="table-cell" colspan="5">조회된 예약 정보가 없습니다.</div>
+            </div>
+        </th:block>
+    </div>
+    <div class="custom-pagination">
+        <th:block th:if="${request.totalCount > 0}">
+            <ul>
+                <li th:if="${request.startPageNo > 1}">
+                    <a th:href="@{/container/reservation/list(pageNo=${request.firstPageNo})}">&laquo;</a>
+                </li>
+                <li th:if="${request.pageNo > request.startPageNo}">
+                    <a th:href="@{/container/reservation/list(pageNo=${request.prevPageNo})}">&lt;</a>
+                </li>
+                <th:block th:each="i : ${#numbers.sequence(request.startPageNo, request.endPageNo)}">
+                    <li th:classappend="${i == request.pageNo} ? 'active'">
+                        <a th:href="@{/container/reservation/list(pageNo=${i})}" th:text="${i}"></a>
+                    </li>
+                </th:block>
+                <li th:if="${request.pageNo < request.endPageNo}">
+                    <a th:href="@{/container/reservation/list(pageNo=${request.nextPageNo})}">&gt;</a>
+                </li>
+                <li th:if="${request.endPageNo < request.finalPageNo}">
+                    <a th:href="@{/container/reservation/list(pageNo=${request.finalPageNo})}">&raquo;</a>
+                </li>
+            </ul>
+        </th:block>
+    </div>
+</form>
+<script th:src="@{/js/common/logout.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const pageNo = document.getElementById("pageNo").value;
+        const searchType = document.getElementById("searchType");
+        const searchName = document.getElementById("searchName");
+
+        const reservationStatus = document.getElementById("reservationStatus");
+        const paymentStatus = document.getElementById("paymentStatus");
+
+        const searchButton = document.getElementById("searchButton");
+        const resetButton = document.getElementById("resetBtn");
+
+        const setSearchInputVisibility = () => {
+            searchName.style.display = "none";
+            searchName.name = "";
+
+            reservationStatus.style.display = "none";
+            reservationStatus.name = "";
+
+            paymentStatus.style.display = "none";
+            paymentStatus.name = "";
+
+            if (searchType.value === "reservationStatus") {
+                reservationStatus.style.display = "inline-block";
+                reservationStatus.name = "searchName";
+            } else if (searchType.value === "paymentStatus") {
+                paymentStatus.style.display = "inline-block";
+                paymentStatus.name = "searchName";
+            } else {
+                searchName.style.display = "inline-block";
+                searchName.name = "searchName";
+            }
+        }
+
+        setSearchInputVisibility();
+        searchType.addEventListener("change", setSearchInputVisibility);
+
+        searchButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            let searchValue;
+
+            if (searchType.value === "reservationStatus") {
+                searchValue = reservationStatus.value;
+            } else if (searchType.value === "paymentStatus") {
+                searchValue = paymentStatus.value;
+            } else {
+                searchValue = searchName.value.trim();
+            }
+
+            window.location.href = `/container/reservation/list?pageNo=${pageNo}&searchType=${searchType.value}&searchName=${searchValue}`;
+        });
+
+        resetButton.addEventListener("click", function () {
+            window.location.href = "/container/reservation/list";
+        });
+    });
+</script>
+</body>
+</html>

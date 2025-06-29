@@ -40,7 +40,6 @@ public class AdminUserServiceImpl implements AdminUserService {
         List<User> userListData = userRepository.selectAdminUserListData(listData);
         return userListData.stream()
                 .map(userList -> {
-                    final Integer rowNum = userList.getRowNum();
                     final Integer userId = userList.getUserId();
                     final String userEmail = userList.getUserEmail();
                     final String userNm = userList.getUserNm();
@@ -48,7 +47,6 @@ public class AdminUserServiceImpl implements AdminUserService {
                     final LocalDateTime userCreated = userList.getUserCreated();
 
                     return AdminUserListResDTO.builder()
-                            .rowNum(rowNum)
                             .userId(userId)
                             .userEmail(userEmail)
                             .userNm(userNm)

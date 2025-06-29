@@ -3,7 +3,6 @@ package com.acorn.api.controller.contact;
 import com.acorn.api.dto.contact.response.ContactFileDownloadResDTO;
 import com.acorn.api.service.contact.ContactService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +14,6 @@ import org.springframework.web.util.UriUtils;
 
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ContactFileDownloadController {
@@ -24,8 +22,6 @@ public class ContactFileDownloadController {
 
     @GetMapping("/api/contact/file/download/{contactId}/{contactFileId}")
     public ResponseEntity<byte[]> contactFileDownload(@PathVariable("contactId") Integer contactId, @PathVariable("contactFileId") Integer contactFileId) {
-        log.info(" *****************************    Contact File  Download START    *****************************");
-
         ContactFileDownloadResDTO resData = contactService.contactFileDownload(contactId, contactFileId);
 
         String fileName = UriUtils.encode(resData.getOriginalFileName(), StandardCharsets.UTF_8);

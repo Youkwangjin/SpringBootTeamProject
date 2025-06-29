@@ -1,8 +1,10 @@
 package com.acorn.api.controller.container;
 
+import com.acorn.api.dto.container.request.ContainerReservationListReqDTO;
 import com.acorn.api.dto.container.response.ContainerDetailResDTO;
 import com.acorn.api.dto.container.request.ContainerListReqDTO;
 import com.acorn.api.dto.container.response.ContainerListResDTO;
+import com.acorn.api.dto.container.response.ContainerReservationListResDTO;
 import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.service.container.ContainerService;
 import com.acorn.api.service.owner.OwnerService;
@@ -27,6 +29,14 @@ public class ContainerPageController {
         model.addAttribute("containerData", containerListData);
         model.addAttribute("request", listData);
         return "container/container-list";
+    }
+
+    @GetMapping("/container/reservation/list")
+    public String reservationPage(ContainerReservationListReqDTO listData, Model model) {
+        List<ContainerReservationListResDTO> containerReservationListData = containerService.getContainerReservationListData(listData);
+        model.addAttribute("containerReservationData", containerReservationListData);
+        model.addAttribute("request", listData);
+        return "container/container-reservation-list";
     }
 
     @GetMapping("/container/register")
