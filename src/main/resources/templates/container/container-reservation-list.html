@@ -42,7 +42,7 @@
             <option value="3" th:selected="${request.searchName == '3'}">예약 취소</option>
         </select>
         <select id="paymentStatus" name="searchName" style="display: none;" aria-label="결제 상태">
-            <option value="1" th:selected="${request.searchName == '0'}">결제 대기</option>
+            <option value="0" th:selected="${request.searchName == '0'}">결제 대기</option>
             <option value="1" th:selected="${request.searchName == '1'}">결제 완료</option>
             <option value="2" th:selected="${request.searchName == '2'}">결제 취소</option>
         </select>
@@ -71,7 +71,7 @@
                 <div class="table-cell"
                      th:text="${containerReservation.paymentStatus == 0 ? '결제대기'
                                     : (containerReservation.paymentStatus == 1 ? '결제완료'
-                                    : (containerReservation.paymentStatus == 2 ? '결제취소' : '미결제'))}">
+                                    : (containerReservation.paymentStatus == 2 ? '결제취소' : '알수없음'))}">
                 </div>
             </div>
         </th:block>

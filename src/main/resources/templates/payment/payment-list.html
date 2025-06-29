@@ -62,7 +62,9 @@
                                     : (payment.paymentStatus == 2 ? '결제취소' : '알수없음'))}">
                 </div>
                 <div class="table-cell" th:text="${#temporals.format(payment.paymentApproved, 'yyyy-MM-dd HH:mm')}"></div>
-                <div class="table-cell" th:text="${#temporals.format(payment.paymentCanceled, 'yyyy-MM-dd HH:mm')}"></div>
+                <div class="table-cell"
+                     th:text="${payment.paymentCanceled == null ? '취소 이력 없음' : #temporals.format(payment.paymentCanceled, 'yyyy-MM-dd HH:mm')}">
+                </div>
             </div>
         </th:block>
         <th:block th:if="${#lists.isEmpty(paymentListData)}">
