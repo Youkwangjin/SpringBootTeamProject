@@ -150,6 +150,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/owner/mypage",
                                          "/owner/update/profile",
                                          "/owner/delete/profile",
+                                         "/container/reservation/list/**",
                                          "/container/list/**",
                                          "/container/register",
                                          "/container/detail/**",
