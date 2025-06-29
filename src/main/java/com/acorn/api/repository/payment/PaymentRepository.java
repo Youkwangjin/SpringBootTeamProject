@@ -18,11 +18,13 @@ public interface PaymentRepository {
 
     Payment selectPaymentDetailData(@Param("paymentId") Integer paymentId);
 
-    void insertPayment(Payment payment);
-
     Payment selectPaymentByReservationId(@Param("paymentReservationId") Integer paymentReservationId);
 
     List<Payment> selectPaymentByUserIdAndStatus(@Param("paymentUserId") Integer userId, @Param("paymentStatus") Integer paymentStatus);
+
+    void insertPayment(Payment payment);
+
+    void updatePayment(Payment payment);
 
     void updatePaymentStatus(Payment payment);
 }

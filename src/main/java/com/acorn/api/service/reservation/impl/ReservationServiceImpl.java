@@ -101,11 +101,12 @@ public class ReservationServiceImpl implements ReservationService {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
         }
 
-        Integer paymentId = null;
         Payment paymentData = paymentRepository.selectPaymentByReservationId(reservationId);
-        if (paymentData != null) {
-            paymentId = paymentData.getPaymentId();
+        if (paymentData == null) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_NOT_FOUND);
         }
+
+        final Integer paymentId = paymentData.getPaymentId();
 
         return ReservationDetailResDTO.builder()
                 .reservationId(reservationId)
@@ -175,6 +176,18 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
 
         containerRepository.updateContainerStatus(updateContainerStatus);
+
+        final Integer paymentId = paymentRepository.selectPaymentIdKey();
+        final Integer paymentPendingStatus = PaymentStatus.PAYMENT_STATUS_PENDING.getCode();
+
+        Payment newPayment = Payment.builder()
+                .paymentId(paymentId)
+                .paymentUserId(currentUserId)
+                .paymentReservationId(reservationId)
+                .paymentStatus(paymentPendingStatus)
+                .build();
+
+        paymentRepository.insertPayment(newPayment);
     }
 
     @Override
