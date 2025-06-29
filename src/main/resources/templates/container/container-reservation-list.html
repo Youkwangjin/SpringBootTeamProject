@@ -71,7 +71,7 @@
                 <div class="table-cell"
                      th:text="${containerReservation.paymentStatus == 0 ? '결제대기'
                                     : (containerReservation.paymentStatus == 1 ? '결제완료'
-                                    : (containerReservation.paymentStatus == 2 ? '결제취소' : '미결제'))}">
+                                    : (containerReservation.paymentStatus == 2 ? '결제취소' : '알수없음'))}">
                 </div>
             </div>
         </th:block>
