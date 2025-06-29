@@ -235,10 +235,11 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         Payment paymentDetailData = paymentRepository.selectPaymentByReservationId(reservationId);
-        if (paymentDetailData != null) {
-            throw new AcontainerException(ApiErrorCode.PAYMENT_ALREADY_COMPLETED);
+        if (paymentDetailData == null) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_NOT_FOUND);
         }
 
+        final Integer paymentId = paymentDetailData.getPaymentId();
         final Integer containerUseStatus = ContainerStatus.CONTAINER_STATUS_USE.getCode();
         final Integer reservationActiveStatus = ReservationStatus.RESERVATION_STATUS_ACTIVE.getCode();
         final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
@@ -274,22 +275,19 @@ public class PaymentServiceImpl implements PaymentService {
 
         reservationRepository.updateReservationStatus(updateReservationStatus);
 
-        final Integer paymentId = paymentRepository.selectPaymentIdKey();
         final LocalDateTime paymentApproved = LocalDateTime.now();
         final LocalDateTime paymentCancelDeadline = paymentApproved.plusDays(3);
 
-        Payment newPayment = Payment.builder()
+        Payment updatePayment = Payment.builder()
                 .paymentId(paymentId)
                 .paymentTid(currentTid)
-                .paymentUserId(currentUserId)
-                .paymentReservationId(reservationId)
                 .paymentAmount(containerPrice)
                 .paymentStatus(paymentCompletedStatus)
                 .paymentApproved(paymentApproved)
                 .paymentCancelDeadline(paymentCancelDeadline)
                 .build();
 
-        paymentRepository.insertPayment(newPayment);
+        paymentRepository.updatePayment(updatePayment);
 
         return response;
     }

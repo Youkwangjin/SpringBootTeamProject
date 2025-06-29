@@ -175,6 +175,18 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
 
         containerRepository.updateContainerStatus(updateContainerStatus);
+
+        final Integer paymentId = paymentRepository.selectPaymentIdKey();
+        final Integer paymentPendingStatus = PaymentStatus.PAYMENT_STATUS_PENDING.getCode();
+
+        Payment newPayment = Payment.builder()
+                .paymentId(paymentId)
+                .paymentUserId(currentUserId)
+                .paymentReservationId(reservationId)
+                .paymentStatus(paymentPendingStatus)
+                .build();
+
+        paymentRepository.insertPayment(newPayment);
     }
 
     @Override

@@ -144,24 +144,31 @@
     <insert id="insertPayment" parameterType="com.acorn.api.entity.payment.Payment" useGeneratedKeys="true" keyProperty="paymentId">
         INSERT INTO TB_PAYMENT (
             PAYMENT_ID,
-            PAYMENT_TID,
             PAYMENT_USER_ID,
             PAYMENT_RESERVATION_ID,
-            PAYMENT_AMOUNT,
             PAYMENT_STATUS,
-            PAYMENT_APPROVED,
-            PAYMENT_CANCEL_DEADLINE
+            PAYMENT_CREATED
         ) VALUES (
             #{paymentId},
-            #{paymentTid},
             #{paymentUserId},
             #{paymentReservationId},
-            #{paymentAmount},
             #{paymentStatus},
-            #{paymentApproved},
-            #{paymentCancelDeadline}
+            NOW()
         )
     </insert>
+
+    <update id="updatePayment" parameterType="com.acorn.api.entity.payment.Payment">
+        UPDATE
+            TB_PAYMENT
+        SET
+            PAYMENT_TID = #{paymentTid},
+            PAYMENT_AMOUNT = #{paymentAmount},
+            PAYMENT_STATUS = #{paymentStatus},
+            PAYMENT_APPROVED = NOW(),
+            PAYMENT_CANCEL_DEADLINE = #{paymentCancelDeadline}
+        WHERE
+            PAYMENT_ID = #{paymentId}
+    </update>
 
     <update id="updatePaymentStatus" parameterType="com.acorn.api.entity.payment.Payment">
         UPDATE
