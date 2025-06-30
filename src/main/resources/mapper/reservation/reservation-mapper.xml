@@ -159,16 +159,14 @@
             RESERVATION_USER_ID,
             RESERVATION_CONTAINER_ID,
             RESERVATION_STATUS,
-            RESERVATION_START_DATE,
-            RESERVATION_END_DATE
+            RESERVATION_CREATED
         )
         VALUES (
             #{reservationId},
             #{reservationUserId},
             #{reservationContainerId},
             #{reservationStatus},
-            #{reservationStartDate},
-            #{reservationEndDate}
+            NOW()
         )
     </insert>
 
@@ -177,6 +175,18 @@
             TB_RESERVATION
         SET
             RESERVATION_TID = #{reservationTid}
+        WHERE
+            RESERVATION_ID = #{reservationId}
+    </update>
+
+    <update id="updateReservation" parameterType="com.acorn.api.entity.reservation.Reservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            RESERVATION_START_DATE = #{reservationStartDate},
+            RESERVATION_END_DATE = #{reservationEndDate},
+            RESERVATION_STATUS = #{reservationStatus},
+            RESERVATION_UPDATED = NOW()
         WHERE
             RESERVATION_ID = #{reservationId}
     </update>

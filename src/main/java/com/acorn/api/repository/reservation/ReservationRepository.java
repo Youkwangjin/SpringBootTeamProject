@@ -28,5 +28,7 @@ public interface ReservationRepository {
 
     void updateReservationTid(@Param("reservationId") Integer reservationId, @Param("reservationTid") String kakaoPayTid);
 
+    void updateReservation(Reservation reservation);
+
     void updateReservationStatus(Reservation reservation);
 }

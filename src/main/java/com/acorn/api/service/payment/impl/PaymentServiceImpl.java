@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -268,12 +269,17 @@ public class PaymentServiceImpl implements PaymentService {
 
         containerRepository.updateContainerStatus(updateContainerStatus);
 
-        Reservation updateReservationStatus = Reservation.builder()
+        final LocalDateTime reservationStartDate = LocalDateTime.now();
+        final LocalDateTime reservationEndDate = reservationStartDate.plusMonths(1).with(LocalTime.NOON);
+
+        Reservation updateReservation = Reservation.builder()
                 .reservationId(reservationId)
                 .reservationStatus(reservationActiveStatus)
+                .reservationStartDate(reservationStartDate)
+                .reservationEndDate(reservationEndDate)
                 .build();
 
-        reservationRepository.updateReservationStatus(updateReservationStatus);
+        reservationRepository.updateReservation(updateReservation);
 
         final LocalDateTime paymentApproved = LocalDateTime.now();
         final LocalDateTime paymentCancelDeadline = paymentApproved.plusDays(3);
