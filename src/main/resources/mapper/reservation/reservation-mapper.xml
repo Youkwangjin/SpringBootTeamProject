@@ -106,33 +106,6 @@
         WHERE U.USER_ID = #{userId}
     </select>
 
-    <select id="selectReservationDetailData" parameterType="Integer" resultMap="reservationResultMap">
-        SELECT
-            R.RESERVATION_ID,
-            R.RESERVATION_TID,
-            R.RESERVATION_USER_ID,
-            R.RESERVATION_CONTAINER_ID,
-            R.RESERVATION_STATUS,
-            R.RESERVATION_START_DATE,
-            R.RESERVATION_END_DATE,
-            C.CONTAINER_ID,
-            C.CONTAINER_NAME,
-            C.CONTAINER_ADDRESS,
-            C.CONTAINER_PRICE,
-            O.OWNER_NM,
-            O.OWNER_COMPANY_NAME
-        FROM
-            TB_RESERVATION R
-        INNER JOIN
-            TB_CONTAINER C
-        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
-        INNER JOIN
-            TB_OWNER O
-        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
-        WHERE
-            R.RESERVATION_ID = #{reservationId}
-    </select>
-
     <select id="selectReservationByUserIdAndStatus" parameterType="map" resultMap="reservationResultMap">
         SELECT
             RESERVATION_ID,
@@ -153,22 +126,73 @@
         </foreach>
     </select>
 
+    <select id="selectExpiredPendingReservations" parameterType="java.time.LocalDateTime" resultType="Integer">
+        <![CDATA[
+            SELECT
+                RESERVATION_ID
+            FROM
+                TB_RESERVATION
+            WHERE
+                RESERVATION_STATUS = 0
+            AND
+                RESERVATION_START_DATE IS NULL
+            AND
+                RESERVATION_END_DATE IS NULL
+            AND
+                RESERVATION_CREATED <= #{threeDaysAgo}
+        ]]>
+    </select>
+
+    <select id="selectReservationDetailData" parameterType="Integer" resultMap="reservationResultMap">
+        SELECT
+            R.RESERVATION_ID,
+            R.RESERVATION_TID,
+            R.RESERVATION_USER_ID,
+            R.RESERVATION_CONTAINER_ID,
+            R.RESERVATION_STATUS,
+            R.RESERVATION_START_DATE,
+            R.RESERVATION_END_DATE,
+            C.CONTAINER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_PRICE,
+            O.OWNER_NM,
+            O.OWNER_COMPANY_NAME
+        FROM
+            TB_RESERVATION R
+                INNER JOIN
+            TB_CONTAINER C
+            ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+                INNER JOIN
+            TB_OWNER O
+            ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        WHERE
+            R.RESERVATION_ID = #{reservationId}
+    </select>
+
+    <select id="selectReservationContainerId" parameterType="Integer" resultType="Integer">
+        SELECT
+            RESERVATION_CONTAINER_ID
+        FROM
+            TB_RESERVATION
+        WHERE
+            RESERVATION_ID = #{reservationId}
+    </select>
+
     <insert id="insertReservation" parameterType="com.acorn.api.entity.reservation.Reservation" useGeneratedKeys="true" keyProperty="reservationId">
         INSERT INTO TB_RESERVATION (
             RESERVATION_ID,
             RESERVATION_USER_ID,
             RESERVATION_CONTAINER_ID,
             RESERVATION_STATUS,
-            RESERVATION_START_DATE,
-            RESERVATION_END_DATE
+            RESERVATION_CREATED
         )
         VALUES (
             #{reservationId},
             #{reservationUserId},
             #{reservationContainerId},
             #{reservationStatus},
-            #{reservationStartDate},
-            #{reservationEndDate}
+            NOW()
         )
     </insert>
 
@@ -177,6 +201,18 @@
             TB_RESERVATION
         SET
             RESERVATION_TID = #{reservationTid}
+        WHERE
+            RESERVATION_ID = #{reservationId}
+    </update>
+
+    <update id="updateReservation" parameterType="com.acorn.api.entity.reservation.Reservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            RESERVATION_START_DATE = #{reservationStartDate},
+            RESERVATION_END_DATE = #{reservationEndDate},
+            RESERVATION_STATUS = #{reservationStatus},
+            RESERVATION_UPDATED = NOW()
         WHERE
             RESERVATION_ID = #{reservationId}
     </update>

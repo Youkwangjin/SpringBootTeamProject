@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -156,16 +155,12 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         final Integer reservationId = reservationRepository.selectReservationIdKey();
-        final LocalDateTime reservationStartDate = LocalDateTime.now();
-        final LocalDateTime reservationEndDate = reservationStartDate.plusMonths(1).with(LocalTime.NOON);
 
         Reservation reservationData = Reservation.builder()
                 .reservationId(reservationId)
                 .reservationUserId(currentUserId)
                 .reservationContainerId(containerId)
                 .reservationStatus(reservePendingStatus)
-                .reservationStartDate(reservationStartDate)
-                .reservationEndDate(reservationEndDate)
                 .build();
 
         reservationRepository.insertReservation(reservationData);

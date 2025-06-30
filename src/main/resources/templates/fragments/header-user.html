@@ -12,21 +12,17 @@
                 <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
                 <nav id="navbar" class="navbar">
                     <ul>
-                        <li><a href="/user/mypage" class="active">Home</a></li>
                         <li><a href="/service">서비스</a></li>
                         <li><a href="/containers/map">창고검색</a></li>
-                        <li class="dropdown"><a href="#"><span>마이페이지</span> <i
-                                class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <li><a href="/user/reservation/list">예약조회</a></li>
+                        <li><a href="/user/payment/list">결제내역</a></li>
+                        <li class="dropdown"><a href="#"><span>마이페이지</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                             <ul>
-                                <li><a href="/user/reservation/list">예약조회</a></li>
-                                <li><a href="/user/payment/list">결제내역</a></li>
                                 <li><a href="/user/update/profile">회원수정</a></li>
                                 <li><a href="/user/delete/profile">회원탈퇴</a></li>
-                                <li><a href="javascript:void(0);" onclick="adminLogout()">로그아웃</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown"><a href="/board/list?page=1"><span>고객 문의</span> <i
-                                class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <li class="dropdown"><a href="#"><span>고객 문의</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                             <ul>
                                 <li><a href="/contact/list">1:1문의</a></li>
                                 <li><a href="/notice/list">공지사항</a></li>
@@ -34,8 +30,10 @@
                                 <li><a href="/board/list">자유게시판</a></li>
                             </ul>
                         </li>
+                        <li><a href="javascript:void(0);" onclick="adminLogout()">로그아웃</a></li>
                     </ul>
                 </nav>
+
             </div>
         </div>
     </header>
