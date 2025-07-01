@@ -57,13 +57,13 @@
             </tr>
             <tr>
                 <th>예약 시작일</th>
-                <td th:text="${reservationDetailData.reservationStartDate == null ? '결제 대기 중' : #temporals.format(reservationDetailData.reservationStartDate, 'yyyy-MM-dd HH:mm')}">
+                <td th:text="${reservationDetailData.reservationStartDate == null ? '결제대기' : #temporals.format(reservationDetailData.reservationStartDate, 'yyyy-MM-dd HH:mm')}">
                     예약 시작일
                 </td>
             </tr>
             <tr>
                 <th>예약 마감일</th>
-                <td th:text="${reservationDetailData.reservationEndDate == null ? '결제 대기 중' : #temporals.format(reservationDetailData.reservationEndDate, 'yyyy-MM-dd HH:mm')}">
+                <td th:text="${reservationDetailData.reservationEndDate == null ? '결제대기' : #temporals.format(reservationDetailData.reservationEndDate, 'yyyy-MM-dd HH:mm')}">
                     예약 마감일
                 </td>
             </tr>
@@ -102,7 +102,7 @@
 
         if (cancelReservationBtn) {
             cancelReservationBtn.addEventListener("click", function () {
-                if (!confirm("해당 예약을 취소하시겠습니까?")) {
+                if (!confirm("해당 창고 예약을 취소하시겠습니까?")) {
                     return;
                 }
 
