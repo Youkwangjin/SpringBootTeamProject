@@ -6,4 +6,6 @@ import org.springframework.stereotype.Service;
 public interface ReservationMigrationService {
 
     void autoCancelExpiredUnpaidReservations();
+
+    void autoExpireEndedReservations();
 }
