@@ -101,11 +101,10 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         Payment paymentData = paymentRepository.selectPaymentByReservationId(reservationId);
-        if (paymentData == null) {
-            throw new AcontainerException(ApiErrorCode.PAYMENT_NOT_FOUND);
+        Integer paymentId = null;
+        if (paymentData != null) {
+                paymentId = paymentData.getPaymentId();
         }
-
-        final Integer paymentId = paymentData.getPaymentId();
 
         return ReservationDetailResDTO.builder()
                 .reservationId(reservationId)
