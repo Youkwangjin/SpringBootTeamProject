@@ -101,11 +101,10 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         Payment paymentData = paymentRepository.selectPaymentByReservationId(reservationId);
-        if (paymentData == null) {
-            throw new AcontainerException(ApiErrorCode.PAYMENT_NOT_FOUND);
+        Integer paymentId = null;
+        if (paymentData != null) {
+                paymentId = paymentData.getPaymentId();
         }
-
-        final Integer paymentId = paymentData.getPaymentId();
 
         return ReservationDetailResDTO.builder()
                 .reservationId(reservationId)
@@ -138,6 +137,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         final Integer pendingStatus = ContainerStatus.CONTAINER_STATUS_PENDING.getCode();
         final Integer reservePendingStatus = ReservationStatus.RESERVATION_STATUS_PENDING.getCode();
+        final Integer exsitedContainerPrice = exsitedContainer.getContainerPrice();
         final Integer exsitedContainerApprovalStatus = exsitedContainer.getContainerApprovalStatus();
         final Integer exsitedContainerStatus = exsitedContainer.getContainerStatus();
 
@@ -179,6 +179,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .paymentId(paymentId)
                 .paymentUserId(currentUserId)
                 .paymentReservationId(reservationId)
+                .paymentAmount(exsitedContainerPrice)
                 .paymentStatus(paymentPendingStatus)
                 .build();
 
@@ -230,13 +231,16 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         Payment paymentDetailData = paymentRepository.selectPaymentByReservationId(reservationId);
-        if (paymentDetailData != null) {
-            final Integer paymentStatus = paymentDetailData.getPaymentStatus();
-            final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
+        if (paymentDetailData == null) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_DATA_INCONSISTENCY);
+        }
 
-            if (Objects.equals(paymentStatus, paymentCompletedStatus)) {
-                throw new AcontainerException(ApiErrorCode.PAYMENT_ALREADY_COMPLETED);
-            }
+        final Integer paymentId = paymentDetailData.getPaymentId();
+        final Integer paymentStatus = paymentDetailData.getPaymentStatus();
+        final Integer paymentCompletedStatus = PaymentStatus.PAYMENT_STATUS_COMPLETED.getCode();
+
+        if (Objects.equals(paymentStatus, paymentCompletedStatus)) {
+            throw new AcontainerException(ApiErrorCode.PAYMENT_ALREADY_COMPLETED);
         }
 
         Reservation updateStatus = Reservation.builder()
@@ -245,6 +249,12 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
 
         reservationRepository.updateReservationStatus(updateStatus);
+
+        Payment deletePayment = Payment.builder()
+                .paymentId(paymentId)
+                .build();
+
+        paymentRepository.deletePayment(deletePayment);
 
         Container updateContainerStatus = Container.builder()
                 .containerId(reservationContainerId)

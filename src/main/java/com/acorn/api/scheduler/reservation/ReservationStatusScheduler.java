@@ -11,8 +11,13 @@ public class ReservationStatusScheduler {
 
     private final ReservationMigrationService reservationMigrationService;
 
-    @Scheduled(cron = "0 0 16 * * *")
+    @Scheduled(cron = "0 0 3 * * *")
     public void updateReservationStatus() {
         reservationMigrationService.autoCancelExpiredUnpaidReservations();
+    }
+
+    @Scheduled(cron = "0 1 12 * * *")
+    public void updateEndedReservations() {
+        reservationMigrationService.autoExpireEndedReservations();
     }
 }

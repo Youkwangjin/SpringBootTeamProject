@@ -52,6 +52,7 @@ public enum ApiErrorCode {
     RESERVE_CONTAINER_NOT_PENDING(HttpStatus.INTERNAL_SERVER_ERROR, "CRW", "예약 대기 상태에서만 예약 취소가 가능합니다."),
 
     PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PNF", "결제 내역이 존재하지 않습니다."),
+    PAYMENT_DATA_INCONSISTENCY(HttpStatus.INTERNAL_SERVER_ERROR, "PDI", "결제 데이터에 이상이 있습니다. 관리자에게 문의하세요."),
     PAYMENT_ALREADY_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "PAC", "이미 결제가 완료된 예약입니다."),
     PAYMENT_DENIED_ON_CANCELED(HttpStatus.INTERNAL_SERVER_ERROR, "PDC", "예약 취소건은 결제를 진행할 수 없습니다."),
     PAYMENT_CANCEL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "PCE", "결제가 완료된 건만 취소가 가능합니다."),

@@ -143,6 +143,23 @@
         ]]>
     </select>
 
+    <select id="selectExpiredReservation" parameterType="java.time.LocalDateTime" resultType="Integer">
+        <![CDATA[
+            SELECT
+                RESERVATION_ID
+            FROM
+                TB_RESERVATION
+            WHERE
+                RESERVATION_STATUS = 1
+            AND
+                RESERVATION_START_DATE IS NOT NULL
+            AND
+                RESERVATION_END_DATE IS NOT NULL
+            AND
+                RESERVATION_END_DATE <= #{todayNoon}
+        ]]>
+    </select>
+
     <select id="selectReservationDetailData" parameterType="Integer" resultMap="reservationResultMap">
         SELECT
             R.RESERVATION_ID,

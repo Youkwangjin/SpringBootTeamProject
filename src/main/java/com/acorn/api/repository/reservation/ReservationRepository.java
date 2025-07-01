@@ -25,6 +25,8 @@ public interface ReservationRepository {
 
     List<Integer> selectExpiredPendingReservations(LocalDateTime threeDaysAgo);
 
+    List<Integer> selectExpiredReservation(LocalDateTime todayNoon);
+
     Reservation selectReservationDetailData(@Param("reservationId") Integer reservationId);
 
     Integer selectReservationContainerId(@Param("reservationId") Integer reservationId);
