@@ -7,13 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class ReservationDetailResDTO {
-
-    private Integer reservationId;
-
-    private Integer reservationUserId;
-
-    private Integer reservationContainerId;
+public class ReservationContainerDetailResDTO {
 
     private Integer reservationStatus;
 
@@ -21,17 +15,21 @@ public class ReservationDetailResDTO {
 
     private LocalDateTime reservationEndDate;
 
-    private String containerName;
+    private Integer containerId;
 
-    private String containerAddr;
+    private String containerName;
 
     private Integer containerPrice;
 
-    private String ownerNm;
+    private String userNm;
 
-    private String companyName;
-
-    private Integer paymentId;
+    private String userTel;
 
     private Integer paymentStatus;
+
+    private Integer paymentAmount;
+
+    private LocalDateTime paymentApproved;
+
+    private LocalDateTime paymentCanceled;
 }

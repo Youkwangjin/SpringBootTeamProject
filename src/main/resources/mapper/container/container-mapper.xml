@@ -47,38 +47,13 @@
         </where>
     </select>
 
-    <select id="selectReservationListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
-        SELECT
-            COUNT(C.CONTAINER_ID)
-        FROM
-            TB_CONTAINER C
-        INNER JOIN
-            TB_RESERVATION R
-        ON C.CONTAINER_ID = R.RESERVATION_CONTAINER_ID
-        LEFT OUTER JOIN
-            TB_PAYMENT P
-        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
-        INNER JOIN
-            TB_USER U
-        ON R.RESERVATION_USER_ID = U.USER_ID
-        <where>
-            C.CONTAINER_OWNER_ID = #{containerOwnerId}
-            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
-                AND C.CONTAINER_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
-            </if>
-            <if test="searchType == 'containerStatus' and searchName != null and searchName.trim() != ''">
-                AND C.CONTAINER_STATUS = #{searchName}
-            </if>
-        </where>
-    </select>
-
     <select id="selectAdminListCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
         SELECT
-            COUNT(C.CONTAINER_ID)
+        COUNT(C.CONTAINER_ID)
         FROM
-            TB_CONTAINER C
+        TB_CONTAINER C
         INNER JOIN
-            TB_OWNER O
+        TB_OWNER O
         ON C.CONTAINER_OWNER_ID = O.OWNER_ID
         <where>
             <if test="searchType == 'containerAddr' and searchName != null and searchName.trim() != ''">
@@ -128,39 +103,6 @@
         LIMIT ${startRowNum}, ${pageSize}
     </select>
 
-    <select id="selectContainerReservationListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="containerResultMap">
-        SELECT
-            C.CONTAINER_ID,
-            C.CONTAINER_NAME,
-            U.USER_NM,
-            R.RESERVATION_STATUS,
-            P.PAYMENT_STATUS
-        FROM
-            TB_CONTAINER C
-        INNER JOIN
-            TB_RESERVATION R
-        ON C.CONTAINER_ID = R.RESERVATION_CONTAINER_ID
-        LEFT OUTER JOIN
-            TB_PAYMENT P
-        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
-        INNER JOIN
-            TB_USER U
-        ON R.RESERVATION_USER_ID = U.USER_ID
-        <where>
-            C.CONTAINER_OWNER_ID = #{containerOwnerId}
-            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
-                AND C.CONTAINER_NAME LIKE CONCAT ('%', TRIM(#{searchName}), '%')
-            </if>
-            <if test="searchType == 'reservationStatus' and searchName != null and searchName.trim() != ''">
-                AND R.RESERVATION_STATUS = #{searchName}
-            </if>
-            <if test="searchType == 'paymentStatus' and searchName != null and searchName.trim() != ''">
-                AND P.PAYMENT_STATUS = #{searchName}
-            </if>
-        </where>
-        LIMIT ${startRowNum}, ${pageSize}
-    </select>
-
     <select id="selectAdminContainerListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="containerResultMap">
         SELECT
             ROW_NUMBER() OVER (ORDER BY C.CONTAINER_CREATED ASC) AS ROW_NUM,
@@ -192,6 +134,29 @@
         </where>
         ORDER BY CONTAINER_CREATED DESC
         LIMIT ${startRowNum}, ${pageSize}
+    </select>
+
+    <select id="selectContainerMapListData" parameterType="map" resultMap="containerResultMap">
+        SELECT
+            C.CONTAINER_ID,
+            C.CONTAINER_OWNER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_LATITUDE,
+            C.CONTAINER_LONGITUDE,
+            C.CONTAINER_CONTENTS,
+            C.CONTAINER_CONTENTS_TEXT,
+            C.CONTAINER_SIZE,
+            C.CONTAINER_PRICE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_APPROVAL_STATUS,
+            C.CONTAINER_CREATED
+        FROM
+            TB_CONTAINER C
+        WHERE
+            C.CONTAINER_STATUS = #{containerStatus}
+          AND
+            C.CONTAINER_APPROVAL_STATUS = #{containerApprovalStatus};
     </select>
 
     <select id="selectContainerDetailData" parameterType="Integer" resultMap="containerResultMap">
@@ -226,6 +191,26 @@
         ON C.CONTAINER_ID = F.CONTAINER_FILE_CONTAINER_ID
         WHERE
             C.CONTAINER_ID = #{containerId}
+    </select>
+
+    <select id="selectContainerAllData" parameterType="Integer" resultMap="containerResultMap">
+        SELECT
+            C.CONTAINER_ID,
+            C.CONTAINER_OWNER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_LATITUDE,
+            C.CONTAINER_LONGITUDE,
+            C.CONTAINER_CONTENTS,
+            C.CONTAINER_CONTENTS_TEXT,
+            C.CONTAINER_SIZE,
+            C.CONTAINER_PRICE,
+            C.CONTAINER_STATUS,
+            C.CONTAINER_APPROVAL_STATUS
+        FROM
+            TB_CONTAINER C
+        WHERE
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
     </select>
 
     <select id="selectAdminContainerDetailData" parameterType="Integer" resultMap="containerResultMap">
@@ -264,49 +249,6 @@
             ON C.CONTAINER_ID = F.CONTAINER_FILE_CONTAINER_ID
         WHERE
             C.CONTAINER_ID = #{containerId}
-    </select>
-
-    <select id="selectContainerAllData" parameterType="Integer" resultMap="containerResultMap">
-        SELECT
-            C.CONTAINER_ID,
-            C.CONTAINER_OWNER_ID,
-            C.CONTAINER_NAME,
-            C.CONTAINER_ADDRESS,
-            C.CONTAINER_LATITUDE,
-            C.CONTAINER_LONGITUDE,
-            C.CONTAINER_CONTENTS,
-            C.CONTAINER_CONTENTS_TEXT,
-            C.CONTAINER_SIZE,
-            C.CONTAINER_PRICE,
-            C.CONTAINER_STATUS,
-            C.CONTAINER_APPROVAL_STATUS
-        FROM
-            TB_CONTAINER C
-        WHERE
-            C.CONTAINER_OWNER_ID = #{containerOwnerId}
-    </select>
-
-    <select id="selectContainerMapListData" parameterType="map" resultMap="containerResultMap">
-        SELECT
-            C.CONTAINER_ID,
-            C.CONTAINER_OWNER_ID,
-            C.CONTAINER_NAME,
-            C.CONTAINER_ADDRESS,
-            C.CONTAINER_LATITUDE,
-            C.CONTAINER_LONGITUDE,
-            C.CONTAINER_CONTENTS,
-            C.CONTAINER_CONTENTS_TEXT,
-            C.CONTAINER_SIZE,
-            C.CONTAINER_PRICE,
-            C.CONTAINER_STATUS,
-            C.CONTAINER_APPROVAL_STATUS,
-            C.CONTAINER_CREATED
-        FROM
-            TB_CONTAINER C
-        WHERE
-            C.CONTAINER_STATUS = #{containerStatus}
-        AND
-            C.CONTAINER_APPROVAL_STATUS = #{containerApprovalStatus};
     </select>
 
     <insert id="containerRegister" parameterType="com.acorn.api.entity.container.Container" useGeneratedKeys="true" keyProperty="containerId">

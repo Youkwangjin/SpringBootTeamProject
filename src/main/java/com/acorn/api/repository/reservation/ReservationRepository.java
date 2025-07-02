@@ -15,9 +15,11 @@ public interface ReservationRepository {
 
     Integer selectListCountByRequest(PaginationRequest pagination);
 
+    Integer selectReservationContainerCountByRequest(PaginationRequest pagination);
+
     List<Reservation> selectReservationListData(PaginationRequest pagination);
 
-    Boolean existsActiveReservationByRequest(@Param("containerId") Integer containerId, @Param("reservationStatus") Integer reservationStatus);
+    List<Reservation> selectReservationContainerListData(PaginationRequest pagination);
 
     List<Reservation> selectReservationByUserId(@Param("userId") Integer userId);
 
@@ -29,7 +31,11 @@ public interface ReservationRepository {
 
     Reservation selectReservationDetailData(@Param("reservationId") Integer reservationId);
 
+    Reservation selectReservationContainerDetailData(@Param("reservationId") Integer reservationId);
+
     Integer selectReservationContainerId(@Param("reservationId") Integer reservationId);
+
+    Boolean existsActiveReservationByRequest(@Param("containerId") Integer containerId, @Param("reservationStatus") Integer reservationStatus);
 
     void insertReservation(Reservation reservation);
 

@@ -5,7 +5,10 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.payment.PaymentStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
+import com.acorn.api.dto.reservation.request.ReservationContainerListReqDTO;
 import com.acorn.api.dto.reservation.request.ReservationCancelReqDTO;
+import com.acorn.api.dto.reservation.response.ReservationContainerDetailResDTO;
+import com.acorn.api.dto.reservation.response.ReservationContainerListResDTO;
 import com.acorn.api.dto.reservation.response.ReservationDetailResDTO;
 import com.acorn.api.dto.reservation.request.ReservationListReqDTO;
 import com.acorn.api.dto.reservation.response.ReservationListResDTO;
@@ -44,6 +47,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         listData.setReservationUserId(currentUserId);
         listData.setTotalCount(reservationRepository.selectListCountByRequest(listData));
+
         List<Reservation> reservationListData = reservationRepository.selectReservationListData(listData);
 
         return reservationListData.stream()
@@ -74,11 +78,35 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<ReservationContainerListResDTO> getReservationContainerListData(ReservationContainerListReqDTO listData) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        listData.setContainerOwnerId(currentOwnerId);
+        listData.setTotalCount(reservationRepository.selectReservationContainerCountByRequest(listData));
+
+        List<Reservation> reservationContainerListData = reservationRepository.selectReservationContainerListData(listData);
+
+        return reservationContainerListData.stream()
+                .map(reservationList -> {
+                    final Integer reservationId = reservationList.getReservationId();
+                    final Integer reservationStatus = reservationList.getReservationStatus();
+                    final String containerName = reservationList.getContainer().getContainerName();
+                    final String userNm = reservationList.getUser().getUserNm();
+                    final Integer paymentStatus = reservationList.getPayment().getPaymentStatus();
+
+                    return ReservationContainerListResDTO.builder()
+                            .reservationId(reservationId)
+                            .reservationStatus(reservationStatus)
+                            .containerName(containerName)
+                            .userNm(userNm)
+                            .paymentStatus(paymentStatus)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ReservationDetailResDTO getReservationData(Integer reservationId) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
-        if (currentUserId == null) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
 
         Reservation reservationDetailData = reservationRepository.selectReservationDetailData(reservationId);
         if (reservationDetailData == null) {
@@ -86,39 +114,85 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         final Integer reservationUserId = reservationDetailData.getReservationUserId();
+        if (!Objects.equals(currentUserId, reservationUserId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
         final Integer reservationContainerId = reservationDetailData.getReservationContainerId();
         final Integer reservationStatus = reservationDetailData.getReservationStatus();
+        final LocalDateTime reservationStartDate = reservationDetailData.getReservationStartDate();
+        final LocalDateTime reservationEndDate = reservationDetailData.getReservationEndDate();
         final String containerName = reservationDetailData.getContainer().getContainerName();
         final String containerAddr = reservationDetailData.getContainer().getContainerAddr();
         final Integer containerPrice = reservationDetailData.getContainer().getContainerPrice();
         final String ownerNm = reservationDetailData.getContainer().getOwner().getOwnerNm();
         final String companyName = reservationDetailData.getContainer().getOwner().getOwnerCompanyName();
-        final LocalDateTime reservationStartDate = reservationDetailData.getReservationStartDate();
-        final LocalDateTime reservationEndDate = reservationDetailData.getReservationEndDate();
 
-        if (!Objects.equals(currentUserId, reservationUserId)) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
-
-        Payment paymentData = paymentRepository.selectPaymentByReservationId(reservationId);
+        final Payment payment = reservationDetailData.getPayment();
         Integer paymentId = null;
-        if (paymentData != null) {
-                paymentId = paymentData.getPaymentId();
+        Integer paymentStatus = null;
+        if (payment != null) {
+            paymentId = payment.getPaymentId();
+            paymentStatus = payment.getPaymentStatus();
         }
 
         return ReservationDetailResDTO.builder()
                 .reservationId(reservationId)
                 .reservationUserId(reservationUserId)
                 .reservationContainerId(reservationContainerId)
-                .paymentId(paymentId)
                 .reservationStatus(reservationStatus)
+                .reservationStartDate(reservationStartDate)
+                .reservationEndDate(reservationEndDate)
                 .containerName(containerName)
                 .containerAddr(containerAddr)
                 .containerPrice(containerPrice)
                 .ownerNm(ownerNm)
                 .companyName(companyName)
+                .paymentId(paymentId)
+                .paymentStatus(paymentStatus)
+                .build();
+    }
+
+    @Override
+    public ReservationContainerDetailResDTO getReservationContainerDetailData(Integer reservationId) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+
+        Reservation reservationDetailData = reservationRepository.selectReservationContainerDetailData(reservationId);
+        if (reservationDetailData == null) {
+            throw new AcontainerException(ApiErrorCode.RESERVE_CONTAINER_NOT_FOUND);
+        }
+
+        final Integer containerOwnerId = reservationDetailData.getContainer().getContainerOwnerId();
+        if (!Objects.equals(currentOwnerId, containerOwnerId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        final Integer reservationStatus = reservationDetailData.getReservationStatus();
+        final LocalDateTime reservationStartDate = reservationDetailData.getReservationStartDate();
+        final LocalDateTime reservationEndDate = reservationDetailData.getReservationEndDate();
+        final Integer containerId = reservationDetailData.getContainer().getContainerId();
+        final String containerName = reservationDetailData.getContainer().getContainerName();
+        final Integer containerPrice = reservationDetailData.getContainer().getContainerPrice();
+        final String userNm = reservationDetailData.getUser().getUserNm();
+        final String userTel = reservationDetailData.getUser().getUserTel();
+        final Integer paymentStatus = reservationDetailData.getPayment().getPaymentStatus();
+        final Integer paymentAmount = reservationDetailData.getPayment().getPaymentAmount();
+        final LocalDateTime paymentApproved = reservationDetailData.getPayment().getPaymentApproved();
+        final LocalDateTime paymentCanceled = reservationDetailData.getPayment().getPaymentCanceled();
+
+        return ReservationContainerDetailResDTO.builder()
+                .reservationStatus(reservationStatus)
                 .reservationStartDate(reservationStartDate)
                 .reservationEndDate(reservationEndDate)
+                .containerId(containerId)
+                .containerName(containerName)
+                .containerPrice(containerPrice)
+                .userNm(userNm)
+                .userTel(userTel)
+                .paymentStatus(paymentStatus)
+                .paymentAmount(paymentAmount)
+                .paymentApproved(paymentApproved)
+                .paymentCanceled(paymentCanceled)
                 .build();
     }
 
@@ -210,9 +284,9 @@ public class ReservationServiceImpl implements ReservationService {
         final Integer currentReservationId = reservationDetailData.getReservationId();
         final Integer currentReservationUserId = reservationDetailData.getReservationUserId();
         final Integer currentReservationStatus = reservationDetailData.getReservationStatus();
-        final Integer containerAvailableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
         final Integer reservationPendingStatus = ReservationStatus.RESERVATION_STATUS_PENDING.getCode();
         final Integer reservationCancelStatus = ReservationStatus.RESERVATION_STATUS_CANCELLED.getCode();
+        final Integer containerAvailableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
 
         if (!Objects.equals(currentContainerId, reservationContainerId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);

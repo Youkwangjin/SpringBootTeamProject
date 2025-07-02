@@ -14,13 +14,9 @@ public interface ContainerRepository {
 
     Integer selectListCountByRequest(PaginationRequest pagination);
 
-    Integer selectReservationListCountByRequest(PaginationRequest pagination);
-
     Integer selectAdminListCountByRequest(PaginationRequest pagination);
 
     List<Container> selectContainerListData(PaginationRequest pagination);
-
-    List<Container> selectContainerReservationListData(PaginationRequest pagination);
 
     List<Container> selectAdminContainerListData(PaginationRequest pagination);
 
@@ -28,11 +24,11 @@ public interface ContainerRepository {
 
     List<Container> selectContainerMapListData(@Param("containerStatus") Integer containerStatus, @Param("containerApprovalStatus") Integer containerApprovalStatus);
 
-    void containerRegister(Container container);
-
     Container selectContainerDetailData(@Param("containerId") Integer containerId);
 
     Container selectAdminContainerDetailData(@Param("containerId") Integer containerId);
+
+    void containerRegister(Container container);
 
     void containerUpdate(Container container);
 
