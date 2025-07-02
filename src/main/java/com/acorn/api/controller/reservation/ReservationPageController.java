@@ -1,5 +1,7 @@
 package com.acorn.api.controller.reservation;
 
+import com.acorn.api.dto.reservation.request.ReservationContainerListReqDTO;
+import com.acorn.api.dto.reservation.response.ReservationContainerListResDTO;
 import com.acorn.api.dto.reservation.response.ReservationDetailResDTO;
 import com.acorn.api.dto.reservation.request.ReservationListReqDTO;
 import com.acorn.api.dto.reservation.response.ReservationListResDTO;
@@ -24,6 +26,14 @@ public class ReservationPageController {
         model.addAttribute("reservationListData", reservationListData);
         model.addAttribute("request", listData);
         return "reservation/reservation-list";
+    }
+
+    @GetMapping("/reservation/container/list")
+    public String reservationPage(ReservationContainerListReqDTO listData, Model model) {
+        List<ReservationContainerListResDTO> reservationContainerListData = reservationService.getReservationContainerListData(listData);
+        model.addAttribute("reservationContainerListData", reservationContainerListData);
+        model.addAttribute("request", listData);
+        return "reservation/reservation-container-list";
     }
 
     @GetMapping("/user/reservation/detail/{reservationId}")

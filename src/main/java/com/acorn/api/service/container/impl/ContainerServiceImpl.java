@@ -77,32 +77,6 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
-    public List<ContainerReservationListResDTO> getContainerReservationListData(ContainerReservationListReqDTO listData) {
-        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
-        listData.setContainerOwnerId(currentOwnerId);
-        listData.setTotalCount(containerRepository.selectReservationListCountByRequest(listData));
-        List<Container> containerReservationListData = containerRepository.selectContainerReservationListData(listData);
-
-        return containerReservationListData.stream()
-                .map(containerReservationList -> {
-                    final Integer containerId = containerReservationList.getContainerId();
-                    final String containerName = containerReservationList.getContainerName();
-                    final String userNm = containerReservationList.getReservation().getUser().getUserNm();
-                    final Integer reservationStatus = containerReservationList.getReservation().getReservationStatus();
-                    final Integer paymentStatus = containerReservationList.getReservation().getPayment().getPaymentStatus();
-
-                    return ContainerReservationListResDTO.builder()
-                            .containerId(containerId)
-                            .containerName(containerName)
-                            .userNm(userNm)
-                            .reservationStatus(reservationStatus)
-                            .paymentStatus(paymentStatus)
-                            .build();
-                })
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<ContainerMapListResDTO> getContainersForMap() {
         final Integer containerStatusValue = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
         final Integer containerApprovalStatusValue = ContainerStatus.CONTAINER_APPROVAL_STATUS_APPROVED.getCode();

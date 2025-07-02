@@ -5,7 +5,9 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.container.ContainerStatus;
 import com.acorn.api.code.payment.PaymentStatus;
 import com.acorn.api.code.reservation.ReservationStatus;
+import com.acorn.api.dto.reservation.request.ReservationContainerListReqDTO;
 import com.acorn.api.dto.reservation.request.ReservationCancelReqDTO;
+import com.acorn.api.dto.reservation.response.ReservationContainerListResDTO;
 import com.acorn.api.dto.reservation.response.ReservationDetailResDTO;
 import com.acorn.api.dto.reservation.request.ReservationListReqDTO;
 import com.acorn.api.dto.reservation.response.ReservationListResDTO;
@@ -44,6 +46,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         listData.setReservationUserId(currentUserId);
         listData.setTotalCount(reservationRepository.selectListCountByRequest(listData));
+
         List<Reservation> reservationListData = reservationRepository.selectReservationListData(listData);
 
         return reservationListData.stream()
@@ -68,6 +71,33 @@ public class ReservationServiceImpl implements ReservationService {
                             .reservationStartDate(reservationStartDate)
                             .reservationEndDate(reservationEndDate)
                             .reservationCreated(reservationCreated)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReservationContainerListResDTO> getReservationContainerListData(ReservationContainerListReqDTO listData) {
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        listData.setContainerOwnerId(currentOwnerId);
+        listData.setTotalCount(reservationRepository.selectReservationContainerCountByRequest(listData));
+
+        List<Reservation> reservationContainerListData = reservationRepository.selectReservationContainerListData(listData);
+
+        return reservationContainerListData.stream()
+                .map(reservationList -> {
+                    final Integer reservationId = reservationList.getReservationId();
+                    final Integer reservationStatus = reservationList.getReservationStatus();
+                    final String containerName = reservationList.getContainer().getContainerName();
+                    final String userNm = reservationList.getUser().getUserNm();
+                    final Integer paymentStatus = reservationList.getPayment().getPaymentStatus();
+
+                    return ReservationContainerListResDTO.builder()
+                            .reservationId(reservationId)
+                            .reservationStatus(reservationStatus)
+                            .containerName(containerName)
+                            .userNm(userNm)
+                            .paymentStatus(paymentStatus)
                             .build();
                 })
                 .collect(Collectors.toList());

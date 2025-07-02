@@ -1,10 +1,8 @@
 package com.acorn.api.controller.container;
 
-import com.acorn.api.dto.container.request.ContainerReservationListReqDTO;
 import com.acorn.api.dto.container.response.ContainerDetailResDTO;
 import com.acorn.api.dto.container.request.ContainerListReqDTO;
 import com.acorn.api.dto.container.response.ContainerListResDTO;
-import com.acorn.api.dto.container.response.ContainerReservationListResDTO;
 import com.acorn.api.dto.owner.response.OwnerResDTO;
 import com.acorn.api.service.container.ContainerService;
 import com.acorn.api.service.owner.OwnerService;
@@ -31,31 +29,23 @@ public class ContainerPageController {
         return "container/container-list";
     }
 
-    @GetMapping("/container/reservation/list")
-    public String reservationPage(ContainerReservationListReqDTO listData, Model model) {
-        List<ContainerReservationListResDTO> containerReservationListData = containerService.getContainerReservationListData(listData);
-        model.addAttribute("containerReservationData", containerReservationListData);
-        model.addAttribute("request", listData);
-        return "container/container-reservation-list";
+    @GetMapping("/container/detail/{containerId}")
+    public String containerDetailPage(@PathVariable("containerId") Integer containerId, Model model) {
+        ContainerDetailResDTO containerDetailData = containerService.getContainerData(containerId);
+        model.addAttribute("containerDetailData", containerDetailData);
+        return "container/container-detail";
     }
 
     @GetMapping("/container/register")
-    public String registerPage(Model model) {
+    public String containerRegisterPage(Model model) {
         OwnerResDTO ownerData = ownerService.getOwnerData();
         model.addAttribute("ownerId", ownerData.getOwnerId());
         model.addAttribute("ownerName", ownerData.getOwnerNm());
         return "container/container-register";
     }
 
-    @GetMapping("/container/detail/{containerId}")
-    public String detailPage(@PathVariable("containerId") Integer containerId, Model model) {
-        ContainerDetailResDTO containerDetailData = containerService.getContainerData(containerId);
-        model.addAttribute("containerDetailData", containerDetailData);
-        return "container/container-detail";
-    }
-
     @GetMapping("/container/update/{containerId}")
-    public String updatePage(@PathVariable("containerId") Integer containerId, Model model) {
+    public String containerUpdatePage(@PathVariable("containerId") Integer containerId, Model model) {
         ContainerDetailResDTO containerDetailData = containerService.getContainerData(containerId);
         model.addAttribute("containerDetailData", containerDetailData);
         return "container/container-update";
