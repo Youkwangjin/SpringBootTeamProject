@@ -107,9 +107,6 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationDetailResDTO getReservationData(Integer reservationId) {
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
-        if (currentUserId == null) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
 
         Reservation reservationDetailData = reservationRepository.selectReservationDetailData(reservationId);
         if (reservationDetailData == null) {
@@ -117,39 +114,42 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         final Integer reservationUserId = reservationDetailData.getReservationUserId();
+        if (!Objects.equals(currentUserId, reservationUserId)) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
         final Integer reservationContainerId = reservationDetailData.getReservationContainerId();
         final Integer reservationStatus = reservationDetailData.getReservationStatus();
+        final LocalDateTime reservationStartDate = reservationDetailData.getReservationStartDate();
+        final LocalDateTime reservationEndDate = reservationDetailData.getReservationEndDate();
         final String containerName = reservationDetailData.getContainer().getContainerName();
         final String containerAddr = reservationDetailData.getContainer().getContainerAddr();
         final Integer containerPrice = reservationDetailData.getContainer().getContainerPrice();
         final String ownerNm = reservationDetailData.getContainer().getOwner().getOwnerNm();
         final String companyName = reservationDetailData.getContainer().getOwner().getOwnerCompanyName();
-        final LocalDateTime reservationStartDate = reservationDetailData.getReservationStartDate();
-        final LocalDateTime reservationEndDate = reservationDetailData.getReservationEndDate();
 
-        if (!Objects.equals(currentUserId, reservationUserId)) {
-            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
-        }
-
-        Payment paymentData = paymentRepository.selectPaymentByReservationId(reservationId);
+        final Payment payment = reservationDetailData.getPayment();
         Integer paymentId = null;
-        if (paymentData != null) {
-                paymentId = paymentData.getPaymentId();
+        Integer paymentStatus = null;
+        if (payment != null) {
+            paymentId = payment.getPaymentId();
+            paymentStatus = payment.getPaymentStatus();
         }
 
         return ReservationDetailResDTO.builder()
                 .reservationId(reservationId)
                 .reservationUserId(reservationUserId)
                 .reservationContainerId(reservationContainerId)
-                .paymentId(paymentId)
                 .reservationStatus(reservationStatus)
+                .reservationStartDate(reservationStartDate)
+                .reservationEndDate(reservationEndDate)
                 .containerName(containerName)
                 .containerAddr(containerAddr)
                 .containerPrice(containerPrice)
                 .ownerNm(ownerNm)
                 .companyName(companyName)
-                .reservationStartDate(reservationStartDate)
-                .reservationEndDate(reservationEndDate)
+                .paymentId(paymentId)
+                .paymentStatus(paymentStatus)
                 .build();
     }
 
@@ -284,9 +284,9 @@ public class ReservationServiceImpl implements ReservationService {
         final Integer currentReservationId = reservationDetailData.getReservationId();
         final Integer currentReservationUserId = reservationDetailData.getReservationUserId();
         final Integer currentReservationStatus = reservationDetailData.getReservationStatus();
-        final Integer containerAvailableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
         final Integer reservationPendingStatus = ReservationStatus.RESERVATION_STATUS_PENDING.getCode();
         final Integer reservationCancelStatus = ReservationStatus.RESERVATION_STATUS_CANCELLED.getCode();
+        final Integer containerAvailableStatus = ContainerStatus.CONTAINER_STATUS_AVAILABLE.getCode();
 
         if (!Objects.equals(currentContainerId, reservationContainerId)) {
             throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);

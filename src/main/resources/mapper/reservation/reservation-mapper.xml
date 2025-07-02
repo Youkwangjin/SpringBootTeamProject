@@ -157,10 +157,11 @@
             R.RESERVATION_STATUS
         FROM
             TB_USER U
-                INNER JOIN
+        INNER JOIN
             TB_RESERVATION R
-            ON U.USER_ID = R.RESERVATION_USER_ID
-        WHERE U.USER_ID = #{userId}
+        ON U.USER_ID = R.RESERVATION_USER_ID
+        WHERE
+            U.USER_ID = #{userId}
     </select>
 
     <select id="selectReservationByUserIdAndStatus" parameterType="map" resultMap="reservationResultMap">
@@ -231,15 +232,20 @@
             C.CONTAINER_ADDRESS,
             C.CONTAINER_PRICE,
             O.OWNER_NM,
-            O.OWNER_COMPANY_NAME
+            O.OWNER_COMPANY_NAME,
+            P.PAYMENT_ID,
+            P.PAYMENT_STATUS
         FROM
             TB_RESERVATION R
-                INNER JOIN
+        INNER JOIN
             TB_CONTAINER C
-            ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
-                INNER JOIN
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
             TB_OWNER O
-            ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
         WHERE
             R.RESERVATION_ID = #{reservationId}
     </select>
