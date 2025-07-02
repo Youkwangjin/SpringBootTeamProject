@@ -31,6 +31,8 @@ public interface ReservationRepository {
 
     Reservation selectReservationDetailData(@Param("reservationId") Integer reservationId);
 
+    Reservation selectReservationContainerDetailData(@Param("reservationId") Integer reservationId);
+
     Integer selectReservationContainerId(@Param("reservationId") Integer reservationId);
 
     Boolean existsActiveReservationByRequest(@Param("containerId") Integer containerId, @Param("reservationStatus") Integer reservationStatus);

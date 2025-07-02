@@ -244,6 +244,37 @@
             R.RESERVATION_ID = #{reservationId}
     </select>
 
+    <select id="selectReservationContainerDetailData" parameterType="Integer" resultMap="reservationResultMap">
+        SELECT
+            R.RESERVATION_ID,
+            R.RESERVATION_STATUS,
+            R.RESERVATION_START_DATE,
+            R.RESERVATION_END_DATE,
+            C.CONTAINER_ID,
+            C.CONTAINER_OWNER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_PRICE,
+            U.USER_NM,
+            U.USER_TEL,
+            P.PAYMENT_STATUS,
+            P.PAYMENT_AMOUNT,
+            P.PAYMENT_APPROVED,
+            P.PAYMENT_CANCELED
+        FROM
+            TB_RESERVATION R
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
+            TB_USER U
+        ON R.RESERVATION_USER_ID = U.USER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
+        WHERE
+            R.RESERVATION_ID = #{reservationId};
+    </select>
+
     <select id="selectReservationContainerId" parameterType="Integer" resultType="Integer">
         SELECT
             RESERVATION_CONTAINER_ID

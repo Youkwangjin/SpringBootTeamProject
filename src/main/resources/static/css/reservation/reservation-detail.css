@@ -53,6 +53,16 @@ html, body {
     background-color: #f9f9f9;
 }
 
+.container-link {
+    color: #1976d2;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.container-link:hover {
+    color: #1565c0;
+}
+
 .btn-wrap {
     margin-top: 20px;
     display: flex;

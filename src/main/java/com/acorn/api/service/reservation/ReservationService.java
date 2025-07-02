@@ -1,6 +1,7 @@
 package com.acorn.api.service.reservation;
 
 import com.acorn.api.dto.reservation.request.ReservationContainerListReqDTO;
+import com.acorn.api.dto.reservation.response.ReservationContainerDetailResDTO;
 import com.acorn.api.dto.reservation.response.ReservationContainerListResDTO;
 import com.acorn.api.dto.reservation.request.ReservationCancelReqDTO;
 import com.acorn.api.dto.reservation.response.ReservationDetailResDTO;
@@ -18,6 +19,8 @@ public interface ReservationService {
     List<ReservationContainerListResDTO> getReservationContainerListData(ReservationContainerListReqDTO listData);
 
     ReservationDetailResDTO getReservationData(Integer reservationId);
+
+    ReservationContainerDetailResDTO getReservationContainerDetailData(Integer reservationId);
 
     void reserveContainer(Integer containerId);
 

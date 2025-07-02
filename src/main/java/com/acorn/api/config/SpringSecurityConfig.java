@@ -154,7 +154,8 @@ public class SpringSecurityConfig {
                                          "/container/register",
                                          "/container/detail/**",
                                          "/container/update/**",
-                                         "/reservation/container/list/**").hasAuthority("ROLE_OWNER")
+                                         "/reservation/container/list/**",
+                                         "/reservation/container/detail/**").hasAuthority("ROLE_OWNER")
 
                         // Protected Admin Common Pages
                         .requestMatchers("/admin/mypage",
