@@ -60,6 +60,7 @@ public class BoardServiceImpl implements BoardService {
                     final String boardTitle = boardList.getBoardTitle();
                     final String boardWriter = boardList.getBoardWriter();
                     final Integer boardHits = boardList.getBoardHits();
+                    final Integer boardLikeCount = boardList.getBoardLikeCount();
                     final LocalDateTime boardCreated = boardList.getBoardCreated();
 
                     return BoardListResDTO.builder()
@@ -68,6 +69,7 @@ public class BoardServiceImpl implements BoardService {
                             .boardTitle(boardTitle)
                             .boardWriter(boardWriter)
                             .boardHits(boardHits)
+                            .boardLikeCount(boardLikeCount)
                             .boardCreated(boardCreated)
                             .build();
                 })
