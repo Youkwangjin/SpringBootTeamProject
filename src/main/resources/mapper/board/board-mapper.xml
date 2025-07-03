@@ -14,6 +14,7 @@
         <result property="boardContentsText"        column="BOARD_CONTENTS_TEXT"/>
         <result property="boardPassword"            column="BOARD_PASSWORD"/>
         <result property="boardHits"                column="BOARD_HITS"/>
+        <result property="boardLikeCount"           column="BOARD_LIKE_COUNT"/>
         <result property="boardCreated"             column="BOARD_CREATED"/>
         <result property="boardUpdated"             column="BOARD_UPDATED"/>
         <collection property="boardFilesList"       javaType="java.util.List" resultMap="com.acorn.api.repository.board.BoardFileRepository.boardFileResultMap" />
@@ -51,6 +52,7 @@
             BOARD_TITLE,
             BOARD_WRITER,
             BOARD_HITS,
+            BOARD_LIKE_COUNT,
             BOARD_CREATED
         FROM TB_BOARD
         <where>

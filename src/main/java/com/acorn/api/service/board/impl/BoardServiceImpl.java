@@ -60,6 +60,7 @@ public class BoardServiceImpl implements BoardService {
                     final String boardTitle = boardList.getBoardTitle();
                     final String boardWriter = boardList.getBoardWriter();
                     final Integer boardHits = boardList.getBoardHits();
+                    final Integer boardLikeCount = boardList.getBoardLikeCount();
                     final LocalDateTime boardCreated = boardList.getBoardCreated();
 
                     return BoardListResDTO.builder()
@@ -68,6 +69,7 @@ public class BoardServiceImpl implements BoardService {
                             .boardTitle(boardTitle)
                             .boardWriter(boardWriter)
                             .boardHits(boardHits)
+                            .boardLikeCount(boardLikeCount)
                             .boardCreated(boardCreated)
                             .build();
                 })
@@ -98,6 +100,7 @@ public class BoardServiceImpl implements BoardService {
         final String boardContents = detailData.getBoardContents();
         final String boardContentsText = detailData.getBoardContentsText();
         final Integer boardHits = detailData.getBoardHits();
+        final Integer boardLikeCount = detailData.getBoardLikeCount();
         final LocalDateTime boardCreated = detailData.getBoardCreated();
         final Integer boardUserId = detailData.getBoardUserId();
         final Integer boardOwnerId = detailData.getBoardOwnerId();
@@ -135,6 +138,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardContents(boardContents)
                 .boardContentsText(boardContentsText)
                 .boardHits(boardHits + 1)
+                .boardLikeCount(boardLikeCount)
                 .boardCreated(boardCreated)
                 .boardUserId(boardUserId)
                 .boardOwnerId(boardOwnerId)

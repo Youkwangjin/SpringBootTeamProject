@@ -34,6 +34,8 @@ public class Board {
 
     private Integer boardHits;
 
+    private Integer boardLikeCount;
+
     private LocalDateTime boardCreated;
 
     private LocalDateTime boardUpdated;

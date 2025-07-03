@@ -21,5 +21,7 @@ public class BoardListResDTO {
 
     private Integer boardHits;
 
+    private Integer boardLikeCount;
+
     private LocalDateTime boardCreated;
 }

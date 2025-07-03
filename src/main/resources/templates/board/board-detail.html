@@ -35,6 +35,10 @@
                 <span th:text="|작성자: ${boardDetailData.boardWriter}|"></span>
                 <span th:text="|조회수: ${boardDetailData.boardHits}|"></span>
                 <span th:text="|등록일자: ${#temporals.format(boardDetailData.boardCreated, 'yyyy-MM-dd')}|"></span>
+                <button type="button" class="like-btn" id="boardLikeCount">
+                    <img src="/assets/img/svg/heart.svg" alt="좋아요" class="like-icon"/>
+                    <span class="like-count" th:text="${boardDetailData.boardLikeCount}"></span>
+                </button>
             </div>
         </div>
         <div class="board-content" th:utext="${boardDetailData.boardContents}"></div>
@@ -78,44 +82,48 @@
             window.location.href = "/board/list";
         });
 
-        updateBtn.addEventListener("click", function () {
-            window.location.href = `/board/update/${boardId}`;
-        });
+        if (updateBtn) {
+            updateBtn.addEventListener("click", function () {
+                window.location.href = `/board/update/${boardId}`;
+            });
+        }
 
-        deleteBtn.addEventListener("click", function () {
-            if (!confirm("정말로 삭제하시겠습니까?")) {
-                return;
-            }
+        if (deleteBtn) {
+            deleteBtn.addEventListener("click", function () {
+                if (!confirm("정말로 삭제하시겠습니까?")) {
+                    return;
+                }
 
-            const boardData = {
-                boardId: boardId,
-                boardUserId: boardUserId,
-                boardOwnerId: boardOwnerId
-            };
+                const boardData = {
+                    boardId: boardId,
+                    boardUserId: boardUserId,
+                    boardOwnerId: boardOwnerId
+                };
 
-            fetch(`/api/board/delete/${boardId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken
-                },
-                credentials: "include",
-                body: JSON.stringify(boardData)
-            })
-                .then(async response => {
-                    const responseData = await response.json();
-
-                    if (response.status === 200) {
-                        alert(MSG.BOARD_DELETE_SUCCESS);
-                        window.location.href = "/board/list";
-                    } else {
-                        alert(responseData.errorMsg);
-                    }
+                fetch(`/api/board/delete/${boardId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(boardData)
                 })
-                .catch(() => {
-                    alert(MSG.ERROR);
-                });
-        });
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.BOARD_DELETE_SUCCESS);
+                            window.location.href = "/board/list";
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        alert(MSG.ERROR);
+                    });
+            });
+        }
     });
 </script>
 </body>
