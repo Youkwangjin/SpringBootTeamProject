@@ -89,6 +89,48 @@
     cursor: pointer;
 }
 
+.like-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    background: none;
+    color: #e0245e;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    margin: 0;
+    transition: color 0.15s;
+}
+
+.like-btn:hover {
+    color: #ad1457;
+}
+
+.like-icon {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    vertical-align: middle;
+    transition: filter 0.2s;
+}
+
+.like-btn.liked .like-icon {
+    filter: drop-shadow(0 0 2px #ff395b) brightness(1.1) saturate(2);
+}
+
+.like-count {
+    min-width: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #ff395b;
+    font-weight: 700;
+}
+
 .button-container {
     display: flex;
     justify-content: flex-end;

@@ -100,6 +100,7 @@ public class BoardServiceImpl implements BoardService {
         final String boardContents = detailData.getBoardContents();
         final String boardContentsText = detailData.getBoardContentsText();
         final Integer boardHits = detailData.getBoardHits();
+        final Integer boardLikeCount = detailData.getBoardLikeCount();
         final LocalDateTime boardCreated = detailData.getBoardCreated();
         final Integer boardUserId = detailData.getBoardUserId();
         final Integer boardOwnerId = detailData.getBoardOwnerId();
@@ -137,6 +138,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardContents(boardContents)
                 .boardContentsText(boardContentsText)
                 .boardHits(boardHits + 1)
+                .boardLikeCount(boardLikeCount)
                 .boardCreated(boardCreated)
                 .boardUserId(boardUserId)
                 .boardOwnerId(boardOwnerId)

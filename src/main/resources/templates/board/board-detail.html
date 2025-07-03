@@ -35,6 +35,10 @@
                 <span th:text="|작성자: ${boardDetailData.boardWriter}|"></span>
                 <span th:text="|조회수: ${boardDetailData.boardHits}|"></span>
                 <span th:text="|등록일자: ${#temporals.format(boardDetailData.boardCreated, 'yyyy-MM-dd')}|"></span>
+                <button type="button" class="like-btn" id="boardLikeCount">
+                    <img src="/assets/img/svg/heart.svg" alt="좋아요" class="like-icon"/>
+                    <span class="like-count" th:text="${boardDetailData.boardLikeCount}"></span>
+                </button>
             </div>
         </div>
         <div class="board-content" th:utext="${boardDetailData.boardContents}"></div>
