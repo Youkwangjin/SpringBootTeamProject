@@ -5,17 +5,17 @@ import com.acorn.api.code.common.ApiHttpErrorCode;
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.component.FileComponent;
 import com.acorn.api.dto.board.request.BoardDeleteReqDTO;
+import com.acorn.api.dto.board.request.BoardLikeReqDTO;
 import com.acorn.api.dto.board.request.BoardSaveReqDTO;
 import com.acorn.api.dto.board.request.BoardUpdateReqDTO;
-import com.acorn.api.dto.board.response.BoardDetailResDTO;
-import com.acorn.api.dto.board.response.BoardFileDownloadResDTO;
-import com.acorn.api.dto.board.response.BoardFileResDTO;
-import com.acorn.api.dto.board.response.BoardListResDTO;
+import com.acorn.api.dto.board.response.*;
 import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardFile;
+import com.acorn.api.entity.board.BoardLike;
 import com.acorn.api.exception.global.AcontainerException;
 import com.acorn.api.repository.board.BoardFileRepository;
+import com.acorn.api.repository.board.BoardLikeRepository;
 import com.acorn.api.repository.board.BoardRepository;
 import com.acorn.api.service.board.BoardService;
 import com.acorn.api.utils.CommonSecurityUtil;
@@ -41,12 +41,17 @@ import java.util.stream.Collectors;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardLikeRepository boardLikeRepository;
     private final BoardFileRepository boardFileRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final FileComponent fileComponent;
 
     @Value("${file.upload.path.board}")
     private String uploadDir;
+
+    public static final String BOARD_LIKE_YES = "Y";
+
+    public static final String BOARD_LIKE_NO = "N";
 
     @Override
     public List<BoardListResDTO> getBoardListData(CommonListReqDTO listData) {
@@ -349,6 +354,77 @@ public class BoardServiceImpl implements BoardService {
         return BoardFileDownloadResDTO.builder()
                 .originalFileName(originalFileName)
                 .fileBytes(fileBytes)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public BoardLikeResDTO boardLike(BoardLikeReqDTO requestData) {
+        final Integer boardId = requestData.getBoardId();
+        final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+
+        if (currentUserId == null && currentOwnerId == null) {
+            throw new AcontainerException(ApiHttpErrorCode.FORBIDDEN_ERROR);
+        }
+
+        Board boardData = boardRepository.selectBoardDetailData(boardId);
+        if (boardData == null) {
+            throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+        BoardLike boardLike = boardLikeRepository.selectBoardLikeByCurrentId(boardId, currentUserId, currentOwnerId);
+        if (boardLike == null) {
+            final Integer boardLikeId = boardLikeRepository.selectBoardLikeIdKey();
+            BoardLike saveBoardLike = BoardLike.builder()
+                    .boardLikeId(boardLikeId)
+                    .boardLikeBoardId(boardId)
+                    .boardLikeUserId(currentUserId)
+                    .boardLikeOwnerId(currentOwnerId)
+                    .boardLikeYn(BOARD_LIKE_YES)
+                    .build();
+
+            boardLikeRepository.saveBoardLike(saveBoardLike);
+            boardRepository.updateBoardLikeCount(boardId);
+        } else {
+            final Integer boardLikeId = boardLike.getBoardLikeId();
+            final String boardLikeYn = boardLike.getBoardLikeYn();
+
+            if (StringUtils.equals(boardLikeYn, BOARD_LIKE_YES)) {
+                BoardLike updateBoardLike = BoardLike.builder()
+                        .boardLikeId(boardLikeId)
+                        .boardLikeUserId(currentUserId)
+                        .boardLikeOwnerId(currentOwnerId)
+                        .boardLikeYn(BOARD_LIKE_NO)
+                        .build();
+
+                boardLikeRepository.updateBoardLike(updateBoardLike);
+                boardRepository.deleteBoardLikeCount(boardId);
+            } else {
+                BoardLike updateBoardLike = BoardLike.builder()
+                        .boardLikeId(boardLikeId)
+                        .boardLikeUserId(currentUserId)
+                        .boardLikeOwnerId(currentOwnerId)
+                        .boardLikeYn(BOARD_LIKE_YES)
+                        .build();
+
+                boardLikeRepository.updateBoardLike(updateBoardLike);
+                boardRepository.updateBoardLikeCount(boardId);
+            }
+        }
+
+        BoardLike boardLikeData = boardLikeRepository.selectBoardLikeCountByBoardId(boardId, currentUserId, currentOwnerId);
+        if (boardLikeData == null) {
+            throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+        final String boardLikeYn = boardLikeData.getBoardLikeYn();
+        final Integer boardLikeCount = boardLikeData.getBoard().getBoardLikeCount();
+
+        return BoardLikeResDTO.builder()
+                .boardId(boardId)
+                .boardLikeYn(boardLikeYn)
+                .boardLikeCount(boardLikeCount)
                 .build();
     }
 

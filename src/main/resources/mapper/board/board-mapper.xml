@@ -109,6 +109,7 @@
             B.BOARD_CONTENTS_TEXT,
             B.BOARD_PASSWORD,
             B.BOARD_HITS,
+            B.BOARD_LIKE_COUNT,
             B.BOARD_CREATED,
             F.BOARD_FILE_ID,
             F.BOARD_FILE_BOARD_ID,
@@ -131,6 +132,24 @@
             TB_BOARD
         SET
             BOARD_HITS = BOARD_HITS + 1
+        WHERE
+            BOARD_ID = #{boardId}
+    </update>
+
+    <update id="updateBoardLikeCount" parameterType="integer">
+        UPDATE
+            TB_BOARD
+        SET
+            BOARD_LIKE_COUNT = BOARD_LIKE_COUNT + 1
+        WHERE
+            BOARD_ID = #{boardId}
+    </update>
+
+    <update id="deleteBoardLikeCount" parameterType="integer">
+        UPDATE
+            TB_BOARD
+        SET
+            BOARD_LIKE_COUNT = BOARD_LIKE_COUNT - 1
         WHERE
             BOARD_ID = #{boardId}
     </update>

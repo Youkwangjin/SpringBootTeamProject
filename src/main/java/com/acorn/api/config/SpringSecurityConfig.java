@@ -222,6 +222,7 @@ public class SpringSecurityConfig {
                                          "/api/board/save",
                                          "/api/board/update/**",
                                          "/api/board/delete/**",
+                                         "/api/board/like/**",
                                          "/api/contact/save",
                                          "/api/contact/update/**",
                                          "/api/contact/delete/**",

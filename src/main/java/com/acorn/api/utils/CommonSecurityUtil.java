@@ -2,15 +2,13 @@ package com.acorn.api.utils;
 
 import com.acorn.api.security.owner.CustomOwnerDetails;
 import com.acorn.api.security.user.CustomUserDetails;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+@Slf4j
 public class CommonSecurityUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(CommonSecurityUtil.class);
 
     public static Integer getCurrentId() {
         Object principal = getPrincipal();
