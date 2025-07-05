@@ -117,10 +117,13 @@
     display: inline-block;
     vertical-align: middle;
     transition: filter 0.2s;
+    background-image: url('/assets/img/svg/heart.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .like-btn.liked .like-icon {
-    filter: drop-shadow(0 0 2px #ff395b) brightness(1.1) saturate(2);
+    background-image: url('/assets/img/svg/solid-heart.svg');
 }
 
 .like-count {

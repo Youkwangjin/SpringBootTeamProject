@@ -100,6 +100,15 @@ public class BoardServiceImpl implements BoardService {
 
         final Integer currentUserId = CommonSecurityUtil.getCurrentUserId();
         final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+
+        String boardLikeYn = BOARD_LIKE_NO;
+        if (currentUserId != null || currentOwnerId != null) {
+            BoardLike existing = boardLikeRepository.selectBoardLikeByCurrentId(boardId, currentUserId, currentOwnerId);
+            if (existing != null && StringUtils.equals(BOARD_LIKE_YES, existing.getBoardLikeYn())) {
+                boardLikeYn = BOARD_LIKE_YES;
+            }
+        }
+
         final String boardTitle = detailData.getBoardTitle();
         final String boardWriter = detailData.getBoardWriter();
         final String boardContents = detailData.getBoardContents();
@@ -143,6 +152,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardContents(boardContents)
                 .boardContentsText(boardContentsText)
                 .boardHits(boardHits + 1)
+                .boardLikeYn(boardLikeYn)
                 .boardLikeCount(boardLikeCount)
                 .boardCreated(boardCreated)
                 .boardUserId(boardUserId)
