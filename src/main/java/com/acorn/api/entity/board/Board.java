@@ -41,4 +41,6 @@ public class Board {
     private LocalDateTime boardUpdated;
 
     private List<BoardFile> boardFilesList;
+
+    private List<BoardComment> boardCommentsList;
 }

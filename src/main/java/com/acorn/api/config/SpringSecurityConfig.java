@@ -110,8 +110,7 @@ public class SpringSecurityConfig {
                                          "/notice/detail/**",
                                          "/admin/login",
                                          "/faq/list/**",
-                                         "/api/faq/contents/**",
-                                         "/api/board/like/**").permitAll()
+                                         "/api/faq/contents/**").permitAll()
 
                         // Public API
                         .requestMatchers("/api/auth/user/register",
@@ -227,7 +226,9 @@ public class SpringSecurityConfig {
                                          "/api/contact/update/**",
                                          "/api/contact/delete/**",
                                          "/api/contact/cancel/**",
-                                         "/api/contact/file/download/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/api/contact/file/download/**",
+                                         "/api/board/like/**",
+                                         "/api/board/comment/save/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );

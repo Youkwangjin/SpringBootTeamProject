@@ -11,9 +11,11 @@ import com.acorn.api.dto.board.request.BoardUpdateReqDTO;
 import com.acorn.api.dto.board.response.*;
 import com.acorn.api.dto.common.CommonListReqDTO;
 import com.acorn.api.entity.board.Board;
+import com.acorn.api.entity.board.BoardComment;
 import com.acorn.api.entity.board.BoardFile;
 import com.acorn.api.entity.board.BoardLike;
 import com.acorn.api.exception.global.AcontainerException;
+import com.acorn.api.repository.board.BoardCommentRepository;
 import com.acorn.api.repository.board.BoardFileRepository;
 import com.acorn.api.repository.board.BoardLikeRepository;
 import com.acorn.api.repository.board.BoardRepository;
@@ -42,6 +44,7 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final BoardLikeRepository boardLikeRepository;
+    private final BoardCommentRepository boardCommentRepository;
     private final BoardFileRepository boardFileRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final FileComponent fileComponent;
@@ -109,18 +112,6 @@ public class BoardServiceImpl implements BoardService {
             }
         }
 
-        final String boardTitle = detailData.getBoardTitle();
-        final String boardWriter = detailData.getBoardWriter();
-        final String boardContents = detailData.getBoardContents();
-        final String boardContentsText = detailData.getBoardContentsText();
-        final Integer boardHits = detailData.getBoardHits();
-        final Integer boardLikeCount = detailData.getBoardLikeCount();
-        final LocalDateTime boardCreated = detailData.getBoardCreated();
-        final Integer boardUserId = detailData.getBoardUserId();
-        final Integer boardOwnerId = detailData.getBoardOwnerId();
-
-        boolean isAuthor = hasEditPermission(currentUserId, currentOwnerId, boardUserId, boardOwnerId);
-
         boardRepository.updateBoardHits(boardId);
 
         List<BoardFile> boardFileEntities = detailData.getBoardFilesList();
@@ -145,6 +136,51 @@ public class BoardServiceImpl implements BoardService {
                 })
                 .collect(Collectors.toList());
 
+        List<BoardComment> boardCommentEntities = boardCommentRepository.selectBoardCommentsDetailByBoardId(boardId);
+        final List<BoardCommentResDTO> boardCommentData = boardCommentEntities.stream()
+                .map(boardComment -> {
+                    final Integer boardCommentId = boardComment.getBoardCommentId();
+                    final Integer boardCommentUserId = boardComment.getBoardCommentUserId();
+                    final Integer boardCommentOwnerId = boardComment.getBoardCommentOwnerId();
+                    final String boardCommentContents = boardComment.getBoardCommentContents();
+                    final String boardCommentYn = boardComment.getBoardCommentYn();
+                    final LocalDateTime boardCommentCreated = boardComment.getBoardCommentCreated();
+
+                    String boardCommentWriter;
+                    if (boardComment.getUser() != null && boardComment.getUser().getUserNm() != null) {
+                        boardCommentWriter = boardComment.getUser().getUserNm();
+
+                    } else if (boardComment.getOwner() != null && boardComment.getOwner().getOwnerNm() != null) {
+                        boardCommentWriter = boardComment.getOwner().getOwnerNm();
+
+                    } else {
+                        throw new AcontainerException(ApiHttpErrorCode.INTERNAL_SERVER_ERROR);
+                    }
+
+                    return BoardCommentResDTO.builder()
+                            .boardCommentId(boardCommentId)
+                            .boardCommentUserId(boardCommentUserId)
+                            .boardCommentOwnerId(boardCommentOwnerId)
+                            .boardCommentWriter(boardCommentWriter)
+                            .boardCommentContents(boardCommentContents)
+                            .boardCommentYn(boardCommentYn)
+                            .boardCommentCreated(boardCommentCreated)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        final String boardTitle = detailData.getBoardTitle();
+        final String boardWriter = detailData.getBoardWriter();
+        final String boardContents = detailData.getBoardContents();
+        final String boardContentsText = detailData.getBoardContentsText();
+        final Integer boardHits = detailData.getBoardHits();
+        final Integer boardLikeCount = detailData.getBoardLikeCount();
+        final LocalDateTime boardCreated = detailData.getBoardCreated();
+        final Integer boardUserId = detailData.getBoardUserId();
+        final Integer boardOwnerId = detailData.getBoardOwnerId();
+
+        boolean isAuthor = hasEditPermission(currentUserId, currentOwnerId, boardUserId, boardOwnerId);
+
         return BoardDetailResDTO.builder()
                 .boardId(boardId)
                 .boardTitle(boardTitle)
@@ -159,6 +195,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardOwnerId(boardOwnerId)
                 .isAuthor(isAuthor)
                 .boardFiles(boardFileData)
+                .boardComments(boardCommentData)
                 .build();
     }
 

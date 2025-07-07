@@ -35,4 +35,6 @@ public class BoardDetailResDTO {
     private boolean isAuthor;
 
     private List<BoardFileResDTO> boardFiles;
+
+    private List<BoardCommentResDTO> boardComments;
 }
