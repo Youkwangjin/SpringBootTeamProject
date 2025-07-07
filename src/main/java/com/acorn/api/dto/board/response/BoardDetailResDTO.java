@@ -20,6 +20,8 @@ public class BoardDetailResDTO {
 
     private String boardContentsText;
 
+    private String boardLikeYn;
+
     private Integer boardHits;
 
     private Integer boardLikeCount;
@@ -33,4 +35,6 @@ public class BoardDetailResDTO {
     private boolean isAuthor;
 
     private List<BoardFileResDTO> boardFiles;
+
+    private List<BoardCommentResDTO> boardComments;
 }

@@ -8,7 +8,7 @@
     <link th:href="@{/assets/css/main.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board/board-detail.css}">
     <link th:href="@{/assets/img/favicon.png}" rel="icon">
-    <title>에이콘테이너 : 글 상세보기</title>
+    <title>에이콘테이너 : 자유게시판 상세보기</title>
 </head>
 <body>
 <div sec:authorize="isAnonymous()">
@@ -35,8 +35,8 @@
                 <span th:text="|작성자: ${boardDetailData.boardWriter}|"></span>
                 <span th:text="|조회수: ${boardDetailData.boardHits}|"></span>
                 <span th:text="|등록일자: ${#temporals.format(boardDetailData.boardCreated, 'yyyy-MM-dd')}|"></span>
-                <button type="button" class="like-btn" id="boardLikeCount">
-                    <img src="/assets/img/svg/heart.svg" alt="좋아요" class="like-icon"/>
+                <button type="button" class="like-btn" id="boardLikeCount" th:classappend="${boardDetailData.boardLikeYn=='Y'} ? ' liked'">
+                    <span class="like-icon"></span>
                     <span class="like-count" th:text="${boardDetailData.boardLikeCount}"></span>
                 </button>
             </div>
@@ -52,6 +52,45 @@
                     </a>
                 </li>
             </ul>
+        </div>
+
+        <div class="board-comments">
+            <h2 class="comments-title">댓글</h2>
+            <ul class="comments-list">
+                <li class="comment-item" th:each="comment, iterStat : ${boardDetailData.boardComments}">
+                    <div class="comment-meta">
+                        <span class="comment-writer" th:text="${comment.boardCommentWriter}">작성자</span>
+                        <span class="comment-date" th:text="${#temporals.format(comment.boardCommentCreated, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+                    <div class="comment-content"
+                         th:if="${comment.boardCommentYn == 'Y' or boardDetailData.isAuthor}">
+                        <span th:text="${comment.boardCommentContents}"></span>
+                    </div>
+                    <div class="comment-content"
+                         th:if="${comment.boardCommentYn == 'N' and !boardDetailData.isAuthor}">
+                        <span>비밀댓글입니다.</span>
+                    </div>
+                    <div class="comment-actions">
+                        <div sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_OWNER')">
+                            <button type="button" class="comment-reply-btn" th:attr="data-index=${iterStat.index}">답글달기</button>
+                        </div>
+                    </div>
+                </li>
+                <li th:if="${#lists.isEmpty(boardDetailData.boardComments)}" class="no-comment">
+                    등록된 댓글이 없습니다.
+                </li>
+            </ul>
+            <div class="comment-form">
+                <label>
+                    <textarea class="comment-textarea" id="boardComment" placeholder="댓글을 입력하세요"></textarea>
+                </label>
+                <label for="commentYnSelect" class="blind">공개 타입 선택</label>
+                <select id="commentYnSelect" class="comment-yn-select">
+                    <option value="Y" selected>공개</option>
+                    <option value="N">비공개</option>
+                </select>
+                <button type="button" class="comment-submit-btn" id="commentBtn">등록</button>
+            </div>
         </div>
         <div class="button-container">
             <input type="button" class="ListBtn" id="listBtn" value="목록">
@@ -70,16 +109,96 @@
         const boardId = document.getElementById("boardId").value;
         const boardUserId = document.getElementById("boardUserId").value;
         const boardOwnerId = document.getElementById("boardOwnerId").value;
+        const boardLikeCount = document.getElementById("boardLikeCount");
 
+        const commentBtn = document.getElementById("commentBtn");
         const listBtn = document.getElementById("listBtn");
         const updateBtn = document.getElementById("updateBtn");
         const deleteBtn = document.getElementById("deleteBtn");
 
+        const likeCount = boardLikeCount.querySelector(".like-count");
+
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
+        commentBtn.addEventListener("click", function () {
+            const boardComment = document.getElementById("boardComment").value.trim();
+            const commentYnSelect = document.getElementById("commentYnSelect").value;
+
+            if (!boardComment) {
+                alert("댓글 내용을 입력해 주세요.");
+                return;
+            }
+
+            if (!confirm("댓글을 등록하시겠습니까?")) {
+                return;
+            }
+
+            const boardCommentData = {
+                boardId: boardId,
+                boardCommentContents: boardComment,
+                boardCommentYn: commentYnSelect
+            };
+
+            fetch(`/api/board/comment/save/${boardId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
+                body: JSON.stringify(boardCommentData)
+            })
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        alert(MSG.BOARD_COMMENT_SAVE_SUCCESS);
+                        window.location.href = `/board/detail/${boardId}`;
+
+                    } else {
+                        alert(responseData.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
+        });
+
         listBtn.addEventListener("click", function () {
             window.location.href = "/board/list";
+        });
+
+        boardLikeCount.addEventListener("click", function () {
+            const boardLikeData = {
+                boardId: boardId,
+            };
+
+            fetch(`/api/board/like/${boardId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                credentials: "include",
+                body: JSON.stringify(boardLikeData)
+            })
+                .then(async response => {
+                    const responseData = await response.json();
+
+                    if (response.status === 200) {
+                        const res = responseData.result;
+
+                        boardLikeCount.classList.toggle("liked", res.boardLikeYn === "Y");
+                        likeCount.textContent = res.boardLikeCount;
+
+                    } else {
+                        alert(responseData.errorMsg);
+                    }
+                })
+                .catch(() => {
+                    alert(MSG.ERROR);
+                });
         });
 
         if (updateBtn) {
@@ -115,6 +234,7 @@
                         if (response.status === 200) {
                             alert(MSG.BOARD_DELETE_SUCCESS);
                             window.location.href = "/board/list";
+
                         } else {
                             alert(responseData.errorMsg);
                         }

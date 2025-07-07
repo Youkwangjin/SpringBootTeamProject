@@ -17,7 +17,8 @@
         <result property="boardLikeCount"           column="BOARD_LIKE_COUNT"/>
         <result property="boardCreated"             column="BOARD_CREATED"/>
         <result property="boardUpdated"             column="BOARD_UPDATED"/>
-        <collection property="boardFilesList"       javaType="java.util.List" resultMap="com.acorn.api.repository.board.BoardFileRepository.boardFileResultMap" />
+        <collection property="boardFilesList"       javaType="java.util.List" resultMap="com.acorn.api.repository.board.BoardFileRepository.boardFileResultMap"/>
+        <collection property="boardCommentsList"    javaType="java.util.List" resultMap="com.acorn.api.repository.board.BoardCommentRepository.boardCommentResultMap"/>
     </resultMap>
 
     <select id="selectBoardIdKey" resultType="Integer">
@@ -109,6 +110,7 @@
             B.BOARD_CONTENTS_TEXT,
             B.BOARD_PASSWORD,
             B.BOARD_HITS,
+            B.BOARD_LIKE_COUNT,
             B.BOARD_CREATED,
             F.BOARD_FILE_ID,
             F.BOARD_FILE_BOARD_ID,
@@ -116,12 +118,21 @@
             F.BOARD_FILE_STORED_FILE_NAME,
             F.BOARD_FILE_PATH,
             F.BOARD_FILE_EXTNS_NM,
-            F.BOARD_FILE_SIZE
+            F.BOARD_FILE_SIZE,
+            C.BOARD_COMMENT_ID,
+            C.BOARD_COMMENT_USER_ID,
+            C.BOARD_COMMENT_OWNER_ID,
+            C.BOARD_COMMENT_CONTENTS,
+            C.BOARD_COMMENT_YN,
+            C.BOARD_COMMENT_CREATED
         FROM
             TB_BOARD B
         LEFT OUTER JOIN
             TB_BOARD_FILE F
         ON B.BOARD_ID = F.BOARD_FILE_BOARD_ID
+        LEFT OUTER JOIN
+            TB_BOARD_COMMENT C
+        ON B.BOARD_ID  = C.BOARD_COMMENT_BOARD_ID
         WHERE
             B.BOARD_ID = #{boardId}
     </select>
@@ -131,6 +142,24 @@
             TB_BOARD
         SET
             BOARD_HITS = BOARD_HITS + 1
+        WHERE
+            BOARD_ID = #{boardId}
+    </update>
+
+    <update id="updateBoardLikeCount" parameterType="integer">
+        UPDATE
+            TB_BOARD
+        SET
+            BOARD_LIKE_COUNT = BOARD_LIKE_COUNT + 1
+        WHERE
+            BOARD_ID = #{boardId}
+    </update>
+
+    <update id="deleteBoardLikeCount" parameterType="integer">
+        UPDATE
+            TB_BOARD
+        SET
+            BOARD_LIKE_COUNT = BOARD_LIKE_COUNT - 1
         WHERE
             BOARD_ID = #{boardId}
     </update>

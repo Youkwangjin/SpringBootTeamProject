@@ -40,6 +40,7 @@ const MSG = {
     ADMIN_PASSWORD_SUCCESS:                 "비밀번호가 검증되었습니다.",
 
     BOARD_SAVE_SUCCESS:                     "게시글이 성공적으로 등록되었습니다.",
+    BOARD_COMMENT_SAVE_SUCCESS:             "댓글이 성공적으로 등록되었습니다.",
     BOARD_UPDATE_SUCCESS:                   "게시글이 성공적으로 수정되었습니다.",
     BOARD_DELETE_SUCCESS:                   "게시글이 성공적으로 삭제되었습니다.",
 

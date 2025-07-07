@@ -19,7 +19,11 @@ public interface BoardRepository {
 
     Board selectBoardDetailData(@Param("boardId") Integer boardId);
 
-    void updateBoardHits(@Param("boardId")Integer boardId);
+    void updateBoardHits(@Param("boardId") Integer boardId);
+
+    void updateBoardLikeCount(@Param("boardId") Integer boardId);
+
+    void deleteBoardLikeCount(@Param("boardId") Integer boardId);
 
     void updateBoard(Board board);
 

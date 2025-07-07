@@ -2,6 +2,8 @@ package com.acorn.api.exception.board;
 
 import com.acorn.api.code.common.ApiValidationErrorCode;
 import com.acorn.api.code.response.ApiErrorResponse;
+import com.acorn.api.controller.board.BoardDeleteController;
+import com.acorn.api.controller.board.BoardLikeController;
 import com.acorn.api.controller.board.BoardSaveController;
 import com.acorn.api.controller.board.BoardUpdateController;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {BoardSaveController.class, BoardUpdateController.class})
+@RestControllerAdvice(assignableTypes = {BoardSaveController.class, BoardUpdateController.class, BoardDeleteController.class, BoardLikeController.class})
 public class BoardExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
