@@ -27,4 +27,6 @@ public interface PaymentRepository {
     void updatePayment(Payment payment);
 
     void updatePaymentStatus(Payment payment);
+
+    void deletePayment(Payment payment);
 }

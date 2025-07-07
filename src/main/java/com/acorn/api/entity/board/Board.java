@@ -34,9 +34,13 @@ public class Board {
 
     private Integer boardHits;
 
+    private Integer boardLikeCount;
+
     private LocalDateTime boardCreated;
 
     private LocalDateTime boardUpdated;
 
     private List<BoardFile> boardFilesList;
+
+    private List<BoardComment> boardCommentsList;
 }

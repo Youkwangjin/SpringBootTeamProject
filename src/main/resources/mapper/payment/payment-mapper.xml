@@ -146,12 +146,14 @@
             PAYMENT_ID,
             PAYMENT_USER_ID,
             PAYMENT_RESERVATION_ID,
+            PAYMENT_AMOUNT,
             PAYMENT_STATUS,
             PAYMENT_CREATED
         ) VALUES (
             #{paymentId},
             #{paymentUserId},
             #{paymentReservationId},
+            #{paymentAmount},
             #{paymentStatus},
             NOW()
         )
@@ -179,4 +181,12 @@
         WHERE
             PAYMENT_ID = #{paymentId}
     </update>
+
+    <delete id="deletePayment" parameterType="com.acorn.api.entity.payment.Payment">
+        DELETE
+        FROM
+            TB_PAYMENT
+        WHERE
+            PAYMENT_ID = #{paymentId}
+    </delete>
 </mapper>

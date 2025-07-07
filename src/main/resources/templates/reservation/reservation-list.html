@@ -64,8 +64,8 @@
                                     : (reserve.reservationStatus == 2 ? '예약종료'
                                     : (reserve.reservationStatus == 3 ? '예약취소' : '알수없음')))}">
                 </div>
-                <div class="table-cell" th:text="${#temporals.format(reserve.reservationStartDate, 'yyyy-MM-dd HH:mm')}"></div>
-                <div class="table-cell" th:text="${#temporals.format(reserve.reservationEndDate, 'yyyy-MM-dd HH:mm')}"></div>
+                <div class="table-cell" th:text="${reserve.reservationStartDate == null ? '결제대기' : #temporals.format(reserve.reservationStartDate, 'yyyy-MM-dd HH:mm')}"></div>
+                <div class="table-cell" th:text="${reserve.reservationEndDate == null ? '결제대기' : #temporals.format(reserve.reservationEndDate, 'yyyy-MM-dd HH:mm')}"></div>
             </div>
         </th:block>
         <th:block th:if="${#lists.isEmpty(reservationListData)}">

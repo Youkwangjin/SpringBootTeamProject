@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acorn.api.repository.board.BoardLikeRepository">
+    <resultMap id="boardLikeResultMap"              type="com.acorn.api.entity.board.BoardLike">
+        <id property="boardLikeId"                  column="BOARD_LIKE_ID"/>
+        <result property="boardLikeBoardId"         column="BOARD_LIKE_BOARD_ID"/>
+        <result property="boardLikeUserId"          column="BOARD_LIKE_USER_ID"/>
+        <result property="boardLikeOwnerId"         column="BOARD_LIKE_OWNER_ID"/>
+        <result property="boardLikeYn"              column="BOARD_LIKE_YN"/>
+        <result property="boardLikeCreated"         column="BOARD_LIKE_CREATED"/>
+        <result property="boardLikeCanceled"        column="BOARD_LIKE_CANCELED"/>
+        <association property="user"                javaType="com.acorn.api.entity.user.User" resultMap="com.acorn.api.repository.user.UserRepository.userResultMap"/>
+        <association property="owner"               javaType="com.acorn.api.entity.owner.Owner" resultMap="com.acorn.api.repository.owner.OwnerRepository.ownerResultMap"/>
+        <association property="board"               javaType="com.acorn.api.entity.board.Board" resultMap="com.acorn.api.repository.board.BoardRepository.boardResultMap"/>
+    </resultMap>
+
+    <select id="selectBoardLikeIdKey" resultType="Integer">
+        SELECT nextval(BOARD_LIKE_SEQ)
+    </select>
+
+    <select id="selectBoardLikeByBoardId" parameterType="Integer" resultMap="boardLikeResultMap">
+        SELECT
+            BOARD_LIKE_ID,
+            BOARD_LIKE_BOARD_ID,
+            BOARD_LIKE_USER_ID,
+            BOARD_LIKE_OWNER_ID,
+            BOARD_LIKE_YN
+        FROM
+            TB_BOARD_LIKE
+        WHERE
+            BOARD_LIKE_BOARD_ID = #{boardLikeBoardId}
+    </select>
+
+    <select id="selectBoardLikeCountByBoardId" parameterType="Map" resultMap="boardLikeResultMap">
+        SELECT
+            L.BOARD_LIKE_ID,
+            L.BOARD_LIKE_YN,
+            B.BOARD_ID,
+            B.BOARD_LIKE_COUNT
+        FROM
+            TB_BOARD_LIKE L
+        LEFT OUTER JOIN
+            TB_BOARD B
+        ON L.BOARD_LIKE_BOARD_ID = B.BOARD_ID
+        <where>
+            L.BOARD_LIKE_BOARD_ID = #{boardLikeBoardId}
+            <if test="boardLikeUserId != null">
+                AND L.BOARD_LIKE_USER_ID = #{boardLikeUserId}
+            </if>
+            <if test="boardLikeOwnerId != null">
+                AND L.BOARD_LIKE_OWNER_ID = #{boardLikeOwnerId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBoardLikeByCurrentId" parameterType="Map" resultMap="boardLikeResultMap">
+        SELECT
+            BOARD_LIKE_ID,
+            BOARD_LIKE_BOARD_ID,
+            BOARD_LIKE_USER_ID,
+            BOARD_LIKE_OWNER_ID,
+            BOARD_LIKE_YN
+        FROM
+            TB_BOARD_LIKE
+        <where>
+            BOARD_LIKE_BOARD_ID = #{boardLikeBoardId}
+            <if test="boardLikeUserId != null">
+                AND BOARD_LIKE_USER_ID = #{boardLikeUserId}
+            </if>
+            <if test="boardLikeOwnerId != null">
+                AND BOARD_LIKE_OWNER_ID = #{boardLikeOwnerId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveBoardLike" parameterType="com.acorn.api.entity.board.BoardLike" useGeneratedKeys="true" keyProperty="boardLikeId">
+        INSERT INTO TB_BOARD_LIKE (
+            BOARD_LIKE_ID,
+            BOARD_LIKE_BOARD_ID,
+            BOARD_LIKE_USER_ID,
+            BOARD_LIKE_OWNER_ID,
+            BOARD_LIKE_YN,
+            BOARD_LIKE_CREATED
+        ) VALUES (
+            #{boardLikeId},
+            #{boardLikeBoardId},
+            #{boardLikeUserId},
+            #{boardLikeOwnerId},
+            #{boardLikeYn},
+            NOW()
+        )
+    </insert>
+
+    <update id="updateBoardLike" parameterType="com.acorn.api.entity.board.BoardLike">
+        UPDATE
+            TB_BOARD_LIKE
+        SET
+            BOARD_LIKE_USER_ID = #{boardLikeUserId},
+            BOARD_LIKE_OWNER_ID =#{boardLikeOwnerId},
+            BOARD_LIKE_YN = #{boardLikeYn},
+            BOARD_LIKE_CANCELED = NOW()
+        WHERE
+            BOARD_LIKE_ID = #{boardLikeId}
+    </update>
+</mapper>

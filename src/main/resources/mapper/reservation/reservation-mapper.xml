@@ -45,6 +45,37 @@
         </where>
     </select>
 
+    <select id="selectReservationContainerCountByRequest" parameterType="com.acorn.api.common.PaginationRequest" resultType="Integer">
+        SELECT
+            COUNT(R.RESERVATION_ID)
+        FROM
+            TB_RESERVATION R
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
+            TB_USER U
+        ON R.RESERVATION_USER_ID = U.USER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
+        <where>
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'userNm' and searchName != null and searchName.trim() != ''">
+                AND U.USER_NM LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'reservationStatus' and searchName != null and searchName.trim() != ''">
+                AND R.RESERVATION_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'paymentStatus' and searchName != null and searchName.trim() != ''">
+                AND P.PAYMENT_STATUS = #{searchName}
+            </if>
+        </where>
+    </select>
+
     <select id="selectReservationListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="reservationResultMap">
         SELECT
             ROW_NUMBER() OVER (ORDER BY R.RESERVATION_CREATED ASC) AS ROW_NUM,
@@ -82,15 +113,41 @@
         LIMIT #{startRowNum}, #{pageSize}
     </select>
 
-    <select id="existsActiveReservationByRequest" parameterType="map" resultType="Boolean">
-        SELECT EXISTS (
-            SELECT 1
-            FROM
-                TB_RESERVATION
-            WHERE
-                RESERVATION_CONTAINER_ID = #{containerId}
-            AND RESERVATION_STATUS = #{reservationStatus}
-        )
+    <select id="selectReservationContainerListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="reservationResultMap">
+        SELECT
+            R.RESERVATION_ID,
+            R.RESERVATION_STATUS,
+            C.CONTAINER_NAME,
+            U.USER_NM,
+            P.PAYMENT_STATUS
+        FROM
+            TB_RESERVATION R
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
+            TB_USER U
+        ON R.RESERVATION_USER_ID = U.USER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
+        <where>
+            C.CONTAINER_OWNER_ID = #{containerOwnerId}
+            <if test="searchType == 'containerName' and searchName != null and searchName.trim() != ''">
+                AND C.CONTAINER_NAME LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'userNm' and searchName != null and searchName.trim() != ''">
+                AND U.USER_NM LIKE CONCAT('%', TRIM(#{searchName}), '%')
+            </if>
+            <if test="searchType == 'reservationStatus' and searchName != null and searchName.trim() != ''">
+                AND R.RESERVATION_STATUS = #{searchName}
+            </if>
+            <if test="searchType == 'paymentStatus' and searchName != null and searchName.trim() != ''">
+                AND P.PAYMENT_STATUS = #{searchName}
+            </if>
+        </where>
+        ORDER BY R.RESERVATION_CREATED DESC
+        LIMIT #{startRowNum}, #{pageSize}
     </select>
 
     <select id="selectReservationByUserId" parameterType="Integer" resultMap="reservationResultMap">
@@ -100,37 +157,11 @@
             R.RESERVATION_STATUS
         FROM
             TB_USER U
-                INNER JOIN
-            TB_RESERVATION R
-            ON U.USER_ID = R.RESERVATION_USER_ID
-        WHERE U.USER_ID = #{userId}
-    </select>
-
-    <select id="selectReservationDetailData" parameterType="Integer" resultMap="reservationResultMap">
-        SELECT
-            R.RESERVATION_ID,
-            R.RESERVATION_TID,
-            R.RESERVATION_USER_ID,
-            R.RESERVATION_CONTAINER_ID,
-            R.RESERVATION_STATUS,
-            R.RESERVATION_START_DATE,
-            R.RESERVATION_END_DATE,
-            C.CONTAINER_ID,
-            C.CONTAINER_NAME,
-            C.CONTAINER_ADDRESS,
-            C.CONTAINER_PRICE,
-            O.OWNER_NM,
-            O.OWNER_COMPANY_NAME
-        FROM
-            TB_RESERVATION R
         INNER JOIN
-            TB_CONTAINER C
-        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
-        INNER JOIN
-            TB_OWNER O
-        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+            TB_RESERVATION R
+        ON U.USER_ID = R.RESERVATION_USER_ID
         WHERE
-            R.RESERVATION_ID = #{reservationId}
+            U.USER_ID = #{userId}
     </select>
 
     <select id="selectReservationByUserIdAndStatus" parameterType="map" resultMap="reservationResultMap">
@@ -153,22 +184,137 @@
         </foreach>
     </select>
 
+    <select id="selectExpiredPendingReservations" parameterType="java.time.LocalDateTime" resultType="Integer">
+        <![CDATA[
+            SELECT
+                RESERVATION_ID
+            FROM
+                TB_RESERVATION
+            WHERE
+                RESERVATION_STATUS = 0
+            AND
+                RESERVATION_START_DATE IS NULL
+            AND
+                RESERVATION_END_DATE IS NULL
+            AND
+                RESERVATION_CREATED <= #{threeDaysAgo}
+        ]]>
+    </select>
+
+    <select id="selectExpiredReservation" parameterType="java.time.LocalDateTime" resultType="Integer">
+        <![CDATA[
+            SELECT
+                RESERVATION_ID
+            FROM
+                TB_RESERVATION
+            WHERE
+                RESERVATION_STATUS = 1
+            AND
+                RESERVATION_START_DATE IS NOT NULL
+            AND
+                RESERVATION_END_DATE IS NOT NULL
+            AND
+                RESERVATION_END_DATE <= #{todayNoon}
+        ]]>
+    </select>
+
+    <select id="selectReservationDetailData" parameterType="Integer" resultMap="reservationResultMap">
+        SELECT
+            R.RESERVATION_ID,
+            R.RESERVATION_TID,
+            R.RESERVATION_USER_ID,
+            R.RESERVATION_CONTAINER_ID,
+            R.RESERVATION_STATUS,
+            R.RESERVATION_START_DATE,
+            R.RESERVATION_END_DATE,
+            C.CONTAINER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_ADDRESS,
+            C.CONTAINER_PRICE,
+            O.OWNER_NM,
+            O.OWNER_COMPANY_NAME,
+            P.PAYMENT_ID,
+            P.PAYMENT_STATUS
+        FROM
+            TB_RESERVATION R
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
+            TB_OWNER O
+        ON C.CONTAINER_OWNER_ID = O.OWNER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
+        WHERE
+            R.RESERVATION_ID = #{reservationId}
+    </select>
+
+    <select id="selectReservationContainerDetailData" parameterType="Integer" resultMap="reservationResultMap">
+        SELECT
+            R.RESERVATION_ID,
+            R.RESERVATION_STATUS,
+            R.RESERVATION_START_DATE,
+            R.RESERVATION_END_DATE,
+            C.CONTAINER_ID,
+            C.CONTAINER_OWNER_ID,
+            C.CONTAINER_NAME,
+            C.CONTAINER_PRICE,
+            U.USER_NM,
+            U.USER_TEL,
+            P.PAYMENT_STATUS,
+            P.PAYMENT_AMOUNT,
+            P.PAYMENT_APPROVED,
+            P.PAYMENT_CANCELED
+        FROM
+            TB_RESERVATION R
+        INNER JOIN
+            TB_CONTAINER C
+        ON R.RESERVATION_CONTAINER_ID = C.CONTAINER_ID
+        INNER JOIN
+            TB_USER U
+        ON R.RESERVATION_USER_ID = U.USER_ID
+        LEFT OUTER JOIN
+            TB_PAYMENT P
+        ON R.RESERVATION_ID = P.PAYMENT_RESERVATION_ID
+        WHERE
+            R.RESERVATION_ID = #{reservationId};
+    </select>
+
+    <select id="selectReservationContainerId" parameterType="Integer" resultType="Integer">
+        SELECT
+            RESERVATION_CONTAINER_ID
+        FROM
+            TB_RESERVATION
+        WHERE
+            RESERVATION_ID = #{reservationId}
+    </select>
+
+    <select id="existsActiveReservationByRequest" parameterType="map" resultType="Boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM
+                TB_RESERVATION
+            WHERE
+                RESERVATION_CONTAINER_ID = #{containerId}
+              AND RESERVATION_STATUS = #{reservationStatus}
+        )
+    </select>
+
     <insert id="insertReservation" parameterType="com.acorn.api.entity.reservation.Reservation" useGeneratedKeys="true" keyProperty="reservationId">
         INSERT INTO TB_RESERVATION (
             RESERVATION_ID,
             RESERVATION_USER_ID,
             RESERVATION_CONTAINER_ID,
             RESERVATION_STATUS,
-            RESERVATION_START_DATE,
-            RESERVATION_END_DATE
+            RESERVATION_CREATED
         )
         VALUES (
             #{reservationId},
             #{reservationUserId},
             #{reservationContainerId},
             #{reservationStatus},
-            #{reservationStartDate},
-            #{reservationEndDate}
+            NOW()
         )
     </insert>
 
@@ -177,6 +323,18 @@
             TB_RESERVATION
         SET
             RESERVATION_TID = #{reservationTid}
+        WHERE
+            RESERVATION_ID = #{reservationId}
+    </update>
+
+    <update id="updateReservation" parameterType="com.acorn.api.entity.reservation.Reservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            RESERVATION_START_DATE = #{reservationStartDate},
+            RESERVATION_END_DATE = #{reservationEndDate},
+            RESERVATION_STATUS = #{reservationStatus},
+            RESERVATION_UPDATED = NOW()
         WHERE
             RESERVATION_ID = #{reservationId}
     </update>

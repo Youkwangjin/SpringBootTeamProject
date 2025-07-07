@@ -150,11 +150,12 @@ public class SpringSecurityConfig {
                         .requestMatchers("/owner/mypage",
                                          "/owner/update/profile",
                                          "/owner/delete/profile",
-                                         "/container/reservation/list/**",
                                          "/container/list/**",
                                          "/container/register",
                                          "/container/detail/**",
-                                         "/container/update/**").hasAuthority("ROLE_OWNER")
+                                         "/container/update/**",
+                                         "/reservation/container/list/**",
+                                         "/reservation/container/detail/**").hasAuthority("ROLE_OWNER")
 
                         // Protected Admin Common Pages
                         .requestMatchers("/admin/mypage",
@@ -225,7 +226,9 @@ public class SpringSecurityConfig {
                                          "/api/contact/update/**",
                                          "/api/contact/delete/**",
                                          "/api/contact/cancel/**",
-                                         "/api/contact/file/download/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/api/contact/file/download/**",
+                                         "/api/board/like/**",
+                                         "/api/board/comment/save/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );

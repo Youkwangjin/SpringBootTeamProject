@@ -12,13 +12,11 @@ public interface ContainerService {
 
     List<ContainerListResDTO> getContainerListData(ContainerListReqDTO listData);
 
-    List<ContainerReservationListResDTO> getContainerReservationListData(ContainerReservationListReqDTO listData);
-
     List<ContainerMapListResDTO> getContainersForMap();
 
-    void containerRegister(ContainerRegisterReqDTO registerData);
-
     ContainerDetailResDTO getContainerData(Integer containerId);
+
+    void containerRegister(ContainerRegisterReqDTO registerData);
 
     void containerUpdate(ContainerUpdateReqDTO updateData);
 

@@ -69,6 +69,7 @@
                                 <th scope="col" class="th-writer">작성자</th>
                                 <th scope="col" class="th-date">등록일</th>
                                 <th scope="col" class="th-views">조회수</th>
+                                <th scope="col" class="th-views">추천</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -80,6 +81,7 @@
                                 <td th:text="${board.boardWriter}"></td>
                                 <td th:text="${#temporals.format(board.boardCreated, 'yyyy.MM.dd')}"></td>
                                 <td th:text="${board.boardHits}"></td>
+                                <td th:text="${board.boardLikeCount}"></td>
                             </tr>
                             <tr th:if="${boardData.size() == 0}">
                                 <td colspan="5">조회된 결과가 없습니다.</td>

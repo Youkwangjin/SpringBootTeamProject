@@ -15,7 +15,11 @@ public class ReservationDetailResDTO {
 
     private Integer reservationContainerId;
 
-    private Integer paymentId;
+    private Integer reservationStatus;
+
+    private LocalDateTime reservationStartDate;
+
+    private LocalDateTime reservationEndDate;
 
     private String containerName;
 
@@ -27,9 +31,7 @@ public class ReservationDetailResDTO {
 
     private String companyName;
 
-    private Integer reservationStatus;
+    private Integer paymentId;
 
-    private LocalDateTime reservationStartDate;
-
-    private LocalDateTime reservationEndDate;
+    private Integer paymentStatus;
 }

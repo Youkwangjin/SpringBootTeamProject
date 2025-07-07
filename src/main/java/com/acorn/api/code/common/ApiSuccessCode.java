@@ -16,6 +16,7 @@ public enum ApiSuccessCode {
     BOARD_SAVE_SUCCESS(HttpStatus.OK,         "BSS", "게시글이 성공적으로 등록되었습니다."),
     BOARD_UPDATE_SUCCESS(HttpStatus.OK,       "BUS", "게시글이 성공적으로 수정되었습니다."),
     BOARD_DELETE_SUCCESS(HttpStatus.OK,       "BDS", "게시글이 성공적으로 삭제되었습니다."),
+    BOARD_LIKE_CHANGE(HttpStatus.OK,          "BLC", "게시글 좋아요 상태가 변경되었습니다."),
 
     NOTICE_SAVE_SUCCESS(HttpStatus.OK,        "NSS", "공지사항이 성공적으로 등록되었습니다."),
     NOTICE_UPDATE_SUCCESS(HttpStatus.OK,      "NUS", "공지사항이 성공적으로 수정되었습니다."),
