@@ -12,6 +12,7 @@ public enum ApiErrorCode {
     PAYMENT_HISTORY_ACTIVE(HttpStatus.FORBIDDEN, "PHA", "이미 결제한 내역이 존재하여 회원수정 및 탈퇴가 불가능합니다."),
 
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "BNF", "게시글이 존재하지 않습니다."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF", "댓글이 존재하지 않습니다."),
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "NNF", "공지사항이 존재하지 않습니다."),
     CONTACT_NOT_FOUND(HttpStatus.NOT_FOUND, "CNF","문의내역이 존재하지 않습니다."),
     FAQ_NOT_FOUND(HttpStatus.NOT_FOUND, "FNF","FAQ가 존재하지 않습니다."),

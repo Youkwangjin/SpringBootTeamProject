@@ -11,7 +11,11 @@ public interface BoardCommentRepository {
 
     Integer selectBoardCommentIdKey();
 
-    void saveBoardComment(BoardComment boardComment);
-
     List<BoardComment> selectBoardCommentsDetailByBoardId(@Param("boardCommentBoardId") Integer boardId);
+
+    BoardComment selectBoardCommentById(@Param("boardCommentId") Integer boardCommentId);
+
+    BoardComment selectBoardCommentsByParentId(@Param("boardCommentParentCommentId") Integer boardCommentParentCommentId);
+
+    void saveBoardComment(BoardComment boardComment);
 }

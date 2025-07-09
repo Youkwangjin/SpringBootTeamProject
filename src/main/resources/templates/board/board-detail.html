@@ -53,11 +53,12 @@
                 </li>
             </ul>
         </div>
-
         <div class="board-comments">
             <h2 class="comments-title">댓글</h2>
             <ul class="comments-list">
-                <li class="comment-item" th:each="comment, iterStat : ${boardDetailData.boardComments}">
+                <li class="comment-item"
+                    th:each="comment, iterStat : ${boardDetailData.boardComments}"
+                    th:attr="data-index=${iterStat.index},data-comment-id=${comment.boardCommentId}">
                     <div class="comment-meta">
                         <span class="comment-writer" th:text="${comment.boardCommentWriter}">작성자</span>
                         <span class="comment-date" th:text="${#temporals.format(comment.boardCommentCreated, 'yyyy-MM-dd HH:mm')}"></span>
@@ -71,10 +72,21 @@
                         <span>비밀댓글입니다.</span>
                     </div>
                     <div class="comment-actions">
-                        <div sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_OWNER')">
+                        <div sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_OWNER')" th:if="${comment.boardCommentParentCommentId == null}">
                             <button type="button" class="comment-reply-btn" th:attr="data-index=${iterStat.index}">답글달기</button>
                         </div>
                     </div>
+                    <ul class="reply-list" th:if="${#lists.size(comment.childComments) > 0}">
+                        <li class="reply-item" th:each="reply : ${comment.childComments}">
+                            <div class="comment-meta">
+                                <span th:text="${reply.boardCommentWriter}"></span>
+                                <span th:text="${#temporals.format(reply.boardCommentCreated, 'yyyy-MM-dd HH:mm')}"></span>
+                            </div>
+                            <div class="comment-content">
+                                <span th:text="${reply.boardCommentContents}"></span>
+                            </div>
+                        </li>
+                    </ul>
                 </li>
                 <li th:if="${#lists.isEmpty(boardDetailData.boardComments)}" class="no-comment">
                     등록된 댓글이 없습니다.
@@ -102,6 +114,23 @@
         </form>
     </div>
 </main>
+<template id="replyFormTemplate">
+    <div class="reply-form">
+        <label>
+              <textarea class="comment-reply-textarea" placeholder="답글을 입력하세요"></textarea>
+        </label>
+        <div class="reply-controls">
+            <label>
+                <select class="comment-yn-select reply-yn-select">
+                    <option value="Y" selected>공개</option>
+                    <option value="N">비공개</option>
+                </select>
+            </label>
+            <button type="button" class="comment-submit-btn reply-submit-btn">등록</button>
+            <button type="button" class="reply-cancel-btn">취소</button>
+        </div>
+    </div>
+</template>
 <script th:src="@{/js/common/messages.js}"></script>
 <script th:src="@{/js/common/logout.js}"></script>
 <script>
@@ -120,6 +149,74 @@
 
         const csrfTokenElement = document.querySelector("input[name=_csrf]");
         const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+        function removeReplyForms() {
+            document.querySelectorAll(".reply-form").forEach(el => el.remove());
+        }
+
+        document.querySelectorAll(".comment-reply-btn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                removeReplyForms();
+
+                const commentItem = e.currentTarget.closest(".comment-item");
+                const boardCommentId = commentItem.dataset.commentId;
+
+                const tpl = document.getElementById("replyFormTemplate");
+                const replyEl = tpl.content.firstElementChild.cloneNode(true);
+                commentItem.appendChild(replyEl);
+
+                const textarea = commentItem.querySelector(".comment-reply-textarea");
+                const ynSelect = commentItem.querySelector(".reply-yn-select");
+                const submitBtn = commentItem.querySelector(".reply-submit-btn");
+                const cancelBtn = commentItem.querySelector(".reply-cancel-btn");
+
+                cancelBtn.addEventListener("click", () => removeReplyForms());
+
+                submitBtn.addEventListener("click", () => {
+                    const boardCommentContents = textarea.value.trim();
+                    const boardCommentYn = ynSelect.value;
+
+                    if (!boardCommentContents) {
+                        alert("내용을 입력해 주세요.");
+                        return;
+                    }
+
+                    if (!confirm("답글을 등록하시겠습니까?")) return;
+
+                    const boardCommentData = {
+                        boardId: boardId,
+                        boardCommentId: boardCommentId,
+                        boardCommentContents: boardCommentContents,
+                        boardCommentYn: boardCommentYn
+                    };
+
+                    fetch(`/api/board/comment/reply/${boardId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken
+                        },
+                        credentials: "include",
+                        body: JSON.stringify(boardCommentData)
+                    })
+
+                    .then(async response => {
+                        const responseData = await response.json();
+
+                        if (response.status === 200) {
+                            alert(MSG.BOARD_COMMENT_SAVE_SUCCESS);
+                            window.location.href = `/board/detail/${boardId}`;
+
+                        } else {
+                            alert(responseData.errorMsg);
+                        }
+                    })
+                        .catch(() => {
+                            alert(MSG.ERROR);
+                        });
+                });
+            });
+        });
 
         commentBtn.addEventListener("click", function () {
             const boardComment = document.getElementById("boardComment").value.trim();
