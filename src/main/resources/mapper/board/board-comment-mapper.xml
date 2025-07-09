@@ -27,6 +27,7 @@
             C.BOARD_COMMENT_USER_ID,
             C.BOARD_COMMENT_OWNER_ID,
             C.BOARD_COMMENT_OWNER_ID,
+            C.BOARD_COMMENT_PARENT_COMMENT_ID,
             C.BOARD_COMMENT_CONTENTS,
             C.BOARD_COMMENT_YN,
             C.BOARD_COMMENT_CREATED,
@@ -42,6 +43,38 @@
         ON C.BOARD_COMMENT_OWNER_ID = O.OWNER_ID
         WHERE
             C.BOARD_COMMENT_BOARD_ID = #{boardCommentBoardId}
+        ORDER BY
+            C.BOARD_COMMENT_PARENT_COMMENT_ID ASC, C.BOARD_COMMENT_ID ASC
+    </select>
+
+    <select id="selectBoardCommentById" parameterType="Integer" resultMap="boardCommentResultMap">
+        SELECT
+            BOARD_COMMENT_ID,
+            BOARD_COMMENT_USER_ID,
+            BOARD_COMMENT_OWNER_ID,
+            BOARD_COMMENT_OWNER_ID,
+            BOARD_COMMENT_CONTENTS,
+            BOARD_COMMENT_YN,
+            BOARD_COMMENT_CREATED
+        FROM
+            TB_BOARD_COMMENT
+        WHERE
+            BOARD_COMMENT_ID = #{boardCommentId}
+    </select>
+
+    <select id="selectBoardCommentsByParentId" parameterType="Integer" resultMap="boardCommentResultMap">
+        SELECT
+            BOARD_COMMENT_ID,
+            BOARD_COMMENT_USER_ID,
+            BOARD_COMMENT_OWNER_ID,
+            BOARD_COMMENT_OWNER_ID,
+            BOARD_COMMENT_CONTENTS,
+            BOARD_COMMENT_YN,
+            BOARD_COMMENT_CREATED
+        FROM
+            TB_BOARD_COMMENT
+        WHERE
+            BOARD_COMMENT_PARENT_COMMENT_ID = #{boardCommentParentCommentId}
     </select>
 
     <insert id="saveBoardComment" parameterType="com.acorn.api.entity.board.BoardComment" useGeneratedKeys="true" keyProperty="boardCommentId">
@@ -50,6 +83,7 @@
             BOARD_COMMENT_BOARD_ID,
             BOARD_COMMENT_USER_ID,
             BOARD_COMMENT_OWNER_ID,
+            BOARD_COMMENT_PARENT_COMMENT_ID,
             BOARD_COMMENT_CONTENTS,
             BOARD_COMMENT_YN,
             BOARD_COMMENT_CREATED
@@ -58,6 +92,7 @@
             #{boardCommentBoardId},
             #{boardCommentUserId},
             #{boardCommentOwnerId},
+            #{boardCommentParentCommentId},
             #{boardCommentContents},
             #{boardCommentYn},
             NOW()

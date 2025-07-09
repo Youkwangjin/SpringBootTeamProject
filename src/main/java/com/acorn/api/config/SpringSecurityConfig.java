@@ -228,7 +228,8 @@ public class SpringSecurityConfig {
                                          "/api/contact/cancel/**",
                                          "/api/contact/file/download/**",
                                          "/api/board/like/**",
-                                         "/api/board/comment/save/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
+                                         "/api/board/comment/save/**",
+                                         "/api/board/comment/reply/**").hasAnyAuthority("ROLE_USER", "ROLE_OWNER")
 
                         .anyRequest().permitAll()
                 );
