@@ -73,7 +73,9 @@ public enum ApiErrorCode {
     NAVER_API_INVALID_RESPONSE(HttpStatus.INTERNAL_SERVER_ERROR, "NIR", "네이버 API 응답이 유효하지 않습니다."),
 
     KAKAOPAY_API_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "KPF", "카카오페이 결제 요청 중 오류가 발생했습니다."),
-    KAKAOPAY_CANCEL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "KCF", "카카오페이 결제 취소 응답 중 오류가 발생했습니다.");
+    KAKAOPAY_CANCEL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "KCF", "카카오페이 결제 취소 응답 중 오류가 발생했습니다."),
+
+    PROFILE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "PNF", "profiles이 지정되지 않았거나 없는 profiles 값입니다.");
 
     private final HttpStatus httpStatus;
 
