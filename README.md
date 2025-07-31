@@ -61,13 +61,27 @@
 
 ## 📙 Backend Library
 
-| Library                          | Description                                                 |
-|----------------------------------|-------------------------------------------------------------|
-| spring-boot-starter-web          | 웹 애플리케이션 개발을 위한 스프링 부트 스타터 (MVC)         |
-| lombok                           | 코드 간소화를 위해 Getter, Setter, Builder 등 자동 생성      |
-| mariadb-java-client              | MariaDB 데이터베이스 연결을 위한 JDBC 드라이버               |
-| spring-boot-starter-test         | 스프링 부트 기반 테스트를 위한 스타터 키트                   |
-| spring-boot-starter-thymeleaf    | 서버 사이드 HTML 렌더링을 위한 자바 템플릿 엔진              |
+| Library                          | Description                             |
+| -------------------------------- | --------------------------------------- |
+| spring-boot-starter-web          | 웹 애플리케이션 개발을 위한 스프링 부트 스타터 (MVC)      |
+| spring-boot-starter-thymeleaf    | 서버 사이드 렌더링용 템플릿 엔진                      |
+| spring-boot-starter-data-jdbc    | JDBC 기반 DB 연동 스타터                       |
+| spring-boot-starter-security     | 인증/인가 보안 기능                             |
+| spring-boot-starter-validation   | Bean Validation 기반 데이터 유효성 검사           |
+| mybatis-spring-boot-starter      | MyBatis ORM 연동                          |
+| lombok                           | 코드 간소화용 Getter, Setter, Builder 등 자동 생성 |
+| mariadb-java-client              | MariaDB 데이터베이스 연결용 JDBC 드라이버            |
+| thymeleaf-layout-dialect         | Thymeleaf 템플릿 레이아웃 확장                   |
+| thymeleaf-extras-springsecurity6 | Thymeleaf와 Spring Security 연동 기능        |
+| software.amazon.awssdk\:s3       | AWS S3 파일 업로드/다운로드 연동                   |
+| commons-lang3                    | 다양한 자바 유틸리티 함수                          |
+| jsoup                            | HTML 파싱 및 스크래핑                          |
+| commons-io                       | 파일 및 스트림 IO 유틸리티                        |
+| spring-boot-starter-test         | 스프링 부트 기반 테스트용 스타터                      |
+| mybatis-spring-boot-starter-test | MyBatis 기반 테스트 지원                       |
+| spring-security-test             | 스프링 시큐리티 테스트 지원                         |
+| spring-boot-devtools             | 개발 환경 편의 기능                   |
+
 
 
 
