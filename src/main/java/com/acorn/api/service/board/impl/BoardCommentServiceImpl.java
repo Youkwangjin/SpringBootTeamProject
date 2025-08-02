@@ -2,6 +2,7 @@ package com.acorn.api.service.board.impl;
 
 import com.acorn.api.code.common.ApiErrorCode;
 import com.acorn.api.code.common.ApiHttpErrorCode;
+import com.acorn.api.dto.board.request.BoardCommentReplySaveReqDTO;
 import com.acorn.api.dto.board.request.BoardCommentSaveReqDTO;
 import com.acorn.api.entity.board.Board;
 import com.acorn.api.entity.board.BoardComment;
@@ -51,5 +52,45 @@ public class BoardCommentServiceImpl implements BoardCommentService {
                 .build();
 
         boardCommentRepository.saveBoardComment(savedBoardComment);
+    }
+
+    @Override
+    @Transactional
+    public void boardCommentReplySave(BoardCommentReplySaveReqDTO reqestData) {
+        final Integer currnetUserId = CommonSecurityUtil.getCurrentUserId();
+        final Integer currentOwnerId = CommonSecurityUtil.getCurrentOwnerId();
+        final Integer boardId = reqestData.getBoardId();
+        final Integer boardCommentId = reqestData.getBoardCommentId();
+        final String boardCommentContents = reqestData.getBoardCommentContents();
+        final String boardCommentYn = reqestData.getBoardCommentYn();
+
+        if (currnetUserId != null && currentOwnerId != null) {
+            throw new AcontainerException(ApiHttpErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        Board boardData = boardRepository.selectBoardDetailData(boardId);
+        if (boardData == null) {
+            throw new AcontainerException(ApiErrorCode.BOARD_NOT_FOUND);
+        }
+
+
+        BoardComment commentData = boardCommentRepository.selectBoardCommentById(boardCommentId);
+        if (commentData == null) {
+            throw new AcontainerException(ApiErrorCode.COMMENT_NOT_FOUND);
+        }
+
+        final Integer newBoardCommentId = boardCommentRepository.selectBoardCommentIdKey();
+
+        BoardComment savedBoardCommentReply = BoardComment.builder()
+                .boardCommentId(newBoardCommentId)
+                .boardCommentBoardId(boardId)
+                .boardCommentUserId(currnetUserId)
+                .boardCommentOwnerId(currentOwnerId)
+                .boardCommentContents(boardCommentContents)
+                .boardCommentYn(boardCommentYn)
+                .boardCommentParentCommentId(boardCommentId)
+                .build();
+
+        boardCommentRepository.saveBoardComment(savedBoardCommentReply);
     }
 }

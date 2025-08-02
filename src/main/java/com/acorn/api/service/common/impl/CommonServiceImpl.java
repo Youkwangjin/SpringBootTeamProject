@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import software.amazon.awssdk.core.exception.SdkClientException;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,13 +30,27 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CommonServiceImpl implements CommonService {
 
-    private final WebClient webClient;
-
     @Value("${image.upload.path}")
     private String editorImageUploadPath;
 
     @Value("${image.access.path}")
     private String imageAccessPath;
+
+    @Value("${spring.profiles.active}")
+    private String profile;
+
+    @Value("${profiles.name.local}")
+    private String LOCAL;
+
+    @Value("${profiles.name.prod}")
+    private String PROD;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    private final WebClient webClient;
+
+    private final S3Client s3Client;
 
     private static final String[] permitImageExtension = {"jpg", "jpeg", "bmp", "png", "gif"};
 
@@ -78,8 +97,34 @@ public class CommonServiceImpl implements CommonService {
 
         String imageFileName = String.format("%s.%s", UUID.randomUUID().toString().replaceAll("-", ""), imageFileExt);
 
-        File localFile = new File(editorImageUploadPath, imageFileName);
-        file.transferTo(localFile);
+        try {
+            if (StringUtils.equals(profile, LOCAL)) {
+                File localFile = new File(editorImageUploadPath, imageFileName);
+                file.transferTo(localFile);
+
+            } else if (StringUtils.equals(profile, PROD)) {
+                String key = editorImageUploadPath + imageFileName;
+
+                PutObjectRequest putReq = PutObjectRequest.builder()
+                        .bucket(bucket)
+                        .key(key)
+                        .build();
+
+                s3Client.putObject(putReq, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+
+            } else {
+                throw new AcontainerException(ApiErrorCode.PROFILE_NOT_FOUND);
+            }
+
+        } catch (S3Exception e) {
+            log.error("S3 업로드 실패 [bucket={}, key={}, code={}, msg={}]", bucket, imageFileName, e.awsErrorDetails().errorCode(), e.awsErrorDetails().errorMessage());
+            throw new AcontainerException(ApiErrorCode.S3_FILE_UPLOAD_ERROR);
+
+        } catch (IOException | SdkClientException e) {
+            log.error("파일 업로드 예외 [profile={}, key={}, error={}]", profile, imageFileName, e.getMessage());
+            throw new AcontainerException(ApiErrorCode.S3_FILE_UPLOAD_ERROR);
+        }
+
         return imageAccessPath + imageFileName;
     }
 }

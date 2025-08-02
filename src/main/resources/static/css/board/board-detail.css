@@ -249,6 +249,20 @@ label {
     transition: border-color 0.2s;
 }
 
+.comment-reply-textarea {
+    width: 70%;
+    box-sizing: border-box;
+    flex: 1;
+    min-height: 38px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: 14px;
+    resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
 .comment-textarea:focus {
     border-color: #0d6efd;
     outline: none;
@@ -280,9 +294,67 @@ label {
     border-color: #0d6efd;
 }
 
+.reply-list {
+    list-style: none;
+    margin-left: 32px;
+    background: #f7f7fa;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.reply-item {
+    margin-top: 8px;
+}
+
+.reply-form {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.reply-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.reply-controls > label {
+    display: inline-block;
+    width: auto;
+}
+
+.reply-controls .reply-yn-select,
+.reply-controls .reply-submit-btn,
+.reply-controls .reply-cancel-btn {
+    width: auto;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.reply-form > label > .comment-reply-textarea {
+    flex: 1;
+    min-width: 0;
+}
+.reply-controls {
+    flex: 0 0 auto;
+}
+
 .comment-submit-btn {
     padding: 8px 18px;
     background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.reply-cancel-btn {
+    padding: 8px 18px;
+    background-color: #dc3545;
     color: #fff;
     border: none;
     border-radius: 6px;

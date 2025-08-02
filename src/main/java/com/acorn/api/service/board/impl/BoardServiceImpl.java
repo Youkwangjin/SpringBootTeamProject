@@ -32,10 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -142,6 +139,7 @@ public class BoardServiceImpl implements BoardService {
                     final Integer boardCommentId = boardComment.getBoardCommentId();
                     final Integer boardCommentUserId = boardComment.getBoardCommentUserId();
                     final Integer boardCommentOwnerId = boardComment.getBoardCommentOwnerId();
+                    final Integer boardCommentParentCommentId = boardComment.getBoardCommentParentCommentId();
                     final String boardCommentContents = boardComment.getBoardCommentContents();
                     final String boardCommentYn = boardComment.getBoardCommentYn();
                     final LocalDateTime boardCommentCreated = boardComment.getBoardCommentCreated();
@@ -161,6 +159,7 @@ public class BoardServiceImpl implements BoardService {
                             .boardCommentId(boardCommentId)
                             .boardCommentUserId(boardCommentUserId)
                             .boardCommentOwnerId(boardCommentOwnerId)
+                            .boardCommentParentCommentId(boardCommentParentCommentId)
                             .boardCommentWriter(boardCommentWriter)
                             .boardCommentContents(boardCommentContents)
                             .boardCommentYn(boardCommentYn)
@@ -168,6 +167,8 @@ public class BoardServiceImpl implements BoardService {
                             .build();
                 })
                 .collect(Collectors.toList());
+
+        List<BoardCommentResDTO> commentTree = build1DepthCommentTree(boardCommentData);
 
         final String boardTitle = detailData.getBoardTitle();
         final String boardWriter = detailData.getBoardWriter();
@@ -195,7 +196,7 @@ public class BoardServiceImpl implements BoardService {
                 .boardOwnerId(boardOwnerId)
                 .isAuthor(isAuthor)
                 .boardFiles(boardFileData)
-                .boardComments(boardCommentData)
+                .boardComments(commentTree)
                 .build();
     }
 
@@ -478,5 +479,36 @@ public class BoardServiceImpl implements BoardService {
     private boolean hasEditPermission(Integer currentUserId, Integer currentOwnerId, Integer boardUserId, Integer boardOwnerId) {
         return (currentUserId != null && Objects.equals(currentUserId, boardUserId)) ||
                (currentOwnerId != null && Objects.equals(currentOwnerId, boardOwnerId));
+    }
+
+    private List<BoardCommentResDTO> build1DepthCommentTree(List<BoardCommentResDTO> flatList) {
+        Map<Integer, BoardCommentResDTO> commentMap = new HashMap<>();
+        List<BoardCommentResDTO> roots = new ArrayList<>();
+
+        for (BoardCommentResDTO comment : flatList) {
+            commentMap.put(comment.getBoardCommentId(), comment);
+
+            if (comment.getChildComments() == null) {
+                comment.setChildComments(new ArrayList<>());
+            }
+        }
+
+        for (BoardCommentResDTO comment : flatList) {
+            Integer parentId = comment.getBoardCommentParentCommentId();
+
+            if (parentId == null) {
+                roots.add(comment);
+
+            } else {
+                BoardCommentResDTO parent = commentMap.get(parentId);
+                if (parent != null) {
+                    if (parent.getBoardCommentParentCommentId() == null) {
+                        parent.getChildComments().add(comment);
+                    }
+                }
+            }
+        }
+
+        return roots;
     }
 }
