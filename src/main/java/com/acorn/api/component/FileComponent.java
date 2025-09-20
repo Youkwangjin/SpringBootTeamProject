@@ -47,7 +47,7 @@ public class FileComponent {
                 File uploadFile = new File(directory + fileName);
                 multipartFile.transferTo(uploadFile);
 
-            } else if (StringUtils.equalsIgnoreCase(profile, PROD)) {
+            } else if (StringUtils.equals(profile, PROD)) {
                 PutObjectRequest putReq = PutObjectRequest.builder()
                         .bucket(bucket)
                         .key(fileName)
@@ -96,6 +96,7 @@ public class FileComponent {
                 if (!file.exists()) {
                     throw new AcontainerException(ApiErrorCode.FILE_NOT_FOUND);
                 }
+
                 return FileCopyUtils.copyToByteArray(file);
 
             } else if (StringUtils.equals(profile, PROD)) {
