@@ -4,8 +4,8 @@
 - 프로젝트명: Acontainer
 - 참여자 : 최민혁, 조혁진, 이재민, 한지원, 유광진, 이서호, 김효림 (7명)
 - 총 개발기간 : 2023/09/01 ~ 2023/10/05 (4주)
-- 리펙토링 기간 : 2024/01/05 ~ ing
-
+- 리펙토링 기간 : 2024/01/05 ~ 2025/08/01
+- [📘 프로젝트 상세 문서 (Notion)](https://kxxngjinbackend.notion.site/Acontainer-Project-be10f78ee9304450aae0fc4c6ffb5c20?source=copy_link)  
 
 ## 📌목차
 - [프로젝트 개요](#-프로젝트-개요)
@@ -49,7 +49,8 @@
 
 📌 **Back-end**
 
-<img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img src="https://img.shields.io/badge/MyBatis-2E5E82?style=for-the-badge&logo=MyBatis&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
+<img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+ <img src="https://img.shields.io/badge/MyBatis-2E5E82?style=for-the-badge&logo=MyBatis&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
 
 📌 **DataBase**
 
