@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 @Builder
 public class BoardListResDTO {
 
-    private Integer rowNum;
-
     private Integer boardId;
 
     private String boardTitle;
