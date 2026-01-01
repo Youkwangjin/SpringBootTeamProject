@@ -48,14 +48,14 @@
 
     <select id="selectBoardListData" parameterType="com.acorn.api.common.PaginationRequest" resultMap="boardResultMap">
         SELECT
-            ROW_NUMBER() OVER (ORDER BY BOARD_CREATED ASC) AS ROW_NUM,
             BOARD_ID,
             BOARD_TITLE,
             BOARD_WRITER,
             BOARD_HITS,
             BOARD_LIKE_COUNT,
             BOARD_CREATED
-        FROM TB_BOARD
+        FROM
+            TB_BOARD
         <where>
             <if test="searchType == 'boardTitle' and searchName != null and searchName.trim() !=''">
                 BOARD_TITLE LIKE CONCAT('%', TRIM(#{searchName}), '%')
