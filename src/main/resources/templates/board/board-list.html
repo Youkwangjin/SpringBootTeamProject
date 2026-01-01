@@ -73,8 +73,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="board: ${boardData}">
-                                <td th:text="${board.rowNum}"></td>
+                            <tr th:each="board, iterStat: ${boardData}">
+                                <td th:text="${iterStat.count}"></td>
                                 <td>
                                     <a th:href="@{|/board/detail/${board.boardId}|}" th:text="${board.boardTitle}"></a>
                                 </td>

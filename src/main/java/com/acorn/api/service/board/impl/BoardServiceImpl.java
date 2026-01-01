@@ -60,7 +60,6 @@ public class BoardServiceImpl implements BoardService {
 
         return boardListData.stream()
                 .map(boardList -> {
-                    final Integer rowNum = boardList.getRowNum();
                     final Integer boardId = boardList.getBoardId();
                     final String boardTitle = boardList.getBoardTitle();
                     final String boardWriter = boardList.getBoardWriter();
@@ -69,7 +68,6 @@ public class BoardServiceImpl implements BoardService {
                     final LocalDateTime boardCreated = boardList.getBoardCreated();
 
                     return BoardListResDTO.builder()
-                            .rowNum(rowNum)
                             .boardId(boardId)
                             .boardTitle(boardTitle)
                             .boardWriter(boardWriter)
